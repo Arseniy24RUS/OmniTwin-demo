@@ -1,5 +1,30 @@
 # OmniTwin Demo — implementation contract
 
+## City-scale repair campaign — owner approved 2026-09-07
+
+Current implementation sequence (supersedes the small-person-fixture default, not observed statistics):
+
+1. **Implemented; production-preview visual QA accepted** — atomic materials, governor recovery, metre-scale bodies, surface-aligned cars, and owner-requested far firefly LOD. Four real desktop/mobile Playwright tests pass on the production build; all 32 final PNGs were opened. Selection refresh no longer reopens the mobile sheet. After native tile/idle stabilization both paused checks recorded zero new frames in 2.2 seconds. Public deployment verification remains separate from this local acceptance.
+2. **Built locally; not visually accepted for activation** — immutable seven-district geography/assignment pack and coherent 1,177,058-person fictional baseline. All seven real-browser views load, but some street views still look sparse and general-plan flows cluster too narrowly. Observed 2024 sex/age marginals seed an explicitly fictional 2026 reference, never a 2026 observation. Legacy 8,246 remains the public default.
+3. **Implemented and tested locally; cloud activation pending** — indexed async profiles/occupancy/scenarios, shared canonical Firebase-compatible profile resolver and immutable-asset publisher. No V2 storage upload or backend deployment has occurred in this campaign. Public activation requires compatible backend, uploaded verified assets, and the remaining visual gates. No OpenRouter key or spending-cap changes.
+
+The current source/artifact lineage and limits are recorded in `docs/CITY_V2_DATA_RU.md`; screenshot acceptance and remaining release work are in `docs/CITY_REPAIR_CHECKPOINT_RU.md`.
+
+### Scene contract and specialist ownership
+
+- Artifact/job: inspect fictional people, movement and building presence in real Chelyabinsk geography; the separately sourced observed SVG analytics stays unchanged. Existing approved composition is retained, no new concept approval needed for these repairs.
+- Primary owner: MapLibre camera/static vector tiles, one WebGL2 canvas. Deck interleaved retained actor buffers; Three disabled. Lon/lat source positions become local metre coordinates with surface Z; people height and car length use metres, UI/picking hit areas use CSS pixels.
+- Material owner: one phase/quality/zoom/atlas/governor decision, atomic visibility plus fallback ranges. No overlapping plain/patterned primary extrusions. Ordinary camera motion does not erase materials.
+- Visual mini-briefs: material engineer owns stable source-backed surfaces/lighting; actor engineer owns physically scaled sprites/depth/picking; geography engineer owns dated footprint/road/boundary coverage; population engineer owns deterministic entities/stocks/events; provider engineer owns shared presence, lazy pages and spatial coverage; main owns integration, mobile, real screenshot review and release.
+- People/car caps high 1200/1800, mid 500/800, low 160/320; total logical population is not an instance count. Beyond individual LOD use explicitly aggregate flows, never fictitious individual identities.
+- Owner addition: individually represented distant people use a soft cyan firefly impostor (8 CSS-pixel quad, about 5 visible pixels after alpha cutoff). Transition follows actual projected body height: full glow through 3 px, smooth blend to an ordinary unlit body at 5 px. Identity, world depth, physical near scale and native click picking are unchanged; no bloom or extra canvas.
+- Clock: demographic year/scenario independent from local presentation time/weather. One scheduler, paused/off-route/hidden world stops animation; GPU interpolates bounded worker state. Preserve previous good geometry during failed/stale tile loads.
+- Interaction states: loading → ready/partial → moving/paused; selection opens person/building/car, close restores summary; selected body does not enlarge. URL includes dataset/version context and camera; Back/reload deterministic.
+- Sibling views: desktop 1920×1080, portrait 390×844, landscape 844×390; preserve map/summary/bottom sheet, 44px controls, tap/picking and list alternatives; no sensor/permission requirement.
+- Readiness: correct actual/target camera, tiles and atlas ready, fresh telemetry, one canvas, no framework overlay/context loss; submitted instance counts are not pixel visibility evidence.
+- QA: failing targeted tests first; one real Playwright worker (Browser plugin not available). Right-drag/wheel/pan before/during/after, depth and physical scale, seven districts, occupancy conservation/rosters, observed regression, Back/reload. Open every accepted PNG. Artifact output outside source, performance under running model classified contaminated_diagnostic.
+- Safety: only this demo workspace changes; original scientific repositories/processes and existing unrelated staged Yandex work remain untouched. No installs through the root node_modules junction. Shared workers must not revert each other's edits. No deployment until relevant visual gate passes.
+
 Public fictional demonstrator, independent of scientific RUSDEM/OmniTwin runtimes. Original repositories and running model processes are read-only and must remain untouched.
 
 ## Design lock

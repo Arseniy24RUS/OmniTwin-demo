@@ -10,6 +10,8 @@ export type RendererPerformanceDecisionKind =
   | 'recover_gpu'
   | 'enter_emergency_30'
   | 'enter_compatibility_30'
+  | 'probe_floor_recovery'
+  | 'end_floor_probe'
   | 'recover_floor';
 
 export type AdaptiveDprScale = typeof ADAPTIVE_DPR_LADDER[number];
@@ -71,6 +73,8 @@ export interface RendererPerformanceGovernorSnapshot {
   readonly facadePatternEnabled: boolean;
   readonly floorMode: 'normal' | 'emergency_30' | 'compatibility_30';
   readonly targetFramesPerSecond: number;
+  /** Bounded uncapped measurement; reduced DPR/actor/detail budgets remain in force. */
+  readonly recoveryProbe: boolean;
   readonly individualActorsEnabled: boolean;
   readonly aggregateBuildingRepresentation: boolean;
   readonly contactAoEnabled: boolean;
@@ -128,10 +132,16 @@ const NEAR_CAPS: Readonly<Record<UniversalQualityTier, {
   readonly people: number;
   readonly vehicles: number;
 }>> = Object.freeze({
-  high: Object.freeze({ people: 300, vehicles: 600 }),
-  mid: Object.freeze({ people: 150, vehicles: 250 }),
-  low: Object.freeze({ people: 80, vehicles: 100 }),
+  high: Object.freeze({ people: 1200, vehicles: 1800 }),
+  mid: Object.freeze({ people: 500, vehicles: 800 }),
+  low: Object.freeze({ people: 160, vehicles: 320 }),
 });
+
+const FLOOR_PROBE_DURATION_MS = 2_000;
+const FLOOR_PROBE_HEADROOM_MS = 750;
+// Render-event timing includes display/scheduler quantization. This is not
+// additional work headroom: a capped recovery also requires measured GPU slack.
+const CAPPED_INTERVAL_TOLERANCE = 1.1;
 
 const CPU_STAGES = Object.freeze([
   Object.freeze({ nearUpdateHz: 10, midUpdateHz: 2, nearCapScale: 1 }),
@@ -232,6 +242,9 @@ export class RendererPerformanceGovernor {
   private floorPressureSinceMs: number | null = null;
   private floorLevelSinceMs: number | null = null;
   private floorHeadroomSinceMs: number | null = null;
+  private floorProbeSinceMs: number | null = null;
+  private floorProbeHeadroomSinceMs: number | null = null;
+  private lastFloorProbeAtMs = Number.NEGATIVE_INFINITY;
 
   constructor(options: RendererPerformanceGovernorOptions = {}) {
     this.qualityTier = options.qualityTier ?? 'high';
@@ -263,11 +276,14 @@ export class RendererPerformanceGovernor {
     this.lastObservedAtMs = wallTimeMs;
 
     const floorDecision = this.observeHardFloor(
-      Boolean(sample.moving),
+      sample.moving,
       frameIntervalP95Ms,
+      cpuFrameMs,
+      gpuFrameMs,
       wallTimeMs,
     );
     if (floorDecision || this.floorLevel > 0) return floorDecision;
+    if (sample.moving === false) return null;
 
     const signal = this.classify(cpuFrameMs, gpuFrameMs);
     if (signal === 'neutral') {
@@ -313,17 +329,67 @@ export class RendererPerformanceGovernor {
   }
 
   private observeHardFloor(
-    moving: boolean,
+    moving: boolean | undefined,
     frameIntervalP95Ms: number | null,
+    cpuFrameMs: number,
+    gpuFrameMs: number | null,
     wallTimeMs: number,
   ): RendererPerformanceGovernorDecision | null {
-    if (!moving || frameIntervalP95Ms === null) {
-      this.floorPressureSinceMs = null;
-      this.floorHeadroomSinceMs = null;
+    if (moving === false) return this.settle(wallTimeMs);
+    if (!moving || frameIntervalP95Ms === null) return null;
+    const floorBudgetMs = 1_000 / this.policy.minimumMovingFps;
+    const uncappedHeadroom = frameIntervalP95Ms <= floorBudgetMs * this.policy.headroomRatio
+      && (gpuFrameMs === null || gpuFrameMs <= floorBudgetMs * this.policy.headroomRatio);
+    if (this.floorProbeSinceMs !== null) {
+      const headroom = uncappedHeadroom && (gpuFrameMs === null || gpuFrameMs <= floorBudgetMs * this.policy.headroomRatio);
+      if (!headroom) this.floorProbeHeadroomSinceMs = null;
+      else if (this.floorProbeHeadroomSinceMs === null) this.floorProbeHeadroomSinceMs = wallTimeMs;
+      if (this.floorProbeHeadroomSinceMs !== null && wallTimeMs - this.floorProbeHeadroomSinceMs >= FLOOR_PROBE_HEADROOM_MS) {
+        return this.commit('recover_floor', 'gpu', wallTimeMs, () => {
+          this.floorLevel = Math.max(0, this.floorLevel - 1) as 0 | 1;
+          this.floorLevelSinceMs = wallTimeMs;
+          this.endFloorProbe(wallTimeMs);
+        });
+      }
+      if (wallTimeMs - this.floorProbeSinceMs >= FLOOR_PROBE_DURATION_MS) {
+        return this.commit('end_floor_probe', 'gpu', wallTimeMs, () => this.endFloorProbe(wallTimeMs));
+      }
       return null;
     }
-    const floorBudgetMs = 1_000 / this.policy.minimumMovingFps;
-    if (frameIntervalP95Ms > floorBudgetMs) {
+
+    // A scheduler-capped 30 FPS stream cannot reach the former <=25 ms
+    // recovery gate. Fresh GPU work timing supplies independent headroom;
+    // both CPU/interval proxies must still fit the protected cadence.
+    const cappedHeadroom = this.floorLevel > 0 && gpuFrameMs !== null
+      && gpuFrameMs <= floorBudgetMs * this.policy.headroomRatio
+      && cpuFrameMs <= floorBudgetMs * CAPPED_INTERVAL_TOLERANCE
+      && frameIntervalP95Ms <= floorBudgetMs * CAPPED_INTERVAL_TOLERANCE;
+    if (this.floorLevel > 0 && (uncappedHeadroom || cappedHeadroom)) {
+      this.floorPressureSinceMs = null;
+      if (this.floorHeadroomSinceMs === null) this.floorHeadroomSinceMs = wallTimeMs;
+      if (wallTimeMs - this.floorHeadroomSinceMs < this.policy.recoverSustainMs
+        || wallTimeMs - this.lastStepAtMs < this.policy.minimumStepIntervalMs) return null;
+      return this.commit('recover_floor', 'gpu', wallTimeMs, () => {
+        this.floorLevel = (this.floorLevel - 1) as 0 | 1;
+        this.floorLevelSinceMs = wallTimeMs;
+      });
+    }
+    this.floorHeadroomSinceMs = null;
+
+    // Without independent GPU timing, briefly measure the existing reduced
+    // scene at 60 FPS. No new instances/textures are enabled by a probe.
+    if (this.floorLevel > 0 && gpuFrameMs === null
+      && frameIntervalP95Ms <= floorBudgetMs * CAPPED_INTERVAL_TOLERANCE
+      && wallTimeMs - Math.max(this.lastStepAtMs, this.lastFloorProbeAtMs) >= this.policy.recoverSustainMs) {
+      return this.commit('probe_floor_recovery', 'gpu', wallTimeMs, () => {
+        this.floorProbeSinceMs = wallTimeMs;
+        this.floorProbeHeadroomSinceMs = null;
+        this.lastFloorProbeAtMs = wallTimeMs;
+      });
+    }
+
+    const overloadBudgetMs = floorBudgetMs * (this.floorLevel > 0 ? CAPPED_INTERVAL_TOLERANCE : 1);
+    if (frameIntervalP95Ms > overloadBudgetMs) {
       this.floorHeadroomSinceMs = null;
       if (this.floorPressureSinceMs === null) this.floorPressureSinceMs = wallTimeMs;
       if (
@@ -351,24 +417,31 @@ export class RendererPerformanceGovernor {
     }
 
     this.floorPressureSinceMs = null;
-    if (this.floorLevel === 0) {
-      this.floorHeadroomSinceMs = null;
-      return null;
-    }
-    if (frameIntervalP95Ms > floorBudgetMs * this.policy.headroomRatio) {
-      this.floorHeadroomSinceMs = null;
-      return null;
-    }
-    if (this.floorHeadroomSinceMs === null) {
-      this.floorHeadroomSinceMs = wallTimeMs;
-      return null;
-    }
-    if (wallTimeMs - this.floorHeadroomSinceMs < this.policy.recoverSustainMs) return null;
-    if (wallTimeMs - this.lastStepAtMs < this.policy.minimumStepIntervalMs) return null;
+    return null;
+  }
+
+  /** End transient motion pressure without starting a paused repaint loop. */
+  settle(wallTimeMs: number): RendererPerformanceGovernorDecision | null {
+    finiteNonNegative(wallTimeMs, 'wallTimeMs');
+    if (this.lastObservedAtMs !== null && wallTimeMs < this.lastObservedAtMs) throw new RangeError('wallTimeMs must be monotonic');
+    this.lastObservedAtMs = wallTimeMs;
+    this.floorPressureSinceMs = null;
+    this.floorHeadroomSinceMs = null;
+    this.candidate = null;
+    if (this.floorLevel === 0 && this.floorProbeSinceMs === null) return null;
     return this.commit('recover_floor', 'gpu', wallTimeMs, () => {
-      this.floorLevel = (this.floorLevel - 1) as 0 | 1;
-      this.floorLevelSinceMs = wallTimeMs;
+      this.floorLevel = 0;
+      this.floorLevelSinceMs = null;
+      this.endFloorProbe(wallTimeMs);
     });
+  }
+
+  private endFloorProbe(wallTimeMs: number): void {
+    this.floorProbeSinceMs = null;
+    this.floorProbeHeadroomSinceMs = null;
+    this.floorHeadroomSinceMs = null;
+    this.floorPressureSinceMs = null;
+    this.lastFloorProbeAtMs = wallTimeMs;
   }
 
   private degrade(
@@ -474,9 +547,10 @@ export class RendererPerformanceGovernor {
       roofCapEnabled: fullDetail && gpu.roof,
       facadePatternEnabled: fullDetail && gpu.facade,
       floorMode,
-      targetFramesPerSecond: fullDetail
+      targetFramesPerSecond: this.floorProbeSinceMs !== null ? 60 : fullDetail
         ? TARGET_FPS_BY_TIER[this.qualityTier]
         : this.policy.minimumMovingFps,
+      recoveryProbe: this.floorProbeSinceMs !== null,
       individualActorsEnabled: fullDetail || this.preserveIndividualPresentation,
       aggregateBuildingRepresentation: !fullDetail && !this.preserveIndividualPresentation,
       contactAoEnabled: fullDetail,

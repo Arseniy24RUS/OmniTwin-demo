@@ -22,7 +22,11 @@ test('function options explicitly bound scaling and avoid default full CPU', () 
 
 test('package contains only allowlisted portable modules and approved immutable profile data', async () => {
   const {files, evidence} = await payload;
-  assert.deepEqual(PORTABLE_MODULES, ['config.mjs', 'handler.mjs', 'quota.mjs', 'sessions.mjs', 'openrouter.mjs', 'firestore.mjs', 'firebase-http.mjs']);
+  assert.deepEqual(PORTABLE_MODULES, ['config.mjs', 'handler.mjs', 'quota.mjs', 'sessions.mjs', 'openrouter.mjs', 'firestore.mjs', 'firebase-http.mjs', 'population-resolver.mjs']);
+  for (const name of ['index.mjs', 'spatial.mjs']) {
+    const bytes = await readFile(resolve(root, '../../shared/demo-population', name));
+    assert.equal(hash(files.get(`data/demo-population/${name}`)), hash(bytes), 'server uses the exact shared frontend codec');
+  }
   for (const path of files.keys()) assert.equal(/ydb|metadata-auth|\.env|\.secret|operator|prepare-yandex|node_modules|\.zip/i.test(path), false);
   assert.equal(hash(files.get('data/chat-profiles.json')), evidence.profileSha256);
   const manifest = JSON.parse(files.get('package.json'));
@@ -108,6 +112,17 @@ test('staged real Firebase export imports without credentials, initialization or
     assert.deepEqual(config.firestore,{collection:'demo_chat_state'});
     assert.equal(config.ydb,undefined);
     assert.equal(config.profiles.size,${(await payload).evidence.profiles});
+    const pinned={V2_POPULATION_MANIFEST_URL:'https://example.github.io/demo-v2/manifest.json',V2_POPULATION_MANIFEST_SHA256:'a'.repeat(64),V2_SPATIAL_MANIFEST_URL:'https://example.github.io/demo-v2/spatial/manifest.json',V2_SPATIAL_MANIFEST_SHA256:'b'.repeat(64)};
+    const v2=await loadConfig({...fixtureConfig,...pinned},{storage:'firestore'});
+    assert.equal(v2.acceptsDataset('omnitwin-fictional-city-v2'),true);
+    assert.equal(v2.acceptsDataset(config.datasetId),true);
+    assert.equal(v2.acceptsDataset('unapproved'),false);
+    assert.match(v2.profileRevisionFor('omnitwin-fictional-city-v2'),/^[a-f0-9]{64}$/);
+    assert.equal(v2.profileRevisionFor(config.datasetId),null);
+    assert.equal(v2.canResolvePerson('omnitwin-fictional-city-v2','demo2-p-0000001'),true);
+    assert.equal(v2.canResolvePerson('omnitwin-fictional-city-v2','malformed'),false);
+    assert.equal(await v2.resolveProfile({datasetId:'omnitwin-fictional-city-v2',personId:'malformed'}),null);
+    assert.equal(calls,0,'V2 configuration and invalid contexts never fetch the city');
     await assert.rejects(loadConfig({...fixtureConfig,PROFILE_MANIFEST_SHA256:'0'.repeat(64)},{storage:'firestore'}),/digest mismatch/);
     assert.equal(calls,0);
     assert.equal(getApps().length,0);

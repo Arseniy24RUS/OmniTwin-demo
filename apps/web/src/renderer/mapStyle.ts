@@ -450,10 +450,12 @@ export function setUniversalBuildingDetailFallback(
   for (const key of ['building', 'building-parts'] as const) {
     const base = map.getLayer(`${key}-3d`);
     const facade = map.getLayer(`omnitwin-${key}-facade-3d`);
-    if (!isRecord(base) || !isRecord(facade)
-      || typeof facade.minzoom !== 'number' || !Number.isFinite(facade.minzoom)) continue;
+    if (!isRecord(base)) continue;
+    const materialMinZoom = isRecord(facade)
+      && typeof facade.minzoom === 'number' && Number.isFinite(facade.minzoom)
+      ? facade.minzoom : null;
     const minzoom = typeof base.minzoom === 'number' ? base.minzoom : 13;
-    const maxzoom = detailEnabled ? facade.minzoom : 24;
+    const maxzoom = detailEnabled && materialMinZoom !== null ? materialMinZoom : 24;
     if (base.minzoom !== minzoom || base.maxzoom !== maxzoom) {
       map.setLayerZoomRange(`${key}-3d`, minzoom, maxzoom);
     }

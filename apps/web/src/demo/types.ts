@@ -26,7 +26,11 @@ export interface DemoContextV1 {
 }
 export interface DemoTerritory { id: string; name: string; parentId: string | null }
 export interface DemoScenario { id: DemoScenarioId; label: string; description: string; scientificClaim: false }
-export interface DemoAsset { url: string; sha256: string; bytes: number; rows?: number }
+export interface DemoAsset {
+  url: string; sha256: string; bytes: number; rows?: number;
+  /** Explicit gzip file bytes, served as application/gzip without Content-Encoding. */
+  gzip?: { url: string; sha256: string; bytes: number };
+}
 export interface DemoDatasetManifestV1 {
   contract: 'DemoDatasetManifestV1';
   datasetId: string;
@@ -60,7 +64,7 @@ export interface DemoSnapshot {
   internalOut: number | null;
   netChange: number | null;
   employment: Record<DemoEmployment, number>;
-  households: number;
+  households: number | null;
   representation: 'fictional_demo';
 }
 export interface DemoScenarioComparisonV1 {
@@ -81,7 +85,7 @@ export interface PublicFictionalPersonV1 {
   employment: DemoEmployment;
   occupation: string;
   householdId: string;
-  householdSize: number;
+  householdSize: number | null;
   territoryId: string;
   territoryName: string;
   biography: string;
@@ -101,12 +105,19 @@ export interface DemoPeopleQuery extends DemoCohort {
   offset?: number;
   limit?: number;
 }
+export interface DemoViewportQuery extends DemoCohort {
+  longitude: number;
+  latitude: number;
+  radiusMeters: number;
+  minutes: number;
+  territoryId?: string;
+}
 export interface DemoPage<T> { items: T[]; total: number; offset: number; limit: number; nextOffset: number | null }
 export interface DemoLayout {
-  buildings: Array<{ id: string; center: [number, number]; use?: 'residential' | 'work' | 'study' | 'mixed'; name?: string }>;
+  buildings: Array<{ id: string; center: [number, number]; use?: 'residential' | 'work' | 'study' | 'mixed' | 'unknown'; name?: string | null; index?: number; aliases?: string[]; districtId?: string | null; areaM2?: number; levels?: number | null; heightM?: number }>;
   roads: Array<{ id: string; coordinates: Array<[number, number]>; oneway?: boolean; walkable?: boolean; drivable?: boolean }>;
 }
-export type DemoPresenceState = 'home' | 'work' | 'study' | 'outdoor' | 'vehicle' | 'unplaced';
+export type DemoPresenceState = 'home' | 'work' | 'study' | 'shopping' | 'leisure' | 'outdoor' | 'vehicle' | 'unplaced';
 export interface DemoPresence {
   personId: string;
   state: DemoPresenceState;
@@ -117,6 +128,10 @@ export interface DemoPresence {
   routeProgress?: number;
   direction?: 'forward' | 'reverse';
   speedMps?: number;
+  /** Provider-authored source-corridor traversal; absent only for legacy fixtures. */
+  routeMode?: 'ping_pong' | 'loop' | 'once';
+  /** Display-only endpoint fade metadata; not a presence/population weight. */
+  endpointOpacity?: number;
   activity: string;
   representation: 'visual_synthesis';
 }
@@ -134,6 +149,8 @@ export interface DemoBuildingOccupancy extends DemoPage<PublicFictionalPersonV1>
   buildingId: string;
   assignedResidents: number;
   assignedWorkers: number;
+  assignedStudents?: number;
+  visitorsNow?: number;
   presentNow: number;
   representation: 'visual_synthesis';
 }

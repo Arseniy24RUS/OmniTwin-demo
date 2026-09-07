@@ -702,6 +702,7 @@ export class TelemetryBus {
     const three = samples.find(({ adapter }) => adapter.kind === 'three')?.telemetry;
     this.root.dataset.deckPedestrians = String(deck?.pedestrians ?? 0);
     this.root.dataset.deckVehicles = String(deck?.vehicles ?? 0);
+    this.root.dataset.deckAggregateRoadFlows = String(deck?.aggregateRoadFlows ?? 0);
     this.root.dataset.deckEntities = String((deck?.pedestrians ?? 0) + (deck?.vehicles ?? 0));
     this.root.dataset.demoActorPickCandidates = JSON.stringify(deck?.presentationPickCandidates ?? []);
     this.root.dataset.deckRenderedFrames = String(deck?.renderedFrames ?? 0);

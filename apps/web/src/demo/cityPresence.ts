@@ -5,6 +5,12 @@ import type { LivingSceneMovementEntitySource } from '../renderer/living/sceneMo
 import { hashSeed } from '../renderer/rng';
 
 export const CITY_PRESENTATION_EPOCH_SECONDS = Date.UTC(2026, 0, 1) / 1_000;
+export const CITY_PRESENCE_RECONCILE_SECONDS = 5;
+/** Display clock bucket, not a demographic/schedule time step. GPU motion remains continuous. */
+export function cityPresenceAnchorMinutes(minutes: number): number {
+  if (!Number.isFinite(minutes)) throw new Error('City presence needs finite presentation minutes');
+  return Math.floor((minutes * 60 + 1e-7) / CITY_PRESENCE_RECONCILE_SECONDS) * CITY_PRESENCE_RECONCILE_SECONDS / 60;
+}
 export type CityPresenceProvider = Pick<StaticDemoProvider, 'getLayout' | 'getVisibleCandidates' | 'getPresence' | 'getPerson'>;
 export interface CityPresenceOptions {
   maxPeople?: number;
@@ -18,7 +24,7 @@ export interface CityPresenceFrame {
   peopleCount: number;
   vehicleCount: number;
   sourceLabel: string;
-  /** Exact shared minute anchor; callers interpolate the clock from this frame. */
+  /** Exact shared five-second anchor; callers interpolate the clock from this frame. */
   presentationTimeSeconds: number;
 }
 type Position = readonly [number, number];
@@ -43,6 +49,7 @@ interface Candidate {
   distance: number;
   speed: number;
   direction: 'forward' | 'reverse';
+  routeMode: 'loop' | 'ping_pong' | 'once';
 }
 const PERSON_COLORS = ['#53685e', '#b88062', '#75899b', '#baaf95', '#78687e', '#597581'];
 const CAR_COLORS = ['#e4ded0', '#667479', '#a47b69', '#c4b490', '#587170'];
@@ -111,7 +118,7 @@ function inCohort(person: PublicFictionalPersonV1, context: DemoContextV1): bool
  * The shared provider owns presence, household membership, routes and schedule.
  * This adapter retains only currently outdoor people and unique household cars;
  * indoor/unplaced residents remain available through the provider's rosters.
- * Build once per integer minute/context/layout revision and let Living interpolate.
+ * Reconcile once per five-second clock bucket/context/layout revision and let Living interpolate.
  */
 export function buildCityPresenceFrame(
   provider: CityPresenceProvider,
@@ -120,15 +127,18 @@ export function buildCityPresenceFrame(
 ): CityPresenceFrame {
   const origin: Position = [context.camera.longitude, context.camera.latitude];
   if (!pointIsValid(origin) || !Number.isFinite(context.presentationMinutes)) throw new Error('City presence needs a finite camera and presentation minute');
-  const minute = Math.floor(context.presentationMinutes);
+  const minute = cityPresenceAnchorMinutes(context.presentationMinutes);
   const presentationTimeSeconds = CITY_PRESENTATION_EPOCH_SECONDS + minute * 60;
   const presentationTime = new Date(presentationTimeSeconds * 1_000).toISOString();
-  const maxPeople = actorLimit(options.maxPeople, 500);
-  const maxVehicles = actorLimit(options.maxVehicles, 100);
+  const maxPeople = actorLimit(options.maxPeople, 1200);
+  const maxVehicles = actorLimit(options.maxVehicles, 1800);
   const layout = provider.getLayout();
   const sourceRoads = new Map(layout.roads.map((road) => [road.id, road]));
   const roadCache = new Map<string, MeasuredRoad | null>();
-  const people = provider.getVisibleCandidates(context.scenario, context.year, 3_500).slice(0, 3_500);
+  const people = provider.getVisibleCandidates(context.scenario, context.year, 5_000, {
+    longitude: origin[0], latitude: origin[1], radiusMeters: 2_500, minutes: minute,
+    territoryId: context.territoryId, ...context.cohort,
+  });
   if (options.selectedId && !people.some(({ id }) => id === options.selectedId)) {
     const selected = provider.getPerson(options.selectedId, context.scenario, context.year);
     if (selected) people.push(selected);
@@ -149,13 +159,19 @@ export function buildCityPresenceFrame(
     if (!source || (vehicle ? source.drivable === false : source.walkable === false)) continue;
     if (!roadCache.has(source.id)) roadCache.set(source.id, measuredRoad(source, origin));
     const road = roadCache.get(source.id);
-    if (!road || (vehicle && source.oneway || road.closed) && presence.direction === 'reverse') continue;
+    if (!road) continue;
+    // New provider frames author traversal explicitly. Only legacy frames without
+    // this optional field use the previous source-geometry interpretation.
+    const routeMode = presence.routeMode ?? (road.closed ? 'loop' : vehicle && source.oneway ? 'once' : 'ping_pong');
+    if (!['loop', 'ping_pong', 'once'].includes(routeMode) || routeMode === 'loop' && !road.closed
+      || vehicle && source.oneway && routeMode === 'ping_pong'
+      || (routeMode !== 'ping_pong' || vehicle && source.oneway) && presence.direction === 'reverse') continue;
     const anchor = sourceAnchor(road, presence.position, origin, presence.direction === 'reverse');
     const selected = id === options.selectedId || profile.id === options.selectedId;
     if (!anchor || (!selected && anchor.distance > 2_500)) continue;
     const candidate: Candidate = { id, profile, presence, vehicle, selected, road,
       position: presence.position, progress: anchor.progress, heading: anchor.heading, distance: anchor.distance,
-      speed: presence.speedMps!, direction: presence.direction };
+      speed: presence.speedMps!, direction: presence.direction, routeMode };
     const previous = candidates.get(id);
     if (!previous || selected && !previous.selected || selected === previous.selected && profile.id < previous.profile.id) {
       candidates.set(id, candidate);
@@ -178,16 +194,16 @@ export function buildCityPresenceFrame(
   const entities: VisualEntity[] = [];
   const movementEntities: LivingSceneMovementEntitySource[] = [];
   for (const candidate of retained) {
-    const { id, vehicle, road, position, progress, heading, speed, direction } = candidate;
+    const { id, vehicle, road, position, progress, heading, speed, direction, routeMode } = candidate;
     const mode = vehicle ? 'car' : 'pedestrian';
-    const routeId = `presence:${road.source.id}:${mode}:route`;
-    const edgeId = `presence:${road.source.id}:${mode}:edge`;
+    // Source-road identity stays intact; these derived renderer keys distinguish
+    // the provider's exact physical speed buckets without altering their speeds.
+    const graphKey = `presence:${road.source.id}:${mode}:speed-${speed}:${routeMode}`;
+    const routeId = `${graphKey}:route`;
+    const edgeId = `${graphKey}:edge`;
     const fromNodeId = `presence:${road.source.id}:start`;
     const toNodeId = road.closed ? fromNodeId : `presence:${road.source.id}:end`;
     const existing = edges.get(edgeId);
-    if (existing && Math.abs(existing.visualSpeedMetersPerSecond[mode]! - speed) > 0.0001) {
-      throw new Error('Demo presence actors sharing a road and mode must use the same display speed');
-    }
     if (!existing) {
       nodes.set(fromNodeId, { nodeId: fromNodeId, position: road.source.coordinates[0]! });
       if (!road.closed) nodes.set(toNodeId, { nodeId: toNodeId, position: road.source.coordinates.at(-1)! });
@@ -195,12 +211,11 @@ export function buildCityPresenceFrame(
         crossesRoad: false, direction: vehicle && road.source.oneway ? 'forward' : 'bidirectional',
         allowedModes: [mode], geometry: road.source.coordinates,
         visualSpeedMetersPerSecond: { pedestrian: vehicle ? null : speed, car: vehicle ? speed : null, bicycle: null, transit: null } });
-      routes.set(routeId, { routeId, mode, edgeIds: [edgeId],
-        traversal: road.closed ? 'loop' : vehicle && road.source.oneway ? 'once' : 'ping_pong' });
+      routes.set(routeId, { routeId, mode, edgeIds: [edgeId], traversal: routeMode });
     }
     const seed = hashSeed(id);
     const palette = vehicle ? CAR_COLORS : PERSON_COLORS;
-    entities.push({ id, kind: vehicle ? 'vehicle' : 'focus', representation: vehicle ? 'ambient_only' : 'focus_person_1to1',
+    entities.push({ id, kind: vehicle ? 'vehicle' : candidate.selected ? 'focus' : 'person', representation: vehicle ? 'ambient_only' : 'focus_person_1to1',
       representedCount: vehicle ? 0 : 1, longitude: position[0], latitude: position[1], heading,
       activity: vehicle ? 'ambient' : 'walk', color: palette[seed % palette.length]!, seed });
     movementEntities.push({ id, entityKind: vehicle ? 'vehicle' : 'person', presentationTime,

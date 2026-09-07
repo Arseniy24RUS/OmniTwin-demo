@@ -8,9 +8,9 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const repository = resolve(root, '../..');
 const output = resolve(root, 'functions');
 const digest = (bytes) => createHash('sha256').update(bytes).digest('hex');
-export const PORTABLE_MODULES = Object.freeze(['config.mjs', 'handler.mjs', 'quota.mjs', 'sessions.mjs', 'openrouter.mjs', 'firestore.mjs', 'firebase-http.mjs']);
+export const PORTABLE_MODULES = Object.freeze(['config.mjs', 'handler.mjs', 'quota.mjs', 'sessions.mjs', 'openrouter.mjs', 'firestore.mjs', 'firebase-http.mjs', 'population-resolver.mjs']);
 const TEMPLATE_MODULES = ['index.mjs', 'runtime.mjs', 'policy.mjs'];
-const PAYLOAD_NAMES = new Set([...PORTABLE_MODULES.map((name) => `src/${name}`), ...TEMPLATE_MODULES, 'data/chat-profiles.json', 'data/fictionalProfile.mjs', 'approved-profile.mjs', 'package.json', 'package-lock.json']);
+const PAYLOAD_NAMES = new Set([...PORTABLE_MODULES.map((name) => `src/${name}`), ...TEMPLATE_MODULES, 'data/chat-profiles.json', 'data/fictionalProfile.mjs', 'data/demo-population/index.mjs', 'data/demo-population/spatial.mjs', 'approved-profile.mjs', 'package.json', 'package-lock.json']);
 
 /** No symlink traversal, including through a parent directory inside the root. */
 async function regularFile(path, base = repository) {
@@ -38,6 +38,7 @@ export async function buildPayload() {
   for (const name of TEMPLATE_MODULES) await add(resolve(root, 'template', name), name);
   await add(resolve(repository, 'apps/web/public/demo/chat-profiles.json'), 'data/chat-profiles.json');
   await add(resolve(repository, 'apps/web/src/demo/data/fictionalProfile.mjs'), 'data/fictionalProfile.mjs');
+  for (const name of ['index.mjs', 'spatial.mjs']) await add(resolve(repository, 'shared/demo-population', name), `data/demo-population/${name}`);
   const publicManifest = JSON.parse(await regularFile(resolve(repository, 'apps/web/public/demo/manifest.json')));
   const profileBytes = files.get('data/chat-profiles.json');
   const profileSha256 = digest(profileBytes);

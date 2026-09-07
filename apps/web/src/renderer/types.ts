@@ -189,6 +189,7 @@ export interface RendererPresentationClock {
 }
 
 export interface WorldSceneProps {
+  aggregateRoadFlows?: import('./aggregateRoadFlow').AggregateRoadFlowSnapshot | null;
   /** Display-only routes extracted from the active public basemap. */
   presentationMovement?: WorldSceneMovementPayload | null;
   onMapFeatures?: (features: RendererMapFeatureSnapshot) => void;
@@ -208,6 +209,8 @@ export interface WorldSceneProps {
   /** Verified current+halo movement graph published by the mounted runtime. */
   onVerifiedMovementChange?: (movement: WorldSceneMovementPayload | null) => void;
   onCameraChange?: (camera: WorldCamera) => void;
+  /** Settled actual ground bounds; independent of tile/source feature availability. */
+  onViewportChange?: (viewport: RendererViewportSnapshot) => void;
   onSourceStateChange?: (state: MapSourceState) => void;
   viewMode?: ViewMode;
   weather?: WeatherMode;
@@ -253,6 +256,16 @@ export interface RendererBuildingSelection {
   readonly featureId: string;
   readonly layerId: string;
   readonly sourceLayer: string | null;
+}
+
+export interface RendererViewportSnapshot {
+  readonly camera: WorldCamera;
+  /** Actual MapLibre ground extent: west, south, east, north. */
+  readonly bbox: readonly [number, number, number, number];
+  readonly widthCss: number;
+  readonly heightCss: number;
+  /** Quantized pose/bounds/CSS-size signature, not a per-frame counter. */
+  readonly revision: string;
 }
 
 export interface RendererMapFeatureSnapshot {
@@ -403,6 +416,7 @@ export interface RendererLivingSnapshot {
 }
 
 export interface RendererSceneSnapshot {
+  aggregateRoadFlows?: import('./aggregateRoadFlow').AggregateRoadFlowSnapshot | null;
   presentationMovement?: WorldSceneMovementPayload | null;
   camera: WorldCamera;
   entities: readonly VisualEntity[];
@@ -425,6 +439,8 @@ export interface RendererSceneSnapshot {
 }
 
 export interface RendererAdapterTelemetry {
+  /** Schematic road-direction marks, never included in people/vehicle totals. */
+  aggregateRoadFlows?: number;
   pedestrians: number;
   vehicles: number;
   renderedFrames: number;
@@ -452,6 +468,8 @@ export interface RendererAdapterTelemetry {
   };
   /** Nearest profile-eligible submitted focus person for click-only visual QA. */
   pickCandidate?: {
+    readonly physicalHeightPixels?: number;
+    readonly impostorMix?: number;
     readonly id: string;
     readonly kind: 'person';
     readonly x: number;
@@ -464,6 +482,8 @@ export interface RendererAdapterTelemetry {
   };
   /** Public demo QA: projections of bounded, actually submitted GPU rows. */
   presentationPickCandidates?: readonly {
+    readonly physicalHeightPixels?: number;
+    readonly impostorMix?: number;
     readonly id: string;
     readonly kind: 'person' | 'vehicle';
     readonly x: number;
@@ -505,6 +525,7 @@ export interface RendererVegetationSnapshot {
 }
 
 export interface RendererAdapter {
+  updateAggregateRoadFlows?: (snapshot: import('./aggregateRoadFlow').AggregateRoadFlowSnapshot | null) => void;
   kind: 'deck' | 'three';
   dispose: () => void;
   update: (entities: readonly VisualEntity[], selectedId: string | null) => void;

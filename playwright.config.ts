@@ -39,9 +39,9 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   projects: [
-    { name: 'desktop-1920x1080', testMatch: /(?:journey|map-interactions|visual-readiness|cohort-state|observed-reference)\.spec\.ts/,
+    { name: 'desktop-1920x1080', testMatch: /(?:journey|map-interactions|visual-readiness|cohort-state|observed-reference|city-repair|city-v2)\.spec\.ts/,
       use: { viewport: { width: 1920, height: 1080 }, contextOptions: { screen: { width: 1920, height: 1080 }, reducedMotion: 'no-preference' } } },
-    { name: 'portrait-390x844', testMatch: /(?:responsive|observed-reference)\.spec\.ts/,
+    { name: 'portrait-390x844', testMatch: /(?:responsive|observed-reference|city-repair)\.spec\.ts/,
       use: { viewport: { width: 390, height: 844 }, contextOptions: { screen: { width: 390, height: 844 }, reducedMotion: 'no-preference' }, isMobile: true, hasTouch: true } },
     { name: 'landscape-844x390', testMatch: /responsive\.spec\.ts/,
       use: { viewport: { width: 844, height: 390 }, contextOptions: { screen: { width: 844, height: 390 }, reducedMotion: 'no-preference' }, isMobile: true, hasTouch: true } },

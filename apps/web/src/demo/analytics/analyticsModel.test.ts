@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { StaticDemoProvider } from '../data/StaticDemoProvider';
 import type { DemoDataset, DemoDatasetManifestV1, DemoLegacyExport } from '../types';
@@ -10,6 +10,22 @@ const read = (name: string) => JSON.parse(readFileSync(new URL(`../../../public/
 const provider = new StaticDemoProvider(read('dataset.json') as DemoDataset, read('manifest.json') as DemoDatasetManifestV1, read('legacy-synthetic-chelyabinsk-v1.json') as DemoLegacyExport);
 
 describe('ported analytics connected to one public fixture', () => {
+  it('uses an exact provider cohort cube without scanning its resident shards', () => {
+    const source = provider.getSnapshot('inflow', 2032)!;
+    const expected = {...source, population:123456};
+    const getCohortSnapshot = vi.fn(() => expected);
+    const indexed = {getCohortSnapshot, get dataset() { throw new Error('Resident shard scan forbidden'); }} as unknown as StaticDemoProvider;
+    const cohort = {sex:'female', employment:'employed'} as const;
+    expect(cohortSnapshot(indexed, source, cohort)).toBe(expected);
+    expect(getCohortSnapshot).toHaveBeenCalledWith(source, cohort);
+    expect(cohortSnapshot(indexed, source, null)).toBe(source);
+  });
+  it('retains legacy cohort calculation when the provider has no cohort cube', () => {
+    const source = provider.getSnapshot('baseline', 2026)!;
+    const legacy = Object.create(provider) as StaticDemoProvider;
+    Object.defineProperty(legacy, 'getCohortSnapshot', {value:() => null});
+    expect(cohortSnapshot(legacy, source, {sex:'female'}).population).toBe(provider.getPeople({sex:'female'}).total);
+  });
   it('uses the same exact cohort for the population, yearly cross-sections and CSV', () => {
     const cohort = {ageBand: '18-34', sex: 'female'} as const;
     const timeline = provider.getTimeline('baseline').map(snapshot => cohortSnapshot(provider, snapshot, cohort));

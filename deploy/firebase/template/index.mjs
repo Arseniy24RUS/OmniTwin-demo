@@ -27,6 +27,12 @@ const runtime = createFirebaseRuntime({
       ALLOWED_ORIGINS: ALLOWED_ORIGIN,
       PROFILE_MANIFEST_PATH: 'data/chat-profiles.json',
       PROFILE_MANIFEST_SHA256,
+      // Non-secret immutable asset pins are operator configuration. No remote
+      // profile reads happen until an approved V2 /chat request is validated.
+      ...(process.env.V2_POPULATION_MANIFEST_URL !== undefined ? { V2_POPULATION_MANIFEST_URL: process.env.V2_POPULATION_MANIFEST_URL } : {}),
+      ...(process.env.V2_POPULATION_MANIFEST_SHA256 !== undefined ? { V2_POPULATION_MANIFEST_SHA256: process.env.V2_POPULATION_MANIFEST_SHA256 } : {}),
+      ...(process.env.V2_SPATIAL_MANIFEST_URL !== undefined ? { V2_SPATIAL_MANIFEST_URL: process.env.V2_SPATIAL_MANIFEST_URL } : {}),
+      ...(process.env.V2_SPATIAL_MANIFEST_SHA256 !== undefined ? { V2_SPATIAL_MANIFEST_SHA256: process.env.V2_SPATIAL_MANIFEST_SHA256 } : {}),
       FIRESTORE_COLLECTION: 'demo_chat_state',
     }, { storage: 'firestore' });
     // Application Default Credentials are supplied by the deployed service

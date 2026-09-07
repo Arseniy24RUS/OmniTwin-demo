@@ -1,6 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { validateStorageConfiguration } from '../src/config.mjs';
+import { validateStorageConfiguration, populationConfiguration } from '../src/config.mjs';
+
+test('V2 is opt-in through all four non-secret pins, never a partially configured fallback', () => {
+  assert.equal(populationConfiguration({}), null);
+  const env = { V2_POPULATION_MANIFEST_URL: 'https://example.github.io/demo-v2/manifest.json', V2_POPULATION_MANIFEST_SHA256: 'a'.repeat(64), V2_SPATIAL_MANIFEST_URL: 'https://example.github.io/demo-v2/spatial/manifest.json', V2_SPATIAL_MANIFEST_SHA256: 'b'.repeat(64) };
+  assert.equal(populationConfiguration(env).populationHash, env.V2_POPULATION_MANIFEST_SHA256);
+  for (const name of Object.keys(env)) { const missing = { ...env }; delete missing[name]; assert.throws(() => populationConfiguration(missing)); }
+  assert.throws(() => populationConfiguration({ ...env, V2_SPATIAL_MANIFEST_SHA256: 'bad' }));
+});
 
 test('Yandex remains the default and still requires its explicit endpoint and database', () => {
   assert.throws(() => validateStorageConfiguration({}));

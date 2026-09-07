@@ -135,7 +135,11 @@ function validateEntitySemantics(entities: readonly VisualEntity[]): void {
     }
     const focusKind = entity.kind === 'focus';
     const focusRepresentation = entity.representation === 'focus_person_1to1';
-    if (focusKind !== focusRepresentation) throw new Error(`Living focus kind/representation mismatch: ${entity.id}`);
+    // The legacy representation name describes one-to-one profile eligibility,
+    // not visual emphasis. Ordinary people may be eligible without being focus.
+    if ((focusKind && !focusRepresentation) || (entity.kind === 'vehicle' && focusRepresentation)) {
+      throw new Error(`Living focus/profile kind/representation mismatch: ${entity.id}`);
+    }
   }
 }
 

@@ -1,7 +1,13 @@
 import type { Map as MapLibreMap } from 'maplibre-gl';
 import { COORDINATE_SYSTEM, type Layer, type PickingInfo } from '@deck.gl/core';
 import type { IconLayer as DeckIconLayer } from '@deck.gl/layers';
-import type { ShaderModule } from '@luma.gl/shadertools';
+import { livingActorFragmentShader, livingActorUniforms, livingActorVertexShader } from './actorShaders';
+import { ACTOR_ALPHA_CUTOFF, actorPhysicalMetrics, actorPlaneQuad, personImpostorMix, VEHICLE_GROUND_CLEARANCE_METERS } from './actorPhysical';
+import { actorBuildingOcclusion } from './actorOcclusion';
+import { BUILDING_PICK_LAYER_IDS } from './buildingSource';
+import { createPresentationMeterBridge } from './presentationMeterBridge';
+import { hashSeed } from './rng';
+import { aggregateRoadFlowUniforms, type AggregateRoadFlowSnapshot } from './aggregateRoadFlow';
 import {
   UNIVERSAL_ACTOR_ATLAS_URL,
   UNIVERSAL_ACTOR_ICON_MAPPING,
@@ -35,10 +41,14 @@ type MapLibreWithInternalCamera = MapLibreMap & {
 type DeckInterleavedLayerProps = {
   readonly beforeId?: string;
 };
+type PhysicalActorLayerProps = DeckInterleavedLayerProps & {
+  readonly actorMode: 0 | 1 | 2;
+};
 
 const LIVING_PEOPLE_LAYER_ID = 'omnitwin-living-people';
 const LIVING_AGGREGATE_PEOPLE_LAYER_ID = 'omnitwin-living-aggregate-people';
 const LIVING_VEHICLE_LAYER_ID = 'omnitwin-living-vehicles';
+const LIVING_SELECTION_HALO_LAYER_ID = 'omnitwin-living-selection-halo';
 const LIVING_CLICK_PICK_RADIUS_PIXELS = 8;
 const LIVING_CLICK_COORDINATE_TOLERANCE_PIXELS = 12;
 
@@ -61,50 +71,6 @@ type RendererLivingMotionSnapshot = RendererLivingSnapshot & {
   /** Hard-floor governor seam; false retains only non-pickable aggregates. */
   readonly individualActorsEnabled?: boolean;
 };
-
-type LivingInterpolationUniforms = { readonly alpha: number };
-
-const livingInterpolationShaderModule = {
-  name: 'omnitwinLivingInterpolation',
-  vs: `\
-layout(std140) uniform omnitwinLivingInterpolationUniforms {
-  float alpha;
-} omnitwinLivingInterpolation;
-
-in vec3 instancePreviousPositions;
-in vec3 instancePreviousPositions64Low;
-`,
-  defaultUniforms: { alpha: 1 },
-  uniformTypes: { alpha: 'f32' },
-  inject: {
-    'vs:DECKGL_FILTER_GL_POSITION': `
-      vec4 omnitwinPreviousCommon;
-      vec4 omnitwinPreviousCenter = project_position_to_clipspace(
-        instancePreviousPositions,
-        instancePreviousPositions64Low,
-        vec3(0.0),
-        omnitwinPreviousCommon
-      );
-      vec4 omnitwinCurrentCommon;
-      vec4 omnitwinCurrentCenter = project_position_to_clipspace(
-        geometry.worldPosition,
-        vec3(0.0),
-        vec3(0.0),
-        omnitwinCurrentCommon
-      );
-      position += mix(
-        omnitwinPreviousCenter,
-        omnitwinCurrentCenter,
-        omnitwinLivingInterpolation.alpha
-      ) - omnitwinCurrentCenter;
-      geometry.worldPosition = mix(
-        instancePreviousPositions,
-        geometry.worldPosition,
-        omnitwinLivingInterpolation.alpha
-      );
-    `,
-  },
-} as const satisfies ShaderModule<LivingInterpolationUniforms>;
 
 /** deck.gl 9 reads the legacy transform accessor that MapLibre 6 keeps under its camera. */
 function installDeckMapLibreCompatibility(map: MapLibreMap): () => void {
@@ -176,6 +142,7 @@ function cameraBounds(map: MapLibreMap): LivingCameraBounds | null {
 
 /** Reused columnar storage for the exclusive Deck living partition. */
 export interface DeckLivingBufferPool {
+  meterBridge: ReturnType<typeof createPresentationMeterBridge> | null;
   capacity: number;
   candidateCapacity: number;
   length: number;
@@ -202,7 +169,9 @@ export interface DeckLivingBufferPool {
   previousPositions: Float32Array;
   /** Current worker positions retained as the interpolation target. */
   positions: Float32Array;
+  /** Legacy field name; now the atlas quad height in physical metres. */
   radii: Float32Array;
+  widths: Float32Array;
   fillColors: Uint8Array;
   lineColors: Uint8Array;
   headings: Float32Array;
@@ -226,6 +195,7 @@ export interface DeckLivingBufferPool {
 
 export function createDeckLivingBufferPool(): DeckLivingBufferPool {
   return {
+    meterBridge: null,
     capacity: 0,
     candidateCapacity: 0,
     length: 0,
@@ -246,6 +216,7 @@ export function createDeckLivingBufferPool(): DeckLivingBufferPool {
     previousPositions: new Float32Array(0),
     positions: new Float32Array(0),
     radii: new Float32Array(0),
+    widths: new Float32Array(0),
     fillColors: new Uint8Array(0),
     lineColors: new Uint8Array(0),
     headings: new Float32Array(0),
@@ -271,9 +242,10 @@ function ensureDeckLivingCapacity(pool: DeckLivingBufferPool, required: number):
   let capacity = Math.max(16, pool.capacity);
   while (capacity < required) capacity *= 2;
   pool.capacity = capacity;
-  pool.previousPositions = new Float32Array(capacity * 2);
-  pool.positions = new Float32Array(capacity * 2);
+  pool.previousPositions = new Float32Array(capacity * 3);
+  pool.positions = new Float32Array(capacity * 3);
   pool.radii = new Float32Array(capacity);
+  pool.widths = new Float32Array(capacity);
   pool.fillColors = new Uint8Array(capacity * 4);
   pool.lineColors = new Uint8Array(capacity * 4);
   pool.headings = new Float32Array(capacity);
@@ -313,6 +285,9 @@ export function writeDeckLivingBufferPool(
   detailMode: LivingDetailMode = 'individual',
 ): DeckLivingBufferPool {
   const { partition, frame } = living;
+  if (!pool.meterBridge || pool.meterBridge.origin[0] !== partition.originLongitude || pool.meterBridge.origin[1] !== partition.originLatitude) {
+    pool.meterBridge = createPresentationMeterBridge([partition.originLongitude, partition.originLatitude]);
+  }
   if (previousFrame.x.length !== partition.count || previousFrame.y.length !== partition.count) {
     throw new Error('Deck living previous-position buffers do not match the partition');
   }
@@ -348,8 +323,9 @@ export function writeDeckLivingBufferPool(
       ) continue;
       detailEligibleDeck += 1;
       const vehicle = partition.identity.kind[index] === LivingKind.VEHICLE;
-      const focus = !vehicle && representation === LivingRepresentation.FOCUS_1_TO_1;
-      const critical = partition.identity.ids[index] === selectedId || focus;
+      const profileEligible = !vehicle && representation === LivingRepresentation.FOCUS_1_TO_1;
+      // One-to-one/profile eligibility is not a focus, camera, or budget waiver.
+      const critical = partition.identity.ids[index] === selectedId;
       if (normalizedCameraCellCodes && !critical) {
         const longitude = ((
           partition.originLongitude + frame.x[index]! / longitudeMeters + 540
@@ -361,16 +337,16 @@ export function writeDeckLivingBufferPool(
       if (vehicle) {
         if (critical) pool.criticalVehicleIndices[criticalVehicles++] = index;
         else pool.regularVehicleIndices[regularVehicles++] = index;
-      } else if (focus) {
-        pool.focusPedestrianIndices[focusPedestrians++] = index;
-      } else if (critical) {
+      } else if (profileEligible && critical) {
         pool.criticalPedestrianIndices[criticalPedestrians++] = index;
+      } else if (profileEligible) {
+        pool.focusPedestrianIndices[focusPedestrians++] = index;
       } else {
         pool.regularPedestrianIndices[regularPedestrians++] = index;
       }
     }
-    const retainedCriticalPedestrians = focusPedestrians + criticalPedestrians;
-    const eligiblePedestrians = retainedCriticalPedestrians + regularPedestrians;
+    const retainedCriticalPedestrians = criticalPedestrians;
+    const eligiblePedestrians = focusPedestrians + criticalPedestrians + regularPedestrians;
     const eligibleVehicles = criticalVehicles + regularVehicles;
     const eligible = eligiblePedestrians + eligibleVehicles;
     const critical = retainedCriticalPedestrians + criticalVehicles;
@@ -399,9 +375,10 @@ export function writeDeckLivingBufferPool(
       const id = partition.identity.ids[index]!;
       pool.sourceIndices[output] = index;
       pool.submittedIds[output] = id;
-      const focus = partition.identity.representation[index] === LivingRepresentation.FOCUS_1_TO_1;
       const selected = id === selectedId;
-      pool.radii[output] = focus ? 12 : selected ? 10 : 4;
+      const metrics = actorPhysicalMetrics(vehicle ? 'vehicle' : 'person', hashSeed(id) % 8);
+      pool.radii[output] = vehicle ? metrics.atlasQuadHeightMeters : metrics.bodyHeightMeters!;
+      pool.widths[output] = metrics.atlasQuadWidthMeters;
       const packed = partition.identity.colorRgba[index]!;
       pool.fillColors[output * 4] = selected ? 255 : (packed >>> 24) & 0xff;
       pool.fillColors[output * 4 + 1] = selected ? 255 : (packed >>> 16) & 0xff;
@@ -441,16 +418,22 @@ export function writeDeckLivingBufferPool(
     // One membership scan is reused until partition, camera cells, selected
     // identity, detail mode or budget changes. Worker position frames never
     // revisit all partition rows.
-    const focusPedestriansWritten = writeCandidates(
-      pool.focusPedestrianIndices,
-      focusPedestrians,
-      pedestrianLimit,
-      false,
-    );
     const criticalPedestriansWritten = writeCandidates(
       pool.criticalPedestrianIndices,
       criticalPedestrians,
-      pedestrianLimit - focusPedestriansWritten,
+      pedestrianLimit,
+      false,
+    );
+    const ordinaryPedestrianSlots = pedestrianLimit - criticalPedestriansWritten;
+    const ordinaryPedestrians = focusPedestrians + regularPedestrians;
+    const profileSlots = ordinaryPedestrians === 0 ? 0 : Math.min(
+      focusPedestrians,
+      Math.round(ordinaryPedestrianSlots * focusPedestrians / ordinaryPedestrians),
+    );
+    const focusPedestriansWritten = writeCandidates(
+      pool.focusPedestrianIndices,
+      focusPedestrians,
+      profileSlots,
       false,
     );
     writeCandidates(
@@ -477,7 +460,7 @@ export function writeDeckLivingBufferPool(
     pool.submittedIds.length = length;
     pool.length = length;
     pool.pedestrianCount = pedestrians;
-    pool.focusPedestrianCount = focusPedestriansWritten;
+    pool.focusPedestrianCount = criticalPedestriansWritten + focusPedestriansWritten;
     pool.vehicleCount = vehicles;
     pool.plannedCount = plannedDeck;
     pool.eligibleCount = eligible;
@@ -499,10 +482,10 @@ export function writeDeckLivingBufferPool(
   // across one settlement partition.
   for (let output = 0; output < pool.length; output += 1) {
     const sourceIndex = pool.sourceIndices[output]!;
-    pool.positions[output * 2] = frame.x[sourceIndex]!;
-    pool.positions[output * 2 + 1] = frame.y[sourceIndex]!;
-    pool.previousPositions[output * 2] = previousFrame.x[sourceIndex]!;
-    pool.previousPositions[output * 2 + 1] = previousFrame.y[sourceIndex]!;
+    const groundClearance = partition.identity.kind[sourceIndex] === LivingKind.VEHICLE
+      ? VEHICLE_GROUND_CLEARANCE_METERS : 0;
+    pool.meterBridge.write(pool.positions, output * 3, frame.x[sourceIndex]!, frame.y[sourceIndex]!, groundClearance);
+    pool.meterBridge.write(pool.previousPositions, output * 3, previousFrame.x[sourceIndex]!, previousFrame.y[sourceIndex]!, groundClearance);
     pool.headings[output] = frame.heading[sourceIndex]!;
     pool.activity[output] = frame.activity[sourceIndex]!;
   }
@@ -534,9 +517,30 @@ export async function attachDeckOverlay(
   // instead retains two worker snapshots and changes one shader uniform on a
   // MapLibre-owned render. It never owns a requestAnimationFrame loop.
   let livingInterpolationAlpha = 1;
+  let aggregateElapsedSeconds = 0;
+  let aggregateFrameInitialized = false;
+  class AggregateFlowLayer extends ScatterplotLayer<Record<string, never>, DeckInterleavedLayerProps> {
+    static override layerName = 'OmnitwinAggregateFlowLayer';
+    override getShaders() {
+      const shaders = super.getShaders();
+      return { ...shaders, modules: [...(shaders.modules ?? []), aggregateRoadFlowUniforms] };
+    }
+    override initializeState(): void {
+      super.initializeState();
+      this.getAttributeManager()?.addInstanced({
+        instanceFlowEnds: { size: 3, accessor: 'getFlowEnd', defaultValue: [0, 0, 0] },
+        instanceFlowTiming: { size: 2, accessor: 'getFlowTiming', defaultValue: [0, 0] },
+      });
+    }
+    override draw(parameters: Parameters<InstanceType<typeof ScatterplotLayer>['draw']>[0]): void {
+      this.state.model?.shaderInputs.setProps({ omnitwinAggregateFlow: { elapsedSeconds: aggregateElapsedSeconds } });
+      super.draw(parameters);
+    }
+    elapsedSecondsForTelemetry(): number { return aggregateElapsedSeconds; }
+  }
   class InterpolatedLivingIconLayer extends IconLayer<
     Record<string, never>,
-    DeckInterleavedLayerProps
+    PhysicalActorLayerProps
   > {
     static override layerName = 'InterpolatedLivingIconLayer';
 
@@ -544,7 +548,9 @@ export async function attachDeckOverlay(
       const shaders = super.getShaders();
       return {
         ...shaders,
-        modules: [...(shaders.modules ?? []), livingInterpolationShaderModule],
+        vs: livingActorVertexShader,
+        fs: livingActorFragmentShader,
+        modules: [...(shaders.modules ?? []), livingActorUniforms],
       };
     }
 
@@ -557,12 +563,19 @@ export async function attachDeckOverlay(
           fp64: this.use64bitPositions(),
           accessor: 'getPreviousPosition',
         },
+        instanceWidths: { size: 1, accessor: 'getWidth', defaultValue: 1 },
       });
     }
 
     override draw(parameters: Parameters<DeckIconLayer['draw']>[0]): void {
+      const bearing = typeof map.getBearing === 'function' ? map.getBearing() * Math.PI / 180 : 0;
       this.state.model?.shaderInputs.setProps({
-        omnitwinLivingInterpolation: { alpha: livingInterpolationAlpha },
+        omnitwinLivingInterpolation: {
+          alpha: livingInterpolationAlpha,
+          cameraRight: [Math.cos(bearing), -Math.sin(bearing)],
+          actorMode: this.props.actorMode === 1 && typeof map.getPitch === 'function' && map.getPitch() < 15
+            ? 3 : this.props.actorMode,
+        },
       });
       super.draw(parameters);
     }
@@ -692,7 +705,7 @@ export async function attachDeckOverlay(
       (entity) => entity.representation === 'aggregate_proxy',
     );
     const focusEntities = entities.filter(
-      (entity) => entity.representation === 'focus_person_1to1',
+      (entity) => entity.id === selectedId && entity.representation === 'focus_person_1to1',
     );
     const movingVehicles = entities.filter((entity) => entity.kind === 'vehicle');
 
@@ -726,12 +739,12 @@ export async function attachDeckOverlay(
         data: focusEntities,
         pickable: false,
         stroked: true,
-        filled: true,
-        radiusUnits: 'pixels',
-        getPosition: (entity) => [entity.longitude, entity.latitude],
-        getRadius: 12,
-        getFillColor: [53, 215, 223, 72],
-        getLineColor: [255, 255, 255, 255],
+        filled: false,
+        radiusUnits: 'meters',
+        getPosition: (entity) => [entity.longitude, entity.latitude, 0.04],
+        getRadius: 0.8,
+        getLineColor: [53, 215, 223, 230],
+        parameters: { depthWriteEnabled: true, depthCompare: 'less-equal' },
         lineWidthUnits: 'pixels',
         getLineWidth: 2,
       }),
@@ -806,6 +819,7 @@ export async function attachDeckOverlay(
       let aggregateUpdated = false;
       let vehicleUpdated = false;
       let focusUpdated = false;
+      let haloUpdated = false;
       for (const layer of primaryLayers) {
         const retained = layer as InterpolatedLivingIconLayer;
         if (typeof retained.uploadRetainedDynamicAttributes !== 'function') continue;
@@ -815,9 +829,11 @@ export async function attachDeckOverlay(
           vehicleUpdated = retained.uploadRetainedDynamicAttributes(true);
         } else if (layer.id === LIVING_PEOPLE_LAYER_ID) {
           focusUpdated = retained.uploadRetainedDynamicAttributes(false);
+        } else if (layer.id === LIVING_SELECTION_HALO_LAYER_ID) {
+          haloUpdated = retained.uploadRetainedDynamicAttributes(false);
         }
       }
-      if (aggregateUpdated && vehicleUpdated && focusUpdated) {
+      if (aggregateUpdated && vehicleUpdated && focusUpdated && haloUpdated) {
         (map as MapLibreMap & { triggerRepaint?: () => void }).triggerRepaint?.();
         return primaryLayers;
       }
@@ -830,17 +846,19 @@ export async function attachDeckOverlay(
       length: number,
       kind: 'person' | 'vehicle',
       pickable: boolean,
+      halo = false,
     ) => {
       const attributes: Record<string, unknown> = {
         getPreviousPosition: {
-          value: columns.previousPositions.subarray(offset * 2, (offset + length) * 2),
-          size: 2,
+          value: columns.previousPositions.subarray(offset * 3, (offset + length) * 3),
+          size: 3,
         },
         getPosition: {
-          value: columns.positions.subarray(offset * 2, (offset + length) * 2),
-          size: 2,
+          value: columns.positions.subarray(offset * 3, (offset + length) * 3),
+          size: 3,
         },
         getSize: { value: columns.radii.subarray(offset, offset + length), size: 1 },
+        getWidth: { value: columns.widths.subarray(offset, offset + length), size: 1 },
         getColor: {
           value: columns.fillColors.subarray(offset * 4, (offset + length) * 4),
           size: 4,
@@ -871,14 +889,18 @@ export async function attachDeckOverlay(
         ],
         iconAtlas: UNIVERSAL_ACTOR_ATLAS_URL,
         iconMapping: UNIVERSAL_ACTOR_ICON_MAPPING,
-        billboard: kind === 'person',
+        // The custom shader supplies world-Z cylindrical people, not IconLayer's
+        // screen-facing billboard. Ground vehicles remain actual XY planes.
+        billboard: false,
+        actorMode: halo ? 2 : kind === 'person' ? 1 : 0,
         pickable,
-        alphaCutoff: 0.16,
-        sizeUnits: 'pixels',
+        alphaCutoff: ACTOR_ALPHA_CUTOFF,
+        parameters: { depthWriteEnabled: true, depthCompare: 'less-equal' },
+        sizeUnits: 'meters',
         sizeBasis: 'height',
-        sizeScale: kind === 'person' ? 2.25 : 2.75,
-        sizeMinPixels: kind === 'person' ? 7 : 9,
-        sizeMaxPixels: kind === 'person' ? 32 : 42,
+        sizeScale: 1,
+        sizeMinPixels: 0,
+        sizeMaxPixels: Number.MAX_SAFE_INTEGER,
         getAngle: 0,
         // The custom retained-pair shader is the only motion interpolation
         // path. Stock transitions remain explicitly disabled.
@@ -886,7 +908,16 @@ export async function attachDeckOverlay(
       });
     };
     const aggregatePedestrianCount = columns.pedestrianCount - columns.focusPedestrianCount;
+    const selectedIndex = selectedId === null ? -1 : columns.submittedIds.indexOf(selectedId);
     return [
+      binaryLayer(
+        LIVING_SELECTION_HALO_LAYER_ID,
+        Math.max(0, selectedIndex),
+        selectedIndex < 0 ? 0 : 1,
+        'person',
+        false,
+        true,
+      ),
       // Aggregate proxies deliberately cannot resolve to a profile. Keeping
       // them in a separate non-pickable cohort makes that privacy rule true in
       // the GPU picking buffer instead of relying on a later UI guard.
@@ -904,8 +935,8 @@ export async function attachDeckOverlay(
         'vehicle',
         activeDetailMode === 'individual',
       ),
-      // Draw the bounded focus cohort last among actors. It remains depth
-      // tested against MapLibre and wins only actor-on-actor overlaps.
+      // Draw the bounded profile-eligible cohort last among actors. It uses
+      // physical vertex depth against MapLibre, not always-on-top priority.
       binaryLayer(
         LIVING_PEOPLE_LAYER_ID,
         0,
@@ -951,9 +982,12 @@ export async function attachDeckOverlay(
 
   let primaryLayers: Layer[] = buildLayers();
   let vegetationLayer: Layer | null = null;
-  const composedLayers = () => (
-    vegetationLayer ? [...primaryLayers, vegetationLayer] : primaryLayers
-  );
+  let aggregateFlowLayer: Layer | null = null;
+  let aggregateFlowSnapshot: AggregateRoadFlowSnapshot | null = null;
+  const composedLayers = () => {
+    if (!vegetationLayer && !aggregateFlowLayer) return primaryLayers;
+    return [...primaryLayers, ...(aggregateFlowLayer ? [aggregateFlowLayer] : []), ...(vegetationLayer ? [vegetationLayer] : [])];
+  };
 
   const overlay = new MapboxOverlay({
     interleaved: true,
@@ -975,6 +1009,41 @@ export async function attachDeckOverlay(
   const clickSurface = (map as MapLibreMap & {
     getCanvas?: () => Pick<HTMLCanvasElement, 'addEventListener' | 'removeEventListener'>;
   }).getCanvas?.() ?? null;
+  const pickedActorOcclusion = (picked: PickingInfo): 'clear' | 'occluded' | 'unavailable' => {
+    if (!latestLiving || typeof map.queryRenderedFeatures !== 'function') return 'clear';
+    const available = new Set(map.getStyle().layers?.map(({ id }) => id) ?? []);
+    const layers = BUILDING_PICK_LAYER_IDS.filter((id) => available.has(id));
+    if (layers.length === 0) return 'clear';
+    const layer = picked.layer;
+    if (!layer || typeof layer.project !== 'function') return 'unavailable';
+    const vehicle = layer.id === LIVING_VEHICLE_LAYER_ID;
+    const index = picked.index + (vehicle ? livingBuffers.pedestrianCount : 0);
+    if (index < 0 || index >= livingBuffers.length) return 'unavailable';
+    const anchor = [0, 1, 2].map((axis) => {
+      const offset = index * 3 + axis;
+      return livingBuffers.previousPositions[offset]! + (livingBuffers.positions[offset]! - livingBuffers.previousPositions[offset]!) * livingInterpolationAlpha;
+    });
+    const bearing = map.getBearing() * Math.PI / 180;
+    const topView = !vehicle && map.getPitch() < 15;
+    const quad = topView ? [[-0.28, -0.35], [0.28, -0.35], [0.28, 0.35], [-0.28, 0.35]].map(([dx, dy]) => [anchor[0]! + dx!, anchor[1]! + dy!, 0.1])
+      : actorPlaneQuad({ kind: vehicle ? 'vehicle' : 'person', appearance: hashSeed(livingBuffers.submittedIds[index]!) % 8,
+        origin: [anchor[0]!, anchor[1]!, 0], headingDegrees: livingBuffers.headings[index]!, cameraRight: [Math.cos(bearing), -Math.sin(bearing)] });
+    const depths = quad.map((point) => layer.project([...point])[2]!);
+    depths.push(layer.project([anchor[0]!, anchor[1]!, vehicle || topView ? 0.1 : 0.9])[2]!);
+    if (!depths.every(Number.isFinite)) return 'unavailable';
+    const pixelRatio = picked.pixelRatio;
+    const canvas = map.getCanvas();
+    const point: [number, number] = picked.devicePixel && Number.isFinite(pixelRatio) && pixelRatio > 0
+      ? [(picked.devicePixel[0] + 0.5) / pixelRatio, canvas.clientHeight - (picked.devicePixel[1] + 0.5) / pixelRatio]
+      : [picked.x, picked.y];
+    // This one bounded query runs only after a native actor hit. If occluded,
+    // the normal semantic building-selection query may follow once.
+    const features = map.queryRenderedFeatures(point, { layers });
+    return actorBuildingOcclusion({ point, actorNearestDepth: Math.min(...depths), features, zoom: map.getZoom(), project: ([longitude, latitude, z]) => {
+      const projected = layer.project(livingBuffers.meterBridge!.fromGeographic(longitude, latitude, z));
+      return [projected[0]!, projected[1]!, projected[2]!];
+    } });
+  };
   const captureLivingClick = (event: MouseEvent) => {
     const x = event.offsetX;
     const y = event.offsetY;
@@ -1000,6 +1069,13 @@ export async function attachDeckOverlay(
       if (picked) {
         lastClickPickLayerId = picked.layer?.id ?? null;
         logicalId = logicalIdForLivingPick(picked);
+        if (logicalId) {
+          const occlusion = pickedActorOcclusion(picked);
+          if (occlusion !== 'clear') {
+            logicalId = null;
+            lastClickPickError = occlusion === 'occluded' ? 'building_occluded' : 'building_occlusion_unavailable';
+          }
+        }
       }
       lastClickPickLogicalId = logicalId;
       if (logicalId) {
@@ -1034,6 +1110,33 @@ export async function attachDeckOverlay(
 
   return {
     kind: 'deck',
+    updateAggregateRoadFlows(snapshot) {
+      if (snapshot?.signature === aggregateFlowSnapshot?.signature && Boolean(snapshot) === Boolean(aggregateFlowSnapshot)) return;
+      aggregateFlowSnapshot = snapshot;
+      aggregateFrameInitialized = false;
+      aggregateElapsedSeconds = 0;
+      const segments = snapshot?.segments ?? [];
+      if (segments.length > 256) throw new RangeError('Aggregate road flow renderer cap exceeded');
+      aggregateFlowLayer = segments.length && snapshot ? new AggregateFlowLayer({
+        id: 'omnitwin-aggregate-road-flow',
+        beforeId: firstSymbolLayerId(map) ?? undefined,
+        data: { length: segments.length, attributes: {
+          getPosition: { value: new Float32Array(segments.flatMap(({ start }) => [...start])), size: 3 },
+          getFlowEnd: { value: new Float32Array(segments.flatMap(({ end }) => [...end])), size: 3 },
+          getFlowTiming: { value: new Float32Array(segments.flatMap(({ phase, speedMps, lengthMeters }) => [phase, speedMps / lengthMeters])), size: 2 },
+        } } as never,
+        coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
+        coordinateOrigin: [snapshot.origin[0], snapshot.origin[1], 0],
+        pickable: false,
+        billboard: true,
+        stroked: false,
+        filled: true,
+        radiusUnits: 'pixels', getRadius: 1.6, radiusMinPixels: 0, radiusMaxPixels: 2,
+        getFillColor: [98, 216, 220, 205],
+        parameters: { depthWriteEnabled: false, depthCompare: 'less-equal' },
+      }) : null;
+      overlay.setProps({ layers: composedLayers() });
+    },
     update(nextEntities, nextSelectedId) {
       latestLiving = null;
       entities = nextEntities.slice(0, maximumInstances);
@@ -1080,6 +1183,10 @@ export async function attachDeckOverlay(
       overlay.setProps({ layers: composedLayers() });
     },
     frame(frame) {
+      if (aggregateFlowSnapshot && (!aggregateFrameInitialized || (!frame.paused && !frame.reducedMotion))) {
+        aggregateElapsedSeconds = frame.absolutePresentationSeconds - aggregateFlowSnapshot.timeOriginSeconds;
+        aggregateFrameInitialized = true;
+      }
       if (
         !latestLiving
         || !livingInterpolationPairReady
@@ -1129,50 +1236,63 @@ export async function attachDeckOverlay(
       const presentationPickCandidates: NonNullable<ReturnType<RendererAdapter['telemetry']>['presentationPickCandidates']>[number][] = [];
       let pickCandidate: NonNullable<ReturnType<RendererAdapter['telemetry']>['pickCandidate']>
         | undefined;
-      const project = (map as MapLibreMap & {
-        project?: (coordinate: readonly [number, number]) => { x: number; y: number };
-        getCanvas?: () => Pick<HTMLCanvasElement, 'clientWidth' | 'clientHeight'>;
-      }).project;
       const getCanvas = (map as MapLibreMap & {
         getCanvas?: () => Pick<HTMLCanvasElement, 'clientWidth' | 'clientHeight'>;
       }).getCanvas;
-      if (latestLiving && typeof project === 'function' && typeof getCanvas === 'function') {
+      if (latestLiving && typeof getCanvas === 'function') {
         const canvas = getCanvas.call(map);
-        const longitudeMeters = Math.max(
-          1,
-          Math.cos((latestLiving.partition.originLatitude * Math.PI) / 180) * 111_320,
-        );
+        // Use the rendered layer's public projection in its local-metre frame,
+        // including torso/ground elevation. Map.project() has no altitude input;
+        // fixed pixel offsets become wrong after camera/physical-size changes.
+        const projectActor = (index: number, kind: 'person' | 'vehicle') => {
+          const layer = primaryLayers.find(({ id }) => id === (
+            kind === 'person' ? LIVING_PEOPLE_LAYER_ID : LIVING_VEHICLE_LAYER_ID
+          ));
+          if (!layer || typeof layer.project !== 'function') return null;
+          const xyz = [0, 1, 2].map((axis) => {
+            const offset = index * 3 + axis;
+            return livingBuffers.previousPositions[offset]!
+              + (livingBuffers.positions[offset]! - livingBuffers.previousPositions[offset]!)
+                * livingInterpolationAlpha;
+          });
+          if (kind === 'person') {
+            xyz[2] += typeof map.getPitch === 'function' && map.getPitch() < 15 ? 0.1 : 0.9;
+          }
+          try {
+            const [x, y] = layer.project(xyz);
+            if (!Number.isFinite(x) || !Number.isFinite(y)) return null;
+            if (kind === 'vehicle') return { x: x!, y: y! };
+            const topView = typeof map.getPitch === 'function' && map.getPitch() < 15;
+            const bearing = typeof map.getBearing === 'function' ? map.getBearing() * Math.PI / 180 : 0;
+            const dx = Math.cos(bearing) * 0.35; const dy = -Math.sin(bearing) * 0.35;
+            const low = layer.project(topView ? [xyz[0]! - dx, xyz[1]! - dy, 0.1] : [xyz[0]!, xyz[1]!, 0]);
+            const high = layer.project(topView ? [xyz[0]! + dx, xyz[1]! + dy, 0.1] : [xyz[0]!, xyz[1]!, 1.8]);
+            const physicalHeightPixels = Math.hypot(high[0]! - low[0]!, high[1]! - low[1]!);
+            return { x: x!, y: y!, physicalHeightPixels, impostorMix: personImpostorMix(physicalHeightPixels) };
+          } catch {
+            // Layer not initialized yet: no invented or stale screen target.
+            return null;
+          }
+        };
         let offCanvasFocusCandidate: typeof pickCandidate;
         for (let index = 0; index < livingBuffers.focusPedestrianCount; index += 1) {
-          const x = livingBuffers.previousPositions[index * 2]!
-            + (livingBuffers.positions[index * 2]!
-              - livingBuffers.previousPositions[index * 2]!)
-              * livingInterpolationAlpha;
-          const y = livingBuffers.previousPositions[index * 2 + 1]!
-            + (livingBuffers.positions[index * 2 + 1]!
-              - livingBuffers.previousPositions[index * 2 + 1]!)
-              * livingInterpolationAlpha;
-          const point = project.call(map, [
-            ((latestLiving.partition.originLongitude + x / longitudeMeters + 540) % 360) - 180,
-            latestLiving.partition.originLatitude + y / 110_540,
-          ]);
-          if (!Number.isFinite(point.x) || !Number.isFinite(point.y)) continue;
-          // The projected coordinate is the sprite's ground anchor. Aim at the
-          // opaque torso rather than the transparent lower atlas padding.
-          const spriteY = point.y - Math.min(13, Math.max(6, livingBuffers.radii[index]! * 1.05));
-          const onCanvas = point.x >= 0 && spriteY >= 0
-            && point.x <= canvas.clientWidth && spriteY <= canvas.clientHeight;
+          const point = projectActor(index, 'person');
+          if (!point) continue;
+          const onCanvas = point.x >= 0 && point.y >= 0
+            && point.x <= canvas.clientWidth && point.y <= canvas.clientHeight;
           const candidate: NonNullable<
             ReturnType<RendererAdapter['telemetry']>['pickCandidate']
           > = {
             id: livingBuffers.submittedIds[index]!,
             kind: 'person',
             x: point.x,
-            y: spriteY,
+            y: point.y,
             layerId: LIVING_PEOPLE_LAYER_ID,
             representation: 'focus_person_1to1',
             profileEligible: true,
             onCanvas,
+            physicalHeightPixels: point.physicalHeightPixels,
+            impostorMix: point.impostorMix,
           };
           if (onCanvas) {
             pickCandidate = candidate;
@@ -1186,13 +1306,12 @@ export async function attachDeckOverlay(
           const start = kind === 'person' ? 0 : livingBuffers.pedestrianCount;
           const count = kind === 'person' ? livingBuffers.focusPedestrianCount : livingBuffers.vehicleCount;
           for (let index = start; index < start + count; index += 1) {
-            const x = livingBuffers.previousPositions[index * 2]! + (livingBuffers.positions[index * 2]! - livingBuffers.previousPositions[index * 2]!) * livingInterpolationAlpha;
-            const y = livingBuffers.previousPositions[index * 2 + 1]! + (livingBuffers.positions[index * 2 + 1]! - livingBuffers.previousPositions[index * 2 + 1]!) * livingInterpolationAlpha;
-            const point = project.call(map, [latestLiving.partition.originLongitude + x / longitudeMeters, latestLiving.partition.originLatitude + y / 110_540]);
-            const spriteY = point.y - (kind === 'person' ? Math.min(13, Math.max(6, livingBuffers.radii[index]! * 1.05)) : 2);
-            const onCanvas = point.x > 40 && spriteY > 40 && point.x < canvas.clientWidth - 40 && spriteY < canvas.clientHeight - 80;
+            const point = projectActor(index, kind);
+            if (!point) continue;
+            const onCanvas = point.x > 40 && point.y > 40 && point.x < canvas.clientWidth - 40 && point.y < canvas.clientHeight - 80;
             if (!onCanvas) continue;
-            candidates.push({ id: livingBuffers.submittedIds[index]!, kind, x: Math.round(point.x * 10) / 10, y: Math.round(spriteY * 10) / 10, onCanvas });
+            candidates.push({ id: livingBuffers.submittedIds[index]!, kind, x: Math.round(point.x * 10) / 10, y: Math.round(point.y * 10) / 10, onCanvas,
+              physicalHeightPixels: point.physicalHeightPixels, impostorMix: point.impostorMix });
           }
           const distance = (candidate: typeof candidates[number]) => Math.hypot(candidate.x - canvas.clientWidth * 0.5, candidate.y - canvas.clientHeight * 0.6);
           candidates.sort((left, right) => distance(left) - distance(right));
@@ -1200,6 +1319,7 @@ export async function attachDeckOverlay(
         }
       }
       return {
+        aggregateRoadFlows: aggregateFlowSnapshot?.segments.length ?? 0,
         pedestrians: pedestrianCount,
         vehicles: vehicleCount,
         renderedFrames,

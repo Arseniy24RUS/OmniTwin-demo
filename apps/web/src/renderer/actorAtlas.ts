@@ -32,11 +32,12 @@ for (let gaitFrame = 0; gaitFrame < PERSON_GAIT_FRAME_COUNT; gaitFrame += 1) {
       `person-${appearance}-walk-${gaitFrame}`,
       Object.freeze({
         x: slot * 32,
-        y: 0,
+        // Crop the baked ground shadow/padding: upright opaque feet end at y56.
+        y: 9,
         width: 32,
-        height: 64,
+        height: 47,
         anchorX: 16,
-        anchorY: 58,
+        anchorY: 47,
         mask: false as const,
       }),
     ]);

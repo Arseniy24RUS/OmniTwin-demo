@@ -7,7 +7,7 @@
     "dev": "vite --host 127.0.0.1 --port 5178",
     "build": "tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --maxWorkers=1 src/demo"
+    "test": "vitest run --maxWorkers=1"
   },
   "dependencies": {
     "@deck.gl/core": "9.3.10", "@deck.gl/layers": "9.3.10", "@deck.gl/mapbox": "9.3.10",

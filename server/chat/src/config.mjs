@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { resolve, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { createPopulationResolver } from './population-resolver.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const text = (value, max) => typeof value === 'string' && value.length > 0 && value.length <= max;
@@ -40,8 +41,16 @@ export function validateStorageConfiguration(env, { storage = 'ydb' } = {}) {
   return { ydb: { endpoint: env.YDB_ENDPOINT, database: env.YDB_DATABASE, table: env.YDB_TABLE ?? 'demo_chat_state' } };
 }
 
+export function populationConfiguration(env) {
+  const names = ['V2_POPULATION_MANIFEST_URL', 'V2_POPULATION_MANIFEST_SHA256', 'V2_SPATIAL_MANIFEST_URL', 'V2_SPATIAL_MANIFEST_SHA256'];
+  if (names.every(name => env[name] === undefined)) return null;
+  if (names.some(name => !text(env[name], 1000)) || !/^[a-f0-9]{64}$/.test(env.V2_POPULATION_MANIFEST_SHA256) || !/^[a-f0-9]{64}$/.test(env.V2_SPATIAL_MANIFEST_SHA256)) throw new Error('Incomplete pinned V2 population configuration.');
+  return { populationUrl: env.V2_POPULATION_MANIFEST_URL, populationHash: env.V2_POPULATION_MANIFEST_SHA256, spatialUrl: env.V2_SPATIAL_MANIFEST_URL, spatialHash: env.V2_SPATIAL_MANIFEST_SHA256 };
+}
+
 export async function loadConfig(env = process.env, options = {}) {
   const storageConfig = validateStorageConfiguration(env, options);
+  const populationConfig = populationConfiguration(env);
   const required = ['OPENROUTER_API_KEY', 'SESSION_SIGNING_SECRET', 'ALLOWED_ORIGINS', 'PROFILE_MANIFEST_SHA256'];
   if (required.some((key) => typeof env[key] !== 'string' || env[key].length === 0)) throw new Error('Missing server configuration.');
   const origins = env.ALLOWED_ORIGINS.split(',').map((value) => value.trim());
@@ -61,5 +70,27 @@ export async function loadConfig(env = process.env, options = {}) {
     const generated = fictionalProfile(profile, year, scenario, approved.datasetId, householdSize, undefined);
     return { ...profile, name: generated.name, occupation: generated.occupation, biography: generated.biography, interests: generated.interests, householdSize };
   };
-  return { ...approved, profileForYear, origins, sessionSecret: env.SESSION_SIGNING_SECRET, profileHash: env.PROFILE_MANIFEST_SHA256, apiKey: env.OPENROUTER_API_KEY, ...storageConfig };
+  let populationResolver; let populationDatasetId; let parsePopulationPersonId;
+  if (populationConfig) {
+    const codecPath = resolve(root, 'data/demo-population/index.mjs');
+    const spatialPath = resolve(root, 'data/demo-population/spatial.mjs');
+    const codec = await import(pathToFileURL(codecPath).href);
+    const spatial = await import(pathToFileURL(spatialPath).href);
+    const codecHashes = { populationCodec: createHash('sha256').update(await readFile(codecPath)).digest('hex'), spatialCodec: createHash('sha256').update(await readFile(spatialPath)).digest('hex') };
+    populationResolver = createPopulationResolver({ ...populationConfig, codec, spatial, codecHashes, ...(options.fetchImpl ? { fetchImpl: options.fetchImpl } : {}) });
+    populationDatasetId = codec.DATASET_ID;
+    parsePopulationPersonId = codec.parsePersonId;
+  }
+  const resolveProfile = async (query, context) => {
+    if (populationResolver && query.datasetId === populationDatasetId) return populationResolver(query, context);
+    if (query.datasetId !== approved.datasetId) return null;
+    const profile = approved.profiles.get(query.personId); const dates = profile?.membership?.[query.scenario];
+    if (!profile || !dates || query.year < dates.entryYear || dates.exitYear !== null && query.year >= dates.exitYear) return null;
+    return { profile: profileForYear(profile, query.year, query.scenario), profileHash: env.PROFILE_MANIFEST_SHA256 };
+  };
+  return { ...approved, profileForYear, resolveProfile,
+    acceptsDataset: id => id === approved.datasetId || Boolean(populationResolver && id === populationDatasetId),
+    canResolvePerson: (datasetId, id) => populationResolver && datasetId === populationDatasetId ? parsePopulationPersonId(id) !== null : approved.profiles.has(id),
+    profileRevisionFor: id => populationResolver && id === populationDatasetId ? populationResolver.profileHash : null,
+    origins, sessionSecret: env.SESSION_SIGNING_SECRET, profileHash: env.PROFILE_MANIFEST_SHA256, apiKey: env.OPENROUTER_API_KEY, ...storageConfig };
 }

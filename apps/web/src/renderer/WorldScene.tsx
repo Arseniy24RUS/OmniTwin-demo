@@ -131,6 +131,7 @@ function longitudeDistanceDegrees(left: number, right: number): number {
 }
 
 export function WorldScene({
+  aggregateRoadFlows = null,
   presentationMovement = null,
   onMapFeatures,
   hideTechnicalHud = false,
@@ -145,6 +146,7 @@ export function WorldScene({
   onBuildingSelect,
   onVerifiedMovementChange,
   onCameraChange,
+  onViewportChange,
   onSourceStateChange,
   viewMode = '3d',
   weather = 'clear',
@@ -179,6 +181,7 @@ export function WorldScene({
   const onBuildingSelectRef = useRef(onBuildingSelect);
   const onVerifiedMovementChangeRef = useRef(onVerifiedMovementChange);
   const onCameraChangeRef = useRef(onCameraChange);
+  const onViewportChangeRef = useRef(onViewportChange);
   const onMapFeaturesRef = useRef(onMapFeatures);
   onMapFeaturesRef.current = onMapFeatures;
   const [networkRevision, setNetworkRevision] = useState(0);
@@ -267,6 +270,7 @@ export function WorldScene({
   onBuildingSelectRef.current = onBuildingSelect;
   onVerifiedMovementChangeRef.current = onVerifiedMovementChange;
   onCameraChangeRef.current = onCameraChange;
+  onViewportChangeRef.current = onViewportChange;
 
   const recordPick = (entity: VisualEntity | null) => {
     setPickEvidence((current) => ({
@@ -390,6 +394,7 @@ export function WorldScene({
         ? legacyBootstrapScenePack?.sourceDetailStatus ?? null
         : null;
     const runtime = new SceneRuntime({
+      aggregateRoadFlows,
       presentationMovement,
       onMapFeatures: (features) => onMapFeaturesRef.current?.(features),
       root,
@@ -421,6 +426,7 @@ export function WorldScene({
       onBuildingSelect: recordBuildingPick,
       onVerifiedMovementChange: recordVerifiedMovement,
       onCameraChange: (nextCamera) => onCameraChangeRef.current?.(nextCamera),
+      onViewportChange: (viewport) => onViewportChangeRef.current?.(viewport),
       onSourceState: setSourceState,
       onPartsState: setParts,
       onReadiness: setReadiness,
@@ -466,6 +472,7 @@ export function WorldScene({
     if (!cameraResolved) return;
     const runtime = runtimeRef.current;
     runtime?.updateScene({
+      aggregateRoadFlows,
       presentationMovement,
       camera: targetCamera,
       entities: renderedEntities,
@@ -484,6 +491,7 @@ export function WorldScene({
     runtime?.updateSceneCellHints(sceneCellHints);
   }, [
     cameraResolved,
+    aggregateRoadFlows,
     presentationMovement,
     presentationMinutes,
     presentationClock,

@@ -62,9 +62,10 @@ allowlist-сборку перед deploy. Не запускать `npm install` 
 локальные зависимости находятся уровнем выше, облачная сборка устанавливает
 production dependencies из включённого lockfile.
 
-В пакет попадают только семь модулей `config`, `handler`, `quota`, `sessions`,
-`openrouter`, `firestore`, `firebase-http`, Firebase entrypoint/runtime/policy,
-чистый генератор вымышленного профиля и утверждённый публичный manifest профилей.
+В пакет попадают только восемь модулей `config`, `handler`, `quota`, `sessions`,
+`openrouter`, `firestore`, `firebase-http`, `population-resolver`, Firebase
+entrypoint/runtime/policy, общие чистые profile/population/spatial модули и
+утверждённый публичный legacy manifest профилей.
 SHA-256 профилей проверяется при сборке и при runtime-инициализации. YDB SDK,
 metadata-auth, Yandex runtime, операторские скрипты, `.env`, ключи, тесты и
 `node_modules` в исходный пакет не копируются. Неизвестный файл или ссылка
@@ -232,3 +233,51 @@ requestId уже проверены. API `https://chatapi-avypjak2xq-ew.a.run.ap
 `reload`, `screenshot`, без `page.route`, HAR или записи sessionToken.
 Персонажи остаются вымышленными; ответы
 LLM не являются наблюдениями или научной валидацией модели.
+
+## Канонические V2-профили — исходники, до отдельного live gate
+
+Allowlist теперь также включает `src/population-resolver.mjs` и точные копии
+`shared/demo-population/index.mjs`, `spatial.mjs` в `data/demo-population/`.
+Старый утверждённый manifest профилей остаётся в пакете для legacy datasetId.
+Данные миллиона жителей **не** загружаются целиком в память и **не** создаются
+как документы Firestore: база по-прежнему хранит только квоты/idempotency.
+
+Для V2 оператор после проверки frontend и публикации неизменяемых assets задаёт
+четыре **несекретные** переменные окружения одной согласованной ревизии:
+`V2_POPULATION_MANIFEST_URL`, `V2_POPULATION_MANIFEST_SHA256`,
+`V2_SPATIAL_MANIFEST_URL`, `V2_SPATIAL_MANIFEST_SHA256`.
+Ожидаемые пути Pages — `demo-v2/manifest.json` и
+`demo-v2/spatial/manifest.json`; SHA вычисляются из точных опубликованных байтов,
+не из повторно сериализованного JSON. Штатная загрузка `/session` ничего из V2
+не скачивает. Включение не происходит автоматически при staging.
+
+Сервер после проверки сессии и структуры `/chat` принимает только datasetId,
+personId (`demo2-p-` и семь цифр), сценарий, год и визуальное время. Он проверяет
+SHA обоих manifests, связь пространственного пакета с population/geography и
+версиями общих модулей; затем лениво проверяет person/household/target shards,
+обратные связи домохозяйства и членство в выбранном году/сценарии. Профиль
+вычисляет тот же `profileFor`, присутствие — тот же `presenceFor`, что у клиента.
+Клиентские биография, присутствие, URL и инструкции в запросе запрещены.
+Пути поездки/адреса не выводятся из одних endpoint-индексов.
+
+LRU ограничен 32 shards / 8 MiB бинарных данных; manifests — 2 MiB каждый,
+shards — 2 MiB каждый. Одна резолюция ограничена 32 загрузками / 12 MiB,
+10 секундами и двумя параллельными резолюциями на экземпляр. Общий deadline
+запроса остаётся 25 секунд; лимиты памяти не описывают весь Node-процесс и
+сохранённый legacy manifest. Ошибка данных даёт безопасный
+`profile_unavailable` до платного inference; неизвестный/неактивный персонаж —
+`invalid_input`. В fingerprint включена соответствующая ревизия данных/codec.
+
+До любого V2 manifest/shard I/O существующая транзакционная квота резервирует
+попытку по известному локально pinned fingerprint. Исчерпанная квота, повтор
+requestId или сбой Firestore не вызывают загрузку профиля. После синтаксической
+проверки неизвестный/неактивный V2-ID или ошибка assets расходуют эту попытку,
+без inference и без возврата; повтор не скачивает данные снова. Значения
+6/30/100 остаются прежними. Это одобренная смена порядка admission для V2,
+а не новая квота или изменение старого локального legacy validation.
+
+Проверки исходников не доказывают текущую live V2-работу: перед активацией нужны
+финальные SHA и отдельный frontend→Firebase gate. Данная правка не меняет
+секреты, их версии, существующий OpenRouter-ключ, его `limit: null`, модели,
+Firestore-квоты, concurrency функции или её endpoint. Никаких cloud writes
+этими проверками не выполняется.

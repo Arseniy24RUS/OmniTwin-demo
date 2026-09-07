@@ -48,16 +48,18 @@ describe('provider city presence frame', () => {
     expect(frame.peopleCount).toBe(1);
     expect(frame.vehicleCount).toBe(1);
     expect(frame.entities.find(({ id }) => id === 'person:0')).toMatchObject({ longitude: 61.402, latitude: 55.1605 });
-    expect(frame.presentationTimeSeconds).toBe(CITY_PRESENTATION_EPOCH_SECONDS + 720 * 60);
+    expect(frame.presentationTimeSeconds).toBe(CITY_PRESENTATION_EPOCH_SECONDS + 720 * 60 + 50);
   });
 
-  it('passes one integer-minute anchor into the provider and preserves that frame within the minute', () => {
+  it('passes one five-second anchor to the provider, retaining it only within that clock bucket', () => {
     const seen: number[] = [];
     const source = provider([{ person: profile('a'), presence: presence('a') }]);
     const initial = source.getPresence;
     source.getPresence = (id, minute, scenario, year) => { seen.push(minute); return initial(id, minute, scenario, year); };
-    expect(buildCityPresenceFrame(source, context)).toEqual(buildCityPresenceFrame(source, { ...context, presentationMinutes: 720.1 }));
-    expect(seen).toEqual([720, 720]);
+    const frame = buildCityPresenceFrame(source, context);
+    expect(frame).toEqual(buildCityPresenceFrame(source, { ...context, presentationMinutes: 720 + 51 / 60 }));
+    expect(buildCityPresenceFrame(source, { ...context, presentationMinutes: 720 + 55 / 60 }).presentationTimeSeconds).toBe(frame.presentationTimeSeconds + 5);
+    expect(seen).toEqual([720 + 50 / 60, 720 + 50 / 60, 720 + 55 / 60]);
   });
 
   it('keeps exact provider positions on the graph while reconciling source versus local distance metrics', () => {
@@ -77,7 +79,7 @@ describe('provider city presence frame', () => {
 
   it('honors context filters, caps and camera proximity without duplicate profile identities', () => {
     const rows = Array.from({ length: 900 }, (_, i) => ({ person: profile(`person:${i}`), presence: presence(`person:${i}`) }));
-    expect(buildCityPresenceFrame(provider(rows), context, { maxPeople: 999 }).peopleCount).toBe(500);
+    expect(buildCityPresenceFrame(provider(rows), context, { maxPeople: 999 }).peopleCount).toBe(900);
     expect(buildCityPresenceFrame(provider(rows), context, { maxPeople: 7 }).peopleCount).toBe(7);
     expect(buildCityPresenceFrame(provider(rows), { ...context, cohort: { sex: 'male' } }).peopleCount).toBe(0);
     expect(buildCityPresenceFrame(provider(rows), { ...context, territoryId: 'missing' }).peopleCount).toBe(0);
@@ -107,7 +109,7 @@ describe('provider city presence frame', () => {
     expect(buildCityPresenceFrame(provider([{ person, presence: carOnPath }]), context).entities).toEqual([]);
   });
 
-  it('builds directed routes without reversing them and rejects inconsistent shared-edge speeds', () => {
+  it('builds directed routes without reversing them and gives each speed bucket its own graph edge and route', () => {
     const sourceRoads = roads.map((road) => ({ ...road, oneway: road.id === 'road' }));
     const frame = buildCityPresenceFrame(provider([{ person: profile('a'), presence: presence('a', 'vehicle') }], sourceRoads), context);
     expect(frame.movement.edges[0]?.direction).toBe('forward');
@@ -116,6 +118,33 @@ describe('provider city presence frame', () => {
       { person: profile('a'), presence: presence('a') },
       { person: profile('b'), presence: { ...presence('b'), speedMps: 2 } },
     ]);
-    expect(() => buildCityPresenceFrame(differentSpeeds, context)).toThrow(/speed/);
+    const speeds = buildCityPresenceFrame(differentSpeeds, context);
+    expect(speeds.movement.edges).toHaveLength(2);
+    expect(speeds.movement.routes).toHaveLength(2);
+    expect(speeds.movement.edges.map(edge => edge.visualSpeedMetersPerSecond.pedestrian).sort()).toEqual([1.25, 2]);
+    expect(() => compileLivingSceneMovement({ ...speeds.movement, entities: speeds.movementEntities,
+      origin: [context.camera.longitude, context.camera.latitude], presentationTimeSeconds: speeds.presentationTimeSeconds })).not.toThrow();
+  });
+  it('honors cinematic budgets up to 1200 people and 1800 distinct cars, never unlimited rows', () => {
+    const rows = Array.from({ length: 3100 }, (_, i) => ({ person: profile(`person:${i}`), presence: i < 1250 ? presence(`person:${i}`)
+      : { ...presence(`person:${i}`, 'vehicle'), vehicleId: `vehicle:${i}` } }));
+    const frame = buildCityPresenceFrame(provider(rows), context, { maxPeople: 9000, maxVehicles: 9000 });
+    expect(frame.peopleCount).toBe(1200); expect(frame.vehicleCount).toBe(1800);
+    expect(frame.entities).toHaveLength(3000);
+  });
+  it('follows the supplied route mode instead of inventing a loop for merely equal endpoints', () => {
+    const closedCoordinates = [{ ...roads[0]!, coordinates: [[61.4, 55.16], [61.402, 55.16], [61.402, 55.161], [61.4, 55.16]] as [number, number][] }];
+    const p = { ...presence('a'), routeMode: 'once' as const };
+    const frame = buildCityPresenceFrame(provider([{ person: profile('a'), presence: p }], closedCoordinates), context);
+    expect(frame.movement.routes[0]?.traversal).toBe('once');
+    expect(buildCityPresenceFrame(provider([{ person: profile('a'), presence: { ...p, direction: 'reverse' } }], closedCoordinates), context).entities).toHaveLength(0);
+  });
+  it('observes a six-second reset gap during five-second normal-playback reconciliation', () => {
+    const source = provider([{ person: profile('a'), presence: presence('a', 'vehicle') }]);
+    source.getPresence = (id, minutes) => minutes * 60 >= 43205 && minutes * 60 < 43211 ? null : presence(id, 'vehicle');
+    const at = (seconds: number) => buildCityPresenceFrame(source, { ...context, presentationMinutes: 720 + seconds / 60 });
+    expect(at(4).vehicleCount).toBe(1);
+    expect(at(5).vehicleCount).toBe(0); expect(at(10).vehicleCount).toBe(0);
+    expect(at(15).vehicleCount).toBe(1);
   });
 });

@@ -82,7 +82,7 @@ Success is `{reply, source:'llm', requestId, model}`. A controlled failure is
 `{source:'unavailable', reason, requestId?}`. Reasons are bounded enums:
 `origin_not_allowed`, `not_found`, `method_not_allowed`, `input_too_large`,
 `invalid_input`, `invalid_session`, `request_conflict`, `request_in_progress`,
-`already_processed`, `rate_limited`, `quota_unavailable`, `provider_unavailable`,
+`already_processed`, `rate_limited`, `quota_unavailable`, `profile_unavailable`, `provider_unavailable`,
 `service_not_configured`. The relevant HTTP status is 400/401/403/404/405/409/413/
 429/503. Do not present a scripted fallback as an LLM response.
 
@@ -142,3 +142,58 @@ approved Gateway origin, real no-duplicate transaction tests, Russian region
 egress to the pinned provider paths, and a consented bounded paid inference.
 Test the published Pages-to-Gateway flow again after a cold start. None of those
 external checks is inferred from the local mocked test suite.
+
+## V2 canonical profiles (source-ready, not yet live acceptance)
+
+The Firebase package can resolve `omnitwin-fictional-city-v2` through the exact
+shared `demo-population/index.mjs` and `spatial.mjs` modules used by the frontend.
+The legacy approved ~17 MB profile manifest and dataset adapter remain available.
+No million-person profile collection is created in Firestore or YDB.
+
+V2 is enabled only when **all four non-secret runtime pins** are configured:
+`V2_POPULATION_MANIFEST_URL`, `V2_POPULATION_MANIFEST_SHA256`,
+`V2_SPATIAL_MANIFEST_URL`, `V2_SPATIAL_MANIFEST_SHA256`. URLs must be HTTPS, without
+credentials, query or fragment; all asset paths stay within each approved
+manifest directory. Redirects are rejected. The spatial manifest must bind the
+exact population, geography and shared-codec hashes. Partial configuration,
+changed bytes, invalid membership or missing assignments fail closed. Published
+asset pins must be updated together with the matching reviewed server modules.
+This does not authorize a cloud deployment or a key/configuration change.
+
+`/session` does not fetch V2. A signed, shape-validated `/chat` context resolves
+only the requested person's shard, household membership, relevant member shards,
+and assignment shard. `profileFor` computes the canonical profile with the
+scenario/year-active household size. `presenceFor` supplies the server's
+fictional semantic presence; no browser biography, location, role or URL is
+accepted. A travel endpoint schedule does **not** establish a route, address or
+vehicle and the prompt says so. Presence remains visual synthesis, not observed
+occupancy or validated behavior.
+
+Bounds: manifests ≤2 MiB each, shards ≤2 MiB each, verified-shard LRU ≤32 entries
+and ≤8 MiB raw bytes, at most 32 asset reads/12 MiB downloaded per resolution,
+two concurrent resolutions, 10-second resolver timeout inside the unchanged
+25-second request deadline. These are implementation bounds, not a claim that
+total process memory is 8 MiB (the retained legacy manifest and runtime also use
+memory). Before **any V2 manifest/shard I/O**, the existing durable quota reserves
+one attempt, using the pinned revision known locally. Exhausted, replayed or
+quota-unavailable requests do not fetch profiles. Syntactically valid but
+unknown/inactive V2 people consume that attempt (`invalid_input`); asset/hash
+failures also consume it (`profile_unavailable`), without inference or refund.
+Malformed context is rejected before admission. Legacy local-profile validation
+retains its earlier ordering. Idempotency binds the selected dataset's manifest
+and codec revision. Values remain 6/minute, 30/session/day and 100/global/day.
+Sessions/CORS are not authentication; rejected requests and session requests
+still incur platform work, so these quotas are not an absolute cloud-spend cap.
+
+Offline checks, with no credentials/network/LLM calls:
+
+```text
+node --test --test-concurrency=1 test/*.test.mjs
+node scripts/verify-population.mjs
+```
+
+The second command requires the completed generated public population and
+spatial packs; it samples nine canonical contexts without loading all people.
+Firebase deployment details and the owner's current **no OpenRouter cap change**
+decision supersede the historical Yandex/$5 instructions above; see
+[Firebase README](../../deploy/firebase/README_RU.md).

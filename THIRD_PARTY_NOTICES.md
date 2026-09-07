@@ -38,6 +38,15 @@ from its separate lockfile.
   Outside its coverage, the explicitly declared online source is used. See
   [city sources](apps/web/public/city/SOURCES.md) and
   [the pinned manifest](apps/web/public/city/manifest.json).
+- The separate municipal V2 geography database covers the actual Chelyabinsk
+  municipal OSM boundary and seven source district relations, with real tagged
+  footprints and road topology. It is distributed under ODbL 1.0, not the
+  project's authored-code/fictional-record terms. Its immutable z16 cells and
+  source/version/hash ledger are documented in
+  [V2 geography sources](apps/web/public/city-v2/SOURCES.md). It expands display
+  assignment coverage, not offline basemap coverage. Unknown building uses and
+  unmatched district coverage remain explicit; capacity and resident assignments
+  are visual synthesis. No CDO or fabricated district geometry is redistributed.
 - Style lineage: OpenFreeMap Liberty → OSM Liberty → OSM Bright / Mapbox Open
   Styles. Upstream style code retains its BSD/MIT notices; design attribution
   includes [Mapbox Open Styles, CC BY 3.0](https://github.com/mapbox/mapbox-gl-styles/blob/master/LICENSE.md)

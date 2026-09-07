@@ -1,10 +1,11 @@
 import type {
   DemoBuildingOccupancy, DemoDataset, DemoDatasetManifestV1, DemoLayout, DemoLegacyExport,
   DemoPage, DemoPeopleQuery, DemoPersonRecord, DemoPresence, DemoScenarioComparisonV1,
-  DemoScenarioId, DemoSnapshot, DemoVehicle, PublicFictionalPersonV1,
+  DemoScenarioId, DemoSnapshot, DemoVehicle, DemoViewportQuery, PublicFictionalPersonV1, DemoCohort, DemoContextV1,
 } from '../types';
 import { employmentFor, fictionalProfile, stableHash } from './fictionalProfile.mjs';
 import { validateObservedCity, type ObservedCityReferenceV1 } from './observed';
+import type { RendererViewportSnapshot } from '../../renderer/types';
 
 const ROOT = 'RU-CHE-SET';
 const territoryAlias = (id: string) => id === 'chelyabinsk' ? ROOT : id;
@@ -203,9 +204,31 @@ export class StaticDemoProvider {
       (!text || `${p.name} ${p.occupation} ${p.id}`.toLocaleLowerCase('ru').includes(text)));
     return page(result, query.offset, query.limit);
   }
+  async queryPeople(query: DemoPeopleQuery = {}, signal?: AbortSignal) { signal?.throwIfAborted(); return this.getPeople(query); }
+  async preparePerson(_id: string, _scenario: DemoScenarioId, _year: number, signal?: AbortSignal) { signal?.throwIfAborted(); }
+  async prepareBuilding(_id: string, _minutes: number, _scenario: DemoScenarioId, _year: number, signal?: AbortSignal) { signal?.throwIfAborted(); }
+  async prepareVehicle(_id: string, _minutes: number, _scenario: DemoScenarioId, _year: number, signal?: AbortSignal) { signal?.throwIfAborted(); }
+  async prepareViewport(_context: DemoContextV1, signal?: AbortSignal, _viewport?: RendererViewportSnapshot) { signal?.throwIfAborted(); }
+  getCohortSnapshot(_source: DemoSnapshot, _cohort: DemoCohort | null | undefined): DemoSnapshot | null { return null; }
   /** Bounded selection for rendering; the complete population is never copied into GPU buffers. */
-  getVisibleCandidates(scenario: DemoScenarioId = 'baseline', year = 2026, limit = 2000) {
-    return this.profiles(scenario, year).filter(p => p.age >= 7).slice(0, Math.min(5000, Math.max(0, limit)));
+  getVisibleCandidates(scenario: DemoScenarioId = 'baseline', year = 2026, limit = 2000, viewport?: DemoViewportQuery) {
+    const take = Math.min(5000, Math.max(0, limit));
+    const profiles = this.profiles(scenario, year).filter(p => p.age >= 7);
+    if (!viewport) return profiles.slice(0, take);
+    const territoryId = territoryAlias(viewport.territoryId ?? ROOT);
+    // Legacy fixture is small. The city-scale provider overrides this with cell indexes.
+    // Importantly, the budget is applied AFTER territory, activity and spatial filtering.
+    return profiles.flatMap(person => {
+      if ((territoryId !== ROOT && person.territoryId !== territoryId)
+        || (viewport.ageBand && person.ageBand !== viewport.ageBand)
+        || (viewport.sex && person.sex !== viewport.sex)
+        || (viewport.employment && person.employment !== viewport.employment)) return [];
+      const presence = this.getPresence(person.id, viewport.minutes, scenario, year);
+      if (!presence?.position || !['outdoor', 'vehicle'].includes(presence.state)) return [];
+      const distance = roadLength(presence.position, [viewport.longitude, viewport.latitude]);
+      return distance <= viewport.radiusMeters ? [{ person, distance }] : [];
+    }).sort((a, b) => a.distance - b.distance || a.person.id.localeCompare(b.person.id))
+      .slice(0, take).map(item => item.person);
   }
   getPerson(id: string, scenario: DemoScenarioId = 'baseline', year = 2026): PublicFictionalPersonV1 | null {
     return this.profiles(scenario, year).find(p => p.id === id) ?? null;

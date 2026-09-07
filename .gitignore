@@ -20,6 +20,17 @@ data/observed/chelyabinsk-pmo-extract.json
 .DS_Store
 apps/web/public/demo/dataset.json
 apps/web/public/demo/chat-profiles.json
+apps/web/public/city-v2/
+apps/web/public/demo-v2/
 apps/web/src/renderer/**/*.test.ts
 apps/web/src/renderer/**/*.test.tsx
+!apps/web/src/renderer/actorPhysical.test.ts
+!apps/web/src/renderer/actorShaders.test.ts
+!apps/web/src/renderer/actorAtlas.test.ts
+!apps/web/src/renderer/actorOcclusion.test.ts
+!apps/web/src/renderer/presentationMeterBridge.test.ts
+!apps/web/src/renderer/aggregateRoadFlow.test.ts
+!apps/web/src/renderer/deckAdapter.test.ts
+!apps/web/src/renderer/living/partition.test.ts
+!apps/web/src/renderer/runtime/performanceGovernor.test.ts
 packages/contracts/src/**/*.test.ts

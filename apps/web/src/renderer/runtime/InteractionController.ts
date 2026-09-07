@@ -2,6 +2,7 @@ import type { Map as MapLibreMap, MapMouseEvent } from 'maplibre-gl';
 import type {
   RendererAdapter,
   RendererBuildingSelection,
+  RendererViewportSnapshot,
   VisualEntity,
   WorldCamera,
 } from '../types';
@@ -43,6 +44,7 @@ export interface InteractionControllerOptions {
   onSelect?: (entity: VisualEntity | null) => void;
   onBuildingSelect?: (building: RendererBuildingSelection | null) => void;
   onCameraChange?: (camera: WorldCamera) => void;
+  onViewportChange?: (viewport: RendererViewportSnapshot) => void;
   onCamera?: (state: CameraTelemetryState) => void;
   onStreamCamera?: (camera: WorldCamera) => void;
   /** Announces camera motion before the expensive shared canvas renders it. */
@@ -84,6 +86,8 @@ export class InteractionController {
   private readonly onSelect?: (entity: VisualEntity | null) => void;
   private readonly onBuildingSelect?: InteractionControllerOptions['onBuildingSelect'];
   private readonly onCameraChange?: (camera: WorldCamera) => void;
+  private readonly onViewportChange?: InteractionControllerOptions['onViewportChange'];
+  private viewportRevision = '';
   private readonly onCamera?: (state: CameraTelemetryState) => void;
   private readonly onStreamCamera?: (camera: WorldCamera) => void;
   private readonly onMotionChange?: (moving: boolean) => void;
@@ -190,6 +194,7 @@ export class InteractionController {
     this.onCamera?.({ current, target, settled: !cameraChanged(current, target) });
     this.onStreamCamera?.(current);
     this.onCameraChange?.(current);
+    this.publishViewport();
   };
 
   private readonly handleIdle = () => {
@@ -197,6 +202,28 @@ export class InteractionController {
     const target = this.readTargetCamera();
     this.onCamera?.({ current, target, settled: !cameraChanged(current, target) });
     this.onIdle?.(current);
+    this.publishViewport();
+  };
+
+  /** Event-driven: never connected to move/render/RAF, no source-query dependency. */
+  private readonly publishViewport = () => {
+    if (this.disposed || !this.onViewportChange) return;
+    let snapshot: RendererViewportSnapshot;
+    try {
+      if (this.map.isMoving?.()) return;
+      const camera = readMapCamera(this.map); const bounds = this.map.getBounds();
+      const canvas = this.map.getCanvas(); const widthCss = canvas.clientWidth; const heightCss = canvas.clientHeight;
+      const bbox = [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()] as const;
+      if (widthCss <= 0 || heightCss <= 0 || ![...Object.values(camera), ...bbox, widthCss, heightCss].every(Number.isFinite)) return;
+      const revision = [camera.longitude.toFixed(6), camera.latitude.toFixed(6), camera.zoom.toFixed(3),
+        camera.pitch.toFixed(2), camera.bearing.toFixed(2), ...bbox.map(value => value.toFixed(6)), widthCss, heightCss].join(':');
+      if (revision === this.viewportRevision) return;
+      this.viewportRevision = revision; snapshot = { camera, bbox, widthCss, heightCss, revision };
+    } catch {
+      // Startup, teardown and invalid transforms preserve the last good viewport.
+      return;
+    }
+    this.onViewportChange(snapshot);
   };
 
   constructor({
@@ -211,6 +238,7 @@ export class InteractionController {
     onSelect,
     onBuildingSelect,
     onCameraChange,
+    onViewportChange,
     onCamera,
     onStreamCamera,
     onMotionChange,
@@ -227,6 +255,7 @@ export class InteractionController {
     this.onSelect = onSelect;
     this.onBuildingSelect = onBuildingSelect;
     this.onCameraChange = onCameraChange;
+    this.onViewportChange = onViewportChange;
     this.onCamera = onCamera;
     this.onStreamCamera = onStreamCamera;
     this.onMotionChange = onMotionChange;
@@ -235,6 +264,9 @@ export class InteractionController {
     map.on('movestart', this.handleMoveStart);
     map.on('moveend', this.handleMoveEnd);
     map.on('idle', this.handleIdle);
+    map.on('load', this.publishViewport);
+    map.on('resize', this.publishViewport);
+    this.publishViewport();
   }
 
   dispose(): void {
@@ -244,5 +276,7 @@ export class InteractionController {
     this.map.off('movestart', this.handleMoveStart);
     this.map.off('moveend', this.handleMoveEnd);
     this.map.off('idle', this.handleIdle);
+    this.map.off('load', this.publishViewport);
+    this.map.off('resize', this.publishViewport);
   }
 }

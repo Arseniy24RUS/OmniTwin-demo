@@ -24,6 +24,7 @@ for (const entry of (await readdir(resolve(root, 'src'), { withFileTypes: true }
 }
 await add(profilePath, 'data/chat-profiles.json');
 await add(resolve(repository, 'apps/web/src/demo/data/fictionalProfile.mjs'), 'data/fictionalProfile.mjs');
+for (const name of ['index.mjs', 'spatial.mjs']) await add(resolve(repository, 'shared/demo-population', name), `data/demo-population/${name}`);
 // Explicit allowlist: never traverse the repository, .env, credentials, tests or
 // node_modules. Yandex installs the locked production dependencies at deployment.
 const zipped = zipSync(files, { level: 6 });

@@ -13,6 +13,8 @@ export function cohortDescription(cohort: DemoCohort | null | undefined) {
 /** Exact repeated cross-sections, not a fixed longitudinal membership or event attribution. */
 export function cohortSnapshot(provider: StaticDemoProvider, source: DemoSnapshot, cohort: DemoCohort | null | undefined): DemoSnapshot {
   if (!hasCohort(cohort)) return source;
+  const indexed = provider.getCohortSnapshot?.(source, cohort);
+  if (indexed) return indexed;
   const ageSex = source.ageSex.filter(row => !cohort?.ageBand || row.ageBand === cohort.ageBand).map(row => ({ageBand: row.ageBand, male: 0, female: 0}));
   const byAge = new Map(ageSex.map(row => [row.ageBand, row]));
   const employment: DemoSnapshot['employment'] = {child: 0, student: 0, employed: 0, retired: 0, not_employed: 0};

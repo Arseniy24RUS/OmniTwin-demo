@@ -11,11 +11,9 @@ import mapLibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&ur
 import { attachDeckOverlay } from '../deckAdapter';
 import {
   UNIVERSAL_BUILDING_ACTIVE_SHADOW_LAYER_IDS,
-  UNIVERSAL_BUILDING_DETAIL_LAYER_IDS,
   UNIVERSAL_BUILDING_SOURCE_ID,
   UNIVERSAL_WATER_GLOSS_LAYER_ID,
   applyUniversalBuildingStyle,
-  setUniversalBuildingDetailFallback,
   loadLocalMapStyle,
 } from '../mapStyle';
 import { MapStyleController } from '../mapStyleController';
@@ -81,6 +79,7 @@ import type {
   RendererMode,
   RendererBuildingSelection,
   RendererMapFeatureSnapshot,
+  RendererViewportSnapshot,
   RendererSceneSnapshot,
   SceneImmutableAssetLoader,
   SceneManifestV1,
@@ -301,6 +300,7 @@ export interface SceneRuntimeDependencies {
 }
 
 export interface SceneRuntimeOptions {
+  aggregateRoadFlows?: import('../aggregateRoadFlow').AggregateRoadFlowSnapshot | null;
   presentationMovement?: WorldSceneMovementPayload | null;
   onMapFeatures?: (features: RendererMapFeatureSnapshot) => void;
   root: HTMLElement;
@@ -336,6 +336,7 @@ export interface SceneRuntimeOptions {
   onBuildingSelect?: (building: RendererBuildingSelection | null) => void;
   onVerifiedMovementChange?: (movement: WorldSceneMovementPayload | null) => void;
   onCameraChange?: (camera: WorldCamera) => void;
+  onViewportChange?: (viewport: RendererViewportSnapshot) => void;
   onSourceState: (state: MapSourceState) => void;
   onPartsState: (state: RendererPartsState) => void;
   onReadiness: (readiness: SceneRuntimeReadiness) => void;
@@ -1139,6 +1140,7 @@ export class SceneRuntime {
   private readonly onBuildingSelect?: SceneRuntimeOptions['onBuildingSelect'];
   private readonly onVerifiedMovementChange?: SceneRuntimeOptions['onVerifiedMovementChange'];
   private readonly onCameraChange?: SceneRuntimeOptions['onCameraChange'];
+  private readonly onViewportChange?: SceneRuntimeOptions['onViewportChange'];
   private readonly onMapFeatures?: SceneRuntimeOptions['onMapFeatures'];
   private mapFeatureRevision = '';
   private lastMapFeatureScanMs = Number.NEGATIVE_INFINITY;
@@ -1241,6 +1243,14 @@ export class SceneRuntime {
     contributionDetailStatus: null,
   };
   private loaded = false;
+  private mapRenderRevision = 0;
+  private appliedUniversalSourceTileLod: {
+    map: MapLibreMap;
+    profileKey: 'moving' | 'settled';
+    buildingSourceId: string;
+    basemapSource: unknown;
+    buildingSource: unknown;
+  } | null = null;
   private providerErrors = 0;
   private disposed = false;
   private fallback = false;
@@ -1307,6 +1317,7 @@ export class SceneRuntime {
     this.onBuildingSelect = options.onBuildingSelect;
     this.onVerifiedMovementChange = options.onVerifiedMovementChange;
     this.onCameraChange = options.onCameraChange;
+    this.onViewportChange = options.onViewportChange;
     this.onMapFeatures = options.onMapFeatures;
     this.onSourceState = options.onSourceState;
     this.onPartsState = options.onPartsState;
@@ -1337,6 +1348,7 @@ export class SceneRuntime {
     );
     this.clockAnchorNowMs = this.dependencies.now();
     this.currentSnapshot = {
+      aggregateRoadFlows: options.aggregateRoadFlows ?? null,
       presentationMovement: options.presentationMovement,
       camera: options.camera,
       entities: this.entities,
@@ -1360,6 +1372,9 @@ export class SceneRuntime {
       manifestVerified: false,
     } : null);
     this.root.dataset.rendererMode = this.rendererMode;
+    this.root.dataset.mapIdle = 'false';
+    this.root.dataset.mapTilesLoaded = 'false';
+    this.root.dataset.mapRenderRevision = '0';
     this.root.dataset.threeGroupCount = this.rendererMode === 'universal_lowpoly' ? '0' : 'pending';
     this.root.dataset.dynamicInstanceCap = String(
       this.rendererMode === 'universal_lowpoly'
@@ -1739,6 +1754,7 @@ export class SceneRuntime {
         && previousSelectedId === this.selectedId
         && previousLiving === this.currentSnapshot.living;
       if (unchangedUniversalDeckLiving) {
+        adapter.updateAggregateRoadFlows?.(this.currentSnapshot.aggregateRoadFlows ?? null);
         // The UI publishes a new presentation-clock anchor once per second.
         // The Living worker owns motion frames and already calls updateLiving
         // at its bounded cadence, so uploading the same binary columns here is
@@ -1754,6 +1770,7 @@ export class SceneRuntime {
     this.telemetry.notifyAdaptersChanged();
     this.updateContinuousFrames();
     if (this.rendererMode === 'universal_lowpoly' && this.map && this.loaded) {
+      this.settleRendererPerformanceIfIdle(this.map);
       this.applyUniversalRenderPhase(this.map, this.resolveUniversalRenderPhase());
       this.applyUniversalAppearance(this.map, this.absolutePresentationSeconds);
     }
@@ -2150,6 +2167,7 @@ export class SceneRuntime {
         this.onCameraChange?.(camera);
       },
       onCamera: (camera) => this.telemetry.setCamera(camera),
+      onViewportChange: this.onViewportChange,
       onStreamCamera: (camera) => {
         this.streamer?.updateCamera(camera);
         for (const adapter of this.adapters) adapter.updateCameraWindow?.();
@@ -2162,6 +2180,8 @@ export class SceneRuntime {
           this.streamer?.beginCameraMove();
           this.streamerCameraMoveActive = true;
           this.mapGpuFrameTimer?.resetFrameIntervals?.();
+        } else {
+          this.settleRendererPerformanceIfIdle(map);
         }
         const nextPhase = moving
           ? 'camera_motion'
@@ -2185,6 +2205,7 @@ export class SceneRuntime {
             this.scheduleUniversalVegetation(map, camera);
           }
         }
+        this.publishMapLifecycleReadiness(map, true);
       },
     });
     this.streamer?.updateCamera(this.targetCamera);
@@ -2199,6 +2220,7 @@ export class SceneRuntime {
 
     const handleRender = () => {
       const nowMs = this.dependencies.now();
+      this.recordMapRenderReadiness(map);
       if (this.onMapFeatures && nowMs - this.lastMapFeatureScanMs > 2_000 && map.isStyleLoaded()) {
         this.publishMapFeatures(map, readMapCamera(map));
       }
@@ -2232,6 +2254,7 @@ export class SceneRuntime {
     const handleLoad = () => this.handleMapLoad(map);
     const handleStyleLoad = () => {
       if (!this.isActiveMap(map) || this.rendererMode !== 'universal_lowpoly') return;
+      this.appliedUniversalSourceTileLod = null;
       this.vegetationStyleEpoch += 1;
       this.vegetationCacheKey = null;
       this.styleController?.apply();
@@ -2245,11 +2268,16 @@ export class SceneRuntime {
       }
     };
     map.on('render', handleRender);
+    const handleSourceWork = () => this.publishMapLifecycleReadiness(map, false);
+    map.on('dataloading', handleSourceWork);
+    map.on('sourcedata', handleSourceWork);
     map.on('error', handleError);
     map.on('load', handleLoad);
     map.on('style.load', handleStyleLoad);
     this.mapListenerDisposers.push(
       () => map.off('render', handleRender),
+      () => map.off('dataloading', handleSourceWork),
+      () => map.off('sourcedata', handleSourceWork),
       () => map.off('error', handleError),
       () => map.off('load', handleLoad),
       () => map.off('style.load', handleStyleLoad),
@@ -2273,6 +2301,27 @@ export class SceneRuntime {
     const sourceId = (event as unknown as { sourceId?: unknown }).sourceId;
     return sourceId === UNIVERSAL_BUILDING_SOURCE_ID
       || /omnitwin-pmtiles|overture(?:maps)?|buildings\.pmtiles/i.test(message);
+  }
+
+  /** Public MapLibre lifecycle facts, not the throttled diagnostic FPS counter. */
+  private publishMapLifecycleReadiness(map: MapLibreMap, idle: boolean): void {
+    if (!this.isActiveMap(map)) return;
+    this.root.dataset.mapIdle = String(idle);
+    try {
+      this.root.dataset.mapTilesLoaded = String(map.areTilesLoaded());
+    } catch {
+      this.root.dataset.mapTilesLoaded = 'unknown';
+    }
+  }
+
+  private recordMapRenderReadiness(map: MapLibreMap): void {
+    if (!this.isActiveMap(map)) return;
+    // Every real render advances this value immediately. TelemetryBus otherwise
+    // flushes at 1 Hz, too slowly to establish an 800 ms paused quiet window.
+    this.root.dataset.mapRenderRevision = String(++this.mapRenderRevision);
+    this.root.dataset.mapIdle = 'false';
+    // Source/idle events refresh areTilesLoaded; do not scan tile caches on
+    // every animation frame just to publish this lightweight revision.
   }
 
   private applyOpenMapTilesBuildingFallback(map: MapLibreMap, reason: string): void {
@@ -2454,7 +2503,8 @@ export class SceneRuntime {
       || this.activeLayers.has('population')
       || this.activeLayers.has('movement');
     const renderableDeckEntities =
-      (this.currentSnapshot.living?.telemetry.primaryRenderer.deck ?? 0) > 0;
+      (this.currentSnapshot.living?.telemetry.primaryRenderer.deck ?? 0) > 0
+      || (this.currentSnapshot.aggregateRoadFlows?.segments.length ?? 0) > 0;
     scheduler.setVisible(typeof document === 'undefined' || !document.hidden);
     scheduler.setReasonActive('performance', this.performanceMode && timelinePlaying);
     scheduler.setReasonActive(
@@ -2888,9 +2938,14 @@ export class SceneRuntime {
     this.telemetry.setLiving(living.telemetry);
   }
 
-  private readonly publishSelectedEntity = (entity: VisualEntity | null): void => {
+  private retainSelectedEntity(entity: VisualEntity | null): void {
     this.publishedSelectedView = entity;
     this.publishedSelectedActivity = entity?.activity ?? null;
+  }
+
+  /** Only InteractionController gestures may notify the owning UI of a pick. */
+  private readonly publishSelectedEntity = (entity: VisualEntity | null): void => {
+    this.retainSelectedEntity(entity);
     this.onSelect?.(entity);
   };
 
@@ -2906,7 +2961,9 @@ export class SceneRuntime {
     if (!entity) return;
     if (entity !== this.publishedSelectedView
       || entity.activity !== this.publishedSelectedActivity) {
-      this.publishSelectedEntity(entity);
+      // Worker activity and membership replacement keep the selected view
+      // current; they must not replay a click and reopen a collapsed inspector.
+      this.retainSelectedEntity(entity);
     }
   }
 
@@ -2944,6 +3001,7 @@ export class SceneRuntime {
   }
 
   private applySnapshotToAdapter(adapter: RendererAdapter): void {
+    adapter.updateAggregateRoadFlows?.(this.currentSnapshot.aggregateRoadFlows ?? null);
     if (this.cityRendererV2) adapter.updateScene?.(this.currentSnapshot);
     const living = this.cityRendererV2 ? this.currentSnapshot.living : null;
     if (living && adapter.updateLiving) {
@@ -3247,7 +3305,9 @@ export class SceneRuntime {
     } catch {
       // A missing secondary sprite degrades decoration, never the retained basemap.
     }
+    const changed = this.universalMaterialAtlasReady !== ready;
     this.universalMaterialAtlasReady = ready;
+    if (changed) this.applyPerformanceGovernorFeatureVisibility(map);
     this.publishUniversalDecorationTelemetry();
   }
 
@@ -3470,7 +3530,7 @@ export class SceneRuntime {
       && phase !== 'compatibility_30';
     this.streamer?.setIndividualCellsEnabled(individualCellsEnabled);
     this.root.dataset.individualLivingCellsEnabled = String(individualCellsEnabled);
-    this.styleController?.setRenderPhase(this.onMapFeatures && phase === 'living_motion' ? 'settled_paused' : phase);
+    this.applyPerformanceGovernorFeatureVisibility(map);
     if (force) this.styleController?.apply();
     this.applyUniversalSourceTileLod(map, this.onMapFeatures ? 'settled_paused' : phase);
     const tierFps = this.decorationTier === 'high' ? 120 : this.decorationTier === 'mid' ? 60 : 30;
@@ -3502,10 +3562,25 @@ export class SceneRuntime {
     const buildingSourceId = this.activeBuildingSource?.id === OPENMAPTILES_BUILDINGS_SOURCE.id
       ? 'openmaptiles'
       : UNIVERSAL_BUILDING_SOURCE_ID;
+    const next = {
+      map,
+      profileKey: phase === 'settled_paused' ? 'settled' as const : 'moving' as const,
+      buildingSourceId,
+      basemapSource: map.getSource('openmaptiles'),
+      buildingSource: map.getSource(buildingSourceId),
+    };
+    const previous = this.appliedUniversalSourceTileLod;
+    // MapLibre's setter dirties the source even when both numeric budgets are
+    // unchanged. Retain the successful assignment until its source/style changes.
+    if (previous?.map === next.map && previous.profileKey === next.profileKey
+      && previous.buildingSourceId === next.buildingSourceId
+      && previous.basemapSource === next.basemapSource
+      && previous.buildingSource === next.buildingSource) return;
     const result = applyUniversalSourceTileLodProfile(map, phase, {
       basemapSourceId: 'openmaptiles',
       buildingSourceId,
     });
+    this.appliedUniversalSourceTileLod = result.status === 'applied' ? next : null;
     this.root.dataset.sourceTileLodStatus = result.status;
     this.root.dataset.sourceTileLodMissing = result.missingSourceIds.join(',');
     this.root.dataset.sourceTileLod = result.profileKey === 'settled'
@@ -3699,7 +3774,8 @@ export class SceneRuntime {
       return;
     }
 
-    if (timing.sampleCount > this.lastPerformanceGpuSampleCount) {
+    const freshGpuSample = timing.sampleCount > this.lastPerformanceGpuSampleCount;
+    if (freshGpuSample) {
       this.lastPerformanceGpuSampleCount = timing.sampleCount;
     }
     const firstSample = !this.performanceGovernorActivated;
@@ -3714,7 +3790,7 @@ export class SceneRuntime {
       // render-event interval is the unconditional hard-floor fallback; GPU
       // timing only classifies pressure after its asynchronous window is ready.
       cpuFrameMs: frameIntervalMedianMs,
-      gpuFrameMs: (timing.readyForGovernor ?? (
+      gpuFrameMs: freshGpuSample && (timing.readyForGovernor ?? (
         timing.supported && timing.medianMilliseconds !== null
       )) ? timing.medianMilliseconds : null,
       frameIntervalP95Ms,
@@ -3729,6 +3805,18 @@ export class SceneRuntime {
       this.lastPerformanceDecision = decision.kind;
       this.applyPerformanceGovernorDecision(map, decision);
     }
+    this.publishPerformanceGovernorTelemetry('active');
+  }
+
+  private settleRendererPerformanceIfIdle(map: MapLibreMap): void {
+    const clock = this.presentationClock;
+    const playing = Boolean(clock && !clock.paused && !this.reducedMotion
+      && clock.baseRateSecondsPerWallSecond * clock.speedMultiplier > 0);
+    if (this.cameraMoving || playing) return;
+    const decision = this.performanceGovernor?.settle(this.dependencies.now());
+    if (!decision) return;
+    this.lastPerformanceDecision = decision.kind;
+    this.applyPerformanceGovernorDecision(map, decision);
     this.publishPerformanceGovernorTelemetry('active');
   }
 
@@ -3750,14 +3838,14 @@ export class SceneRuntime {
     map: MapLibreMap,
     decision: RendererPerformanceGovernorDecision,
   ): void {
+    if (decision.previous.recoveryProbe !== decision.next.recoveryProbe) {
+      // The recovery gate must observe this probe's cadence, not the previous
+      // capped stream. Resetting measurements does not invent frame samples.
+      this.mapGpuFrameTimer?.resetFrameIntervals?.();
+    }
     if (decision.previous.dprScale !== decision.next.dprScale) {
       this.applyPixelBudget(map, this.container.getBoundingClientRect());
     }
-    if (
-      decision.previous.projectedShadowEnabled !== decision.next.projectedShadowEnabled
-      || decision.previous.roofCapEnabled !== decision.next.roofCapEnabled
-      || decision.previous.facadePatternEnabled !== decision.next.facadePatternEnabled
-    ) this.applyPerformanceGovernorFeatureVisibility(map);
     if (
       decision.previous.treeBillboardsEnabled !== decision.next.treeBillboardsEnabled
     ) {
@@ -3790,30 +3878,21 @@ export class SceneRuntime {
   private applyPerformanceGovernorFeatureVisibility(map: MapLibreMap): void {
     const snapshot = this.performanceGovernor?.snapshot;
     if (!snapshot) return;
-    const setVisibility = (layerId: string, visible: boolean): void => {
-      try {
-        if (!map.getLayer(layerId)) return;
-        const next = visible ? 'visible' : 'none';
-        if (map.getLayoutProperty(layerId, 'visibility') !== next) {
-          map.setLayoutProperty(layerId, 'visibility', next);
-        }
-      } catch {
-        // Optional decoration layers can be absent during an atomic setStyle.
-      }
-    };
-    const settled = this.hasDetailedPresentation();
-    if (this.onMapFeatures) setUniversalBuildingDetailFallback(map, settled && snapshot.facadePatternEnabled);
-    for (const layerId of UNIVERSAL_BUILDING_ACTIVE_SHADOW_LAYER_IDS) {
-      setVisibility(layerId, settled && snapshot.projectedShadowEnabled);
-    }
-    for (const layerId of UNIVERSAL_BUILDING_DETAIL_LAYER_IDS) {
-      setVisibility(
-        layerId,
-        settled && (layerId.includes('-roof-')
-          ? snapshot.roofCapEnabled
-          : snapshot.facadePatternEnabled),
-      );
-    }
+    // The controller is the only material visibility/range writer. Resolve
+    // phase first, then apply its complete snapshot, including style reloads.
+    const phase = this.universalRenderPhase;
+    const settled = phase === 'settled_paused';
+    this.styleController?.setRenderState(phase, {
+      atlasReady: this.universalMaterialAtlasReady,
+      facadePatternEnabled: settled || snapshot.facadePatternEnabled,
+      roofCapEnabled: settled || snapshot.roofCapEnabled,
+      projectedShadowEnabled: settled || snapshot.projectedShadowEnabled,
+      contactAoEnabled: settled || snapshot.contactAoEnabled,
+      retainDuringCameraMotion: Boolean(this.onMapFeatures),
+    });
+    this.root.dataset.buildingMaterialPhase = phase;
+    this.root.dataset.buildingMaterialAtlasReady = String(this.universalMaterialAtlasReady);
+    this.root.dataset.rendererGovernorRecoveryProbe = String(snapshot.recoveryProbe);
   }
 
   private shouldUseAdaptivePixelFallback(): boolean {

@@ -1,9 +1,10 @@
 import type { Map as MapLibreMap } from 'maplibre-gl';
-import { applyMapLayerVisibility } from './mapLayerPolicy';
+import { applyMapLayerVisibility, type BuildingMaterialPolicy } from './mapLayerPolicy';
 import type { UniversalRenderPhase } from './motionLodPolicy';
 import type { WorldLayer } from './types';
 
 export type DetailedBuildingOwner = 'maplibre' | 'three';
+export type { BuildingMaterialPolicy } from './mapLayerPolicy';
 export type DetailedBuildingCellBounds = readonly [number, number, number, number];
 
 type MapFilter = Parameters<MapLibreMap['setFilter']>[1];
@@ -27,6 +28,7 @@ export interface MapStyleControllerOptions {
 export class MapStyleController {
   private activeLayers: ReadonlySet<WorldLayer> = new Set();
   private renderPhase: UniversalRenderPhase = 'settled_paused';
+  private materialPolicy: BuildingMaterialPolicy | undefined;
   private requestedDetailedBuildingOwner: DetailedBuildingOwner = 'maplibre';
   private detailedBuildingOwner: DetailedBuildingOwner = 'maplibre';
   private extrusionsMasked = false;
@@ -38,6 +40,7 @@ export class MapStyleController {
   private baseBuildingFilter: MapFilter | null = null;
   private baseBuildingFilterSourceKey = '';
   private disposed = false;
+  private applying = false;
 
   private readonly handleStyleData = () => {
     this.apply();
@@ -110,13 +113,41 @@ export class MapStyleController {
     this.apply();
   }
 
+  /** Atomically own phase, atlas/governor allowances, visibility and solid fallback ranges. */
+  setRenderState(renderPhase: UniversalRenderPhase, materialPolicy: BuildingMaterialPolicy): void {
+    if (this.disposed) return;
+    const next = { ...materialPolicy, retainDuringCameraMotion: materialPolicy.retainDuringCameraMotion ?? false };
+    const current = this.materialPolicy;
+    const unchanged = current !== undefined
+      && current.atlasReady === next.atlasReady
+      && current.facadePatternEnabled === next.facadePatternEnabled
+      && current.roofCapEnabled === next.roofCapEnabled
+      && current.projectedShadowEnabled === next.projectedShadowEnabled
+      && current.contactAoEnabled === next.contactAoEnabled
+      && current.retainDuringCameraMotion === next.retainDuringCameraMotion;
+    if (renderPhase === this.renderPhase && unchanged) return;
+    this.renderPhase = renderPhase;
+    this.materialPolicy = Object.freeze(next);
+    this.apply();
+  }
+
   getRenderPhase(): UniversalRenderPhase {
     return this.renderPhase;
   }
 
   apply(): void {
-    if (this.disposed || !this.map.isStyleLoaded()) return;
-    applyMapLayerVisibility(this.map, this.activeLayers, this.renderPhase, this.options.preserveBaseExtrusions);
+    if (this.disposed || this.applying || !this.map.isStyleLoaded()) return;
+    this.applying = true;
+    try {
+      this.applySnapshot();
+    } finally {
+      this.applying = false;
+    }
+  }
+
+  private applySnapshot(): void {
+    applyMapLayerVisibility(this.map, this.activeLayers, this.renderPhase,
+      this.options.preserveBaseExtrusions, this.materialPolicy);
     const hasBuildingLayer = Boolean(this.map.getLayer('building-3d'));
     this.captureBaseBuildingFilter(hasBuildingLayer);
     const canApplyFeatureMask = hasBuildingLayer &&
