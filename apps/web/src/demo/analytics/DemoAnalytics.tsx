@@ -4,6 +4,7 @@ import { AgeSexPyramid, ChartLegend, SeriesChart, type ChartSeries } from './cha
 import { COMPONENTS, cohortDescription, cohortSnapshot, filterCanonicalRows, hasCohort, legacyCanonicalRows, signedComponentSeries, snapshotRows, stockFlowResidual } from './analyticsModel';
 import { downloadCanonicalCsv, formatNullableNumber, type CanonicalRow } from './canonical';
 import { ContextFilters, type DemoAnalyticsProps } from './controls';
+import {ObservedAnalytics} from './ObservedAnalytics';
 import './analytics.css';
 
 type DatasetFilter = 'overview' | 'population' | 'events';
@@ -37,7 +38,16 @@ function ExportButton({ rows, filename, legacy = false }: {rows: CanonicalRow[];
   return <div className="da-export"><button type="button" onClick={() => void exportCsv()} disabled={!rows.length} data-testid={legacy ? 'legacy-analytics-export' : 'analytics-export'}>↓ Скачать CSV</button><span role="status" className="da-export-status">{status}</span></div>;
 }
 
-export function DemoAnalytics({ provider, context, onContextChange, onSelectCohort }: DemoAnalyticsProps & {
+export function DemoAnalytics(props: DemoAnalyticsProps & {onSelectCohort?: (cohort: DemoCohort) => void}) {
+  const {provider, context, onContextChange} = props;
+  if (context.analyticsSource !== 'fictional') {
+    if (context.territoryId !== 'RU-CHE-SET' || !provider.observedCity) return <section className="da-workspace observed-analytics" data-testid="observed-analytics"><h1>Официальная статистика</h1><p className="da-empty" role="status">{context.territoryId !== 'RU-CHE-SET' ? 'Для выбранной территории нет официального набора. Опубликованные данные доступны только для Челябинского городского округа целиком.' : 'Официальный набор недоступен. Вымышленные значения не подставляются вместо него.'}</p><div className="observed-toolbar"><button type="button" onClick={() => onContextChange({territoryId: 'RU-CHE-SET'})}>Весь городской округ</button><button type="button" onClick={() => onContextChange({analyticsSource: 'fictional'})}>Модельные персонажи</button></div></section>;
+    return <ObservedAnalytics reference={provider.observedCity} year={context.observedYear ?? 2024} onYearChange={observedYear => onContextChange({observedYear})} onFictional={() => onContextChange({analyticsSource: 'fictional'})} />;
+  }
+  return <><div className="observed-return"><button type="button" onClick={() => onContextChange({analyticsSource: 'observed', territoryId: 'RU-CHE-SET'})}>Официальная статистика города</button><span>Ниже — отдельный вымышленный демонабор, не численность Челябинска.</span></div><FictionalAnalytics {...props} /></>;
+}
+
+function FictionalAnalytics({ provider, context, onContextChange, onSelectCohort }: DemoAnalyticsProps & {
   onSelectCohort?: (cohort: DemoCohort) => void;
 }) {
   const { scenario, year, territoryId } = context;

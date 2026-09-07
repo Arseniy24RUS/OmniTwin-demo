@@ -12,7 +12,7 @@ import * as canonical from './canonical';
 const fixtureRoot = process.cwd().replaceAll('\\', '/').endsWith('/apps/web') ? 'public/demo' : 'apps/web/public/demo';
 const read = (name: string) => JSON.parse(readFileSync(resolve(process.cwd(), fixtureRoot, name), 'utf8'));
 const provider = new StaticDemoProvider(read('dataset.json') as DemoDataset, read('manifest.json') as DemoDatasetManifestV1, read('legacy-synthetic-chelyabinsk-v1.json') as DemoLegacyExport);
-const context: DemoContextV1 = {datasetId: provider.manifest.datasetId, territoryId: 'RU-CHE-SET', scenario: 'baseline', year: 2026, cohort: null, presentationMinutes: 480, weather: 'clear', playing: false, speed: 1, camera: {longitude: 61.4, latitude: 55.16, zoom: 16, pitch: 45, bearing: 0}};
+const context: DemoContextV1 = {datasetId: provider.manifest.datasetId, territoryId: 'RU-CHE-SET', analyticsSource: 'fictional', scenario: 'baseline', year: 2026, cohort: null, presentationMinutes: 480, weather: 'clear', playing: false, speed: 1, camera: {longitude: 61.4, latitude: 55.16, zoom: 16, pitch: 45, bearing: 0}};
 beforeEach(() => {
   const values = new Map<string, string>();
   vi.stubGlobal('localStorage', {getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => values.set(key, value), clear: () => values.clear()});

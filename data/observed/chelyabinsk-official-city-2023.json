@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "chelyabstat-municipal-age-sex-2023-chelyabinsk",
+  "geography": {
+    "nameRu": "Челябинск",
+    "sourceWorksheetName": "Челябинский ГО",
+    "sourceTerritoryNameRu": "Челябинский городской округ",
+    "geographyLevel": "municipality",
+    "populationScopeRu": "Городское население Челябинского городского округа",
+    "cityAndMunicipalityUrbanTotalsEqual": true
+  },
+  "stockAsOf": "2023-01-01",
+  "publicationDate": "2023-09-01",
+  "unit": "persons",
+  "classification": "observed",
+  "measurementKind": "official_population_estimate",
+  "scientificClaim": false,
+  "source": {
+    "publisher": "Челябинскстат",
+    "titleRu": "Численность населения по полу и возрасту по городским округам, муниципальному округу и муниципальным районам Челябинской области на 1 января 2023 года",
+    "landingPage": "https://74.rosstat.gov.ru/main_indicators",
+    "downloadUrl": "https://74.rosstat.gov.ru/storage/mediabank/%D0%9D%D0%B0%D1%81%D0%B5%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BF%D0%BE%20%D0%BF%D0%BE%D0%BB%D1%83%20%D0%B8%20%D0%B2%D0%BE%D0%B7%D1%80%D0%B0%D1%81%D1%82%D1%83%20%D0%BD%D0%B0%201%20%D1%8F%D0%BD%D0%B2%D0%B0%D1%80%D1%8F%202023%20%D0%B3.xlsx",
+    "localPath": "data/observed/source/chelyabstat-municipal-age-sex-2023.xlsx",
+    "bytes": 4141933,
+    "sha256": "741a4fd1f755bfae9f38df8371a422f0ceb1c1e049092758f4eaab3f2b3901a5",
+    "sheet": "Челябинский ГО",
+    "titleCells": "A2:A4",
+    "totalsCells": "E7:G7",
+    "columns": {
+      "ageBand": "A",
+      "total": "E",
+      "male": "F",
+      "female": "G"
+    },
+    "retrievedOn": "2026-09-07",
+    "transport": {
+      "certificateVerification": "failed_untrusted_root",
+      "clientsChecked": [
+        "PowerShell Invoke-WebRequest",
+        "Windows curl.exe with Schannel"
+      ],
+      "retrievalMethod": "PowerShell Invoke-WebRequest with request-local -SkipCertificateCheck",
+      "caveat": "Both default-verification clients rejected the certificate chain. Retrieval bypassed certificate validation for this public-data request only; publisher authenticity is not established by transport verification.",
+      "credentialUse": "none"
+    }
+  },
+  "attributionRu": "Источник: Челябинскстат. Численность населения Челябинского городского округа по полу и возрасту на 1 января 2023 года, с учетом итогов ВПН-2020. Опубликовано 1 сентября 2023 года.",
+  "reuse": {
+    "status": "public_source_aggregate_extract_with_attribution",
+    "sourceSpecificLicense": null,
+    "informationServicesTerms": "https://74.rosstat.gov.ru/inform_uslugi",
+    "rosstatOpenDataTerms": "https://rosstat.gov.ru/folder/12793",
+    "note": "The workbook is linked publicly without authentication. Chelyabstat requires source attribution when information is used and prohibits reproducing purchased publications. Rosstat separately permits reuse of open data with attribution and without distortion. A dataset-specific open license for this XLSX was not located; do not label it CC-BY or apply a code license to the source."
+  },
+  "extraction": {
+    "method": "Direct copy of the 18 non-overlapping published age-group rows, urban-population columns E:G, from the Chelyabinsk municipality worksheet. The label '85 и более' is normalized to '85+'. No age counts are interpolated or synthesized.",
+    "sourceRows": [
+      14,
+      20,
+      26,
+      32,
+      38,
+      44,
+      50,
+      56,
+      62,
+      68,
+      74,
+      80,
+      86,
+      92,
+      98,
+      104,
+      110,
+      111
+    ],
+    "binWidthYears": 5,
+    "openEndedLastBand": "85+",
+    "singleYearAvailableThrough": 84,
+    "annualSeriesNote": "This extract is a stock at 2023-01-01. It is not a mean over 2023 or a stock at the end of 2023. Publication date is later than the reference date.",
+    "revisionNote": "Worksheet A2 explicitly states that figures incorporate the 2020 All-Russian Population Census (VPN-2020). Do not rescale this distribution to a PMO snapshot with a different revision basis.",
+    "sourceLimitation": "The publicly linked 2023 municipal worksheet ends at age 85+. The catalog has no separate 2023 file for cities above 100,000. Source values do not support splitting 85+ into 85-89, 90-94, 95-99 or 100+.",
+    "comparisonRule": "When comparing with the 2024 pyramid, aggregate that year's 85-89, 90-94, 95-99 and 100+ bins to 85+. Keep the open-ended age label explicit."
+  },
+  "totals": {
+    "total": 1182517,
+    "male": 532357,
+    "female": 650160
+  },
+  "ageSex": [
+    {
+      "ageBand": "0-4",
+      "total": 62138,
+      "male": 32229,
+      "female": 29909,
+      "sourceRange": "A14:G14"
+    },
+    {
+      "ageBand": "5-9",
+      "total": 79303,
+      "male": 41253,
+      "female": 38050,
+      "sourceRange": "A20:G20"
+    },
+    {
+      "ageBand": "10-14",
+      "total": 70214,
+      "male": 36696,
+      "female": 33518,
+      "sourceRange": "A26:G26"
+    },
+    {
+      "ageBand": "15-19",
+      "total": 60696,
+      "male": 30990,
+      "female": 29706,
+      "sourceRange": "A32:G32"
+    },
+    {
+      "ageBand": "20-24",
+      "total": 56668,
+      "male": 28796,
+      "female": 27872,
+      "sourceRange": "A38:G38"
+    },
+    {
+      "ageBand": "25-29",
+      "total": 61579,
+      "male": 30505,
+      "female": 31074,
+      "sourceRange": "A44:G44"
+    },
+    {
+      "ageBand": "30-34",
+      "total": 106564,
+      "male": 49588,
+      "female": 56976,
+      "sourceRange": "A50:G50"
+    },
+    {
+      "ageBand": "35-39",
+      "total": 115655,
+      "male": 54721,
+      "female": 60934,
+      "sourceRange": "A56:G56"
+    },
+    {
+      "ageBand": "40-44",
+      "total": 94487,
+      "male": 43545,
+      "female": 50942,
+      "sourceRange": "A62:G62"
+    },
+    {
+      "ageBand": "45-49",
+      "total": 85262,
+      "male": 38944,
+      "female": 46318,
+      "sourceRange": "A68:G68"
+    },
+    {
+      "ageBand": "50-54",
+      "total": 72379,
+      "male": 33336,
+      "female": 39043,
+      "sourceRange": "A74:G74"
+    },
+    {
+      "ageBand": "55-59",
+      "total": 63896,
+      "male": 27686,
+      "female": 36210,
+      "sourceRange": "A80:G80"
+    },
+    {
+      "ageBand": "60-64",
+      "total": 70481,
+      "male": 28168,
+      "female": 42313,
+      "sourceRange": "A86:G86"
+    },
+    {
+      "ageBand": "65-69",
+      "total": 63173,
+      "male": 22294,
+      "female": 40879,
+      "sourceRange": "A92:G92"
+    },
+    {
+      "ageBand": "70-74",
+      "total": 53543,
+      "male": 17093,
+      "female": 36450,
+      "sourceRange": "A98:G98"
+    },
+    {
+      "ageBand": "75-79",
+      "total": 25204,
+      "male": 7282,
+      "female": 17922,
+      "sourceRange": "A104:G104"
+    },
+    {
+      "ageBand": "80-84",
+      "total": 23682,
+      "male": 5517,
+      "female": 18165,
+      "sourceRange": "A110:G110"
+    },
+    {
+      "ageBand": "85+",
+      "total": 17593,
+      "male": 3714,
+      "female": 13879,
+      "sourceRange": "A111:G111"
+    }
+  ],
+  "checks": {
+    "nonOverlappingBandCount": 18,
+    "allBandMalePlusFemaleEqualTotal": true,
+    "bandTotalsEqualPublishedTotal": true,
+    "bandMaleSumEqualsPublishedMale": true,
+    "bandFemaleSumEqualsPublishedFemale": true,
+    "publishedFiveYearTotalsThrough84MatchSingleYearRows": true,
+    "municipalAllPopulationEqualsUrbanPopulationAtEveryExtractedBand": true,
+    "preservedDetailedBands70To84": true,
+    "openEndedAge85Preserved": true,
+    "imputedCells": 0
+  }
+}

@@ -3,7 +3,7 @@ import { test, expect, openDemo, navigate, waitForRealWorld,
 
 // Real mobile Chromium rendering, not screenshots of a resized desktop image.
 test('responsive navigation, shared context and world controls', async ({ page, qa }) => {
-  await openDemo(page);
+  await openDemo(page, './#/world?stats=fictional');
   await waitForRealWorld(page);
   await expectNoHorizontalOverflow(page);
   await qa.capture('01-world');

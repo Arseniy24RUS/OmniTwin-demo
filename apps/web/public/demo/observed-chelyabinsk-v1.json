@@ -1,0 +1,286 @@
+{
+  "datasetId": "chelyabinsk-observed-reference-v1",
+  "representation": "observed_reference",
+  "territory": {
+    "id": "RU-CHE-SET",
+    "name": "Челябинский городской округ",
+    "oktmo": "75701000"
+  },
+  "snapshots": [
+    {
+      "year": 2023,
+      "asOf": "2023-01-01",
+      "population": 1182517,
+      "male": 532357,
+      "female": 650160,
+      "ageSex": [
+        {
+          "ageBand": "0-4",
+          "male": 32229,
+          "female": 29909
+        },
+        {
+          "ageBand": "5-9",
+          "male": 41253,
+          "female": 38050
+        },
+        {
+          "ageBand": "10-14",
+          "male": 36696,
+          "female": 33518
+        },
+        {
+          "ageBand": "15-19",
+          "male": 30990,
+          "female": 29706
+        },
+        {
+          "ageBand": "20-24",
+          "male": 28796,
+          "female": 27872
+        },
+        {
+          "ageBand": "25-29",
+          "male": 30505,
+          "female": 31074
+        },
+        {
+          "ageBand": "30-34",
+          "male": 49588,
+          "female": 56976
+        },
+        {
+          "ageBand": "35-39",
+          "male": 54721,
+          "female": 60934
+        },
+        {
+          "ageBand": "40-44",
+          "male": 43545,
+          "female": 50942
+        },
+        {
+          "ageBand": "45-49",
+          "male": 38944,
+          "female": 46318
+        },
+        {
+          "ageBand": "50-54",
+          "male": 33336,
+          "female": 39043
+        },
+        {
+          "ageBand": "55-59",
+          "male": 27686,
+          "female": 36210
+        },
+        {
+          "ageBand": "60-64",
+          "male": 28168,
+          "female": 42313
+        },
+        {
+          "ageBand": "65-69",
+          "male": 22294,
+          "female": 40879
+        },
+        {
+          "ageBand": "70-74",
+          "male": 17093,
+          "female": 36450
+        },
+        {
+          "ageBand": "75-79",
+          "male": 7282,
+          "female": 17922
+        },
+        {
+          "ageBand": "80-84",
+          "male": 5517,
+          "female": 18165
+        },
+        {
+          "ageBand": "85+",
+          "male": 3714,
+          "female": 13879
+        }
+      ],
+      "sourceId": "chelyabstat-municipal-age-sex-2023-chelyabinsk"
+    },
+    {
+      "year": 2024,
+      "asOf": "2024-01-01",
+      "population": 1177058,
+      "male": 529412,
+      "female": 647646,
+      "ageSex": [
+        {
+          "ageBand": "0-4",
+          "male": 31153,
+          "female": 28772
+        },
+        {
+          "ageBand": "5-9",
+          "male": 39750,
+          "female": 36822
+        },
+        {
+          "ageBand": "10-14",
+          "male": 38014,
+          "female": 34679
+        },
+        {
+          "ageBand": "15-19",
+          "male": 31657,
+          "female": 29939
+        },
+        {
+          "ageBand": "20-24",
+          "male": 28623,
+          "female": 28437
+        },
+        {
+          "ageBand": "25-29",
+          "male": 29370,
+          "female": 28893
+        },
+        {
+          "ageBand": "30-34",
+          "male": 44641,
+          "female": 51717
+        },
+        {
+          "ageBand": "35-39",
+          "male": 54690,
+          "female": 61329
+        },
+        {
+          "ageBand": "40-44",
+          "male": 45704,
+          "female": 52594
+        },
+        {
+          "ageBand": "45-49",
+          "male": 39052,
+          "female": 47066
+        },
+        {
+          "ageBand": "50-54",
+          "male": 34183,
+          "female": 40597
+        },
+        {
+          "ageBand": "55-59",
+          "male": 27196,
+          "female": 35031
+        },
+        {
+          "ageBand": "60-64",
+          "male": 28158,
+          "female": 41526
+        },
+        {
+          "ageBand": "65-69",
+          "male": 22577,
+          "female": 40932
+        },
+        {
+          "ageBand": "70-74",
+          "male": 17260,
+          "female": 37455
+        },
+        {
+          "ageBand": "75-79",
+          "male": 8659,
+          "female": 21227
+        },
+        {
+          "ageBand": "80-84",
+          "male": 4571,
+          "female": 15285
+        },
+        {
+          "ageBand": "85-89",
+          "male": 3180,
+          "female": 11312
+        },
+        {
+          "ageBand": "90-94",
+          "male": 700,
+          "female": 3091
+        },
+        {
+          "ageBand": "95-99",
+          "male": 221,
+          "female": 831
+        },
+        {
+          "ageBand": "100+",
+          "male": 53,
+          "female": 111
+        }
+      ],
+      "sourceId": "chelyabstat-city-age-sex-2024"
+    }
+  ],
+  "history": [
+    {
+      "year": 2021,
+      "asOf": "2021-01-01",
+      "population": 1187960,
+      "sourceId": "chelyabstat-yearbook-2025-table-4-5"
+    },
+    {
+      "year": 2022,
+      "asOf": "2022-01-01",
+      "population": 1186284,
+      "sourceId": "chelyabstat-yearbook-2025-table-4-5"
+    },
+    {
+      "year": 2023,
+      "asOf": "2023-01-01",
+      "population": 1182517,
+      "sourceId": "chelyabstat-yearbook-2025-table-4-5"
+    },
+    {
+      "year": 2024,
+      "asOf": "2024-01-01",
+      "population": 1177058,
+      "sourceId": "chelyabstat-yearbook-2025-table-4-5"
+    }
+  ],
+  "sources": [
+    {
+      "id": "chelyabstat-yearbook-2025-table-4-5",
+      "title": "Челябинскстат: Статистический ежегодник по Челябинской области, 2025, таблица 4.5",
+      "url": "https://74.rosstat.gov.ru/storage/mediabank/%D0%95%D0%B6%D0%B5%D0%B3%D0%BE%D0%B4%D0%BD%D0%B8%D0%BA_2025%281%29.pdf"
+    },
+    {
+      "id": "chelyabstat-municipal-age-sex-2023-chelyabinsk",
+      "title": "Численность населения по полу и возрасту по городским округам, муниципальному округу и муниципальным районам Челябинской области на 1 января 2023 года",
+      "url": "https://74.rosstat.gov.ru/storage/mediabank/%D0%9D%D0%B0%D1%81%D0%B5%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BF%D0%BE%20%D0%BF%D0%BE%D0%BB%D1%83%20%D0%B8%20%D0%B2%D0%BE%D0%B7%D1%80%D0%B0%D1%81%D1%82%D1%83%20%D0%BD%D0%B0%201%20%D1%8F%D0%BD%D0%B2%D0%B0%D1%80%D1%8F%202023%20%D0%B3.xlsx",
+      "publishedAt": "2023-09-01",
+      "sha256": "741a4fd1f755bfae9f38df8371a422f0ceb1c1e049092758f4eaab3f2b3901a5"
+    },
+    {
+      "id": "chelyabstat-city-age-sex-2024",
+      "title": "Численность населения по полу и возрасту по городам с населением 100 тысяч человек и более на 1 января 2024 года",
+      "url": "https://74.rosstat.gov.ru/storage/mediabank/%D0%A7%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D1%8C%20%D0%BF%D0%BE%20%D0%BF%D0%BE%D0%BB%D1%83%20%D0%B8%20%D0%B2%D0%BE%D0%B7%D1%80%D0%B0%D1%81%D1%82%D1%83%20%D0%BF%D0%BE%20%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%D0%B0%D0%BC%20100%20%D1%82%D1%8B%D1%81%20%D0%B8%20%D0%B1%D0%BE%D0%BB%D0%B5%D0%B5%20%D0%BD%D0%B0%201%20%D1%8F%D0%BD%D0%B2%D0%B0%D1%80%D1%8F%202024.xlsx",
+      "publishedAt": "2024-09-02",
+      "sha256": "a687c8fea025d8ceb435e4154573bb24cd7a50f75302112667fc93e151016e77"
+    }
+  ],
+  "notes": [
+    "Оценки на 1 января. По примечанию к таблице 4.5 ежегодника, муниципальные значения за 2021–2022 годы приведены без учёта итогов ВПН‑2020; ряд не заявляется как приведённый к единой базе переписи.",
+    "Структура: официальные таблицы по городу Челябинску. Городские итоги сверены с муниципальным рядом Челябинского городского округа; отдельные районы не оценивались.",
+    "Официальные опубликованные оценки, не результат OmniTwin и не научный прогноз. Дата наблюдения отделена от даты публикации.",
+    "Вымышленные персонажи и сценарии 2026–2036 годов составляют отдельный демонстрационный набор, не репрезентативную выборку города.",
+    "Использован небольшой числовой фрагмент с указанием источника. Открытая лицензия на исходные публикации не заявляется."
+  ],
+  "seriesBreaks": [
+    {
+      "year": 2023,
+      "label": "2021–2022: без учёта ВПН‑2020 по муниципальному примечанию источника; сопоставимость редакций ограничена."
+    }
+  ]
+}

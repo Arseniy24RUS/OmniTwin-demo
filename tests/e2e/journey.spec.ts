@@ -4,7 +4,7 @@ import { test, expect, openDemo, navigate, navigationItem, waitForRealWorld,
 // The flow under test is: real world -> analytics -> scenario comparison ->
 // resident profile -> real map and labelled local chat -> Back and reload.
 test('desktop connected fictional-data journey', async ({ page, qa }) => {
-  await openDemo(page);
+  await openDemo(page, './#/world?stats=fictional');
   for (const name of ['Живой мир', 'Агенты', 'Сценарии', 'Аналитика', 'О проекте']) {
     await expect(navigationItem(page, name)).toBeVisible();
   }

@@ -4,6 +4,7 @@ import type {
   DemoScenarioId, DemoSnapshot, DemoVehicle, PublicFictionalPersonV1,
 } from '../types';
 import { employmentFor, fictionalProfile, stableHash } from './fictionalProfile.mjs';
+import { validateObservedCity, type ObservedCityReferenceV1 } from './observed';
 
 const ROOT = 'RU-CHE-SET';
 const territoryAlias = (id: string) => id === 'chelyabinsk' ? ROOT : id;
@@ -60,6 +61,7 @@ function sampleRoad(road: Road, progress: number): [number, number] {
 export class StaticDemoProvider {
   readonly territories;
   readonly scenarios;
+  observedCity: ObservedCityReferenceV1 | null = null;
   cityPack: DemoCityPackManifestV1 | null = null;
   cityPackStatus: 'not_loaded' | 'verified' | 'streaming_fallback' = 'not_loaded';
   cityPackError: string | null = null;
@@ -91,7 +93,7 @@ export class StaticDemoProvider {
     if (!response.ok) throw new Error(`Demo manifest unavailable (${response.status})`);
     const manifest = await response.json() as DemoDatasetManifestV1;
     if (manifest.contract !== 'DemoDatasetManifestV1' || manifest.scientificClaim !== false || manifest.predictiveValidation !== false) throw new Error('Unsafe demo manifest');
-    const read = async (key: 'dataset' | 'legacy') => {
+    const read = async (key: 'dataset' | 'legacy' | 'observedCity') => {
       const asset = manifest.assets[key];
       if (!asset || !/^[a-f0-9]{64}$/.test(asset.sha256)) throw new Error(`Missing verified demo asset: ${key}`);
       const url = new URL(asset.url, manifestUrl);
@@ -105,8 +107,9 @@ export class StaticDemoProvider {
       if (hash !== asset.sha256) throw new Error(`Demo ${key} hash mismatch`);
       return JSON.parse(new TextDecoder().decode(bytes));
     };
-    const [dataset, legacy] = await Promise.all([read('dataset'), read('legacy')]);
+    const [dataset, legacy, observed] = await Promise.all([read('dataset'), read('legacy'), read('observedCity')]);
     const provider = new StaticDemoProvider(dataset as DemoDataset, manifest, legacy as DemoLegacyExport);
+    provider.observedCity = validateObservedCity(observed);
     await provider.loadCityPack(root.href, signal);
     return provider;
   }

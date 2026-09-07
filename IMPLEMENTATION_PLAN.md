@@ -24,3 +24,13 @@ Unit/TS/build first; one headed Playwright worker with real app/API/tiles. World
 ## Checkpoint outcome
 
 Standalone implementation, clean-install/build gates, 82 frontend tests and seven real production-browser journeys completed. Detailed evidence and remaining public-host/LLM/performance gates: `docs/DEMO_STATUS_RU.md`. External hosting and live chat activation are not implicitly marked complete.
+
+## Observed Chelyabinsk correction — 2026-09-07
+
+Latest owner request supersedes the fictional-only default for city statistics. Preserve the legacy and fictional person/scenario datasets; show a separately verified public municipal reference by default. No national model files or processes are modified.
+
+- Data: exact OKTMO 75701000, observed annual stocks and sex/age partitions from one PMO indicator vintage; corroborate public Chelyabstat releases. Manifest-bound SHA/bytes, source URLs and as-of dates; no local paths, personal records, or inferred missing values in published artifacts.
+- World summary / analytics: real city history and population pyramid. Separate fictional character/scenario context from observed year in URL; weather/time never changes either dataset. No fictional microdata drill-through from observed bars. Unavailable subterritories remain no-data, not city totals redistributed.
+- Visual inventory: SVG history (discrete stocks, explicit census-series break), mirrored five-year age bars (shared zero/scale; open-ended 70+ separate), exact accessible table and source-bearing CSV. Cyan male/history, muted violet female, amber fictional context. Mobile preserves as-of/source and essential values without hover.
+- Ownership: main data/provider/context/integration; observed inventory and primary-source audit are read-only except small new evidence artifacts; analytics specialist owns observed components/export/chart QA; chat specialist owns Node handler compatibility only.
+- Verification: failing data/navigation tests first, reconciliation and SHA gates; short single-worker real production desktop/mobile journeys, open PNG. Verify Pages serves application rather than repository README. Live chat requires private cloud configuration and quota smoke-tests; no exposed key is saved or reused.

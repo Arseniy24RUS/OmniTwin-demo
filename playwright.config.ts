@@ -4,9 +4,11 @@ import { tmpdir } from 'node:os';
 
 const baseURL = process.env.OMNITWIN_DEMO_QA_URL ?? 'http://127.0.0.1:5178/OmniTwin-demo/';
 const target = new URL(baseURL);
-if (target.protocol !== 'http:' || target.hostname !== '127.0.0.1' || !target.port ||
-    target.pathname !== '/OmniTwin-demo/' || target.search || target.hash || target.username || target.password) {
-  throw new Error('QA must target an explicit loopback port and the real /OmniTwin-demo/ base path.');
+const loopbackDemo = target.protocol === 'http:' && target.hostname === '127.0.0.1' && Boolean(target.port);
+const publishedDemo = target.protocol === 'https:' && target.hostname === 'arseniy24rus.github.io' && !target.port;
+if ((!loopbackDemo && !publishedDemo) || target.pathname !== '/OmniTwin-demo/' ||
+    target.search || target.hash || target.username || target.password) {
+  throw new Error('QA must target the explicit demo loopback or the owner-authorized GitHub Pages deployment.');
 }
 
 const artifacts = resolve(process.env.OMNITWIN_DEMO_QA_ARTIFACTS ?? join(tmpdir(), 'omnitwin-demo-qa'));
@@ -37,9 +39,9 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   projects: [
-    { name: 'desktop-1920x1080', testMatch: /(?:journey|map-interactions|visual-readiness|cohort-state)\.spec\.ts/,
+    { name: 'desktop-1920x1080', testMatch: /(?:journey|map-interactions|visual-readiness|cohort-state|observed-reference)\.spec\.ts/,
       use: { viewport: { width: 1920, height: 1080 }, contextOptions: { screen: { width: 1920, height: 1080 }, reducedMotion: 'no-preference' } } },
-    { name: 'portrait-390x844', testMatch: /responsive\.spec\.ts/,
+    { name: 'portrait-390x844', testMatch: /(?:responsive|observed-reference)\.spec\.ts/,
       use: { viewport: { width: 390, height: 844 }, contextOptions: { screen: { width: 390, height: 844 }, reducedMotion: 'no-preference' }, isMobile: true, hasTouch: true } },
     { name: 'landscape-844x390', testMatch: /responsive\.spec\.ts/,
       use: { viewport: { width: 844, height: 390 }, contextOptions: { screen: { width: 844, height: 390 }, reducedMotion: 'no-preference' }, isMobile: true, hasTouch: true } },

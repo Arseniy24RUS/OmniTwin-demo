@@ -23,6 +23,12 @@ using `npm ci --production` when creating the function version. Package verifica
 unpacks into a unique temporary directory beneath `dist`, loads the exact package
 configuration, checks its digest and profile-year consistency, and uses only a
 local upstream test double. It removes that temporary directory afterward.
+The archive's `index.js` uses the documented CommonJS `module.exports.handler`
+entrypoint and dynamically imports `src/runtime.mjs`; the internal modules remain
+ESM. The entrypoint test calls it in a child process with an empty environment
+and network disabled. Archive verification also checks `require('./index.js')`.
+This removes reliance on undocumented ESM entrypoint loading, but does not replace
+a real Yandex runtime smoke-test. See the [handler contract](https://yandex.cloud/ru/docs/functions/lang/nodejs/handler).
 The function obtains short-lived IAM credentials from the documented
 [function metadata endpoint](https://yandex.cloud/ru/docs/functions/operations/function-sa),
 refreshes them on use based on `expires_in` (including after idle), and passes

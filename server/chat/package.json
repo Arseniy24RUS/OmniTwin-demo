@@ -2,7 +2,7 @@
   "name": "@omnitwin-demo/chat-function",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
+  "type": "commonjs",
   "engines": { "node": ">=22" },
   "scripts": {
     "test": "node --test test/*.test.mjs",

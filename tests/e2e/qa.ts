@@ -111,10 +111,10 @@ export const test = base.extend<{ qa: QaEvidence }>({
 });
 export { expect };
 
-export async function openDemo(page: Page) {
-  await page.goto('./', { waitUntil: 'domcontentloaded' });
+export async function openDemo(page: Page, entry = './') {
+  await page.goto(entry, { waitUntil: 'domcontentloaded' });
   await expect(page).toHaveTitle(/OmniTwin/i);
-  await expect(page.getByRole('combobox', { name: 'Демографический срез', exact: true })).toBeVisible();
+  await expect(page.getByRole('combobox', { name: 'Территория', exact: true })).toBeVisible();
   const menuWasHidden = !await navigationItem(page, 'Живой мир').isVisible();
   if (menuWasHidden) await page.getByRole('button', { name: 'Открыть меню', exact: true }).click();
   for (const name of ['Живой мир', 'Агенты', 'Сценарии', 'Аналитика', 'О проекте']) {

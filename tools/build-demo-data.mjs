@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import assert from 'node:assert/strict';
 import { stableHash, ageBandFor, employmentFor, fictionalProfile } from '../apps/web/src/demo/data/fictionalProfile.mjs';
+import { buildObservedCity } from './build-observed-data.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const out = join(root, 'apps/web/public/demo');
@@ -136,6 +137,7 @@ const files = {
   'chat-profiles.json': JSON.stringify({ datasetId: DATASET, representation: 'fictional_demo', scientificClaim: false, profiles: [...profileMap.values()] }),
 };
 const assets = { legacy: { url: 'legacy-synthetic-chelyabinsk-v1.json', sha256: sha(legacyBytes), bytes: legacyBytes.length } };
+assets.observedCity = await buildObservedCity(root, out);
 for (const [name, content] of Object.entries(files)) {
   await writeFile(join(out, name), content);
   assets[name === 'dataset.json' ? 'dataset' : 'chatProfiles'] = { url: name, sha256: sha(content), bytes: Buffer.byteLength(content) };

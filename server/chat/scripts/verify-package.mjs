@@ -3,6 +3,7 @@ import { readFile, mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { resolve, dirname, relative, isAbsolute, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createHash } from 'node:crypto';
+import { createRequire } from 'node:module';
 import { unzipSync } from 'fflate';
 import { createHandler } from '../src/handler.mjs';
 import { createQuotaStore } from '../src/quota.mjs';
@@ -25,6 +26,11 @@ try {
     await mkdir(dirname(target), { recursive: true });
     await writeFile(target, bytes);
   }
+  const packageManifest = JSON.parse(await readFile(resolve(stage, 'package.json'), 'utf8'));
+  assert.equal(packageManifest.type, 'commonjs');
+  const entry = createRequire(import.meta.url)(resolve(stage, 'index.js'));
+  assert.deepEqual(Object.keys(entry), ['handler']);
+  assert.equal(typeof entry.handler, 'function');
   const { loadConfig } = await import(pathToFileURL(resolve(stage, 'src/config.mjs')).href);
   // These values are deliberate local test fixtures, never live credentials.
   const env = { OPENROUTER_API_KEY: 'local-test-not-a-real-key', SESSION_SIGNING_SECRET: 'local-test-only-'.repeat(4), ALLOWED_ORIGINS: 'https://example.github.io', PROFILE_MANIFEST_SHA256: evidence.profileSha256, YDB_ENDPOINT: 'grpcs://local-test.invalid', YDB_DATABASE: '/local-test' };
@@ -57,7 +63,7 @@ try {
   assert.equal((await handler(event('/chat', input))).statusCode, 200);
   assert.equal((await handler(event('/chat', input))).statusCode, 409);
   assert.equal(paidCalls, 1); // Counts ONLY the injected local test function.
-  console.log(JSON.stringify({ archiveSha256: evidence.sha256, profiles: config.profiles.size, profileScenarioYearChecks: checked, packageConfigVerified: true, upstream: 'local_test_double_only', networkRequests: 0, liveInferenceVerified: false }));
+  console.log(JSON.stringify({ archiveSha256: evidence.sha256, profiles: config.profiles.size, profileScenarioYearChecks: checked, commonJsEntryVerified: true, packageConfigVerified: true, upstream: 'local_test_double_only', networkRequests: 0, liveInferenceVerified: false }));
 } finally {
   // Delete only this unique directory created under our own generated output.
   const expectedPrefix = `${resolve(output, 'verify-')}`;

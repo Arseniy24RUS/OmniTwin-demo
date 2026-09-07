@@ -7,6 +7,9 @@ export type DemoWeather = 'clear' | 'cloudy' | 'rain' | 'snow';
 export interface DemoCohort { ageBand?: DemoAgeBand; sex?: DemoSex; employment?: DemoEmployment }
 export interface DemoContextV1 {
   datasetId: string;
+  /** Public city observations and fictional scenario states have separate dates. */
+  analyticsSource?: 'observed' | 'fictional';
+  observedYear?: number;
   scenario: DemoScenarioId;
   comparisonScenario?: DemoScenarioId;
   agentQuery?: string;

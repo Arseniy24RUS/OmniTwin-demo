@@ -1,0 +1,35 @@
+{
+  "datasetId": "chelyabstat-municipal-history-reviewed-v1",
+  "representation": "observed_reference",
+  "scope": "small_attributed_public_aggregate_extract",
+  "municipalityOktmo": "75701000",
+  "sourceId": "chelyabstat-yearbook-2025-table-4-5",
+  "source": {
+    "title": "Челябинскстат: Статистический ежегодник по Челябинской области, 2025, таблица 4.5",
+    "url": "https://74.rosstat.gov.ru/storage/mediabank/%D0%95%D0%B6%D0%B5%D0%B3%D0%BE%D0%B4%D0%BD%D0%B8%D0%BA_2025%281%29.pdf",
+    "row": "Челябинский",
+    "referenceDate": "На 1 января указанного года",
+    "footnotePage": 54
+  },
+  "history": [
+    {"year": 2021, "asOf": "2021-01-01", "population": 1187960},
+    {"year": 2022, "asOf": "2022-01-01", "population": 1186284},
+    {"year": 2023, "asOf": "2023-01-01", "population": 1182517},
+    {"year": 2024, "asOf": "2024-01-01", "population": 1177058}
+  ],
+  "noteRu": "Оценки на 1 января. По примечанию к таблице 4.5 ежегодника, муниципальные значения за 2021–2022 годы приведены без учёта итогов ВПН‑2020; ряд не заявляется как приведённый к единой базе переписи.",
+  "review": {
+    "date": "2026-09-07",
+    "publicValuesConfirmed": 4,
+    "localPmoIndicatorCrosscheck": "Y48112014",
+    "mismatches": 0,
+    "excluded": "Earlier unreviewed years, alternative indicator revisions, full source database and local audit records."
+  },
+  "reuse": {
+    "status": "small_confirmed_public_aggregates_with_attribution",
+    "attribution": "Источник: Челябинскстат. Статистический ежегодник по Челябинской области. 2025. Таблица 4.5.",
+    "termsUrl": "https://74.rosstat.gov.ru/inform_uslugi",
+    "sourceSpecificOpenLicense": null,
+    "scopeNote": "Numerical facts extracted with attribution; not redistribution or licensing of the source publication or full database."
+  }
+}

@@ -1,7 +1,7 @@
 import { test, expect, openDemo, navigate, contextInUrl, waitForRealWorld } from './qa';
 
 test('female 18–34 analytics and query pagination comparison URL persistence', async ({ page, qa }) => {
-  await openDemo(page);
+  await openDemo(page, './#/world?stats=fictional');
   await navigate(page, 'Агенты', 'agents');
   const agents = page.getByTestId('agents-view');
   await expect(agents).toBeVisible();

@@ -46,7 +46,10 @@ and [private function invocation by a gateway account](https://yandex.cloud/ru/d
 
 `nodejs22` is a supported runtime in the [official runtime table](https://yandex.cloud/ru/docs/functions/lang/nodejs/).
 Check the package root and export before upload: `index.handler` must resolve to
-the server's generated `index.js` handler. The browser application and its Node
+the server's CommonJS `index.js` export, which dynamically loads the internal
+`src/runtime.mjs` handler. Local and archive tests verify the documented
+[`module.exports.handler` contract](https://yandex.cloud/ru/docs/functions/lang/nodejs/handler).
+The browser application and its Node
 build requirements are separate from the function runtime.
 
 Enter these values in the **function version's console environment settings**:

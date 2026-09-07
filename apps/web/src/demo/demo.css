@@ -6,6 +6,34 @@
 @media(max-height:500px) and (min-width:601px){.app-header{height:49px;min-height:49px}.brand img{height:28px;width:90px}.context-bar{height:43px;min-height:43px}.context-bar select{font-size:11px;min-height:40px}.detail-panel{width:250px}.summary{padding:15px 18px}.summary-section,.summary .source-note{display:none}.panel-heading h2{font-size:16px}.population-row{margin-top:15px}.population-row>strong{font-size:36px}.summary-actions{margin-top:12px}.disclosure{margin-bottom:10px;font-size:10px}.summary>.muted{font-size:10px}.summary-actions button{min-height:36px;font-size:11px}.tour-button{left:12px;top:10px;min-height:36px}.map-tools{left:12px;top:56px}.map-tools button{min-height:38px;width:38px}.presentation-clock{left:61px;right:14px;bottom:26px;padding:7px 10px;gap:9px}.clock-label{min-width:100px}.clock-label strong{font-size:20px}.play-button{width:36px;min-width:36px;height:36px;min-height:36px}.weather-control{display:none}.app-header nav{gap:19px}.app-header nav a{font-size:11px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}.loading-orbit{animation:none}}
 /* Compact styling must not shrink the actual mobile touch targets. */
+.context-bar .statistics-source select{color:#8de0de}
+@media(max-width:600px){
+  .demo-app .context-bar{height:132px;min-height:132px;display:grid;grid-template-columns:minmax(0,1fr) 134px;grid-template-rows:44px 44px 44px;gap:0 8px;padding:0 14px}
+  .context-bar .territory-select{grid-column:1/-1;min-width:0}
+  .context-bar .territory-select select{max-width:100%;width:100%}
+  .context-bar .statistics-source{min-width:0}
+  .context-bar .statistics-source select{max-width:100%;font-size:12px}
+  .context-bar .demo-disclosure{grid-column:1/-1;min-width:0;font-size:10px}
+  .context-bar.context-bar--observed .demo-disclosure:after{content:''}
+  .detail-panel:not(.expanded) .observed-summary{padding:0 18px 10px}
+  .detail-panel:not(.expanded) .observed-summary h2,
+  .detail-panel:not(.expanded) .observed-mini-history,
+  .detail-panel:not(.expanded) .observed-summary-pyramid,
+  .detail-panel:not(.expanded) .observed-summary-actions,
+  .detail-panel:not(.expanded) .observed-character-count,
+  .detail-panel:not(.expanded) .observed-summary-delta{display:none}
+  .detail-panel:not(.expanded) .observed-summary .observed-badge{font-size:10px;padding:3px 6px;margin-bottom:4px}
+  .detail-panel:not(.expanded) .observed-summary-count{margin-top:5px}
+  .detail-panel:not(.expanded) .observed-summary-count strong{font-size:34px}
+  .detail-panel:not(.expanded) .observed-summary-count span{font-size:10px;margin-top:3px}
+  .detail-panel:not(.expanded) .observed-summary .observed-source-caption{margin:4px 0;font-size:9px}
+}
+@media(max-height:500px) and (min-width:601px){
+  .demo-app .context-bar{gap:6px;padding-inline:12px}
+  .context-bar .territory-select select{max-width:190px}
+  .context-bar .statistics-source select{max-width:175px}
+  .context-bar .demo-disclosure{max-width:200px;font-size:9px;white-space:normal;line-height:1.3}
+}
 @media(max-width:600px){
   .context-bar{height:88px;min-height:88px}
   .context-bar select,.context-bar .demo-disclosure{min-height:44px}

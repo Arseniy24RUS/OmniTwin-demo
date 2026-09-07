@@ -70,49 +70,57 @@ export function AgeSexPyramid({ data, title = 'Возрастно-половая
 }
 
 /** Preserve missing-value gaps; an absent year is never a zero or interpolated result. */
-export function linePath(points: readonly ChartPoint[], x: (year: number) => number, y: (value: number) => number): string {
+export function linePath(points: readonly ChartPoint[], x: (year: number) => number, y: (value: number) => number, breakYears: readonly number[] = []): string {
   let connected = false;
+  let previousYear = -Infinity;
   return points.map(point => {
     if (point.value === null) { connected = false; return ''; }
+    if (breakYears.some(year => year > previousYear && year <= point.year)) connected = false;
     const segment = `${connected ? 'L' : 'M'}${x(point.year).toFixed(2)},${y(point.value).toFixed(2)}`;
     connected = true;
+    previousYear = point.year;
     return segment;
   }).filter(Boolean).join(' ');
 }
 
-export function SeriesChart({ series, title, selectedYear, onSelectYear, includeZero = false, unit = 'человек' }: {
+export function SeriesChart({ series, title, selectedYear, onSelectYear, includeZero = false, unit = 'человек', provenanceText = 'Все значения синтетические.', breakYears = [], width = 740 }: {
   series: readonly ChartSeries[];
   title: string;
   selectedYear?: number;
   onSelectYear?: (year: number) => void;
   includeZero?: boolean;
   unit?: string;
+  provenanceText?: string;
+  breakYears?: readonly number[];
+  width?: number;
 }) {
   const titleId = useId();
   const descriptionId = useId();
   const points = series.flatMap(item => item.points).filter((point): point is { year: number; value: number } => point.value !== null);
   if (!points.length) return <p className="da-empty">Для выбранного периода нет значений.</p>;
-  const width = 740; const height = 292;
+  const height = 292;
+  const left = width < 500 ? 76 : 82;
   const years = [...new Set(points.map(point => point.year))].sort((a, b) => a - b);
   const rawMin = Math.min(...points.map(point => point.value), ...(includeZero ? [0] : []));
   const rawMax = Math.max(...points.map(point => point.value), ...(includeZero ? [0] : []));
   const padding = Math.max(1, (rawMax - rawMin) * .13);
   const minimum = rawMin - padding; const maximum = rawMax + padding;
-  const x = (year: number) => 62 + (year - years[0]!) / Math.max(1, years.at(-1)! - years[0]!) * (width - 90);
+  const x = (year: number) => left + (year - years[0]!) / Math.max(1, years.at(-1)! - years[0]!) * (width - left - 28);
   const y = (value: number) => 25 + (1 - (value - minimum) / (maximum - minimum)) * (height - 74);
   return <svg className="da-series" viewBox={`0 0 ${width} ${height}`} role={onSelectYear ? 'group' : 'img'} aria-labelledby={`${titleId} ${descriptionId}`}>
     <title id={titleId}>{title}</title>
-    <desc id={descriptionId}>{series.map(item => `${item.label}: ${item.points.map(point => `${point.year} — ${point.value === null ? 'нет данных' : numberLabel(point.value)}`).join('; ')}`).join('. ')}. Единица: {unit}. Все значения синтетические.</desc>
+    <desc id={descriptionId}>{series.map(item => `${item.label}: ${item.points.map(point => `${point.year} — ${point.value === null ? 'нет данных' : numberLabel(point.value)}`).join('; ')}`).join('. ')}. Единица: {unit}. {provenanceText}</desc>
     {[0, .25, .5, .75, 1].map(fraction => {
       const value = minimum + (maximum - minimum) * fraction;
-      return <g key={fraction} aria-hidden="true"><line x1={62} x2={width - 28} y1={y(value)} y2={y(value)} className="da-gridline" /><text x={53} y={y(value) + 4} textAnchor="end" className="da-svg-tick">{numberLabel(Math.round(value))}</text></g>;
+      return <g key={fraction} aria-hidden="true"><line x1={left} x2={width - 28} y1={y(value)} y2={y(value)} className="da-gridline" /><text x={left - 9} y={y(value) + 4} textAnchor="end" className="da-svg-tick">{numberLabel(Math.round(value))}</text></g>;
     })}
     {minimum <= 0 && maximum >= 0 ? <line x1={62} x2={width - 28} y1={y(0)} y2={y(0)} className="da-zero-line" /> : null}
-    <text x={62} y={13} className="da-svg-caption">{unit}</text>
-    {years.filter((_, index) => index % Math.max(1, Math.ceil(years.length / 6)) === 0 || index === years.length - 1).map(year => <text key={year} x={x(year)} y={height - 18} textAnchor="middle" className="da-svg-tick">{year}</text>)}
+    <text x={left} y={13} className="da-svg-caption">{unit}</text>
+    {years.filter((_, index) => index % Math.max(1, Math.ceil(years.length / (width < 500 ? 3 : 6))) === 0 || index === years.length - 1).map(year => <text key={year} x={x(year)} y={height - 18} textAnchor="middle" className="da-svg-tick">{year}</text>)}
+    {breakYears.filter(year => year >= years[0]! && year <= years.at(-1)!).map(year => <line key={year} data-series-break={year} x1={x(year)} x2={x(year)} y1={24} y2={height - 49} stroke="#f4b24d" strokeDasharray="4 5" strokeOpacity={.7} />)}
     {selectedYear !== undefined && selectedYear >= years[0]! && selectedYear <= years.at(-1)! ? <line x1={x(selectedYear)} x2={x(selectedYear)} y1={24} y2={height - 49} className="da-year-line" /> : null}
     {series.map(item => <g key={item.id}>
-      <path d={linePath(item.points, x, y)} fill="none" stroke={item.color} strokeWidth={2.6} strokeDasharray={item.dash} vectorEffect="non-scaling-stroke" />
+      <path d={linePath(item.points, x, y, breakYears)} fill="none" stroke={item.color} strokeWidth={2.6} strokeDasharray={item.dash} vectorEffect="non-scaling-stroke" />
       {item.points.filter((point): point is {year: number; value: number} => point.value !== null).map(point => {
         const label = `${item.label}, ${point.year}: ${numberLabel(point.value)} ${unit}`;
         return <circle key={point.year} cx={x(point.year)} cy={y(point.value)} r={point.year === selectedYear ? 5 : 3.3} fill={item.color}

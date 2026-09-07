@@ -32,6 +32,17 @@ async function visibleCandidate(page: Page, kind: Candidate['kind']) {
   return null;
 }
 
+async function pauseAtSettledPose(page: Page) {
+  const renderer = page.getByTestId('world-canvas');
+  const beforePauseRevision = Number(await renderer.getAttribute('data-telemetry-flush-revision'));
+  await page.getByRole('button', { name: 'Приостановить движение', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Запустить движение', exact: true })).toBeVisible();
+  await expect.poll(async () => Number(await renderer.getAttribute('data-telemetry-flush-revision'))).toBeGreaterThan(beforePauseRevision);
+  await expect(renderer).toHaveAttribute('data-demo-clock-paused', 'true');
+  await expect.poll(async () => Math.abs(Number(await renderer.getAttribute('data-living-presentation-time-seconds')) -
+    Number(await renderer.getAttribute('data-demo-clock-anchor-seconds')))).toBeLessThan(0.05);
+}
+
 test('live motion and settled pause evidence', async ({ page, qa }) => {
   await openDemo(page);
   await waitForRealWorld(page);
@@ -66,13 +77,7 @@ test('live motion and settled pause evidence', async ({ page, qa }) => {
     timingAttributes, start: motionStart, end: motionEnd });
   await qa.capture('01-moving-world');
 
-  const beforePauseRevision = Number(await renderer.getAttribute('data-telemetry-flush-revision'));
-  await page.getByRole('button', { name: 'Приостановить движение', exact: true }).click();
-  await expect(page.getByRole('button', { name: 'Запустить движение', exact: true })).toBeVisible();
-  await expect.poll(async () => Number(await renderer.getAttribute('data-telemetry-flush-revision'))).toBeGreaterThan(beforePauseRevision);
-  await expect(renderer).toHaveAttribute('data-demo-clock-paused', 'true');
-  await expect.poll(async () => Math.abs(Number(await renderer.getAttribute('data-living-presentation-time-seconds')) -
-    Number(await renderer.getAttribute('data-demo-clock-anchor-seconds')))).toBeLessThan(0.05);
+  await pauseAtSettledPose(page);
   const pausedStart = { candidates: await candidates(page), frames: await renderer.getAttribute('data-deck-rendered-frames'),
     presentationSeconds: await renderer.getAttribute('data-living-presentation-time-seconds') };
   // This is an explicit observation interval for paused stability, not a
@@ -99,6 +104,16 @@ test('real canvas picking, pan and 2D controls', async ({ page, qa }) => {
   await waitForRealWorld(page);
   const renderer = page.getByTestId('world-canvas');
   const initialCamera = Object.fromEntries(['lon', 'lat', 'zoom', 'pitch'].map(key => [key, Number(contextInUrl(page).get(key))]));
+
+  // Stop through the ordinary UI before choosing actual render projections.
+  // This prevents a moving vehicle from leaving its recorded pixel between
+  // telemetry sampling and native input; native hit/identity gates stay exact.
+  await pauseAtSettledPose(page);
+  await qa.record('picking-settled-pose', {
+    paused: await renderer.getAttribute('data-demo-clock-paused'),
+    presentationSeconds: await renderer.getAttribute('data-living-presentation-time-seconds'),
+    anchorSeconds: await renderer.getAttribute('data-demo-clock-anchor-seconds'),
+  });
 
   for (const kind of ['person', 'vehicle', 'building'] as const) {
     await expect.poll(async () => Boolean(await visibleCandidate(page, kind)), { timeout: 20_000 }).toBe(true);
@@ -153,8 +168,19 @@ test('real canvas picking, pan and 2D controls', async ({ page, qa }) => {
   await expect.poll(() => Number(contextInUrl(page).get('pitch'))).toBeCloseTo(0, 6);
   await expect(renderer).toHaveAttribute('data-camera-settled', 'true');
   await qa.capture('03-panned-2d');
+  const before3dRevision = Number(await renderer.getAttribute('data-telemetry-flush-revision'));
   await page.getByRole('button', { name: 'Переключить 2D и 3D', exact: true }).click();
   await expect(renderer).toHaveAttribute('data-scene-mode', '3d');
+  // Sequence completed user actions, not overlapping controlled-camera
+  // transitions. The rapid toggle+reset race remains a separate diagnosis.
+  // Native settled telemetry compares actual/target pitch (within 0.2 degrees),
+  // as well as center, zoom and bearing; pitch itself is not exported in data-*.
+  await expect.poll(() => Number(contextInUrl(page).get('pitch'))).toBeCloseTo(55, 2);
+  await expect.poll(async () => Number(await renderer.getAttribute('data-telemetry-flush-revision'))).toBeGreaterThan(before3dRevision);
+  await expect(renderer).toHaveAttribute('data-camera-settled', 'true');
+  await qa.record('camera-before-center', { context: Object.fromEntries(contextInUrl(page)),
+    targetPitch: contextInUrl(page).get('pitch'),
+    settled: await renderer.getAttribute('data-camera-settled') });
   await page.getByRole('button', { name: 'Центр Челябинска', exact: true }).click();
   for (const [key, value] of Object.entries(initialCamera)) {
     await expect.poll(() => Number(contextInUrl(page).get(key))).toBeCloseTo(value, 4);

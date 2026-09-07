@@ -2,6 +2,16 @@
 
 `DemoAnalytics` and `DemoScenarios` receive the same loaded `StaticDemoProvider` and `DemoContextV1` as the city and person inspectors. They make no API requests and never load a scientific run.
 
+## Official city reference
+
+`DemoAnalytics` defaults to the separate `provider.observedCity` reference; `analyticsSource: 'fictional'` explicitly selects the original character analytics. Unsupported observed territories or unavailable reference data show an explicit no-data state, never synthetic fallback. `observedYear` is independent of the demographic scenario year. The official view never maps an aggregate age/sex group to fictional individual records.
+
+Exports: `ObservedAnalytics({reference, year, onYearChange, onFictional})`; `ObservedSummary({reference, year, onAnalytics, onScenarios, characterCount})`. Summary labels the fictional character count separately, below the dated official population. Scalar history comes from `reference.history ?? reference.snapshots`; selectable years come only from verified age/sex snapshots. Missing historical sex counts display as missing and are not exported as invented values.
+
+The official SVG displays actual closed five-year bands and keeps any open-ended tail (85+ in the reviewed 2023 artifact, 100+ in 2024) outside the equal-width pyramid. No broad-bin expansion or interpolation is performed. The full chart measures its CSS container and recomputes its geometry; the compact summary uses the same bins with fewer labels. Two SVG figures per view, no animation, no added renderer dependency, and 44px year/source/export controls. Mobile stacks the age structure before historical detail and leaves exact tables available below. Main integration owns browser screenshots.
+
+`SeriesChart` accepts optional provenance text and source-revision break years. Revision labels come from the reference metadata, not an assumed explanation such as a particular census adjustment. Source breaks split the line while retaining both published points. Official CSV contains source IDs/URLs, date, territory and OKTMO in every row, historical totals, known sex totals and the selected age partition; it never contains character rows or future scenario years.
+
 ## Preserved from OmniTwin
 
 - Mirrored age/sex SVG pyramid, canonical stock-versus-period rows, latest-stock normalization, signed birth/death/migration components, visible synthetic provenance, and explicit missing values.
@@ -30,4 +40,4 @@ node node_modules/vitest/vitest.mjs run --root apps/web --maxWorkers=1 src/demo/
 node node_modules/typescript/bin/tsc --project apps/web/tsconfig.json --noEmit --pretty false
 ```
 
-The analytical suite contains 26 tests, including 707 selected women aged 18–34 versus 8,246 total people, yearly cohort/list agreement, territory/employment and empty selections, CSV wiring, global A/B rerendering and duplicate-free same-scenario export. Overall rendered desktop/mobile QA belongs to the app integration checks; component tests do not assert browser visual readiness.
+The analytical suite contains 35 tests, including exact official counts and reviewed 2024 age geometry, official/source/date CSV contracts, missing historical sex partitions, open-ended ages, source breaks, unsupported territories, 707 selected fictional women aged 18–34 versus 8,246 fictional people, yearly cohort/list agreement, CSV wiring, global A/B rerendering and duplicate-free same-scenario export. Overall rendered desktop/mobile QA belongs to the app integration checks; component tests do not assert browser visual readiness.

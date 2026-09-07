@@ -15,6 +15,11 @@
       "sha256": "f5d8e77114be331f6cec0e952a93bea2fb25f35a34500f943f1f094cdde897a1",
       "bytes": 79804
     },
+    "observedCity": {
+      "url": "observed-chelyabinsk-v1.json",
+      "bytes": 8871,
+      "sha256": "90ed47c16f968c21303599421f0c9f6fc5bf406e21c2746d86e4d909226dacfd"
+    },
     "dataset": {
       "url": "dataset.json",
       "sha256": "8eb64a711956b802ec70de1f1a1cb1735c529314a9e8b3a2f18aed4e869b8eee",
