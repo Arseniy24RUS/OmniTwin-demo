@@ -10,6 +10,11 @@ playwright-report/
 test-results/
 *.zip
 .deploy-state/
+.firebase/
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+.secret.local
 data/observed/source/
 data/observed/chelyabinsk-pmo-extract.json
 .DS_Store

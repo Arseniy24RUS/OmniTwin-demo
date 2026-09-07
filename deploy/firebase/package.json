@@ -1,0 +1,17 @@
+{
+  "name": "omnitwin-firebase-chat",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "index.mjs",
+  "engines": { "node": "22" },
+  "scripts": {
+    "stage": "node scripts/stage.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check": "node --check template/index.mjs && node --check template/runtime.mjs && node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "firebase-admin": "14.3.0",
+    "firebase-functions": "7.3.2"
+  }
+}

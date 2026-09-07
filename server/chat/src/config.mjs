@@ -30,8 +30,19 @@ export function validateManifest(manifest) {
   return { datasetId: manifest.datasetId, profiles };
 }
 
-export async function loadConfig(env = process.env) {
-  const required = ['OPENROUTER_API_KEY', 'SESSION_SIGNING_SECRET', 'ALLOWED_ORIGINS', 'PROFILE_MANIFEST_SHA256', 'YDB_ENDPOINT', 'YDB_DATABASE'];
+export function validateStorageConfiguration(env, { storage = 'ydb' } = {}) {
+  if (storage === 'firestore') {
+    const collection = env.FIRESTORE_COLLECTION ?? 'demo_chat_state';
+    if (typeof collection !== 'string' || !/^[a-z][a-z0-9_]{0,62}$/.test(collection)) throw new Error('Invalid Firestore collection.');
+    return { firestore: { collection } };
+  }
+  if (storage !== 'ydb' || !text(env.YDB_ENDPOINT, 1000) || !text(env.YDB_DATABASE, 1000)) throw new Error('Missing storage configuration.');
+  return { ydb: { endpoint: env.YDB_ENDPOINT, database: env.YDB_DATABASE, table: env.YDB_TABLE ?? 'demo_chat_state' } };
+}
+
+export async function loadConfig(env = process.env, options = {}) {
+  const storageConfig = validateStorageConfiguration(env, options);
+  const required = ['OPENROUTER_API_KEY', 'SESSION_SIGNING_SECRET', 'ALLOWED_ORIGINS', 'PROFILE_MANIFEST_SHA256'];
   if (required.some((key) => typeof env[key] !== 'string' || env[key].length === 0)) throw new Error('Missing server configuration.');
   const origins = env.ALLOWED_ORIGINS.split(',').map((value) => value.trim());
   if (!origins.length || origins.length > 5 || origins.some((value) => { try { const url = new URL(value); return url.protocol !== 'https:' || url.origin !== value; } catch { return true; } })) throw new Error('Invalid allowed origins.');
@@ -50,5 +61,5 @@ export async function loadConfig(env = process.env) {
     const generated = fictionalProfile(profile, year, scenario, approved.datasetId, householdSize, undefined);
     return { ...profile, name: generated.name, occupation: generated.occupation, biography: generated.biography, interests: generated.interests, householdSize };
   };
-  return { ...approved, profileForYear, origins, sessionSecret: env.SESSION_SIGNING_SECRET, profileHash: env.PROFILE_MANIFEST_SHA256, apiKey: env.OPENROUTER_API_KEY, ydb: { endpoint: env.YDB_ENDPOINT, database: env.YDB_DATABASE, table: env.YDB_TABLE ?? 'demo_chat_state' } };
+  return { ...approved, profileForYear, origins, sessionSecret: env.SESSION_SIGNING_SECRET, profileHash: env.PROFILE_MANIFEST_SHA256, apiKey: env.OPENROUTER_API_KEY, ...storageConfig };
 }

@@ -1,0 +1,9 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Quota documents are server-only. The runtime uses IAM, not client rules.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

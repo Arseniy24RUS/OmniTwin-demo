@@ -1,0 +1,9 @@
+node_modules/
+functions/
+stage-evidence.json
+firebase-debug.log*
+firestore-debug.log*
+.firebase/
+.env
+.env.*
+.secret.local

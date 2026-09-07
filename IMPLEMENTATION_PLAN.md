@@ -34,3 +34,18 @@ Latest owner request supersedes the fictional-only default for city statistics. 
 - Visual inventory: SVG history (discrete stocks, explicit census-series break), mirrored five-year age bars (shared zero/scale; open-ended 70+ separate), exact accessible table and source-bearing CSV. Cyan male/history, muted violet female, amber fictional context. Mobile preserves as-of/source and essential values without hover.
 - Ownership: main data/provider/context/integration; observed inventory and primary-source audit are read-only except small new evidence artifacts; analytics specialist owns observed components/export/chart QA; chat specialist owns Node handler compatibility only.
 - Verification: failing data/navigation tests first, reconciliation and SHA gates; short single-worker real production desktop/mobile journeys, open PNG. Verify Pages serves application rather than repository README. Live chat requires private cloud configuration and quota smoke-tests; no exposed key is saved or reused.
+
+## Firebase migration — 2026-09-07
+
+Owner explicitly selected Firebase and authorized a dedicated project, usage-based deployment and server-only use of the previously supplied OpenRouter credential. The credential must never enter source, public assets, command-line arguments, repository history, logs or QA artifacts. The prior no-reuse preference above is superseded only by this explicit owner decision; secret handling remains mandatory.
+
+1. Main: verify saved console login, create isolated OmniTwin Demo project, inspect billing availability; do not change or delete Yandex resources or any unrelated project.
+2. Backend worker: framework-neutral HTTPS adapter and Firestore transactional quota adapter, with offline failure/concurrency/body-limit tests first. Preserve Yandex compatibility.
+3. Main: Firebase Functions v2 package, Secret Manager bindings, zero minimum instances, bounded maximum instances/concurrency, private Firestore rules, expiry cleanup and deployment documentation. Keep frontend on Pages and maintain existing API contract.
+4. Acceptance: profile/hash packaging checks, offline server tests, real cloud origin/session/quota/LLM checks, then enable public chat URL and one short real-browser chat journey. No secret-bearing screenshots or payload logs. Do not claim live readiness before actual checks pass.
+
+Scientific sources and running national model remain untouched. Cloud/account authorization or unavailable billing is a real deployment blocker, not a reason to use client-side keys or bypass security. No automatic top-up or new subscription is enabled.
+
+### Owner spending decision — 2026-09-07
+
+Owner explicitly declined an OpenRouter key cap and stated the existing prepaid balance is $8 with automatic replenishment disabled. Do not create or change a key spending/reset limit; do not change auto-top-up. This supersedes the earlier $5 key-cap activation gate. Enable the dedicated public chat function, retain durable server request quotas, run a bounded real inference and idempotency smoke, then publish only the HTTPS runtime endpoint and verify the real Pages resident-chat flow. The stated balance/top-up setting is owner-reported, not independently verified account evidence; no universal cloud-spend cap is claimed.
