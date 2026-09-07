@@ -1,0 +1,604 @@
+{
+  "kind": "UniversalMaterialAtlasV1",
+  "version": "1.0.0",
+  "url": "/assets/universal-materials/omnitwin-lowpoly-atlas-v1.png",
+  "spriteUrl": "/assets/universal-materials/omnitwin-lowpoly-atlas-v1",
+  "sha256": "1d4c14dd75abb1eff647b14e03f437917a4f92da35bf7a539b4842c05f273e28",
+  "bytes": 114761,
+  "width": 512,
+  "height": 512,
+  "pixelRatio": 1,
+  "mapping": {
+    "ground-grass-day": {
+      "width": 32,
+      "height": 32,
+      "x": 4,
+      "y": 4,
+      "pixelRatio": 1
+    },
+    "ground-soil-day": {
+      "width": 32,
+      "height": 32,
+      "x": 44,
+      "y": 4,
+      "pixelRatio": 1
+    },
+    "ground-residential-day": {
+      "width": 32,
+      "height": 32,
+      "x": 44,
+      "y": 4,
+      "pixelRatio": 1
+    },
+    "ground-forest-day": {
+      "width": 32,
+      "height": 32,
+      "x": 84,
+      "y": 4,
+      "pixelRatio": 1
+    },
+    "road-asphalt-day": {
+      "width": 32,
+      "height": 32,
+      "x": 124,
+      "y": 4,
+      "pixelRatio": 1
+    },
+    "water-gloss-0-day": {
+      "width": 32,
+      "height": 32,
+      "x": 164,
+      "y": 4,
+      "pixelRatio": 1
+    },
+    "water-gloss-0-dusk": {
+      "width": 32,
+      "height": 32,
+      "x": 204,
+      "y": 4,
+      "pixelRatio": 1
+    },
+    "water-gloss-0-night": {
+      "width": 32,
+      "height": 32,
+      "x": 244,
+      "y": 4,
+      "pixelRatio": 1
+    },
+    "water-gloss-0-rain": {
+      "width": 32,
+      "height": 32,
+      "x": 284,
+      "y": 4,
+      "pixelRatio": 1
+    },
+    "water-gloss-1-day": {
+      "width": 32,
+      "height": 32,
+      "x": 324,
+      "y": 4,
+      "pixelRatio": 1
+    },
+    "water-gloss-1-dusk": {
+      "width": 32,
+      "height": 32,
+      "x": 364,
+      "y": 4,
+      "pixelRatio": 1
+    },
+    "water-gloss-1-night": {
+      "width": 32,
+      "height": 32,
+      "x": 404,
+      "y": 4,
+      "pixelRatio": 1
+    },
+    "water-gloss-1-rain": {
+      "width": 32,
+      "height": 32,
+      "x": 444,
+      "y": 4,
+      "pixelRatio": 1
+    },
+    "water-gloss-2-day": {
+      "width": 32,
+      "height": 32,
+      "x": 4,
+      "y": 44,
+      "pixelRatio": 1
+    },
+    "water-gloss-2-dusk": {
+      "width": 32,
+      "height": 32,
+      "x": 44,
+      "y": 44,
+      "pixelRatio": 1
+    },
+    "water-gloss-2-night": {
+      "width": 32,
+      "height": 32,
+      "x": 84,
+      "y": 44,
+      "pixelRatio": 1
+    },
+    "water-gloss-2-rain": {
+      "width": 32,
+      "height": 32,
+      "x": 124,
+      "y": 44,
+      "pixelRatio": 1
+    },
+    "water-gloss-3-day": {
+      "width": 32,
+      "height": 32,
+      "x": 164,
+      "y": 44,
+      "pixelRatio": 1
+    },
+    "water-gloss-3-dusk": {
+      "width": 32,
+      "height": 32,
+      "x": 204,
+      "y": 44,
+      "pixelRatio": 1
+    },
+    "water-gloss-3-night": {
+      "width": 32,
+      "height": 32,
+      "x": 244,
+      "y": 44,
+      "pixelRatio": 1
+    },
+    "water-gloss-3-rain": {
+      "width": 32,
+      "height": 32,
+      "x": 284,
+      "y": 44,
+      "pixelRatio": 1
+    },
+    "facade-sandstone": {
+      "width": 32,
+      "height": 32,
+      "x": 324,
+      "y": 44,
+      "pixelRatio": 1
+    },
+    "facade-brick": {
+      "width": 32,
+      "height": 32,
+      "x": 364,
+      "y": 44,
+      "pixelRatio": 1
+    },
+    "facade-concrete": {
+      "width": 32,
+      "height": 32,
+      "x": 404,
+      "y": 44,
+      "pixelRatio": 1
+    },
+    "facade-slate": {
+      "width": 32,
+      "height": 32,
+      "x": 444,
+      "y": 44,
+      "pixelRatio": 1
+    },
+    "facade-ochre": {
+      "width": 32,
+      "height": 32,
+      "x": 4,
+      "y": 84,
+      "pixelRatio": 1
+    },
+    "facade-plaster": {
+      "width": 32,
+      "height": 32,
+      "x": 44,
+      "y": 84,
+      "pixelRatio": 1
+    },
+    "facade-industrial": {
+      "width": 32,
+      "height": 32,
+      "x": 84,
+      "y": 84,
+      "pixelRatio": 1
+    },
+    "facade-civic": {
+      "width": 32,
+      "height": 32,
+      "x": 124,
+      "y": 84,
+      "pixelRatio": 1
+    },
+    "roof-tile": {
+      "width": 32,
+      "height": 32,
+      "x": 164,
+      "y": 84,
+      "pixelRatio": 1
+    },
+    "roof-metal": {
+      "width": 32,
+      "height": 32,
+      "x": 204,
+      "y": 84,
+      "pixelRatio": 1
+    },
+    "roof-bitumen": {
+      "width": 32,
+      "height": 32,
+      "x": 244,
+      "y": 84,
+      "pixelRatio": 1
+    },
+    "roof-concrete": {
+      "width": 32,
+      "height": 32,
+      "x": 284,
+      "y": 84,
+      "pixelRatio": 1
+    },
+    "roof-green": {
+      "width": 32,
+      "height": 32,
+      "x": 324,
+      "y": 84,
+      "pixelRatio": 1
+    },
+    "tree-decid-0": {
+      "width": 48,
+      "height": 64,
+      "x": 4,
+      "y": 140,
+      "pixelRatio": 1
+    },
+    "tree-decid-1": {
+      "width": 48,
+      "height": 64,
+      "x": 60,
+      "y": 140,
+      "pixelRatio": 1
+    },
+    "tree-decid-2": {
+      "width": 48,
+      "height": 64,
+      "x": 116,
+      "y": 140,
+      "pixelRatio": 1
+    },
+    "tree-decid-3": {
+      "width": 48,
+      "height": 64,
+      "x": 172,
+      "y": 140,
+      "pixelRatio": 1
+    },
+    "tree-decid-4": {
+      "width": 48,
+      "height": 64,
+      "x": 228,
+      "y": 140,
+      "pixelRatio": 1
+    },
+    "tree-decid-5": {
+      "width": 48,
+      "height": 64,
+      "x": 284,
+      "y": 140,
+      "pixelRatio": 1
+    },
+    "tree-decid-6": {
+      "width": 48,
+      "height": 64,
+      "x": 340,
+      "y": 140,
+      "pixelRatio": 1
+    },
+    "tree-decid-7": {
+      "width": 48,
+      "height": 64,
+      "x": 396,
+      "y": 140,
+      "pixelRatio": 1
+    },
+    "tree-conifer-0": {
+      "width": 48,
+      "height": 64,
+      "x": 4,
+      "y": 212,
+      "pixelRatio": 1
+    },
+    "tree-conifer-1": {
+      "width": 48,
+      "height": 64,
+      "x": 60,
+      "y": 212,
+      "pixelRatio": 1
+    },
+    "tree-conifer-2": {
+      "width": 48,
+      "height": 64,
+      "x": 116,
+      "y": 212,
+      "pixelRatio": 1
+    },
+    "tree-conifer-3": {
+      "width": 48,
+      "height": 64,
+      "x": 172,
+      "y": 212,
+      "pixelRatio": 1
+    },
+    "tree-shrub-0": {
+      "width": 48,
+      "height": 64,
+      "x": 228,
+      "y": 212,
+      "pixelRatio": 1
+    },
+    "tree-shrub-1": {
+      "width": 48,
+      "height": 64,
+      "x": 284,
+      "y": 212,
+      "pixelRatio": 1
+    },
+    "tree-shrub-2": {
+      "width": 48,
+      "height": 64,
+      "x": 340,
+      "y": 212,
+      "pixelRatio": 1
+    },
+    "tree-shrub-3": {
+      "width": 48,
+      "height": 64,
+      "x": 396,
+      "y": 212,
+      "pixelRatio": 1
+    }
+  },
+  "iconMapping": {
+    "tree-decid-0": {
+      "width": 48,
+      "height": 64,
+      "x": 4,
+      "y": 140,
+      "anchorX": 24,
+      "anchorY": 64,
+      "mask": false
+    },
+    "tree-decid-1": {
+      "width": 48,
+      "height": 64,
+      "x": 60,
+      "y": 140,
+      "anchorX": 24,
+      "anchorY": 64,
+      "mask": false
+    },
+    "tree-decid-2": {
+      "width": 48,
+      "height": 64,
+      "x": 116,
+      "y": 140,
+      "anchorX": 24,
+      "anchorY": 64,
+      "mask": false
+    },
+    "tree-decid-3": {
+      "width": 48,
+      "height": 64,
+      "x": 172,
+      "y": 140,
+      "anchorX": 24,
+      "anchorY": 64,
+      "mask": false
+    },
+    "tree-decid-4": {
+      "width": 48,
+      "height": 64,
+      "x": 228,
+      "y": 140,
+      "anchorX": 24,
+      "anchorY": 64,
+      "mask": false
+    },
+    "tree-decid-5": {
+      "width": 48,
+      "height": 64,
+      "x": 284,
+      "y": 140,
+      "anchorX": 24,
+      "anchorY": 64,
+      "mask": false
+    },
+    "tree-decid-6": {
+      "width": 48,
+      "height": 64,
+      "x": 340,
+      "y": 140,
+      "anchorX": 24,
+      "anchorY": 64,
+      "mask": false
+    },
+    "tree-decid-7": {
+      "width": 48,
+      "height": 64,
+      "x": 396,
+      "y": 140,
+      "anchorX": 24,
+      "anchorY": 64,
+      "mask": false
+    },
+    "tree-conifer-0": {
+      "width": 48,
+      "height": 64,
+      "x": 4,
+      "y": 212,
+      "anchorX": 24,
+      "anchorY": 64,
+      "mask": false
+    },
+    "tree-conifer-1": {
+      "width": 48,
+      "height": 64,
+      "x": 60,
+      "y": 212,
+      "anchorX": 24,
+      "anchorY": 64,
+      "mask": false
+    },
+    "tree-conifer-2": {
+      "width": 48,
+      "height": 64,
+      "x": 116,
+      "y": 212,
+      "anchorX": 24,
+      "anchorY": 64,
+      "mask": false
+    },
+    "tree-conifer-3": {
+      "width": 48,
+      "height": 64,
+      "x": 172,
+      "y": 212,
+      "anchorX": 24,
+      "anchorY": 64,
+      "mask": false
+    },
+    "tree-shrub-0": {
+      "width": 48,
+      "height": 64,
+      "x": 228,
+      "y": 212,
+      "anchorX": 24,
+      "anchorY": 64,
+      "mask": false
+    },
+    "tree-shrub-1": {
+      "width": 48,
+      "height": 64,
+      "x": 284,
+      "y": 212,
+      "anchorX": 24,
+      "anchorY": 64,
+      "mask": false
+    },
+    "tree-shrub-2": {
+      "width": 48,
+      "height": 64,
+      "x": 340,
+      "y": 212,
+      "anchorX": 24,
+      "anchorY": 64,
+      "mask": false
+    },
+    "tree-shrub-3": {
+      "width": 48,
+      "height": 64,
+      "x": 396,
+      "y": 212,
+      "anchorX": 24,
+      "anchorY": 64,
+      "mask": false
+    }
+  },
+  "variants": {
+    "1x": {
+      "pngUrl": "/assets/universal-materials/omnitwin-lowpoly-atlas-v1.png",
+      "pngSha256": "1d4c14dd75abb1eff647b14e03f437917a4f92da35bf7a539b4842c05f273e28",
+      "pngBytes": 114761,
+      "mappingUrl": "/assets/universal-materials/omnitwin-lowpoly-atlas-v1.json",
+      "mappingSha256": "77a60928e60ffcacf99c1c62ecdba32c80f0f035aeabe6bc8db526c37f3bde14",
+      "mappingBytes": 5475,
+      "pixelRatio": 1
+    },
+    "2x": {
+      "pngUrl": "/assets/universal-materials/omnitwin-lowpoly-atlas-v1@2x.png",
+      "pngSha256": "1d4c14dd75abb1eff647b14e03f437917a4f92da35bf7a539b4842c05f273e28",
+      "pngBytes": 114761,
+      "mappingUrl": "/assets/universal-materials/omnitwin-lowpoly-atlas-v1@2x.json",
+      "mappingSha256": "77a60928e60ffcacf99c1c62ecdba32c80f0f035aeabe6bc8db526c37f3bde14",
+      "mappingBytes": 5475,
+      "pixelRatio": 1,
+      "note": "Byte-identical 512px compatibility alias; only one density variant is loaded."
+    }
+  },
+  "groups": {
+    "surface": [
+      "ground-grass-day",
+      "ground-soil-day",
+      "ground-residential-day",
+      "ground-forest-day",
+      "road-asphalt-day"
+    ],
+    "water": [
+      "water-gloss-0-day",
+      "water-gloss-0-dusk",
+      "water-gloss-0-night",
+      "water-gloss-0-rain",
+      "water-gloss-1-day",
+      "water-gloss-1-dusk",
+      "water-gloss-1-night",
+      "water-gloss-1-rain",
+      "water-gloss-2-day",
+      "water-gloss-2-dusk",
+      "water-gloss-2-night",
+      "water-gloss-2-rain",
+      "water-gloss-3-day",
+      "water-gloss-3-dusk",
+      "water-gloss-3-night",
+      "water-gloss-3-rain"
+    ],
+    "facade": [
+      "facade-sandstone",
+      "facade-brick",
+      "facade-concrete",
+      "facade-slate",
+      "facade-ochre",
+      "facade-plaster",
+      "facade-industrial",
+      "facade-civic"
+    ],
+    "roof": [
+      "roof-tile",
+      "roof-metal",
+      "roof-bitumen",
+      "roof-concrete",
+      "roof-green"
+    ],
+    "vegetation": [
+      "tree-decid-0",
+      "tree-decid-1",
+      "tree-decid-2",
+      "tree-decid-3",
+      "tree-decid-4",
+      "tree-decid-5",
+      "tree-decid-6",
+      "tree-decid-7",
+      "tree-conifer-0",
+      "tree-conifer-1",
+      "tree-conifer-2",
+      "tree-conifer-3",
+      "tree-shrub-0",
+      "tree-shrub-1",
+      "tree-shrub-2",
+      "tree-shrub-3"
+    ]
+  },
+  "provenance": {
+    "representation": "visual_synthesis",
+    "generator": "OpenAI built-in image generation",
+    "generatedOn": "2026-08-21",
+    "referenceRole": "style_only",
+    "processing": "Deterministic crop, tone reduction, downsample, wrapped pattern gutters, alpha-fringe cleanup, and transparent-edge RGB dilation."
+  },
+  "rights": {
+    "statement": "Project-local generated visual synthesis; use and redistribution are subject to the OmniTwin project and applicable OpenAI output terms. No third-party dataset rights or factual provenance are claimed by this artwork.",
+    "attributionRequired": false
+  },
+  "attribution": "OmniTwin visual synthesis"
+}

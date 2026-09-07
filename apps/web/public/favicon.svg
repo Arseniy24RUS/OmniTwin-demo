@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="OmniTwin">
+  <rect width="64" height="64" rx="12" fill="#071017"/>
+  <path d="M32 7 54 19.5v25L32 57 10 44.5v-25Z" fill="#0b2730" stroke="#19d7e8" stroke-width="2"/>
+  <path d="m32 7 22 12.5-22 13L10 19.5Zm0 25.5V57" fill="none" stroke="#19d7e8" stroke-width="2"/>
+  <path d="m32 32.5 22-13v25L32 57Z" fill="#0b6670" opacity=".72"/>
+  <path d="m10 19.5 22 13V57L10 44.5Z" fill="#123c48" opacity=".9"/>
+  <circle cx="32" cy="32.5" r="3" fill="#ffb23f"/>
+</svg>

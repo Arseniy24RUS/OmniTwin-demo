@@ -1,0 +1,13 @@
+{
+  "version": "fictional-portraits-v1",
+  "url": "fictional-portraits-v1.png",
+  "sha256": "7dfff7c0f186e861aead702a139d5a9cbc030360eb8461611b066f2fb453ad6d",
+  "bytes": 3152520,
+  "representation": "visual_synthesis",
+  "provenance": "AI-generated illustration using the built-in imagegen tool, 2026-09-07",
+  "columns": ["18-34", "35-54", "55-69", "70+"],
+  "rows": ["male", "female"],
+  "uniqueIdentity": false,
+  "realPersonPhotography": false,
+  "usage": "Shared illustrative profile archetypes only; no inferred ethnicity or photographic identity. Under-18 profiles use a generic icon."
+}

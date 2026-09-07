@@ -1,0 +1,352 @@
+{
+  "ground-grass-day": {
+    "width": 32,
+    "height": 32,
+    "x": 4,
+    "y": 4,
+    "pixelRatio": 1
+  },
+  "ground-soil-day": {
+    "width": 32,
+    "height": 32,
+    "x": 44,
+    "y": 4,
+    "pixelRatio": 1
+  },
+  "ground-residential-day": {
+    "width": 32,
+    "height": 32,
+    "x": 44,
+    "y": 4,
+    "pixelRatio": 1
+  },
+  "ground-forest-day": {
+    "width": 32,
+    "height": 32,
+    "x": 84,
+    "y": 4,
+    "pixelRatio": 1
+  },
+  "road-asphalt-day": {
+    "width": 32,
+    "height": 32,
+    "x": 124,
+    "y": 4,
+    "pixelRatio": 1
+  },
+  "water-gloss-0-day": {
+    "width": 32,
+    "height": 32,
+    "x": 164,
+    "y": 4,
+    "pixelRatio": 1
+  },
+  "water-gloss-0-dusk": {
+    "width": 32,
+    "height": 32,
+    "x": 204,
+    "y": 4,
+    "pixelRatio": 1
+  },
+  "water-gloss-0-night": {
+    "width": 32,
+    "height": 32,
+    "x": 244,
+    "y": 4,
+    "pixelRatio": 1
+  },
+  "water-gloss-0-rain": {
+    "width": 32,
+    "height": 32,
+    "x": 284,
+    "y": 4,
+    "pixelRatio": 1
+  },
+  "water-gloss-1-day": {
+    "width": 32,
+    "height": 32,
+    "x": 324,
+    "y": 4,
+    "pixelRatio": 1
+  },
+  "water-gloss-1-dusk": {
+    "width": 32,
+    "height": 32,
+    "x": 364,
+    "y": 4,
+    "pixelRatio": 1
+  },
+  "water-gloss-1-night": {
+    "width": 32,
+    "height": 32,
+    "x": 404,
+    "y": 4,
+    "pixelRatio": 1
+  },
+  "water-gloss-1-rain": {
+    "width": 32,
+    "height": 32,
+    "x": 444,
+    "y": 4,
+    "pixelRatio": 1
+  },
+  "water-gloss-2-day": {
+    "width": 32,
+    "height": 32,
+    "x": 4,
+    "y": 44,
+    "pixelRatio": 1
+  },
+  "water-gloss-2-dusk": {
+    "width": 32,
+    "height": 32,
+    "x": 44,
+    "y": 44,
+    "pixelRatio": 1
+  },
+  "water-gloss-2-night": {
+    "width": 32,
+    "height": 32,
+    "x": 84,
+    "y": 44,
+    "pixelRatio": 1
+  },
+  "water-gloss-2-rain": {
+    "width": 32,
+    "height": 32,
+    "x": 124,
+    "y": 44,
+    "pixelRatio": 1
+  },
+  "water-gloss-3-day": {
+    "width": 32,
+    "height": 32,
+    "x": 164,
+    "y": 44,
+    "pixelRatio": 1
+  },
+  "water-gloss-3-dusk": {
+    "width": 32,
+    "height": 32,
+    "x": 204,
+    "y": 44,
+    "pixelRatio": 1
+  },
+  "water-gloss-3-night": {
+    "width": 32,
+    "height": 32,
+    "x": 244,
+    "y": 44,
+    "pixelRatio": 1
+  },
+  "water-gloss-3-rain": {
+    "width": 32,
+    "height": 32,
+    "x": 284,
+    "y": 44,
+    "pixelRatio": 1
+  },
+  "facade-sandstone": {
+    "width": 32,
+    "height": 32,
+    "x": 324,
+    "y": 44,
+    "pixelRatio": 1
+  },
+  "facade-brick": {
+    "width": 32,
+    "height": 32,
+    "x": 364,
+    "y": 44,
+    "pixelRatio": 1
+  },
+  "facade-concrete": {
+    "width": 32,
+    "height": 32,
+    "x": 404,
+    "y": 44,
+    "pixelRatio": 1
+  },
+  "facade-slate": {
+    "width": 32,
+    "height": 32,
+    "x": 444,
+    "y": 44,
+    "pixelRatio": 1
+  },
+  "facade-ochre": {
+    "width": 32,
+    "height": 32,
+    "x": 4,
+    "y": 84,
+    "pixelRatio": 1
+  },
+  "facade-plaster": {
+    "width": 32,
+    "height": 32,
+    "x": 44,
+    "y": 84,
+    "pixelRatio": 1
+  },
+  "facade-industrial": {
+    "width": 32,
+    "height": 32,
+    "x": 84,
+    "y": 84,
+    "pixelRatio": 1
+  },
+  "facade-civic": {
+    "width": 32,
+    "height": 32,
+    "x": 124,
+    "y": 84,
+    "pixelRatio": 1
+  },
+  "roof-tile": {
+    "width": 32,
+    "height": 32,
+    "x": 164,
+    "y": 84,
+    "pixelRatio": 1
+  },
+  "roof-metal": {
+    "width": 32,
+    "height": 32,
+    "x": 204,
+    "y": 84,
+    "pixelRatio": 1
+  },
+  "roof-bitumen": {
+    "width": 32,
+    "height": 32,
+    "x": 244,
+    "y": 84,
+    "pixelRatio": 1
+  },
+  "roof-concrete": {
+    "width": 32,
+    "height": 32,
+    "x": 284,
+    "y": 84,
+    "pixelRatio": 1
+  },
+  "roof-green": {
+    "width": 32,
+    "height": 32,
+    "x": 324,
+    "y": 84,
+    "pixelRatio": 1
+  },
+  "tree-decid-0": {
+    "width": 48,
+    "height": 64,
+    "x": 4,
+    "y": 140,
+    "pixelRatio": 1
+  },
+  "tree-decid-1": {
+    "width": 48,
+    "height": 64,
+    "x": 60,
+    "y": 140,
+    "pixelRatio": 1
+  },
+  "tree-decid-2": {
+    "width": 48,
+    "height": 64,
+    "x": 116,
+    "y": 140,
+    "pixelRatio": 1
+  },
+  "tree-decid-3": {
+    "width": 48,
+    "height": 64,
+    "x": 172,
+    "y": 140,
+    "pixelRatio": 1
+  },
+  "tree-decid-4": {
+    "width": 48,
+    "height": 64,
+    "x": 228,
+    "y": 140,
+    "pixelRatio": 1
+  },
+  "tree-decid-5": {
+    "width": 48,
+    "height": 64,
+    "x": 284,
+    "y": 140,
+    "pixelRatio": 1
+  },
+  "tree-decid-6": {
+    "width": 48,
+    "height": 64,
+    "x": 340,
+    "y": 140,
+    "pixelRatio": 1
+  },
+  "tree-decid-7": {
+    "width": 48,
+    "height": 64,
+    "x": 396,
+    "y": 140,
+    "pixelRatio": 1
+  },
+  "tree-conifer-0": {
+    "width": 48,
+    "height": 64,
+    "x": 4,
+    "y": 212,
+    "pixelRatio": 1
+  },
+  "tree-conifer-1": {
+    "width": 48,
+    "height": 64,
+    "x": 60,
+    "y": 212,
+    "pixelRatio": 1
+  },
+  "tree-conifer-2": {
+    "width": 48,
+    "height": 64,
+    "x": 116,
+    "y": 212,
+    "pixelRatio": 1
+  },
+  "tree-conifer-3": {
+    "width": 48,
+    "height": 64,
+    "x": 172,
+    "y": 212,
+    "pixelRatio": 1
+  },
+  "tree-shrub-0": {
+    "width": 48,
+    "height": 64,
+    "x": 228,
+    "y": 212,
+    "pixelRatio": 1
+  },
+  "tree-shrub-1": {
+    "width": 48,
+    "height": 64,
+    "x": 284,
+    "y": 212,
+    "pixelRatio": 1
+  },
+  "tree-shrub-2": {
+    "width": 48,
+    "height": 64,
+    "x": 340,
+    "y": 212,
+    "pixelRatio": 1
+  },
+  "tree-shrub-3": {
+    "width": 48,
+    "height": 64,
+    "x": 396,
+    "y": 212,
+    "pixelRatio": 1
+  }
+}

@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+.cache/
+playwright-report/
+test-results/
+*.zip
+.deploy-state/
+.DS_Store
+apps/web/public/demo/dataset.json
+apps/web/public/demo/chat-profiles.json
+apps/web/src/renderer/**/*.test.ts
+apps/web/src/renderer/**/*.test.tsx
+packages/contracts/src/**/*.test.ts

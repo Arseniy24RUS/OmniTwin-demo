@@ -1,0 +1,43 @@
+{
+  "contract": "DemoDatasetManifestV1",
+  "datasetId": "omnitwin-public-fictional-chelyabinsk-v1",
+  "version": "1.0.0",
+  "representation": "fictional_demo",
+  "scientificClaim": false,
+  "predictiveValidation": false,
+  "startYear": 2026,
+  "endYear": 2036,
+  "initialPopulation": 8246,
+  "seed": 8082026,
+  "assets": {
+    "legacy": {
+      "url": "legacy-synthetic-chelyabinsk-v1.json",
+      "sha256": "f5d8e77114be331f6cec0e952a93bea2fb25f35a34500f943f1f094cdde897a1",
+      "bytes": 79804
+    },
+    "dataset": {
+      "url": "dataset.json",
+      "sha256": "8eb64a711956b802ec70de1f1a1cb1735c529314a9e8b3a2f18aed4e869b8eee",
+      "bytes": 6604798
+    },
+    "chatProfiles": {
+      "url": "chat-profiles.json",
+      "sha256": "99c7599b6c8290f588626a2b82f466f7f201ac211e900f412c1de0ecd45c23f7",
+      "bytes": 17540845
+    }
+  },
+  "provenance": {
+    "source": "OmniTwin authored deterministic public fictional fixture",
+    "notes": "Original legacy aggregates preserved. New people, annual transitions and scenarios are fictional interface examples, not observations, calibrated simulations or predictions. Only demo allocation labels use district identifiers; these do not validate geographic placement.",
+    "sourceHashes": {
+      "events_aggregate.parquet": "8a45caf04c517142ef48de08b83f1451aabb59dac79613759c041fe6d7fbc39b",
+      "flows.parquet": "9b3e588d09685c93f96665b6fa7495bf424ce6935aa23736ddbe134ed740cd4f",
+      "focus_people.parquet": "79b6b2f42a3b2e7f6c07996b15dad4ba211504a5eb195c0a683d36ee11032f2c",
+      "geography.parquet": "e021971320005bf0f3bf669515c953d9af833463c38fd83658d0e8c198dc8ab1",
+      "population.parquet": "9ba4b55cd5543fb8e75599ff9d4ab9fb41f70834a12d5d7d43b96a75e26b7504"
+    }
+  },
+  "licenses": [
+    "Generated fictional fixture: provided for this OmniTwin demonstration. No real person records. Original synthetic aggregate provenance retained."
+  ]
+}

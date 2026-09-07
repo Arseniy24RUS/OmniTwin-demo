@@ -1,0 +1,1244 @@
+{
+  "contract": "DemoThirdPartyLicenseInventoryV1",
+  "reviewedAt": "2026-09-07",
+  "scope": "frontend_lockfile_production_dependency_closure_and_retained_assets",
+  "lockfile": "package-lock.json",
+  "lockfileSha256": "dc429f26f9502083a8caa7e3b72e8ccc1efec8dcdebffa1c66bd8caa18d8a4c7",
+  "packageCount": 92,
+  "packages": [
+    {
+      "name": "@deck.gl/core",
+      "version": "9.3.10",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@deck.gl/core",
+      "notices": [
+        {
+          "path": "node_modules/@deck.gl/core/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "e499a2c2ba3b9faabe91fdfddf43e329439263264b7148e5548d0ec605cce9f2"
+        }
+      ]
+    },
+    {
+      "name": "@deck.gl/layers",
+      "version": "9.3.10",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@deck.gl/layers",
+      "notices": [
+        {
+          "path": "node_modules/@deck.gl/layers/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "e499a2c2ba3b9faabe91fdfddf43e329439263264b7148e5548d0ec605cce9f2"
+        }
+      ]
+    },
+    {
+      "name": "@deck.gl/mapbox",
+      "version": "9.3.10",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@deck.gl/mapbox",
+      "notices": [
+        {
+          "path": "node_modules/@deck.gl/mapbox/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "e499a2c2ba3b9faabe91fdfddf43e329439263264b7148e5548d0ec605cce9f2"
+        }
+      ]
+    },
+    {
+      "name": "@loaders.gl/core",
+      "version": "4.4.5",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@loaders.gl/core",
+      "notices": [
+        {
+          "path": "node_modules/@loaders.gl/core/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "092a0a3ad1bc93e3667f666257cadb82b9a2acac483d6c798df3aed156c876e3"
+        }
+      ]
+    },
+    {
+      "name": "@loaders.gl/images",
+      "version": "4.4.5",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@loaders.gl/images",
+      "notices": [
+        {
+          "path": "node_modules/@loaders.gl/images/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "092a0a3ad1bc93e3667f666257cadb82b9a2acac483d6c798df3aed156c876e3"
+        }
+      ]
+    },
+    {
+      "name": "@loaders.gl/loader-utils",
+      "version": "4.4.5",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@loaders.gl/loader-utils",
+      "notices": [
+        {
+          "path": "node_modules/@loaders.gl/loader-utils/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "092a0a3ad1bc93e3667f666257cadb82b9a2acac483d6c798df3aed156c876e3"
+        }
+      ]
+    },
+    {
+      "name": "@loaders.gl/schema",
+      "version": "4.4.5",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@loaders.gl/schema",
+      "notices": [
+        {
+          "path": "node_modules/@loaders.gl/schema/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "092a0a3ad1bc93e3667f666257cadb82b9a2acac483d6c798df3aed156c876e3"
+        }
+      ]
+    },
+    {
+      "name": "@loaders.gl/schema-utils",
+      "version": "4.4.5",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@loaders.gl/schema-utils",
+      "notices": [
+        {
+          "path": "node_modules/@loaders.gl/schema-utils/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "092a0a3ad1bc93e3667f666257cadb82b9a2acac483d6c798df3aed156c876e3"
+        }
+      ]
+    },
+    {
+      "name": "@loaders.gl/worker-utils",
+      "version": "4.4.5",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@loaders.gl/worker-utils",
+      "notices": [
+        {
+          "path": "node_modules/@loaders.gl/worker-utils/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "092a0a3ad1bc93e3667f666257cadb82b9a2acac483d6c798df3aed156c876e3"
+        }
+      ]
+    },
+    {
+      "name": "@luma.gl/core",
+      "version": "9.3.6",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@luma.gl/core",
+      "notices": [
+        {
+          "path": "node_modules/@luma.gl/core/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "5e792f5eb6708f1f79bbdd8e6193175358c75e6d7c14831c1ea169639aa7d04f"
+        }
+      ]
+    },
+    {
+      "name": "@luma.gl/engine",
+      "version": "9.3.6",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@luma.gl/engine",
+      "notices": [
+        {
+          "path": "node_modules/@luma.gl/engine/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "5e792f5eb6708f1f79bbdd8e6193175358c75e6d7c14831c1ea169639aa7d04f"
+        }
+      ]
+    },
+    {
+      "name": "@luma.gl/shadertools",
+      "version": "9.3.6",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@luma.gl/shadertools",
+      "notices": [
+        {
+          "path": "node_modules/@luma.gl/shadertools/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "5e792f5eb6708f1f79bbdd8e6193175358c75e6d7c14831c1ea169639aa7d04f"
+        }
+      ]
+    },
+    {
+      "name": "@luma.gl/webgl",
+      "version": "9.3.6",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@luma.gl/webgl",
+      "notices": [
+        {
+          "path": "node_modules/@luma.gl/webgl/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "5e792f5eb6708f1f79bbdd8e6193175358c75e6d7c14831c1ea169639aa7d04f"
+        }
+      ]
+    },
+    {
+      "name": "@mapbox/jsonlint-lines-primitives",
+      "version": "2.0.3",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@mapbox/jsonlint-lines-primitives",
+      "notices": [
+        {
+          "path": "node_modules/@mapbox/jsonlint-lines-primitives/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "5dcae6b71018b5454d00228bd08ccbcd9801ee27b19959b88ebcb55602604e6d"
+        }
+      ]
+    },
+    {
+      "name": "@mapbox/point-geometry",
+      "version": "1.1.0",
+      "declaredLicense": "ISC",
+      "packagePath": "node_modules/@mapbox/point-geometry",
+      "notices": [
+        {
+          "path": "node_modules/@mapbox/point-geometry/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "0c0ede0036a425ff8b2d49341ea9aa8eccbeeae1ac4eb59874c9dd8bcf5186d3"
+        }
+      ]
+    },
+    {
+      "name": "@mapbox/tiny-sdf",
+      "version": "2.2.0",
+      "declaredLicense": "BSD-2-Clause",
+      "packagePath": "node_modules/@mapbox/tiny-sdf",
+      "notices": [
+        {
+          "path": "node_modules/@mapbox/tiny-sdf/LICENSE.txt",
+          "kind": "installed_license_file",
+          "sha256": "4f78063c6c0757df950aa3440cef9a2a6bd1c552c994c32237c3acc283e72ee6"
+        }
+      ]
+    },
+    {
+      "name": "@mapbox/unitbezier",
+      "version": "1.0.0",
+      "declaredLicense": "BSD-2-Clause",
+      "packagePath": "node_modules/@mapbox/unitbezier",
+      "notices": [
+        {
+          "path": "node_modules/@mapbox/unitbezier/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "f0dc305ad097eddbc66eebb79288c92d8a5043818ace81206383a4c1a3268fe3"
+        }
+      ]
+    },
+    {
+      "name": "@mapbox/vector-tile",
+      "version": "3.0.0",
+      "declaredLicense": "BSD-3-Clause",
+      "packagePath": "node_modules/@mapbox/vector-tile",
+      "notices": [
+        {
+          "path": "node_modules/@mapbox/vector-tile/LICENSE.txt",
+          "kind": "installed_license_file",
+          "sha256": "5b09a507df6f21d6c2112c46dcaf2927b9dbd8b580a08b542d8ec2f9191d783d"
+        }
+      ]
+    },
+    {
+      "name": "@maplibre/geojson-vt",
+      "version": "6.1.1",
+      "declaredLicense": "ISC",
+      "packagePath": "node_modules/@maplibre/geojson-vt",
+      "notices": [
+        {
+          "path": "node_modules/@maplibre/geojson-vt/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "9eb90e1c920aeccc6d630bd48c1512683d454c669701d46ff8c4c41f922dc4f3"
+        }
+      ]
+    },
+    {
+      "name": "@maplibre/maplibre-gl-style-spec",
+      "version": "26.4.1",
+      "declaredLicense": "ISC",
+      "packagePath": "node_modules/@maplibre/maplibre-gl-style-spec",
+      "notices": [
+        {
+          "path": "node_modules/@maplibre/maplibre-gl-style-spec/LICENSE.txt",
+          "kind": "installed_license_file",
+          "sha256": "bfd4cb919eec574e9213e1e61f880831eb5fc372d467be429fd0a8d51d1df890"
+        }
+      ]
+    },
+    {
+      "name": "@maplibre/mlt",
+      "version": "1.2.1",
+      "declaredLicense": "(MIT OR Apache-2.0)",
+      "packagePath": "node_modules/@maplibre/mlt",
+      "notices": [
+        {
+          "path": "node_modules/@maplibre/mlt/LICENSE.txt",
+          "kind": "installed_license_file",
+          "sha256": "3c0a2cc8dfe44b856c2577b4d6fe30a999557c795686d52b159a6e1659ea8023"
+        }
+      ]
+    },
+    {
+      "name": "@maplibre/vt-pbf",
+      "version": "4.3.2",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@maplibre/vt-pbf",
+      "notices": [
+        {
+          "path": "node_modules/@maplibre/vt-pbf/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "4c61c5753d4b021bc3b07f21d2a830506974ce200c19cfadf3d4a25e747fc853"
+        }
+      ]
+    },
+    {
+      "name": "@math.gl/core",
+      "version": "4.1.0",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@math.gl/core",
+      "notices": [
+        {
+          "path": "node_modules/@math.gl/core/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "0a713c4944b0e1d3104ba648cc9757f592f521144e537689a65574fc28d1b94a"
+        }
+      ]
+    },
+    {
+      "name": "@math.gl/polygon",
+      "version": "4.1.0",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@math.gl/polygon",
+      "notices": [
+        {
+          "path": "node_modules/@math.gl/polygon/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "0a713c4944b0e1d3104ba648cc9757f592f521144e537689a65574fc28d1b94a"
+        }
+      ]
+    },
+    {
+      "name": "@math.gl/sun",
+      "version": "4.1.0",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@math.gl/sun",
+      "notices": [
+        {
+          "path": "node_modules/@math.gl/sun/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "0a713c4944b0e1d3104ba648cc9757f592f521144e537689a65574fc28d1b94a"
+        }
+      ]
+    },
+    {
+      "name": "@math.gl/types",
+      "version": "4.1.0",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@math.gl/types",
+      "notices": [
+        {
+          "path": "node_modules/@math.gl/types/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "0a713c4944b0e1d3104ba648cc9757f592f521144e537689a65574fc28d1b94a"
+        }
+      ]
+    },
+    {
+      "name": "@math.gl/web-mercator",
+      "version": "4.1.0",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@math.gl/web-mercator",
+      "notices": [
+        {
+          "path": "node_modules/@math.gl/web-mercator/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "0a713c4944b0e1d3104ba648cc9757f592f521144e537689a65574fc28d1b94a"
+        }
+      ]
+    },
+    {
+      "name": "@probe.gl/env",
+      "version": "4.1.2",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@probe.gl/env",
+      "notices": [
+        {
+          "path": "node_modules/@probe.gl/env/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "e499a2c2ba3b9faabe91fdfddf43e329439263264b7148e5548d0ec605cce9f2"
+        }
+      ]
+    },
+    {
+      "name": "@probe.gl/log",
+      "version": "4.1.2",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@probe.gl/log",
+      "notices": [
+        {
+          "path": "node_modules/@probe.gl/log/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "e499a2c2ba3b9faabe91fdfddf43e329439263264b7148e5548d0ec605cce9f2"
+        }
+      ]
+    },
+    {
+      "name": "@probe.gl/stats",
+      "version": "4.1.2",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@probe.gl/stats",
+      "notices": [
+        {
+          "path": "node_modules/@probe.gl/stats/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "e499a2c2ba3b9faabe91fdfddf43e329439263264b7148e5548d0ec605cce9f2"
+        }
+      ]
+    },
+    {
+      "name": "@types/geojson",
+      "version": "7946.0.16",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@types/geojson",
+      "notices": [
+        {
+          "path": "node_modules/@types/geojson/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        }
+      ]
+    },
+    {
+      "name": "@types/node",
+      "version": "25.9.5",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@types/node",
+      "notices": [
+        {
+          "path": "node_modules/@types/node/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        }
+      ]
+    },
+    {
+      "name": "@types/offscreencanvas",
+      "version": "2019.7.3",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@types/offscreencanvas",
+      "notices": [
+        {
+          "path": "node_modules/@types/offscreencanvas/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        }
+      ]
+    },
+    {
+      "name": "@vis.gl/react-mapbox",
+      "version": "8.1.2",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@vis.gl/react-mapbox",
+      "notices": [
+        {
+          "path": "node_modules/@vis.gl/react-mapbox/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "c80c7101e5039d2f5359729c5fa6b4d58c6904bf7ba75bd6cafd0078438d6634"
+        }
+      ]
+    },
+    {
+      "name": "@vis.gl/react-maplibre",
+      "version": "8.1.2",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@vis.gl/react-maplibre",
+      "notices": [
+        {
+          "path": "node_modules/@vis.gl/react-maplibre/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "c80c7101e5039d2f5359729c5fa6b4d58c6904bf7ba75bd6cafd0078438d6634"
+        }
+      ]
+    },
+    {
+      "name": "@mapbox/unitbezier",
+      "version": "0.0.1",
+      "declaredLicense": "BSD-2-Clause",
+      "packagePath": "node_modules/@vis.gl/react-maplibre/node_modules/@mapbox/unitbezier",
+      "notices": [
+        {
+          "path": "node_modules/@vis.gl/react-maplibre/node_modules/@mapbox/unitbezier/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "f0dc305ad097eddbc66eebb79288c92d8a5043818ace81206383a4c1a3268fe3"
+        }
+      ]
+    },
+    {
+      "name": "@maplibre/maplibre-gl-style-spec",
+      "version": "19.3.3",
+      "declaredLicense": "ISC",
+      "packagePath": "node_modules/@vis.gl/react-maplibre/node_modules/@maplibre/maplibre-gl-style-spec",
+      "notices": [
+        {
+          "path": "node_modules/@vis.gl/react-maplibre/node_modules/@maplibre/maplibre-gl-style-spec/LICENSE.txt",
+          "kind": "installed_license_file",
+          "sha256": "bfd4cb919eec574e9213e1e61f880831eb5fc372d467be429fd0a8d51d1df890"
+        }
+      ]
+    },
+    {
+      "name": "json-stringify-pretty-compact",
+      "version": "3.0.0",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/@vis.gl/react-maplibre/node_modules/json-stringify-pretty-compact",
+      "notices": [
+        {
+          "path": "node_modules/@vis.gl/react-maplibre/node_modules/json-stringify-pretty-compact/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "d0800a7c9b5f723f7fe029f75d3a9ae44173178b9729d1521e18371ab24ae97a"
+        }
+      ]
+    },
+    {
+      "name": "apache-arrow",
+      "version": "21.2.0",
+      "declaredLicense": "Apache-2.0",
+      "packagePath": "node_modules/apache-arrow",
+      "notices": [
+        {
+          "path": "node_modules/apache-arrow/LICENSE.txt",
+          "kind": "installed_license_file",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        {
+          "path": "node_modules/apache-arrow/NOTICE.txt",
+          "kind": "installed_license_file",
+          "sha256": "f4cdb3db59bdaccc1447eae829905cde61dfd7508dca5c4ebff98a998c036ae6"
+        }
+      ]
+    },
+    {
+      "name": "arr-union",
+      "version": "3.1.0",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/arr-union",
+      "notices": [
+        {
+          "path": "node_modules/arr-union/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "3672fb6ef1c214578dfee689643516c2685f61ab08d130517ca8ea24f383a840"
+        }
+      ]
+    },
+    {
+      "name": "assign-symbols",
+      "version": "1.0.0",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/assign-symbols",
+      "notices": [
+        {
+          "path": "node_modules/assign-symbols/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "0798f37cff4a3f438c071316e41f94ffe110116a313ab0fc4f8caa07218f1f0f"
+        }
+      ]
+    },
+    {
+      "name": "bytewise",
+      "version": "1.1.0",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/bytewise",
+      "notices": [
+        {
+          "path": "tools/build-license-notices.mjs",
+          "kind": "reviewed_primary_source_snapshot",
+          "sourceUrl": "https://deanlandolt.mit-license.org/",
+          "note": "Installed README explicitly links this author-specified MIT notice. Snapshot 2026-09-07; 2026 is the linked page display year, not an assertion of the original package creation year.",
+          "sha256": "a010293ad4f7c5edf61e11a70bdb8ce5692441013f090faacef232775ef4def7"
+        }
+      ]
+    },
+    {
+      "name": "bytewise-core",
+      "version": "1.2.3",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/bytewise-core",
+      "notices": [
+        {
+          "path": "node_modules/bytewise-core/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "2a66f70f3cf92026ac46fb245be2b99be38b2e27a228113b617d0b479db79397"
+        }
+      ]
+    },
+    {
+      "name": "cookie",
+      "version": "1.1.1",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/cookie",
+      "notices": [
+        {
+          "path": "node_modules/cookie/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "c02110eedc16c7114f1a9bdc026c65626ce1d9c7e27fd51a8e0feee8a48a6858"
+        }
+      ]
+    },
+    {
+      "name": "earcut",
+      "version": "2.2.4",
+      "declaredLicense": "ISC",
+      "packagePath": "node_modules/earcut",
+      "notices": [
+        {
+          "path": "node_modules/earcut/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "cd661c432ea8243974e6fde6fc433ebee3e96525ca8b66321b9d9971674ede60"
+        }
+      ]
+    },
+    {
+      "name": "extend-shallow",
+      "version": "2.0.1",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/extend-shallow",
+      "notices": [
+        {
+          "path": "node_modules/extend-shallow/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "daca23d50b0f54d36d6da1b16c82dfea6461e2ae20de0e869957e44cc6d34781"
+        }
+      ]
+    },
+    {
+      "name": "fflate",
+      "version": "0.8.3",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/fflate",
+      "notices": [
+        {
+          "path": "node_modules/fflate/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "0a1df3a083d0c010560aa342e87959c8c1070e6fd54545741f083f22d0c8b551"
+        }
+      ]
+    },
+    {
+      "name": "flatbuffers",
+      "version": "25.9.23",
+      "declaredLicense": "Apache-2.0",
+      "packagePath": "node_modules/flatbuffers",
+      "notices": [
+        {
+          "path": "node_modules/flatbuffers/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ]
+    },
+    {
+      "name": "get-value",
+      "version": "2.0.6",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/get-value",
+      "notices": [
+        {
+          "path": "node_modules/get-value/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "3672fb6ef1c214578dfee689643516c2685f61ab08d130517ca8ea24f383a840"
+        }
+      ]
+    },
+    {
+      "name": "gl-matrix",
+      "version": "3.4.4",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/gl-matrix",
+      "notices": [
+        {
+          "path": "node_modules/gl-matrix/LICENSE.md",
+          "kind": "installed_license_file",
+          "sha256": "af62d31a0cdc1bf95d5e19428c3e0de368b727d9d5b6b6cdb466f8a52e68ad06"
+        }
+      ]
+    },
+    {
+      "name": "is-extendable",
+      "version": "0.1.1",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/is-extendable",
+      "notices": [
+        {
+          "path": "node_modules/is-extendable/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "0798f37cff4a3f438c071316e41f94ffe110116a313ab0fc4f8caa07218f1f0f"
+        }
+      ]
+    },
+    {
+      "name": "is-plain-object",
+      "version": "2.0.4",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/is-plain-object",
+      "notices": [
+        {
+          "path": "node_modules/is-plain-object/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "4cd903859549d4b20b571041f96dfae1136ed079c476126268f9d7cc1b611150"
+        }
+      ]
+    },
+    {
+      "name": "isobject",
+      "version": "3.0.1",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/isobject",
+      "notices": [
+        {
+          "path": "node_modules/isobject/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "0ead7e8cd8b0bc66a981ee69acaf1297ffa838cfce1b156a039bb24f997c0a27"
+        }
+      ]
+    },
+    {
+      "name": "json-stringify-pretty-compact",
+      "version": "4.0.0",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/json-stringify-pretty-compact",
+      "notices": [
+        {
+          "path": "node_modules/json-stringify-pretty-compact/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "2d51145876dda3dd13253463b852aa83b78aa598b90fca1709f39f1740ff9a2f"
+        }
+      ]
+    },
+    {
+      "name": "json-with-bigint",
+      "version": "3.5.12",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/json-with-bigint",
+      "notices": [
+        {
+          "path": "node_modules/json-with-bigint/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "bea8e581121934176676096d9745f71a67bc2f8fe1d5579ba0a977c78902beea"
+        }
+      ]
+    },
+    {
+      "name": "kdbush",
+      "version": "4.1.0",
+      "declaredLicense": "ISC",
+      "packagePath": "node_modules/kdbush",
+      "notices": [
+        {
+          "path": "node_modules/kdbush/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "0aba693a2c2e5b1b1465f9e06d29c21769450add9dbb7dc915b41a60e900196f"
+        }
+      ]
+    },
+    {
+      "name": "lucide-react",
+      "version": "1.33.0",
+      "declaredLicense": "ISC",
+      "packagePath": "node_modules/lucide-react",
+      "notices": [
+        {
+          "path": "node_modules/lucide-react/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+        }
+      ]
+    },
+    {
+      "name": "maplibre-gl",
+      "version": "6.4.1",
+      "declaredLicense": "BSD-3-Clause",
+      "packagePath": "node_modules/maplibre-gl",
+      "notices": [
+        {
+          "path": "node_modules/maplibre-gl/LICENSE.txt",
+          "kind": "installed_license_file",
+          "sha256": "ee5fc05a0677eaf69601d2c7db0d9ecd6cc27c3abc1d0733bc9ed34707cf8ef2"
+        }
+      ]
+    },
+    {
+      "name": "earcut",
+      "version": "3.2.3",
+      "declaredLicense": "ISC",
+      "packagePath": "node_modules/maplibre-gl/node_modules/earcut",
+      "notices": [
+        {
+          "path": "node_modules/maplibre-gl/node_modules/earcut/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "0b348fff56384b43dbb37593906904e56d0f9deb51eae590d4dc6d427fbf1808"
+        }
+      ]
+    },
+    {
+      "name": "minimist",
+      "version": "1.2.8",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/minimist",
+      "notices": [
+        {
+          "path": "node_modules/minimist/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b"
+        }
+      ]
+    },
+    {
+      "name": "mjolnir.js",
+      "version": "3.1.1",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/mjolnir.js",
+      "notices": [
+        {
+          "path": "node_modules/mjolnir.js/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "f8493f7af651a9f241f8476e6c6f1d2b43a51343dc0a08d33cb908bf3c81a0b0"
+        }
+      ]
+    },
+    {
+      "name": "murmurhash-js",
+      "version": "1.0.0",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/murmurhash-js",
+      "notices": [
+        {
+          "path": "node_modules/murmurhash-js/README.md#license-mit",
+          "kind": "installed_readme_license_section",
+          "sha256": "0439b967686bd53ae0f059314fdcf140bbc08002891c54b0ee7597a6bb5ef215"
+        }
+      ]
+    },
+    {
+      "name": "pbf",
+      "version": "5.1.2",
+      "declaredLicense": "BSD-3-Clause",
+      "packagePath": "node_modules/pbf",
+      "notices": [
+        {
+          "path": "node_modules/pbf/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "fdf1d5279107d760c7df8c6edab1faab2b72ba17528273a8b417b08f1e12ebbe"
+        }
+      ]
+    },
+    {
+      "name": "pmtiles",
+      "version": "4.5.0",
+      "declaredLicense": "BSD-3-Clause",
+      "packagePath": "node_modules/pmtiles",
+      "notices": [
+        {
+          "path": "tools/build-license-notices.mjs",
+          "kind": "reviewed_primary_source_snapshot",
+          "sourceUrl": "https://github.com/protomaps/PMTiles/blob/3b10e67edb65c6b04549f74c0279cef8328d859c/LICENSE",
+          "note": "License at the npm distribution gitHead; package metadata declares BSD-3-Clause.",
+          "sha256": "c5430dc019512cc4f4fe8c89e9f57bc5cd3096916847fba4bb7e632d55f86579"
+        }
+      ]
+    },
+    {
+      "name": "potpack",
+      "version": "2.1.0",
+      "declaredLicense": "ISC",
+      "packagePath": "node_modules/potpack",
+      "notices": [
+        {
+          "path": "node_modules/potpack/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "cfec0482fb785fe27e3b368a2d9e84bf7a61b275e83ec582bf288e98cd530bb0"
+        }
+      ]
+    },
+    {
+      "name": "protocol-buffers-schema",
+      "version": "3.6.1",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/protocol-buffers-schema",
+      "notices": [
+        {
+          "path": "node_modules/protocol-buffers-schema/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "3fe8d55a98dbf260eace67c00cf9bc53edb46234e840098a0b93df3096b97fb6"
+        }
+      ]
+    },
+    {
+      "name": "quickselect",
+      "version": "3.0.0",
+      "declaredLicense": "ISC",
+      "packagePath": "node_modules/quickselect",
+      "notices": [
+        {
+          "path": "node_modules/quickselect/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "238ddb00e12a420a54e060afa19bdab4f70bf49e0e2a8ebb1a5e851f9ef447df"
+        }
+      ]
+    },
+    {
+      "name": "react",
+      "version": "19.2.8",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/react",
+      "notices": [
+        {
+          "path": "node_modules/react/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        }
+      ]
+    },
+    {
+      "name": "react-dom",
+      "version": "19.2.8",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/react-dom",
+      "notices": [
+        {
+          "path": "node_modules/react-dom/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        }
+      ]
+    },
+    {
+      "name": "react-map-gl",
+      "version": "8.1.2",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/react-map-gl",
+      "notices": [
+        {
+          "path": "node_modules/react-map-gl/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "c80c7101e5039d2f5359729c5fa6b4d58c6904bf7ba75bd6cafd0078438d6634"
+        }
+      ]
+    },
+    {
+      "name": "react-router",
+      "version": "7.18.2",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/react-router",
+      "notices": [
+        {
+          "path": "node_modules/react-router/LICENSE.md",
+          "kind": "installed_license_file",
+          "sha256": "77c9ee6a9c5d5782fb0c50b50d101189116314c14f7df0a1b0d385fc96a7ba49"
+        }
+      ]
+    },
+    {
+      "name": "react-router-dom",
+      "version": "7.18.2",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/react-router-dom",
+      "notices": [
+        {
+          "path": "node_modules/react-router-dom/LICENSE.md",
+          "kind": "installed_license_file",
+          "sha256": "77c9ee6a9c5d5782fb0c50b50d101189116314c14f7df0a1b0d385fc96a7ba49"
+        }
+      ]
+    },
+    {
+      "name": "resolve-protobuf-schema",
+      "version": "2.1.0",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/resolve-protobuf-schema",
+      "notices": [
+        {
+          "path": "node_modules/resolve-protobuf-schema/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "c0993ca46cd47c09710a977d3a3d51602cff96f19e8d2eb8d5887aa20a7beead"
+        }
+      ]
+    },
+    {
+      "name": "rw",
+      "version": "1.3.3",
+      "declaredLicense": "BSD-3-Clause",
+      "packagePath": "node_modules/rw",
+      "notices": [
+        {
+          "path": "node_modules/rw/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "e273680c43c2ab5bb3b50af28de6a08000b333396834db7bf6129cd6f130c9cd"
+        }
+      ]
+    },
+    {
+      "name": "scheduler",
+      "version": "0.27.0",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/scheduler",
+      "notices": [
+        {
+          "path": "node_modules/scheduler/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        }
+      ]
+    },
+    {
+      "name": "set-cookie-parser",
+      "version": "2.7.2",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/set-cookie-parser",
+      "notices": [
+        {
+          "path": "node_modules/set-cookie-parser/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "c5c6c5183a789d122f267c405f685037efb87e27fcde28ab1dd7378a2d2f5962"
+        }
+      ]
+    },
+    {
+      "name": "set-value",
+      "version": "2.0.1",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/set-value",
+      "notices": [
+        {
+          "path": "node_modules/set-value/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "f4a48aa8354a257785aa534bab2ac5ff2c2a98cd59cdf4a637bb68ee185683f7"
+        }
+      ]
+    },
+    {
+      "name": "sort-asc",
+      "version": "0.2.0",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/sort-asc",
+      "notices": [
+        {
+          "path": "node_modules/sort-asc/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "3fb5194f1bf08e10435bbfa4eadd92b80b20bd2b0db8c8c8714309dc79c72404"
+        }
+      ]
+    },
+    {
+      "name": "sort-desc",
+      "version": "0.2.0",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/sort-desc",
+      "notices": [
+        {
+          "path": "node_modules/sort-desc/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "3fb5194f1bf08e10435bbfa4eadd92b80b20bd2b0db8c8c8714309dc79c72404"
+        }
+      ]
+    },
+    {
+      "name": "sort-object",
+      "version": "3.0.3",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/sort-object",
+      "notices": [
+        {
+          "path": "node_modules/sort-object/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "ceeae5c1e5b1d800c60b30011f721321c7053b7f1bb7987ccc837e5d7d094597"
+        }
+      ]
+    },
+    {
+      "name": "split-string",
+      "version": "3.1.0",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/split-string",
+      "notices": [
+        {
+          "path": "node_modules/split-string/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "f2274cb4b0e7ce5e4d6e9049a44981dd49cbd7b4b0a71aaaeb7b96a0d8d3439d"
+        }
+      ]
+    },
+    {
+      "name": "extend-shallow",
+      "version": "3.0.2",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/split-string/node_modules/extend-shallow",
+      "notices": [
+        {
+          "path": "node_modules/split-string/node_modules/extend-shallow/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "9580cc528a1c38d1560a9d36e34404fe1ea9d8e6f44c596dac2a3104ef63cdab"
+        }
+      ]
+    },
+    {
+      "name": "is-extendable",
+      "version": "1.0.1",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/split-string/node_modules/is-extendable",
+      "notices": [
+        {
+          "path": "node_modules/split-string/node_modules/is-extendable/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "4922620a5741e9d1bb43dde132021a982ae7c545eed1c6e00b555d6fe978005f"
+        }
+      ]
+    },
+    {
+      "name": "three",
+      "version": "0.185.1",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/three",
+      "notices": [
+        {
+          "path": "node_modules/three/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc"
+        }
+      ]
+    },
+    {
+      "name": "tinyqueue",
+      "version": "3.0.0",
+      "declaredLicense": "ISC",
+      "packagePath": "node_modules/tinyqueue",
+      "notices": [
+        {
+          "path": "node_modules/tinyqueue/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "780453e05abdc22307ee01c706a2e73f508d3e484fc4c804485ebf6fe0964694"
+        }
+      ]
+    },
+    {
+      "name": "tslib",
+      "version": "2.8.1",
+      "declaredLicense": "0BSD",
+      "packagePath": "node_modules/tslib",
+      "notices": [
+        {
+          "path": "node_modules/tslib/LICENSE.txt",
+          "kind": "installed_license_file",
+          "sha256": "210b19e543130388c68654b7497e967119ce17145f66ab7d85688fbd70f08751"
+        }
+      ]
+    },
+    {
+      "name": "typewise",
+      "version": "1.0.3",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/typewise",
+      "notices": [
+        {
+          "path": "tools/build-license-notices.mjs",
+          "kind": "reviewed_primary_source_snapshot",
+          "sourceUrl": "https://deanlandolt.mit-license.org/",
+          "note": "Installed README explicitly links this author-specified MIT notice. Snapshot 2026-09-07; 2026 is the linked page display year, not an assertion of the original package creation year.",
+          "sha256": "a010293ad4f7c5edf61e11a70bdb8ce5692441013f090faacef232775ef4def7"
+        }
+      ]
+    },
+    {
+      "name": "typewise-core",
+      "version": "1.2.0",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/typewise-core",
+      "notices": [
+        {
+          "path": "node_modules/typewise-core/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "2a66f70f3cf92026ac46fb245be2b99be38b2e27a228113b617d0b479db79397"
+        }
+      ]
+    },
+    {
+      "name": "undici-types",
+      "version": "7.24.6",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/undici-types",
+      "notices": [
+        {
+          "path": "node_modules/undici-types/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "a6db8096b2707bc0102d256917d4d33f298ba36d8c3f25de067a2b5bb379db27"
+        }
+      ]
+    },
+    {
+      "name": "union-value",
+      "version": "1.0.1",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/union-value",
+      "notices": [
+        {
+          "path": "node_modules/union-value/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "f9f40678b97b1a6aa62cb1f2166d8169bd7ee0616e48db2cdc4618feea9f97f6"
+        }
+      ]
+    },
+    {
+      "name": "zod",
+      "version": "4.4.3",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/zod",
+      "notices": [
+        {
+          "path": "node_modules/zod/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "3f1189b28e3866e0d979968d466b78f813f76827cfdca1fbb124cc0a5c8841f8"
+        }
+      ]
+    },
+    {
+      "name": "zustand",
+      "version": "5.0.15",
+      "declaredLicense": "MIT",
+      "packagePath": "node_modules/zustand",
+      "notices": [
+        {
+          "path": "node_modules/zustand/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "c1e6e266563517467b1bf874817d23e426f3149252bd7d42758cd697514b8417"
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "path": "assets/living-city/licenses/NotoSans-OFL-1.1.txt",
+      "sha256": "0dab92d0544f7b233403f14b84a663bdbfa746982eda629e7f4f9ffe1b036feb",
+      "kind": "retained_asset_license"
+    },
+    {
+      "path": "assets/living-city/licenses/OpenFreeMap-LICENSE.md",
+      "sha256": "d1754e5d291e4e8b9b0047ddba0a6ec75e1046ccd61a02c2cea3dac58f3fe355",
+      "kind": "retained_asset_license"
+    },
+    {
+      "path": "assets/living-city/licenses/SUNCALC-BSD-2-CLAUSE.txt",
+      "sha256": "e8881f5d09f1f3c5e0e6ad4c2120521bad1079246a2af84d756af8ab1a53da3c",
+      "kind": "retained_asset_license"
+    }
+  ],
+  "additionalSourceSnapshots": [
+    {
+      "name": "Inherited Mapbox Open Styles",
+      "sourceUrl": "https://github.com/mapbox/mapbox-gl-styles/blob/master/LICENSE.md",
+      "sha256": "3df1ec573e1f506b749644a4bc6f08591ea4b071b3d8aa737ae5b54d2bd0cb4e"
+    }
+  ],
+  "noticeFile": "THIRD_PARTY_LICENSES.txt",
+  "noticeSha256": "1c1a9da7cdeb0ce991f519a817deb4270f3658c6328417cc5fd44a3808edbda8",
+  "missingLicenses": []
+}

@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.cmd text eol=crlf
+# Content-addressed public resources must retain exact bytes on every host.
+apps/web/public/** -text
+# Preserve verbatim upstream notices, including their original whitespace.
+apps/web/public/THIRD_PARTY_LICENSES.txt -whitespace

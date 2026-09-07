@@ -1,0 +1,401 @@
+{
+  "contract": "DemoCityPackManifestV1",
+  "packId": "chelyabinsk-center-20260830_080001_pt",
+  "provider": "OpenFreeMap / OpenMapTiles",
+  "datasetVersion": "20260830_080001_pt",
+  "sourceTileJSON": "https://tiles.openfreemap.org/planet",
+  "sourceTiles": "https://tiles.openfreemap.org/planet/20260830_080001_pt/{z}/{x}/{y}.pbf",
+  "sourceSnapshot": {
+    "url": "chelyabinsk-center-20260830_080001_pt/source-tilejson.json",
+    "sha256": "026dfee1b5031e4899325f9ce998ed1d5b210035cad5e9d2ceaa293b25d6621f",
+    "bytes": 19246
+  },
+  "sourceSchema": "OpenMapTiles 3.16",
+  "attribution": "<a href=\"https://openfreemap.org\" target=\"_blank\">OpenFreeMap</a> <a href=\"https://www.openmaptiles.org/\" target=\"_blank\">&copy; OpenMapTiles</a> Data from <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">OpenStreetMap</a>",
+  "licenses": [
+    {
+      "name": "OpenStreetMap ODbL 1.0",
+      "url": "https://www.openstreetmap.org/copyright"
+    },
+    {
+      "name": "OpenMapTiles attribution",
+      "url": "https://openmaptiles.org/"
+    },
+    {
+      "name": "OpenFreeMap source/self-hosting",
+      "url": "https://openfreemap.org/"
+    }
+  ],
+  "coverage": "bounded_chelyabinsk_center_not_whole_city",
+  "bounds": [
+    61.34765625,
+    55.128649068488784,
+    61.45751953125,
+    55.19141243527064
+  ],
+  "center": [
+    61.4026,
+    55.1644
+  ],
+  "minzoom": 10,
+  "maxzoom": 14,
+  "note": "Untouched source vector tiles; source-backed layout is display-only. Outside these tile coordinates, use the declared streaming source. No full-city or offline-global completeness claim.",
+  "compilerSourceHashes": {
+    "tools/build-city-pack.mjs": "02f6ef529814ecfa813c8fd9673478f4d5c8cb127d5e1f6e1486ae7b1bf9d1f6",
+    "apps/web/src/demo/cityRoadGraph.ts": "a00b2010609a81db47d7bed289d2299860c6883a561b43e29ae8b334fec7c2e7",
+    "apps/web/src/demo/cityLayout.ts": "ce7a09ef226d501401448ebaf81873b8a5441599242b52e52c07b6948961e726",
+    "apps/web/src/renderer/buildingSource.ts": "d1297449c177f4291e9371456f9ff6c31730897652cd7e4067e49bd25ca8f957"
+  },
+  "tileCount": 42,
+  "tileBytes": 3362641,
+  "tilejson": {
+    "url": "chelyabinsk-center-20260830_080001_pt/tilejson.json",
+    "sha256": "d80b2feebc7ec4729bea7254e31b48b718c23cfdf96df20c7ca624901217ffe9",
+    "bytes": 19277
+  },
+  "layout": {
+    "url": "chelyabinsk-center-20260830_080001_pt/layout-da1ff1cb5af659fa.json",
+    "sha256": "da1ff1cb5af659faafea35a9c2e123132edaf92e568e5632eb54893be4559e3c",
+    "bytes": 208209,
+    "buildings": 808,
+    "roads": 512
+  },
+  "tiles": [
+    {
+      "z": 10,
+      "x": 686,
+      "y": 322,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/10/686/322.pbf",
+      "sha256": "e207916a1e002bb986b977a962f82f2ae0904d16e46ebe61b4c58fb19f022e24",
+      "bytes": 90987
+    },
+    {
+      "z": 10,
+      "x": 686,
+      "y": 323,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/10/686/323.pbf",
+      "sha256": "86805f84ce2fe8d57b8f61d110b532444ab507d582b91ff14d73a1705043b1c3",
+      "bytes": 96085
+    },
+    {
+      "z": 11,
+      "x": 1373,
+      "y": 645,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/11/1373/645.pbf",
+      "sha256": "e1d972e1920b9080a44bcf039694494f9d27afa098c07b8a1ffda747dabfd6a8",
+      "bytes": 55782
+    },
+    {
+      "z": 11,
+      "x": 1373,
+      "y": 646,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/11/1373/646.pbf",
+      "sha256": "de995417808b59effcc4675c38b982760d8032eace0843c62ec7851f51e1ce98",
+      "bytes": 69357
+    },
+    {
+      "z": 12,
+      "x": 2746,
+      "y": 1291,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/12/2746/1291.pbf",
+      "sha256": "32f0e601a4d27d8af3a76d2847db481c65ec511bc372c8e7d44d86bdfb6f91d3",
+      "bytes": 48029
+    },
+    {
+      "z": 12,
+      "x": 2746,
+      "y": 1292,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/12/2746/1292.pbf",
+      "sha256": "4773c2f7953668758f750da39ff202a830aead3e50ab5e9757d09850588b0462",
+      "bytes": 70362
+    },
+    {
+      "z": 12,
+      "x": 2747,
+      "y": 1291,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/12/2747/1291.pbf",
+      "sha256": "c78c87384959c6b92f0bff728ce57da262770865b18ebdbbab0170095ee03187",
+      "bytes": 23692
+    },
+    {
+      "z": 12,
+      "x": 2747,
+      "y": 1292,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/12/2747/1292.pbf",
+      "sha256": "41cc8ea76c0fe53100d265ab13cd9db238c639df16874c297edb453a84dced5a",
+      "bytes": 42308
+    },
+    {
+      "z": 13,
+      "x": 5492,
+      "y": 2583,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/13/5492/2583.pbf",
+      "sha256": "2105ef9a18a4adc774d187941353d18e8b18a7f62c361d4c5a20269dcec5bb45",
+      "bytes": 55441
+    },
+    {
+      "z": 13,
+      "x": 5492,
+      "y": 2584,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/13/5492/2584.pbf",
+      "sha256": "b309e1937fe0a40baf6fcf7040c673e176202cae8acc143b22fc57a8923b777e",
+      "bytes": 56757
+    },
+    {
+      "z": 13,
+      "x": 5492,
+      "y": 2585,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/13/5492/2585.pbf",
+      "sha256": "c7a9554aeb5f6e234885aeeb94f4b1b153adfe9cbc66a4770d7c447911941092",
+      "bytes": 52396
+    },
+    {
+      "z": 13,
+      "x": 5493,
+      "y": 2583,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/13/5493/2583.pbf",
+      "sha256": "04af3678d340075a3672d41dcaa26554a76ac69450fe4ed74da03911d95b9e53",
+      "bytes": 50747
+    },
+    {
+      "z": 13,
+      "x": 5493,
+      "y": 2584,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/13/5493/2584.pbf",
+      "sha256": "93bf7a51183f8ef6e53ae589c384d69902901e6a2e74ee63ae5173972b6d0caf",
+      "bytes": 73298
+    },
+    {
+      "z": 13,
+      "x": 5493,
+      "y": 2585,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/13/5493/2585.pbf",
+      "sha256": "00341df9eafe118fad41934654273f9d6adcac8b1648f254062deb652ee406e5",
+      "bytes": 68412
+    },
+    {
+      "z": 13,
+      "x": 5494,
+      "y": 2583,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/13/5494/2583.pbf",
+      "sha256": "2930b9f66dba1815f1bd92da3664deea138741b81a2426bd3f973778a16c1f13",
+      "bytes": 37946
+    },
+    {
+      "z": 13,
+      "x": 5494,
+      "y": 2584,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/13/5494/2584.pbf",
+      "sha256": "9d110657f11c665859febc202ac3de4836dd6caaf2ad70ba0f1d1bf963958236",
+      "bytes": 53436
+    },
+    {
+      "z": 13,
+      "x": 5494,
+      "y": 2585,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/13/5494/2585.pbf",
+      "sha256": "c6c38e33961ed8ca23db6a04542f239bae3c65715f8f016846b99509156d3e8e",
+      "bytes": 46986
+    },
+    {
+      "z": 14,
+      "x": 10984,
+      "y": 5167,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10984/5167.pbf",
+      "sha256": "ed756409cc4a7629fbffb2a7eaae859d6886fabb6eed69be994860ebaf862bfb",
+      "bytes": 85033
+    },
+    {
+      "z": 14,
+      "x": 10984,
+      "y": 5168,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10984/5168.pbf",
+      "sha256": "b0d305a1644d9fff71491584e8eeacc8af7168913aa76184038c46b95003902b",
+      "bytes": 87045
+    },
+    {
+      "z": 14,
+      "x": 10984,
+      "y": 5169,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10984/5169.pbf",
+      "sha256": "7790dbbd62a06aa13a714396305acced881fd8feb53b8250a912fb2a4d6cb761",
+      "bytes": 64142
+    },
+    {
+      "z": 14,
+      "x": 10984,
+      "y": 5170,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10984/5170.pbf",
+      "sha256": "bd5d27cd5a704518abbf955c6dd24111df37cc1bb7e6d2499c7c2e26a18fd9b0",
+      "bytes": 43910
+    },
+    {
+      "z": 14,
+      "x": 10984,
+      "y": 5171,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10984/5171.pbf",
+      "sha256": "4e11f2b7489a83375af64463184067fe80e96c824edb0a82e443d9693eebcfa5",
+      "bytes": 39115
+    },
+    {
+      "z": 14,
+      "x": 10985,
+      "y": 5167,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10985/5167.pbf",
+      "sha256": "89e9a9982ed8b1d5e89e781b11e926dfd0534ff9f070c1237f97d90108c661db",
+      "bytes": 82927
+    },
+    {
+      "z": 14,
+      "x": 10985,
+      "y": 5168,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10985/5168.pbf",
+      "sha256": "eda67491a7ca3d4aa4c2eb696f6eca7421659a97b75e92d7e8ebe10dbdf6fa95",
+      "bytes": 99726
+    },
+    {
+      "z": 14,
+      "x": 10985,
+      "y": 5169,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10985/5169.pbf",
+      "sha256": "8e811818d196a40393525c9516e57585df514999225fad05841d32ca37983334",
+      "bytes": 147179
+    },
+    {
+      "z": 14,
+      "x": 10985,
+      "y": 5170,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10985/5170.pbf",
+      "sha256": "a2e1d547ad766067ea9ab65426ceb347ea186fdce9409f58abfdfae585bcc4e3",
+      "bytes": 134025
+    },
+    {
+      "z": 14,
+      "x": 10985,
+      "y": 5171,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10985/5171.pbf",
+      "sha256": "66d458e4735fab46be35578f4c5095f09a9588e5e6c84c6b80c06d072e2cf678",
+      "bytes": 104667
+    },
+    {
+      "z": 14,
+      "x": 10986,
+      "y": 5167,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10986/5167.pbf",
+      "sha256": "ac5e1a32d46db464c734039d35039f069a7795ed80c152443bd821ee1e85769e",
+      "bytes": 66056
+    },
+    {
+      "z": 14,
+      "x": 10986,
+      "y": 5168,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10986/5168.pbf",
+      "sha256": "915679c46788e1e9f2cae946acfcce2c486bcf6de023e45623da9905965a5bc7",
+      "bytes": 137018
+    },
+    {
+      "z": 14,
+      "x": 10986,
+      "y": 5169,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10986/5169.pbf",
+      "sha256": "984ee70b05ddeb1d2d9ce556d266cae8d718b5d68838065fed38b1c449286c0c",
+      "bytes": 187836
+    },
+    {
+      "z": 14,
+      "x": 10986,
+      "y": 5170,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10986/5170.pbf",
+      "sha256": "c18c793b75563848c152c967a09218f6fc26e1b6dae07dcf91123f4393390e76",
+      "bytes": 143211
+    },
+    {
+      "z": 14,
+      "x": 10986,
+      "y": 5171,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10986/5171.pbf",
+      "sha256": "d036427ade21f8613581296775c16e4546b35cbddec0aeb8f4542c0a1c691939",
+      "bytes": 90997
+    },
+    {
+      "z": 14,
+      "x": 10987,
+      "y": 5167,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10987/5167.pbf",
+      "sha256": "1b3d744de5f760b4d797430c157a8105610bd455b35667698046b4de94bbd005",
+      "bytes": 60683
+    },
+    {
+      "z": 14,
+      "x": 10987,
+      "y": 5168,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10987/5168.pbf",
+      "sha256": "b26955d14dc2a6354a2c05e1c781566b6bd3c0f68905b5b3c10a4984359bfe29",
+      "bytes": 80046
+    },
+    {
+      "z": 14,
+      "x": 10987,
+      "y": 5169,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10987/5169.pbf",
+      "sha256": "72a096f26a08cde9b534e32618c2f20e7920a67915478c7d3c9e975dca0162b9",
+      "bytes": 120772
+    },
+    {
+      "z": 14,
+      "x": 10987,
+      "y": 5170,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10987/5170.pbf",
+      "sha256": "6312f974a90c67350a4484a2cd7490e7243045dfe937a3d538ad1037e53b3a26",
+      "bytes": 90869
+    },
+    {
+      "z": 14,
+      "x": 10987,
+      "y": 5171,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10987/5171.pbf",
+      "sha256": "4285646afa31d672b93c077b77ad136b2f04c2ea90af1f0f8987cb153c3c9574",
+      "bytes": 96948
+    },
+    {
+      "z": 14,
+      "x": 10988,
+      "y": 5167,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10988/5167.pbf",
+      "sha256": "3021ef1ed42263cfc337f36e5d06ce699288c4b4f7e0b145a429c41b97870f33",
+      "bytes": 58811
+    },
+    {
+      "z": 14,
+      "x": 10988,
+      "y": 5168,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10988/5168.pbf",
+      "sha256": "80501816c8a197293a0562951699f56fc6660f73988ecc1deb04136d36009c78",
+      "bytes": 95839
+    },
+    {
+      "z": 14,
+      "x": 10988,
+      "y": 5169,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10988/5169.pbf",
+      "sha256": "0db2daf97683ed57494c38758a79154bfb3afd98d79b6cbc2f3c6bf3726a872c",
+      "bytes": 84238
+    },
+    {
+      "z": 14,
+      "x": 10988,
+      "y": 5170,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10988/5170.pbf",
+      "sha256": "7c4c1381e2c6ae1e796ce29a59e862cab5f3c426dcd4520e99df03a833dd7b87",
+      "bytes": 71195
+    },
+    {
+      "z": 14,
+      "x": 10988,
+      "y": 5171,
+      "url": "chelyabinsk-center-20260830_080001_pt/tiles/14/10988/5171.pbf",
+      "sha256": "67c9ad946764ac284f7d810afb31dbb0fbab4de43c83b7c665c64bd38da38043",
+      "bytes": 98332
+    }
+  ]
+}

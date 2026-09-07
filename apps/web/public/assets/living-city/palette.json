@@ -1,0 +1,20 @@
+{
+  "schema_version": "omnitwin.living-city.palette.v1",
+  "palette_id": "russian-city-stylized-realism-v1",
+  "scientific_claim": false,
+  "facades": [
+    { "facade": "#c9c2ae", "secondary": "#ede5d4", "roof": "#555c62", "window_day": "#7795a1", "window_night": "#ffc66d" },
+    { "facade": "#b66e51", "secondary": "#d9a989", "roof": "#493f3b", "window_day": "#668894", "window_night": "#ffb95e" },
+    { "facade": "#b7bdaf", "secondary": "#d8d6c9", "roof": "#505a58", "window_day": "#718d9b", "window_night": "#ffd48a" },
+    { "facade": "#d3b88f", "secondary": "#f2dfbc", "roof": "#67463f", "window_day": "#66818c", "window_night": "#ffbf63" },
+    { "facade": "#9ca7ad", "secondary": "#c9d0cf", "roof": "#454b50", "window_day": "#5f7c8e", "window_night": "#ffca72" },
+    { "facade": "#b7a59b", "secondary": "#e2d5c8", "roof": "#594d48", "window_day": "#6b8790", "window_night": "#ffd083" },
+    { "facade": "#9e755c", "secondary": "#c9a183", "roof": "#493b38", "window_day": "#617e8c", "window_night": "#ffb557" },
+    { "facade": "#c8c9c4", "secondary": "#f0eee4", "roof": "#5d6063", "window_day": "#738f99", "window_night": "#ffd596" }
+  ],
+  "procedural_geometry": {
+    "buildings": ["panel_5", "panel_9", "brick_midrise", "stalinist", "tower_16", "industrial", "civic", "private_house", "commercial_pavilion"],
+    "street_furniture": ["tree", "bench", "street_lamp", "transit_stop", "bollard"],
+    "vehicles": ["car", "bus"]
+  }
+}

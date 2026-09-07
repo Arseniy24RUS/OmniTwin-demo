@@ -1,0 +1,16 @@
+-- Run once in the intended YDB Serverless database, using an administrative identity.
+-- Never drop an existing table to apply this schema.
+-- Runtime data: quota counters and request fingerprints/status only.
+-- Do not store messages, model responses, raw client IPs, or credentials here.
+CREATE TABLE `demo_chat_state` (
+    `key` Utf8 NOT NULL,
+    `value` Utf8 NOT NULL,
+    `expires_at` Timestamp NOT NULL,
+    PRIMARY KEY (`key`)
+)
+WITH (
+    TTL = Interval("PT1H") ON `expires_at`
+);
+
+-- TTL deletion may be late. Runtime reads must check expires_at independently.
+-- The one-hour grace period is for physical cleanup, not quota/session validity.

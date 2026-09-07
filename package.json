@@ -1,0 +1,23 @@
+{
+  "name": "omnitwin-demo",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "workspaces": ["apps/*", "packages/*"],
+  "engines": {"node": ">=24 <26"},
+  "scripts": {
+    "dev": "npm run dev --workspace @omnitwin/demo-web",
+    "build": "npm run build --workspace @omnitwin/demo-web",
+    "typecheck": "npm run typecheck --workspace @omnitwin/demo-web",
+    "test": "npm run test --workspace @omnitwin/demo-web",
+    "test:e2e": "playwright test",
+    "data:build": "node tools/build-demo-data.mjs"
+  },
+  "devDependencies": {"@playwright/test": "1.62.1", "@mapbox/vector-tile": "3.0.0", "pbf": "5.1.2"},
+  "overrides": {
+    "@luma.gl/core": "9.3.6",
+    "@luma.gl/engine": "9.3.6",
+    "@luma.gl/shadertools": "9.3.6",
+    "@luma.gl/webgl": "9.3.6"
+  }
+}

@@ -1,0 +1,13 @@
+.demo-city{position:relative;min-width:0;min-height:0;width:100%;height:100%;overflow:hidden;background:#697568}
+.demo-city>.ot-world-scene{position:absolute;inset:0;width:100%;height:100%}
+.demo-city__caption{position:absolute;left:18px;bottom:34px;display:flex;align-items:center;gap:8px;color:#eef5ef;background:rgba(20,35,33,.78);backdrop-filter:blur(12px);border:1px solid #d6e9e126;border-radius:8px;padding:10px 13px;font:500 12px/1.35 system-ui,sans-serif;pointer-events:none}
+.demo-city__live-dot{width:6px;height:6px;border-radius:100%;background:#93cda0;box-shadow:0 0 12px #93cda055}
+.demo-city__counts{color:#c4d1c9;margin-left:6px}
+.demo-city__hint{position:absolute;left:18px;top:18px;border:1px solid #ffffff26;border-radius:7px;background:rgba(20,35,33,.68);backdrop-filter:blur(12px);padding:8px 11px;color:#ebf1eb;font:12px/1.3 system-ui,sans-serif;pointer-events:none}
+.demo-city__notice{position:absolute;right:18px;top:18px;max-width:260px;padding:8px 11px;color:#ffe0ad;background:#443a2ddd;border-radius:7px;font:12px/1.4 system-ui,sans-serif;pointer-events:none}
+.demo-city__offline{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:32px;text-align:center;color:#ecf1e7;background:linear-gradient(145deg,#32443c,#1f302e);font:14px/1.6 system-ui,sans-serif}
+.demo-city__offline strong{font-size:22px;font-weight:500}.demo-city__offline span{max-width:440px;color:#b6c8bb}
+.demo-city .maplibregl-ctrl-bottom-right{bottom:30px}.demo-city .maplibregl-ctrl-attrib{font-size:10px}
+.demo-city__caption{bottom:128px}.demo-city__hint{top:auto;bottom:103px}
+@media(max-width:700px){.demo-city__caption{left:10px;right:48px;bottom:32px;padding:8px;font-size:10px;gap:5px;flex-wrap:wrap}.demo-city__counts{margin-left:0}.demo-city__hint{left:10px;top:10px;font-size:10px;max-width:210px}.demo-city__notice{top:48px;right:10px;max-width:220px;font-size:10px}}
+@media(max-width:700px){.demo-city__caption{top:60px;bottom:auto;right:66px}.demo-city__hint{display:none}}

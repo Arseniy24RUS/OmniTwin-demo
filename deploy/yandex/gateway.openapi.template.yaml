@@ -1,0 +1,66 @@
+# Replace the three REPLACE_* values before submitting this specification.
+# No credentials belong in this file. CORS is a browser policy, not authentication.
+openapi: 3.0.0
+info:
+  title: OmniTwin demo chat
+  version: 1.0.0
+x-yc-apigateway:
+  cors:
+    origin: 'REPLACE_PAGES_ORIGIN'
+    methods:
+      - POST
+      - OPTIONS
+    allowedHeaders:
+      - Content-Type
+    exposedHeaders:
+      - Retry-After
+    credentials: false
+    maxAge: 600
+    optionsSuccessStatus: 204
+paths:
+  /session:
+    # API Gateway handles OPTIONS automatically through the CORS rule above.
+    post:
+      operationId: createDemoSession
+      responses:
+        '200':
+          description: Short-lived demo session
+        '400':
+          description: Invalid request
+        '403':
+          description: Origin rejected
+        '429':
+          description: Demo request limit reached
+        '503':
+          description: Chat service unavailable
+      x-yc-apigateway-integration:
+        type: cloud_functions
+        function_id: 'REPLACE_FUNCTION_ID'
+        tag: '$latest'
+        service_account_id: 'REPLACE_GATEWAY_SERVICE_ACCOUNT_ID'
+        payload_format_version: '1.0'
+  /chat:
+    # API Gateway handles OPTIONS automatically through the CORS rule above.
+    post:
+      operationId: chatWithResident
+      responses:
+        '200':
+          description: Short JSON response from the selected resident
+        '400':
+          description: Invalid request
+        '401':
+          description: Session missing or expired
+        '403':
+          description: Origin rejected
+        '409':
+          description: Request already submitted
+        '429':
+          description: Demo request limit reached
+        '503':
+          description: Chat service unavailable
+      x-yc-apigateway-integration:
+        type: cloud_functions
+        function_id: 'REPLACE_FUNCTION_ID'
+        tag: '$latest'
+        service_account_id: 'REPLACE_GATEWAY_SERVICE_ACCOUNT_ID'
+        payload_format_version: '1.0'

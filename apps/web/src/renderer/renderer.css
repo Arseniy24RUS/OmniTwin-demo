@@ -1,0 +1,199 @@
+.ot-world-scene {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #07131b;
+  isolation: isolate;
+}
+
+.ot-world-scene__diagnostics[hidden] { display: none; }
+
+.ot-world-scene__map,
+.ot-world-scene__fallback,
+.ot-canvas-fallback,
+.ot-world-scene__night,
+.ot-world-scene__rain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ot-world-scene__map {
+  z-index: 0;
+}
+
+.ot-world-scene__fallback {
+  z-index: 1;
+}
+
+.ot-canvas-fallback {
+  display: block;
+  cursor: crosshair;
+  touch-action: manipulation;
+}
+
+.ot-world-scene__night {
+  z-index: 2;
+  pointer-events: none;
+  background: #00101f;
+  mix-blend-mode: multiply;
+  transition: opacity 500ms ease;
+}
+
+.ot-world-scene__rain {
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.34;
+  background-image: repeating-linear-gradient(
+    106deg,
+    transparent 0,
+    transparent 16px,
+    rgba(165, 217, 230, 0.26) 17px,
+    transparent 19px
+  );
+  background-size: 38px 80px;
+  animation: ot-rain 760ms linear infinite;
+}
+
+.ot-world-scene__loading {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translate(-50%, -50%);
+  padding: 11px 15px;
+  border: 1px solid rgba(143, 189, 202, 0.25);
+  border-radius: 7px;
+  color: #cad8dc;
+  background: rgba(3, 12, 17, 0.88);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+  font: 500 12px/1.2 Inter, system-ui, sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.ot-world-scene__spinner {
+  width: 12px;
+  height: 12px;
+  border: 1px solid rgba(49, 219, 228, 0.3);
+  border-top-color: #31dbe4;
+  border-radius: 50%;
+  animation: ot-spin 900ms linear infinite;
+}
+
+.ot-world-scene__diagnostics {
+  position: absolute;
+  z-index: 4;
+  left: 14px;
+  bottom: 66px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.ot-world-scene__capability,
+.ot-world-scene__environment,
+.ot-world-scene__fps {
+  padding: 5px 8px;
+  border: 1px solid rgba(132, 174, 187, 0.24);
+  border-radius: 5px;
+  color: #9fb7bf;
+  background: rgba(3, 12, 17, 0.82);
+  font: 600 9px/1.1 Inter, system-ui, sans-serif;
+  letter-spacing: 0.075em;
+}
+
+.ot-world-scene__environment {
+  max-width: min(340px, 42vw);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0.025em;
+}
+
+.ot-world-scene__fps {
+  min-width: 50px;
+  text-align: center;
+}
+
+.ot-world-scene__capability--ready {
+  color: #82e6d8;
+  border-color: rgba(77, 216, 198, 0.32);
+}
+
+.ot-world-scene__capability--degraded {
+  color: #ffbd78;
+  border-color: rgba(255, 164, 77, 0.52);
+}
+
+.ot-world-scene__worker-warning {
+  position: absolute;
+  z-index: 4;
+  left: 14px;
+  bottom: 66px;
+  pointer-events: none;
+}
+
+.ot-world-scene .maplibregl-canvas {
+  outline: none;
+}
+
+.ot-world-scene .maplibregl-ctrl-bottom-right {
+  right: 14px;
+  bottom: 64px;
+}
+
+.ot-world-scene .maplibregl-ctrl-group {
+  overflow: hidden;
+  border: 1px solid rgba(139, 180, 193, 0.28);
+  border-radius: 8px;
+  background: rgba(5, 15, 21, 0.9);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+.ot-world-scene .maplibregl-ctrl button {
+  width: 34px;
+  height: 34px;
+  filter: invert(1) opacity(0.78);
+}
+
+.ot-world-scene .maplibregl-ctrl-attrib {
+  color: #b9c8cc;
+  background: rgba(3, 12, 17, 0.82);
+  font: 500 9px/1.2 Inter, system-ui, sans-serif;
+}
+
+.ot-world-scene .maplibregl-ctrl-attrib a {
+  color: #c9e0e4;
+}
+
+@keyframes ot-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ot-rain {
+  to { background-position: -38px 80px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ot-world-scene__rain,
+  .ot-world-scene__spinner {
+    animation: none;
+  }
+
+  .ot-world-scene__night {
+    transition: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .ot-world-scene .maplibregl-ctrl button {
+    width: 44px;
+    height: 44px;
+  }
+}

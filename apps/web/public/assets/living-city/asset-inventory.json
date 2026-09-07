@@ -1,0 +1,266 @@
+{
+  "schema_version": "omnitwin.asset-inventory.v1",
+  "inventory_id": "omnitwin-demo-local-renderer-assets-2026-09-07",
+  "generated_at": "2026-09-07T13:50:00Z",
+  "runtime_network_fetches": [
+    {
+      "purpose": "pinned vector tiles outside the bounded local Chelyabinsk city pack",
+      "url": "https://tiles.openfreemap.org/planet/20260830_080001_pt/{z}/{x}/{y}.pbf",
+      "data_origin": "OpenStreetMap contributors via OpenFreeMap/OpenMapTiles",
+      "spdx": "ODbL-1.0",
+      "license_url": "https://opendatacommons.org/licenses/odbl/1-0/",
+      "attribution_url": "https://www.openstreetmap.org/copyright",
+      "required_for": "map coverage outside the 42 source tiles listed in city/manifest.json",
+      "offline_behavior": "bounded local tiles remain available from the deployed site; outside coverage can fail explicitly"
+    }
+  ],
+  "external_environment": {
+    "bundled": false,
+    "reason": "The standalone demo uses an illustrative June 21 day and user-selected visual weather; no weather observations, demographic probabilities, or scientific model results are supplied by this renderer inventory.",
+    "supported_source_contracts": [],
+    "rejected_source_contracts": [
+      {
+        "dataset": "ERA5",
+        "dataset_id": "reanalysis-era5-single-levels",
+        "doi": "10.24381/cds.adbb2d47",
+        "catalog_url": "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels",
+        "license_spdx": "CC-BY-4.0",
+        "distributed_grid_degrees": [0.25, 0.25],
+        "status": "unsupported_spatial_lineage_v0.9",
+        "reason": "Activation remains blocked until raw request/artifact hashes, grid or area selection, aggregation method, geography crosswalk and final revision are attested together."
+      },
+      {
+        "dataset": "ERA5T",
+        "status": "unsupported_preliminary_v0.9",
+        "reason": "The verified ERA5 label is reserved for a pinned final revision."
+      },
+      {
+        "dataset": "ERA5-Land",
+        "dataset_id": "reanalysis-era5-land",
+        "doi": "10.24381/cds.e2161bac",
+        "catalog_url": "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land",
+        "status": "unsupported_v0.9",
+        "reason": "The living-city weather contract requires total_cloud_cover; mixed per-field ERA5 plus ERA5-Land provenance is not implemented."
+      },
+      {
+        "dataset": "generic_external_environment",
+        "status": "unsupported_v0.9",
+        "reason": "The v0.9 scene contract exposes only visual_preset and reanalysis_external weather cycles."
+      }
+    ],
+    "snapshot_contract": {
+      "schema_path": "packages/contracts/schemas/scene-source-snapshot-v1.schema.json",
+      "schema_id": "https://omnitwin.local/schemas/scene-source-snapshot-v1.schema.json",
+      "required_top_level_fields": [
+        "sourceId",
+        "sourceType",
+        "adapter",
+        "provenance",
+        "license",
+        "snapshotAt",
+        "inputPath",
+        "inputSha256",
+        "coverage",
+        "cartographyMetadata",
+        "environmentMetadata",
+        "scientificClaim"
+      ],
+      "required_environment_metadata_fields": [
+        "datasetId",
+        "doi",
+        "variables",
+        "variableUnits",
+        "temporalResolution",
+        "grid",
+        "temporalCoverage",
+        "retrievedAt",
+        "revision"
+      ],
+      "environment_field_json_pointers": [
+        "/properties/sourceId",
+        "/properties/license/properties/name",
+        "/properties/license/properties/url",
+        "/properties/snapshotAt",
+        "/properties/inputSha256",
+        "/properties/coverage/properties/geographyIds",
+        "/properties/environmentMetadata/properties/datasetId",
+        "/properties/environmentMetadata/properties/doi",
+        "/properties/environmentMetadata/properties/variables",
+        "/properties/environmentMetadata/properties/variableUnits",
+        "/properties/environmentMetadata/properties/temporalResolution",
+        "/properties/environmentMetadata/properties/grid",
+        "/properties/environmentMetadata/properties/temporalCoverage",
+        "/properties/environmentMetadata/properties/retrievedAt",
+        "/properties/environmentMetadata/properties/revision"
+      ]
+    },
+    "temporal_mapping": "visual_synthesis",
+    "scientific_claim": false
+  },
+  "budgets": {
+    "map_local_bytes": 1642569,
+    "living_city_metadata_bytes_excluding_inventory": 17303,
+    "universal_material_atlas_disk_bytes": 252298,
+    "universal_material_atlas_decoded_gpu_bytes_with_mipmaps": 1398101,
+    "universal_actor_atlas_disk_bytes": 5804,
+    "universal_actor_atlas_decoded_gpu_bytes_with_mipmaps": 174763,
+    "runtime_3d_binary_asset_bytes": 0
+  },
+  "asset_groups": [
+    {
+      "id": "omnitwin-local-map-style",
+      "upstream_url": "https://tiles.openfreemap.org/styles/liberty",
+      "upstream_version": "OmniTwin authored reduction at git 41a4566c24b26bf910e0201df09347e2fe7d63d2",
+      "accessed_at": "2026-08-19",
+      "spdx": "BSD-3-Clause AND CC-BY-4.0",
+      "license_url": "https://github.com/hyperknot/openfreemap/blob/main/LICENSE.md",
+      "bundled_license_paths": ["assets/living-city/licenses/OpenFreeMap-LICENSE.md"],
+      "attribution": "OpenFreeMap Liberty / OpenMapTiles schema / OpenStreetMap contributors",
+      "recipe": "Original OmniTwin reduced style adapted for a static demo: muted ground, source-backed grass, local glyphs and sprites, and explicit pinned vector tiles with a bounded local city pack. Runtime adds existing atlas facades, roofs, and source-footprint contact shading.",
+      "budget_bytes": 12288,
+      "files": [
+        {
+          "path": "map/openfreemap-liberty.json",
+          "bytes": 10381,
+          "media_type": "application/json",
+          "original_sha256": "95916a8184012eae0708518548cdde971c651bddc67ce456c3d0d20067f8ee20",
+          "output_sha256": "659b6808b1488027878eeefc164ddf8c99fa715d4f538983f949d7bf3618cf3f"
+        }
+      ]
+    },
+    {
+      "id": "openfreemap-noto-sans-glyph-pbf",
+      "upstream_url": "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
+      "upstream_version": "OpenFreeMap endpoint snapshot 2026-08-19, content pinned per-file by SHA-256",
+      "accessed_at": "2026-08-19",
+      "spdx": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "bundled_license_paths": ["assets/living-city/licenses/NotoSans-OFL-1.1.txt"],
+      "attribution": "Noto Sans © The Noto Project Authors; glyph PBF served by OpenFreeMap",
+      "recipe": "Unmodified endpoint responses stored locally; no runtime font request.",
+      "budget_bytes": 1500000,
+      "files": [
+        { "path": "map/fonts/Noto Sans Bold/0-255.pbf", "bytes": 81170, "media_type": "application/x-protobuf", "original_sha256": "f60ce4cb899455c2203bd8293b550394ade53ffce8032bf9cc7f59255e49259c", "output_sha256": "f60ce4cb899455c2203bd8293b550394ade53ffce8032bf9cc7f59255e49259c" },
+        { "path": "map/fonts/Noto Sans Bold/1024-1279.pbf", "bytes": 135287, "media_type": "application/x-protobuf", "original_sha256": "f0ab5cecbf1b1d04e8d38c7d64451a20b5707ab1fc8aa8dbbc1b660905cd4142", "output_sha256": "f0ab5cecbf1b1d04e8d38c7d64451a20b5707ab1fc8aa8dbbc1b660905cd4142" },
+        { "path": "map/fonts/Noto Sans Bold/1280-1535.pbf", "bytes": 83785, "media_type": "application/x-protobuf", "original_sha256": "4e509159894445662d970e1769facbeb68e8aa56bbf19f62a43096f6fdb5627e", "output_sha256": "4e509159894445662d970e1769facbeb68e8aa56bbf19f62a43096f6fdb5627e" },
+        { "path": "map/fonts/Noto Sans Bold/256-511.pbf", "bytes": 134545, "media_type": "application/x-protobuf", "original_sha256": "77c830f114b84a58f8829ca1eac4627a6a688bbce4bdb6a04de00f98fa74bb52", "output_sha256": "77c830f114b84a58f8829ca1eac4627a6a688bbce4bdb6a04de00f98fa74bb52" },
+        { "path": "map/fonts/Noto Sans Bold/4096-4351.pbf", "bytes": 130310, "media_type": "application/x-protobuf", "original_sha256": "23a87dfef6047d32102973aaf736fa4203eb66cbc3c4f46871a80d410efe2ef3", "output_sha256": "23a87dfef6047d32102973aaf736fa4203eb66cbc3c4f46871a80d410efe2ef3" },
+        { "path": "map/fonts/Noto Sans Bold/768-1023.pbf", "bytes": 78937, "media_type": "application/x-protobuf", "original_sha256": "3c7ea7f7b52a97c75bfc123a303badd4fd7c5eaa1bfe66ebaba38cf3fce16ee7", "output_sha256": "3c7ea7f7b52a97c75bfc123a303badd4fd7c5eaa1bfe66ebaba38cf3fce16ee7" },
+        { "path": "map/fonts/Noto Sans Bold/8192-8447.pbf", "bytes": 35678, "media_type": "application/x-protobuf", "original_sha256": "f31c3c9dcacbd7f9760462c0af5017d9c9f2a9543ab4938476f7a13ffabf0acf", "output_sha256": "f31c3c9dcacbd7f9760462c0af5017d9c9f2a9543ab4938476f7a13ffabf0acf" },
+        { "path": "map/fonts/Noto Sans Bold/8448-8703.pbf", "bytes": 44216, "media_type": "application/x-protobuf", "original_sha256": "4ae71fe9df8ddbce5fa437d5d9db6846cdd0fa3dd11d2aff621b62f6a14f4701", "output_sha256": "4ae71fe9df8ddbce5fa437d5d9db6846cdd0fa3dd11d2aff621b62f6a14f4701" },
+        { "path": "map/fonts/Noto Sans Regular/0-255.pbf", "bytes": 76580, "media_type": "application/x-protobuf", "original_sha256": "ef1f38a3f1978591e846e9eaddf8a54f7047f546fc6aaed7872cc53151a5de78", "output_sha256": "ef1f38a3f1978591e846e9eaddf8a54f7047f546fc6aaed7872cc53151a5de78" },
+        { "path": "map/fonts/Noto Sans Regular/1024-1279.pbf", "bytes": 125222, "media_type": "application/x-protobuf", "original_sha256": "834adb7f3ea9944ea530214841ee098e5482e85180f14df85036939261e0ffbb", "output_sha256": "834adb7f3ea9944ea530214841ee098e5482e85180f14df85036939261e0ffbb" },
+        { "path": "map/fonts/Noto Sans Regular/1280-1535.pbf", "bytes": 77856, "media_type": "application/x-protobuf", "original_sha256": "0f4f3f76dd76836efbcdf3c35219449aa46defb1d3e8e0f9b51153a539e64454", "output_sha256": "0f4f3f76dd76836efbcdf3c35219449aa46defb1d3e8e0f9b51153a539e64454" },
+        { "path": "map/fonts/Noto Sans Regular/256-511.pbf", "bytes": 127219, "media_type": "application/x-protobuf", "original_sha256": "992557f9e2574cfb9a75e16c7b52832578849772b7c9a6e480d6213fb008fe5d", "output_sha256": "992557f9e2574cfb9a75e16c7b52832578849772b7c9a6e480d6213fb008fe5d" },
+        { "path": "map/fonts/Noto Sans Regular/4096-4351.pbf", "bytes": 126418, "media_type": "application/x-protobuf", "original_sha256": "aeb80cf9bd04db8b8efbdf9a106053503ccfb8817c6a4813f1e2a9a9854eae6d", "output_sha256": "aeb80cf9bd04db8b8efbdf9a106053503ccfb8817c6a4813f1e2a9a9854eae6d" },
+        { "path": "map/fonts/Noto Sans Regular/768-1023.pbf", "bytes": 74752, "media_type": "application/x-protobuf", "original_sha256": "6e27cdd6edce5b11c469a24b333ecefc0d4b082491b71d6924ce0be6eeba71c3", "output_sha256": "6e27cdd6edce5b11c469a24b333ecefc0d4b082491b71d6924ce0be6eeba71c3" },
+        { "path": "map/fonts/Noto Sans Regular/8192-8447.pbf", "bytes": 34070, "media_type": "application/x-protobuf", "original_sha256": "f061e5b4e42e5925228534d8822b423a029569263db09f5ce44573600d45295f", "output_sha256": "f061e5b4e42e5925228534d8822b423a029569263db09f5ce44573600d45295f" },
+        { "path": "map/fonts/Noto Sans Regular/8448-8703.pbf", "bytes": 42129, "media_type": "application/x-protobuf", "original_sha256": "9e333bdeee3c44c429fb7f6911b3c1602a69402d541908832282d5eb3a467003", "output_sha256": "9e333bdeee3c44c429fb7f6911b3c1602a69402d541908832282d5eb3a467003" }
+      ]
+    },
+    {
+      "id": "openfreemap-ofm-f384-sprites",
+      "upstream_url": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm",
+      "upstream_version": "ofm_f384, content verified against endpoint 2026-08-20",
+      "accessed_at": "2026-08-19",
+      "spdx": "CC0-1.0",
+      "license_url": "https://github.com/hyperknot/openfreemap/blob/main/LICENSE.md",
+      "bundled_license_paths": ["assets/living-city/licenses/OpenFreeMap-LICENSE.md"],
+      "attribution": "OpenFreeMap styles; Maki icons CC0-1.0; public-domain derivative where documented upstream",
+      "recipe": "Unmodified endpoint responses renamed to local /map/sprites/ofm basename.",
+      "budget_bytes": 240000,
+      "files": [
+        { "path": "map/sprites/ofm.json", "bytes": 27737, "media_type": "application/json", "original_sha256": "73e75e58d8c7bb62cc25d9d150660500552f4d04f6eac5efa4e236076773c356", "output_sha256": "73e75e58d8c7bb62cc25d9d150660500552f4d04f6eac5efa4e236076773c356" },
+        { "path": "map/sprites/ofm.png", "bytes": 49454, "media_type": "image/png", "original_sha256": "8996a519d218dc5f98015267709dae272a77bb74ef0ecc5a0992dcf276c1be4c", "output_sha256": "8996a519d218dc5f98015267709dae272a77bb74ef0ecc5a0992dcf276c1be4c" },
+        { "path": "map/sprites/ofm@2x.json", "bytes": 27822, "media_type": "application/json", "original_sha256": "82a4aaeed2c5ce6e98553915754dbe394ee66fd9a2aacc4318d25cdd74e8730b", "output_sha256": "82a4aaeed2c5ce6e98553915754dbe394ee66fd9a2aacc4318d25cdd74e8730b" },
+        { "path": "map/sprites/ofm@2x.png", "bytes": 118872, "media_type": "image/png", "original_sha256": "3793faf7dc47960636e4b6b1039978fa6925e6c90a7cb49ef23b37e153635c9b", "output_sha256": "3793faf7dc47960636e4b6b1039978fa6925e6c90a7cb49ef23b37e153635c9b" }
+      ]
+    },
+    {
+      "id": "living-city-procedural-art",
+      "origin_kind": "original_project_work",
+      "upstream_url": null,
+      "upstream_version": "OmniTwin v0.9 working tree 2026-08-20",
+      "accessed_at": "2026-08-20",
+      "spdx": "LicenseRef-OmniTwin-Project",
+      "license_url": null,
+      "attribution": "Original procedural geometry and palette authored for OmniTwin",
+      "recipe": "Deterministic typed grammar turns separately hash-verified source footprints and centrelines into Three.js meshes, while synthesizing appearance and procedural street life. No downloaded 3D model, texture or runtime CDN.",
+      "budget_bytes": 4096,
+      "files": [
+        { "path": "assets/living-city/palette.json", "bytes": 1444, "media_type": "application/json", "original_sha256": "e7dc778c9259d4af419e15e99961042aefef91a417142bb5c75d667b316a2bba", "output_sha256": "e7dc778c9259d4af419e15e99961042aefef91a417142bb5c75d667b316a2bba" }
+      ]
+    },
+    {
+      "id": "omnitwin-universal-material-atlas-v1",
+      "origin_kind": "original_project_work",
+      "upstream_url": null,
+      "upstream_version": "Universal material atlas 1.0.0, generated 2026-08-21",
+      "accessed_at": "2026-08-21",
+      "spdx": "LicenseRef-OmniTwin-Project",
+      "license_url": null,
+      "attribution": "OmniTwin visual synthesis",
+      "recipe": "Built-in ImageGen produced source sheets for low-poly surfaces and transparent vegetation. A deterministic offline crop and packing step created one 512x512 RGBA atlas with neutral asphalt, seamless low-contrast materials, 16 static water variants, pre-tinted facade and roof patterns, and 16 alpha vegetation sprites. Artwork is style-only and makes no factual source claim.",
+      "budget_bytes": 262144,
+      "files": [
+        { "path": "assets/universal-materials/omnitwin-lowpoly-atlas-v1.png", "bytes": 114761, "media_type": "image/png", "original_sha256": "1d4c14dd75abb1eff647b14e03f437917a4f92da35bf7a539b4842c05f273e28", "output_sha256": "1d4c14dd75abb1eff647b14e03f437917a4f92da35bf7a539b4842c05f273e28" },
+        { "path": "assets/universal-materials/omnitwin-lowpoly-atlas-v1.json", "bytes": 5475, "media_type": "application/json", "original_sha256": "77a60928e60ffcacf99c1c62ecdba32c80f0f035aeabe6bc8db526c37f3bde14", "output_sha256": "77a60928e60ffcacf99c1c62ecdba32c80f0f035aeabe6bc8db526c37f3bde14" },
+        { "path": "assets/universal-materials/omnitwin-lowpoly-atlas-v1.descriptor.json", "bytes": 12189, "media_type": "application/json", "original_sha256": "dd2f4332d44d397af162034e40b64a908f5a1ae9dc72d8d75b490a8d6fbed2a6", "output_sha256": "dd2f4332d44d397af162034e40b64a908f5a1ae9dc72d8d75b490a8d6fbed2a6" },
+        { "path": "assets/universal-materials/omnitwin-lowpoly-atlas-v1@2x.png", "bytes": 114761, "media_type": "image/png", "original_sha256": "1d4c14dd75abb1eff647b14e03f437917a4f92da35bf7a539b4842c05f273e28", "output_sha256": "1d4c14dd75abb1eff647b14e03f437917a4f92da35bf7a539b4842c05f273e28" },
+        { "path": "assets/universal-materials/omnitwin-lowpoly-atlas-v1@2x.json", "bytes": 5475, "media_type": "application/json", "original_sha256": "77a60928e60ffcacf99c1c62ecdba32c80f0f035aeabe6bc8db526c37f3bde14", "output_sha256": "77a60928e60ffcacf99c1c62ecdba32c80f0f035aeabe6bc8db526c37f3bde14" }
+      ]
+    },
+    {
+      "id": "omnitwin-universal-actor-atlas-v1",
+      "origin_kind": "original_project_work",
+      "upstream_url": null,
+      "upstream_version": "Universal actor atlas 1.0.0, authored 2026-08-24",
+      "accessed_at": "2026-08-24",
+      "spdx": "LicenseRef-OmniTwin-Project",
+      "license_url": null,
+      "attribution": "OmniTwin visual synthesis",
+      "recipe": "Source-independent 256x128 SVG atlas with eight deterministic walking silhouettes and eight top-down vehicle variants. Each sprite includes a baked contact shadow; the asset is presentation-only, shared across all settlements and makes no factual source claim.",
+      "budget_bytes": 8192,
+      "files": [
+        { "path": "assets/universal-materials/omnitwin-actor-atlas-v1.svg", "bytes": 5804, "media_type": "image/svg+xml", "original_sha256": "55f12d3423de4ad8dd2bf7ce41e20c87573bf2dde9e7d180aee4827177d97e53", "output_sha256": "55f12d3423de4ad8dd2bf7ce41e20c87573bf2dde9e7d180aee4827177d97e53" }
+      ]
+    },
+    {
+      "id": "living-city-attribution-and-license-texts",
+      "upstream_url": "https://github.com/mourner/suncalc/tree/v2.0.1",
+      "upstream_version": "SunCalc 2.0.1; Noto license snapshot 2026-08-20",
+      "accessed_at": "2026-08-20",
+      "spdx": "BSD-2-Clause AND OFL-1.1",
+      "license_url": "https://github.com/mourner/suncalc/blob/v2.0.1/LICENSE",
+      "bundled_license_paths": [
+        "assets/living-city/licenses/NotoSans-OFL-1.1.txt",
+        "assets/living-city/licenses/OpenFreeMap-LICENSE.md",
+        "assets/living-city/licenses/SUNCALC-BSD-2-CLAUSE.txt"
+      ],
+      "attribution": "SunCalc © Volodymyr Agafonkin; Noto Sans © The Noto Project Authors",
+      "recipe": "Verbatim license texts plus a local HTML attribution index with clickable origins and licenses.",
+      "budget_bytes": 16384,
+      "files": [
+        { "path": "assets/living-city/ATTRIBUTION.html", "bytes": 6042, "media_type": "text/html", "original_sha256": "fe4ead5cbbddbc33b6fc1f195bfed3793ab5f02e1147332fac4b10f8261509d7", "output_sha256": "8e0a295160dd428d45226a2a1f4c478147a387e5c6c67e27bc7f7c1405b9b416" },
+        { "path": "assets/living-city/licenses/NotoSans-OFL-1.1.txt", "bytes": 4377, "media_type": "text/plain", "original_sha256": "0dab92d0544f7b233403f14b84a663bdbfa746982eda629e7f4f9ffe1b036feb", "output_sha256": "0dab92d0544f7b233403f14b84a663bdbfa746982eda629e7f4f9ffe1b036feb" },
+        { "path": "assets/living-city/licenses/OpenFreeMap-LICENSE.md", "bytes": 4118, "media_type": "text/markdown", "original_sha256": "d1754e5d291e4e8b9b0047ddba0a6ec75e1046ccd61a02c2cea3dac58f3fe355", "output_sha256": "d1754e5d291e4e8b9b0047ddba0a6ec75e1046ccd61a02c2cea3dac58f3fe355" },
+        { "path": "assets/living-city/licenses/SUNCALC-BSD-2-CLAUSE.txt", "bytes": 1322, "media_type": "text/plain", "original_sha256": "e8881f5d09f1f3c5e0e6ad4c2120521bad1079246a2af84d756af8ab1a53da3c", "output_sha256": "e8881f5d09f1f3c5e0e6ad4c2120521bad1079246a2af84d756af8ab1a53da3c" }
+      ]
+    },
+    {
+      "id": "map-attribution-text",
+      "upstream_url": "https://openfreemap.org/",
+      "upstream_version": "OmniTwin v0.8 attribution",
+      "accessed_at": "2026-08-19",
+      "spdx": "LicenseRef-OmniTwin-Attribution",
+      "license_url": "https://www.openstreetmap.org/copyright",
+      "bundled_license_paths": ["assets/living-city/licenses/OpenFreeMap-LICENSE.md"],
+      "attribution": "OpenStreetMap contributors / OpenMapTiles / OpenFreeMap",
+      "recipe": "Human-readable local attribution copied without transformation.",
+      "budget_bytes": 256,
+      "files": [
+        { "path": "map/ATTRIBUTION.txt", "bytes": 129, "media_type": "text/plain", "original_sha256": "671ba3fb64722641b8318fbbd2d5007c2ed073745cb3342aefd4eed66806c59b", "output_sha256": "671ba3fb64722641b8318fbbd2d5007c2ed073745cb3342aefd4eed66806c59b" }
+      ]
+    }
+  ]
+}
