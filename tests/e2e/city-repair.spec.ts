@@ -1,4 +1,34 @@
-import { test, expect, waitForRealWorld } from './qa';
+import { test, expect, waitForRealWorld, navigate } from './qa';
+
+test('textured city survives analytics, Browser Back and reload', async ({page,qa},info)=>{
+  test.skip(info.project.name!=='desktop-1920x1080','Mid/high facade reconciliation; low-tier mobile intentionally uses solid buildings.');
+  const entry='./#/world?dataset=omnitwin-public-fictional-chelyabinsk-v1&scenario=baseline&year=2026&territory=RU-CHE-SET&minutes=690&paused=1&speed=1&weather=clear&lon=61.4026&lat=55.1684&zoom=16.7&pitch=58&bearing=-24&stats=observed&observedYear=2024';
+  const ready=async()=>{
+    await waitForRealWorld(page);
+    const world=page.getByTestId('world-canvas');
+    await expect(world).toHaveAttribute('data-material-atlas-ready','true');
+    await expect(world).toHaveAttribute('data-map-tiles-loaded','true');
+    await expect(world).toHaveAttribute('data-map-idle','true');
+    await expect.poll(async()=>{
+      const layers=JSON.parse(await world.getAttribute('data-demo-building-layers')??'[]') as Array<{id:string;minzoom?:number;maxzoom?:number;layout?:{visibility?:string}}>;
+      const facade=layers.find(layer=>layer.id==='omnitwin-building-facade-3d');
+      const solid=layers.find(layer=>layer.id==='building-3d');
+      return facade?.layout?.visibility!=='none'&&typeof facade?.minzoom==='number'&&facade.minzoom<=16.7&&solid?.maxzoom===facade.minzoom;
+    },{timeout:15000}).toBe(true);
+  };
+  await page.goto(entry);
+  await ready();
+  await qa.capture('01-initial-textured-city');
+  await navigate(page,'Аналитика','analytics');
+  await expect(page.locator('canvas')).toHaveCount(0);
+  await page.goBack();
+  await ready();
+  await qa.capture('02-browser-back-textured-city');
+  await page.reload({waitUntil:'domcontentloaded'});
+  await ready();
+  await qa.capture('03-reload-textured-city');
+  await qa.assertHealthy();
+});
 
 test('far firefly opens the actual resident through native GPU picking', async ({ page, qa }) => {
   // Keep an exposed path inside the narrow portrait viewport. At lon61.405

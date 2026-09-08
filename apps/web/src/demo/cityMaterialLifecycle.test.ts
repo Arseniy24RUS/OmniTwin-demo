@@ -20,8 +20,9 @@ function fixture(preserveBaseExtrusions = true) {
   const layers = new Map<string, StyleSpecification['layers'][number]>(style.layers.map((layer) => [layer.id, structuredClone(layer)]));
   const handlers = new Map<string, () => void>();
   let synchronousEvents = false;
+  let styleLoaded = true;
   const map = {
-    isStyleLoaded: () => true,
+    isStyleLoaded: () => styleLoaded,
     getLayer: (id: string) => layers.get(id),
     getFilter: (id: string) => (layers.get(id) as { filter?: unknown } | undefined)?.filter,
     setFilter: vi.fn(),
@@ -38,15 +39,18 @@ function fixture(preserveBaseExtrusions = true) {
     on: vi.fn((event: string, handler: () => void) => handlers.set(event, handler)),
     off: vi.fn(),
   };
-  const controller = new MapStyleController(map as never, { preserveBaseExtrusions });
+  const onOwnershipChange = vi.fn();
+  const controller = new MapStyleController(map as never, { preserveBaseExtrusions, onOwnershipChange });
   controller.setActiveLayers(new Set(['buildings']));
   const visible = (id: string) => map.getLayoutProperty(id) === 'visible';
   const primaryAt = (zoom: number) => ['building-3d', FACADE, MOTION].filter((id) => {
     const layer = layers.get(id);
     return layer && visible(id) && zoom >= (layer.minzoom ?? 0) && zoom < (layer.maxzoom ?? 24);
   });
-  return { map, controller, layers, visible, primaryAt,
+  return { map, controller, layers, visible, primaryAt, onOwnershipChange,
     styledata: () => handlers.get('styledata')?.(),
+    emit: (event: 'idle' | 'sourcedata') => handlers.get(event)?.(),
+    setStyleLoaded: (loaded: boolean) => { styleLoaded = loaded; },
     enableSynchronousEvents: () => { synchronousEvents = true; } };
 }
 
@@ -77,6 +81,50 @@ describe('combined city material lifecycle', () => {
     f.controller.setRenderState('camera_motion', READY);
     expect(f.layers.get('building-3d')).toMatchObject({ maxzoom: 16 });
     expect(f.primaryAt(16.8)).toEqual([FACADE]);
+  });
+
+  it.each(['idle', 'sourcedata'] as const)('reconciles atlas readiness deferred by loading on %s, then stops retrying', (event) => {
+    const f = fixture();
+    f.controller.setRenderState('settled_paused', { ...READY, atlasReady: false });
+    f.setStyleLoaded(false);
+    f.map.setLayoutProperty.mockClear();
+    f.map.setLayerZoomRange.mockClear();
+    f.controller.setRenderState('settled_paused', READY);
+    f.styledata();
+    f.emit(event);
+    expect(f.map.setLayoutProperty).not.toHaveBeenCalled();
+    expect(f.map.setLayerZoomRange).not.toHaveBeenCalled();
+    expect(f.primaryAt(16.7)).toEqual(['building-3d']);
+
+    f.setStyleLoaded(true);
+    // Runtime readiness is unchanged after its first atlas callback.
+    f.controller.setRenderState('settled_paused', { ...READY });
+    f.emit(event);
+    expect(f.layers.get('building-3d')).toMatchObject({ minzoom: 13, maxzoom: 16 });
+    expect(f.primaryAt(16.7)).toEqual([FACADE]);
+    expect(f.visible(ROOF)).toBe(true);
+
+    f.map.setLayoutProperty.mockClear();
+    f.map.setLayerZoomRange.mockClear();
+    f.onOwnershipChange.mockClear();
+    f.emit('sourcedata');
+    f.emit('idle');
+    expect(f.map.setLayoutProperty).not.toHaveBeenCalled();
+    expect(f.map.setLayerZoomRange).not.toHaveBeenCalled();
+    expect(f.onOwnershipChange).not.toHaveBeenCalled();
+  });
+
+  it('applies only the latest material policy after a loading interval', () => {
+    const f = fixture();
+    f.controller.setRenderState('settled_paused', READY);
+    f.setStyleLoaded(false);
+    f.controller.setRenderState('camera_motion', READY);
+    f.controller.setRenderState('camera_motion', { ...READY, facadePatternEnabled: false });
+    f.setStyleLoaded(true);
+    f.emit('idle');
+    expect(f.primaryAt(16.7)).toEqual(['building-3d']);
+    expect(f.visible(FACADE)).toBe(false);
+    expect(f.visible(ROOF)).toBe(false);
   });
 
   it('keeps distant and floor phases source-backed and restores materials only after phase recovery', () => {

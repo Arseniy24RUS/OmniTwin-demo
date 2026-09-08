@@ -41,17 +41,18 @@ export class MapStyleController {
   private baseBuildingFilterSourceKey = '';
   private disposed = false;
   private applying = false;
+  private pendingApply = false;
 
   private readonly handleStyleData = () => {
     this.apply();
   };
 
   private readonly handleIdle = () => {
-    if (this.requestedDetailedBuildingOwner === 'three') this.apply();
+    if (this.pendingApply || this.requestedDetailedBuildingOwner === 'three') this.apply();
   };
 
   private readonly handleSourceData = () => {
-    if (this.requestedDetailedBuildingOwner === 'three') this.apply();
+    if (this.pendingApply || this.requestedDetailedBuildingOwner === 'three') this.apply();
   };
 
   constructor(
@@ -136,10 +137,16 @@ export class MapStyleController {
   }
 
   apply(): void {
-    if (this.disposed || this.applying || !this.map.isStyleLoaded()) return;
+    if (this.disposed || this.applying) return;
+    // Atlas/phase updates can arrive while source tiles are loading. Retain
+    // that work: the runtime may not publish another identical policy, and
+    // readiness can return through sourcedata/idle without another styledata.
+    this.pendingApply = true;
+    if (!this.map.isStyleLoaded()) return;
     this.applying = true;
     try {
       this.applySnapshot();
+      this.pendingApply = false;
     } finally {
       this.applying = false;
     }
