@@ -18,6 +18,15 @@ allow an explicit bounded leaf concurrency of eight (default two); manifests
 remain sequential after verified leaves. Test the bound, ordering and rejection
 of invalid concurrency before uploading. No new application dependencies.
 
+Current runtime committed and pushed as `5a71f9c`; Actions run 34378283448
+completed successfully. Clean validation: 884 web tests and 189 tool tests
+passed; 17 bulk-asset tests were skipped in the isolated build. The new visual
+release `7ee3bd08c9973dd94ce727a6e3b148513e4dd125f2c82531541cf0b34971c83e`
+uploaded 19,510 objects (8,369,746,051 bytes); all remote metadata and 44
+anonymous body/CORS samples passed. The next small activation commit switches
+the visual pin and clean-URL default to V2. Remaining work for this requested
+release is deployment confirmation and the bounded actual public scene smoke.
+
 ### Reopened: actual camera movement and visual consistency — 2026-09-09
 
 The owner rejected the current local experience: approximately 5 FPS while

@@ -1,0 +1,30 @@
+{
+  "contract": "OmniTwinCurrentActivationCheckV1",
+  "checkedAt": "2026-09-09T16:46:30.016Z",
+  "status": "passed_predeployment",
+  "runtimeCommit": "5a71f9c6ef338686e82c3d082284c968449d0930",
+  "releaseId": "7ee3bd08c9973dd94ce727a6e3b148513e4dd125f2c82531541cf0b34971c83e",
+  "files": [
+    {
+      "path": "runtime-config.json",
+      "bytes": 1397,
+      "sha256": "0c353d936db1c95e735714eb5de470e11e4800b3f33c5e7cf819ea59ccec38b8"
+    },
+    {
+      "path": "city-visual-activation.json",
+      "bytes": 502,
+      "sha256": "1666741146e054117c4b6d0ca4b571f508ba1a119ce2daa1423b18fef68c18cc"
+    }
+  ],
+  "checks": {
+    "sourceAndChatPinsUnchanged": true,
+    "visualActivationMatchesVerifiedPublicReceipt": true,
+    "cleanBuildPublicCheck": true,
+    "codeRebuildNeeded": false
+  },
+  "paidChatCalls": 0,
+  "limitations": [
+    "Public browser smoke follows the actual activation deployment.",
+    "Only the two JSON files changed in the already verified production build."
+  ]
+}

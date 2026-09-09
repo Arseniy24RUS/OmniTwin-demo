@@ -3,7 +3,7 @@
   "chatApiUrl": "https://chatapi-avypjak2xq-ew.a.run.app",
   "assetBaseUrl": null,
   "deployment": "static-demo",
-  "defaultDatasetId": "omnitwin-public-fictional-chelyabinsk-v1",
+  "defaultDatasetId": "omnitwin-fictional-city-v2",
   "cityAssets": {
     "baseUrl": "https://storage.googleapis.com/omnitwin-demo-city-assets/packs/ce6d7497828079f55a2c74f45d95f3bdcffffdae5d24163e31e7051ce7199abe/",
     "populationManifestSha256": "646bef9ee30c2f061f80b1ce26cd9d7ca2c7da170c6d55c086dea24d2d95bca1",

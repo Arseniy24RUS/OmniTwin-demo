@@ -1,0 +1,25 @@
+{
+  "releaseId": "7ee3bd08c9973dd94ce727a6e3b148513e4dd125f2c82531541cf0b34971c83e",
+  "prefix": "packs/7ee3bd08c9973dd94ce727a6e3b148513e4dd125f2c82531541cf0b34971c83e/city-visual-v1/",
+  "bucket": "omnitwin-demo-city-assets",
+  "projectId": "omnitwin-demo",
+  "uploaded": 19510,
+  "skipped": 0,
+  "concurrency": 8,
+  "totalStoredBytes": 8369746051,
+  "manifestUrls": {
+    "manifest.json": "https://storage.googleapis.com/omnitwin-demo-city-assets/packs/7ee3bd08c9973dd94ce727a6e3b148513e4dd125f2c82531541cf0b34971c83e/city-visual-v1/manifest.json"
+  },
+  "publicReady": false,
+  "activation": {
+    "contract": "CityVisualActivationV1",
+    "version": 1,
+    "populationDatasetId": "omnitwin-fictional-city-v2",
+    "sourceDatasetVersion": "138afac3f0d74f256838eda3b7afd24259f640fac0dcd4a60ff49140a18f66a4",
+    "manifest": {
+      "url": "https://storage.googleapis.com/omnitwin-demo-city-assets/packs/7ee3bd08c9973dd94ce727a6e3b148513e4dd125f2c82531541cf0b34971c83e/city-visual-v1/manifest.json",
+      "bytes": 167143,
+      "sha256": "1aa147a06516bd9a5926d67bdcadcd2cba08f3b80da732ef18c282d6f039ce47"
+    }
+  }
+}
