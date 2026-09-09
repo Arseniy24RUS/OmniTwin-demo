@@ -6,6 +6,7 @@ import { createHash } from 'node:crypto';
 import { join,resolve,dirname } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
+import { isSettledCityGraphics } from './qa/city-graphics-policy.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const target='http://127.0.0.1:5178/OmniTwin-demo/';
@@ -21,7 +22,8 @@ const report={startedAt:new Date(start).toISOString(),target,artifactRoot,classi
   limits:{wallClockMs:290000,viewport:[1280,800]},catalogSha256:expectedCatalog,checks:[],samples:[],errors:[],console:[],network:[],screenshots:[],contexts:[],limitations:[
     'Ownership probe nativeIds are the declared exact-source complement; they are not a direct readback of MapLibre native geometry buckets.',
     'Native fallback requires screenshot inspection; render telemetry alone cannot prove every native extrusion pixel.',
-    'Concurrent app/browser/compiler activity and recording contaminate performance measurements.']};
+    'Concurrent app/browser/compiler activity and recording contaminate performance measurements.',
+    'A top-manifest fault exercises explicitly degraded native/legacy-quarter availability; that fault is not an art sample of the activated full-city catalog.']};
 report.coverage={plannedZoomSamples:300,completedZoomSamples:0,plannedDistricts:7,completedDistricts:[],plannedFaults:5,completedFaults:[]};
 let browser;
 async function sourceFingerprint(){
@@ -49,11 +51,17 @@ const compact=()=>{
   if(!p)return null;
   const source=new Set(p.sourceIds),native=new Set(p.nativeIds),mesh=new Set(p.meshIds),overlap=[...native].filter(id=>mesh.has(id)),missing=[...source].filter(id=>!native.has(id)&&!mesh.has(id));
   const signalSnapshot=el.readGameSignalProbe?.(),nodes=signalSnapshot?.junctions??[],nodeIds=nodes.map(node=>node.id),approachIds=nodes.flatMap(node=>node.approaches.map(approach=>`${node.id}:${approach.id}`));
+  const json=key=>{try{return JSON.parse(el.dataset[key]??'null');}catch{return null;}};
   return {camera:p.camera,bounds:p.bounds,sourceBounds:p.sourceBounds,source:p.sourceIds.length,native:p.nativeIds.length,mesh:p.meshIds.length,
+    committedTileKeys:p.frontier?.tileKeys??[],
     meshInSource:[...mesh].filter(id=>source.has(id)).length,overlap:overlap.slice(0,10),missing:missing.slice(0,10),
     state:p.diagnostics.state,visible:p.diagnostics.visible,loading:p.diagnostics.loading,triangles:p.diagnostics.triangles,renderedVisibleTiles:p.diagnostics.renderedVisibleTiles,
     cacheBytes:p.diagnostics.cacheBytes,flows:p.diagnostics.aggregateFlowSegments,renderedFlows:p.diagnostics.renderedAggregateFlowSegments,
     flowOpacity:p.diagnostics.aggregateFlowOpacity,actorsState:p.diagnostics.actorsState,actorsVisible:p.diagnostics.actorsVisible,
+    shaders:p.diagnostics.shaders,shadowReady:p.diagnostics.shadowReady,surfaceWorker:p.diagnostics.surfaces,
+    motionWorker:json('gameMotionWorker'),surfaceRefresh:json('gameSurfaceRefresh'),
+    surfaceFamilies:{water:json('gameWater'),roads:json('gameRoadSurfaces'),vegetation:json('gameVegetation'),landCover:json('gameLandCover'),
+      landUseGround:json('gameLandUseGround'),courtyard:json('gameCourtyardGround'),contacts:json('gameBuildingContacts')},
     frame:Number(el.dataset.gameFrames??0),people:Number(el.dataset.deckPedestrians??0),vehicles:Number(el.dataset.deckVehicles??0),
     mapMode:el.dataset.gameMapMode,bankState:p.banks?.state,bankPending:p.banks?.pending,bankGeneration:p.banks?.generation,
     error:p.diagnostics.error,canvasCount:document.querySelectorAll('canvas').length,overlay:Boolean(document.querySelector('vite-error-overlay,#webpack-dev-server-client-overlay')),
@@ -62,11 +70,15 @@ const compact=()=>{
     signalControllerOverflow:signalSnapshot?.diagnostics?.overflow??0,
     duplicateSignalIds:nodeIds.length-new Set(nodeIds).size+approachIds.length-new Set(approachIds).size};
 };
-async function sample(page,label,{expectedPackageError=false}={}){const value=await page.evaluate(compact);if(value){report.samples.push({label,elapsedMs:Date.now()-start,...value});
+async function sample(page,label,{expectedPackageError=false,settled=false}={}){const value=await page.evaluate(compact);if(value){report.samples.push({label,elapsedMs:Date.now()-start,...value});
   assert(value.overlap.length===0&&value.missing.length===0&&value.native+value.meshInSource===value.source,`${label}: canonical partition`,{source:value.source,native:value.native,meshInSource:value.meshInSource});
   if(value.camera.zoom>=15.5)assert(value.renderedFlows===0&&value.flowOpacity===0,`${label}: no close aggregate flows`,{retainedFlows:value.flows,renderedFlows:value.renderedFlows,opacity:value.flowOpacity,zoom:value.camera.zoom});
   assert(!['disposed','context_lost',...(expectedPackageError?[]:['error'])].includes(value.state),`${label}: renderer remains active`,{state:value.state,error:value.error,expectedPackageError});
   assert(!value.overlay&&value.canvasCount===1,`${label}: one healthy canvas`);
+  assert(Boolean(value.shaders)&&value.shaders.failed===0,`${label}: shader readiness healthy`,{shaders:value.shaders});
+  assert(value.motionWorker?.mode==='worker_buffered'&&!value.motionWorker.error,`${label}: motion stays in worker`,{worker:value.motionWorker});
+  assert(value.surfaceWorker?.mode==='worker_prepared'&&!value.surfaceWorker.error,`${label}: surface worker remains healthy`,{worker:value.surfaceWorker});
+  if(settled)assert(isSettledCityGraphics(value),`${label}: complete shader and worker settling`,{shaders:value.shaders,motion:value.motionWorker,surfaces:value.surfaceWorker});
   assert(value.duplicateSignalIds===0,`${label}: unique signal identities`);
   assert(value.signalControllerOverflow===0,`${label}: bounded traffic topology`,{overflow:value.signalControllerOverflow});
   assert(Boolean(value.signalRenderer)&&!['error_hidden','disposed'].includes(value.signalRenderer?.state),`${label}: signal props remain healthy`,{state:value.signalRenderer?.state??'diagnostic_missing',error:value.signalRenderer?.lastError});
@@ -78,8 +90,7 @@ async function shot(page,label){const path=join(artifactRoot,label+'.png');await
 async function ready(page,timeout=20000){if(remaining()<1000)throw new Error('QA wall-clock budget exhausted');await page.waitForFunction(()=>typeof document.querySelector('[data-testid="world-canvas"]')?.readGameOwnershipProbe==='function',null,{timeout:Math.min(timeout,remaining())});}
 async function settle(page,label,timeout=6500){
   if(remaining()<1000)return false;
-  try{await page.waitForFunction(()=>{const p=document.querySelector('[data-testid="world-canvas"]')?.readGameOwnershipProbe?.();return p&&p.sourceIds.length>0
-    &&p.banks?.state==='canonical'&&!p.banks?.pending&&p.diagnostics.state==='rendering'&&p.meshIds.length>0&&p.diagnostics.renderedVisibleTiles>0;},null,{timeout:Math.min(timeout,remaining())});return true;}
+  try{await page.waitForFunction(()=>globalThis.__isSettledCityGraphicsQa(globalThis.__readCityGraphicsQa()),null,{timeout:Math.min(timeout,remaining())});return true;}
   catch{assert(false,`${label}: settled detailed frontier`,{timeoutMs:timeout});return false;}
 }
 async function camera(page,pose,zoom,dwell=120){
@@ -93,6 +104,7 @@ async function context(name,video=false){
   const ctx=await browser.newContext({viewport:{width:1280,height:800},deviceScaleFactor:1,locale:'ru-RU',timezoneId:'Europe/Moscow',
     ...(video?{recordVideo:{dir:artifactRoot,size:{width:960,height:600}}}:{})});
   const page=await ctx.newPage();report.contexts.push(name);
+  await page.addInitScript({content:`globalThis.__readCityGraphicsQa=${compact.toString()};globalThis.__isSettledCityGraphicsQa=${isSettledCityGraphics.toString()};`});
   page.on('pageerror',e=>report.errors.push({context:name,message:e.message}));
   page.on('console',m=>{if(['error','warning'].includes(m.type())&&report.console.length<150)report.console.push({context:name,type:m.type(),text:m.text().slice(0,1500)});});
   page.on('response',r=>{if(r.status()>=400&&report.network.length<100)report.network.push({context:name,status:r.status(),url:r.url()});});
@@ -107,7 +119,7 @@ try{
   const main=await context('warm-camera-sweeps',true),page=main.page;
   await page.goto(target+hash(poses[0],16.86436467681756),{waitUntil:'domcontentloaded',timeout:25000});await ready(page,35000);
   await page.waitForTimeout(2500);await sample(page,'cold-user');await shot(page,'01-cold-user');
-  await settle(page,'warm-user',10000);await sample(page,'warm-user');await shot(page,'02-warm-user');
+  await settle(page,'warm-user',10000);await sample(page,'warm-user',{settled:true});await shot(page,'02-warm-user');
   assert((await page.title()).length>0,'page identity',{url:page.url(),title:await page.title()});
   assert((await page.locator('body').innerText()).length>100,'meaningful app content');
   const up=Array.from({length:25},(_,i)=>14+i*.25),down=up.toReversed();
@@ -119,7 +131,7 @@ try{
       try{await camera(page,pose,zoom);await sample(page,`${pose.name}-${direction===up?'up':'down'}-${zoom}`);completed++;report.coverage.completedZoomSamples++;}
       catch(error){report.errors.push({stage:pose.name,zoom,message:error.message});break;}
     }
-    await camera(page,pose,17,350);await settle(page,pose.name,4500);await sample(page,`${pose.name}-settled`);await shot(page,`sweep-${pose.name}`);
+    await camera(page,pose,17,350);await settle(page,pose.name,4500);await sample(page,`${pose.name}-settled`,{settled:true});await shot(page,`sweep-${pose.name}`);
     console.log(JSON.stringify({stage:'sweep',pose:pose.name,completed,remainingMs:remaining(),failures:report.checks.filter(c=>!c.pass).length}));
   }
   if(remaining()>60000){
@@ -130,11 +142,11 @@ try{
     await page.mouse.down();await page.mouse.move(box.x+box.width*.5+180,box.y+box.height*.5+60,{steps:18});await page.mouse.up();await page.waitForTimeout(700);
     await sample(page,'continuous-rotation-pan');await shot(page,'09-after-continuous-motion');
     for(const [district,lon,lat] of districtProbes){if(remaining()<55000)break;
-      await camera(page,{...poses[1],lon,lat},17.5,500);await settle(page,`district-${district}`,5500);await sample(page,`district-${district}`);report.coverage.completedDistricts.push(district);}
-    await camera(page,poses[0],18.2,1800);await settle(page,'cache-return');await sample(page,'cache-return');await shot(page,'10-user-close-return');
+      await camera(page,{...poses[1],lon,lat},17.5,500);await settle(page,`district-${district}`,5500);await sample(page,`district-${district}`,{settled:true});report.coverage.completedDistricts.push(district);}
+    await camera(page,poses[0],18.2,1800);await settle(page,'cache-return');await sample(page,'cache-return',{settled:true});await shot(page,'10-user-close-return');
     const restoration=await page.evaluate(async()=>{const canvas=document.querySelector('canvas'),gl=canvas?.getContext('webgl2')??canvas?.getContext('webgl'),ext=gl?.getExtension('WEBGL_lose_context');
       if(!ext)return{available:false};ext.loseContext();await new Promise(r=>setTimeout(r,600));ext.restoreContext();return{available:true};});
-    await page.waitForTimeout(1800);await settle(page,'webgl-restored',8000);const recovered=await sample(page,'webgl-restored');
+    await page.waitForTimeout(1800);await settle(page,'webgl-restored',8000);const recovered=await sample(page,'webgl-restored',{settled:true});
     assert(!restoration.available||recovered?.state==='rendering'&&recovered.mesh>0&&recovered.actorsVisible,'WebGL restoration',{restoration,state:recovered?.state,mesh:recovered?.mesh,actorsVisible:recovered?.actorsVisible});
     await shot(page,'11-webgl-restored');
   }
@@ -151,7 +163,9 @@ try{
     });
     try{await page.goto(target+hash(poses[0],18.2),{waitUntil:'domcontentloaded',timeout:Math.min(12000,remaining())});await ready(page,12000);
       const expectedPackageError=fault.endsWith('top-manifest');
-      await page.waitForTimeout(Math.min(2200,remaining()));await sample(page,`${fault}-during`,{expectedPackageError});await shot(page,`${fault}-during`);
+      await page.waitForTimeout(Math.min(2200,remaining()));const during=await sample(page,`${fault}-during`,{expectedPackageError});await shot(page,`${fault}-during`);
+      if(fault==='delayed-glb'||fault==='corrupted-glb')assert(during&&during.source>0&&(during.native>0||during.renderedVisibleTiles>0),`${fault}: native or ready parent coverage during pending detail`,
+        {source:during?.source,native:during?.native,tiles:during?.committedTileKeys,shaders:during?.shaders});
       await page.waitForTimeout(Math.min(2500,remaining()));
       if(fault.endsWith('top-manifest')&&remaining()>2000)await page.waitForFunction(()=>{const el=document.querySelector('[data-testid="world-canvas"]');return Number(el?.getAttribute('data-deck-pedestrians'))>0&&Number(el?.getAttribute('data-deck-vehicles'))>0;},null,{timeout:Math.min(8000,remaining())}).catch(()=>{});
       const after=await sample(page,`${fault}-after`,{expectedPackageError});assert(injected>0,`${fault}: route exercised`,{injected});
@@ -166,6 +180,7 @@ try{
 finally{
   await browser?.close();report.sourceSha256After=await sourceFingerprint();
   assert(report.sourceSha256Before===report.sourceSha256After,'runtime source remained frozen',{before:report.sourceSha256Before,after:report.sourceSha256After});
+  assert(!report.console.some(value=>value.context==='warm-camera-sweeps'&&value.type==='error'),'normal camera sweep console has no errors');
   assert(report.coverage.completedZoomSamples===report.coverage.plannedZoomSamples,'all 300 zoom samples completed',{completed:report.coverage.completedZoomSamples});
   assert(report.coverage.completedDistricts.length===report.coverage.plannedDistricts,'all seven district probes completed',{completed:report.coverage.completedDistricts});
   assert(report.coverage.completedFaults.length===report.coverage.plannedFaults,'all five fault scenarios completed',{completed:report.coverage.completedFaults});

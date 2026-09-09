@@ -18,6 +18,7 @@ import {
 import type { MapSourceDescriptorV1 } from './types';
 import type { UniversalQualityTier } from './universal/types';
 import { rendererAssetUrl } from './assetUrl';
+import {FACADE_SYNTHESIS_POLICY} from './buildingFacadePolicy';
 
 type MapStyle = Exclude<import('maplibre-gl').MapOptions['style'], string | null | undefined>;
 type MapStyleLayer = NonNullable<MapStyle['layers']>[number];
@@ -398,6 +399,7 @@ function createCompatibilityFootprintLayer(input: BuildingLayerSource): MapStyle
 function createFacadePatternLayer(input: BuildingLayerSource, materialDetailZoom: number): MapStyleLayer {
   return {
     id: `omnitwin-${input.key}-facade-3d`,
+    metadata: {'omnitwin:facadeAppearance':FACADE_SYNTHESIS_POLICY},
     type: 'fill-extrusion',
     source: input.source,
     'source-layer': input.sourceLayer,

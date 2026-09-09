@@ -1,0 +1,437 @@
+{
+  "contract": "OmniTwinFacadeMetricCatalogEvidenceV1",
+  "date": "2026-09-09",
+  "status": "offline_and_static_controls_verified",
+  "publicationHeld": true,
+  "publicManifestChanged": false,
+  "fullGraphicsAccepted": false,
+  "build": {
+    "root": ".cache/city-visual-catalog-facades-v4-metric-lod/build-cbb8ae2ecc550dbf",
+    "catalog": "catalog-13f118a1b6e0af68.json",
+    "catalogSha256": "13f118a1b6e0af680e836979be0bef0f6a69bf6615a3ea3761b3e660bcc2b221",
+    "metadataTransformation": {
+      "contract": "CityVisualMetadataTransformationV1",
+      "version": 1,
+      "kind": "audited_coarse_geometric_error",
+      "inputCatalogSha256": "4209606f9e6cb0e22ea8c34d18fc57b184448429a36ab3084345c5b890b2ab50",
+      "inputCatalogBytes": 4490760,
+      "toolSha256": "6c0221788fe0df85d624725b76fb25af3b9ec43c9c19a81ca856544812c094e2",
+      "fromMeters": 32,
+      "toMeters": 2,
+      "geometryUnchanged": true,
+      "omissionEnvelopeMeters": {
+        "roofFixtures": 1.76,
+        "canopies": 0.875,
+        "balconies": 0.75,
+        "parapets": 0.39,
+        "recesses": 0.24
+      },
+      "geometryCompilerHashes": {
+        "tools/visual/buildings.mjs": "1130d02c49bfa3aea7ae2f27b71b0c33712384b0b439045f9f981ad3bc20bdad",
+        "tools/visual/building-details.mjs": "f9c1d48e39c5bd22ee148b249c6578ba92fa62d0481fb21be0b0b528dc1cc493",
+        "tools/visual/geometry.mjs": "bc6115fa2326df80ff7ad67e515d40eac9a129f6f61e655d5d1c1ea8184b6139"
+      }
+    },
+    "completedCells": 855,
+    "compiledGeometryJobs": 0,
+    "linkedAssets": 17758,
+    "reusedAssetBytes": 8169024037,
+    "newMetadataBytes": 64844814,
+    "actualMetadataFinalizationSeconds": 55.896851999999996
+  },
+  "geometryBuild": {
+    "root": ".cache/city-visual-catalog-facades-v4/build-1a8f130975e5622d",
+    "catalog": "catalog-4209606f9e6cb0e2.json",
+    "catalogSha256": "4209606f9e6cb0e22ea8c34d18fc57b184448429a36ab3084345c5b890b2ab50",
+    "report": {
+      "catalogFile": ".cache/city-visual-catalog-facades-v4/build-1a8f130975e5622d/catalog-4209606f9e6cb0e2.json",
+      "catalogSha256": "4209606f9e6cb0e22ea8c34d18fc57b184448429a36ab3084345c5b890b2ab50",
+      "buildId": "1a8f130975e5622d9c1277af10dedcfd1195bb7722b82d1a7378ced3ed2b70c2",
+      "compiledJobs": 1331,
+      "resumedJobs": 0,
+      "sourceIndexSha256": "08af187515270f209f1250fc777e6d9fa795aee6915ff10452e5be7d9fe641b7",
+      "sourceUniqueBuildings": 82490,
+      "pendingJobs": 0,
+      "ownedBuildings": 82490,
+      "verifiedSourceBytes": 130914824,
+      "sourceCells": 4958,
+      "sourceDistrictIds": [
+        "RU-CHE-SET-KUR",
+        "RU-CHE-SET-KAL",
+        "RU-CHE-SET-CEN",
+        "RU-CHE-SET-MET",
+        "RU-CHE-SET-SOV",
+        "RU-CHE-SET-TRA",
+        "RU-CHE-SET-LEN"
+      ],
+      "citywideCompiled": true,
+      "citywideVisualAccepted": false,
+      "materialDelivery": "one_shared_catalog_material_library",
+      "buildingOnly": false,
+      "courtyardPolicy": "owned_source_holes_only_max24_furniture_items_per_job_with_verified_road_exclusions",
+      "compileMode": "all_planned_jobs_sequentially",
+      "maximumJobsPerInvocation": 1331,
+      "outputBytes": 8233803683,
+      "outputBudgetBytes": 21474836480,
+      "memoryPolicy": "one_source_job_one_uncompressed_GLB_plus_cell_compressed_inventory",
+      "residentEstimate": "coarse_plus_largest_detail_staging_pair_cpu_gpu_and_original_size_shared_textures",
+      "inventoryDecodedBytes": 17246158560
+    },
+    "compilerSourceHashes": {
+      "tools/build-city-visual-catalog.mjs": "e931b6216d2b2332e89e9e9a5ec2efd3bc6c0f6d8650fd874f33de2f8b85bf2d",
+      "tools/geo/city-geography.mjs": "7cdef796791ef8eba459a8aefe7c624a070dddce059c1e54c39dceaeaff6667b",
+      "tools/visual/assets/polyhaven-materials-v1.json": "eb032b21f36b145c1a8c3d66cb322ecb672d3c8a7cb81f1d4dd7006eafe90eb2",
+      "tools/visual/atomic-preview-write.mjs": "56c52b9b346821caac7cbb2ab2b3d65ca104a859b39f46a37888381ba7c8c5f9",
+      "tools/visual/batching.mjs": "55f82716376bf2dfdf30ca14c6c16bf35c6f31a5e4108da1095a0735fda5f98c",
+      "tools/visual/building-details.mjs": "f9c1d48e39c5bd22ee148b249c6578ba92fa62d0481fb21be0b0b528dc1cc493",
+      "tools/visual/buildings.mjs": "1130d02c49bfa3aea7ae2f27b71b0c33712384b0b439045f9f981ad3bc20bdad",
+      "tools/visual/catalog-builder.mjs": "e9e513c0ef074a73e402f2f34587ac088c7159b9a64c6c301293624748b97654",
+      "tools/visual/catalog-planner.mjs": "14654eb7c886d1b80ececeb3d7484ef5a39ce3f5f2035698e20ef32be37adf7d",
+      "tools/visual/catalog-run-budget.mjs": "5c110e44f9dd783d2517744fb36346f9ddb23af44984f325c2db70f6ed6a3f2f",
+      "tools/visual/catalog-source-index.mjs": "800efbd1810b143c964a427334f60acb640e117e04e4fa44af9a1fc61e6ad7e4",
+      "tools/visual/compiler-materials.mjs": "d5670d0f7f800c41ca484487a58e360cfe2a47519137b9ccf08ee7b1eb2032b3",
+      "tools/visual/compression.mjs": "d70a732838e4d5338cb6df13436e1bf7cbb6306e1a2d46b2dd78b76dbcb63ba9",
+      "tools/visual/courtyard-details.mjs": "b990f55270ac714d318fbf7ed0d121fc449d55366d78cc38c27033d6f888c36e",
+      "tools/visual/courtyards.mjs": "eb61041a0125333a21089289bd67086b93059d1af322306e7cac1babb1969b05",
+      "tools/visual/geometry.mjs": "bc6115fa2326df80ff7ad67e515d40eac9a129f6f61e655d5d1c1ea8184b6139",
+      "tools/visual/glb.mjs": "c79e5e4456bad950097845d09d4b0e6730355f737bdf442062e3e006645db440",
+      "tools/visual/green-space.mjs": "77a4d41d83be2cb1d1191e07a90c5e943fcde76a0a7ae4debd64cb826068dfa3",
+      "tools/visual/land-source.mjs": "50c34805a45d6940c2e522c8324769b242f746aa6d2ab8f955f4a54109f06e70",
+      "tools/visual/material-kit.mjs": "cef67b9dd2875576edc88b4a6873d2ea5395100c21f5cf202cee31658e0cf8e7",
+      "tools/visual/materials.mjs": "753359db58cb71d43b7569e622713eaae012a8f36ea2b2cbeec0022dfcf7716d",
+      "tools/visual/pack.mjs": "7446008957178fa8043a9812107a5c6afecd3c1037f458d5974e2a182c53b386",
+      "tools/visual/road-surfaces.mjs": "818833b34faa8d6e1e0429b556b1a173a328419efc0a2f66f37a8b1c3d97ae2d",
+      "tools/visual/tree-crowns.mjs": "2c274767e2f3c5524549e2cda02ef23cef8a82581815d9d2f391ad7aed9f5296",
+      "tools/visual/vegetation-tiles.mjs": "a6628ca16da67f3934d8d2effad5a6eb54d4e84ca6fe091300e916b952843688"
+    },
+    "completedJobsElapsedSeconds": 511.6276657
+  },
+  "closure": {
+    "allBytesAndHashesVerified": true,
+    "glbOwnershipAndReplacePartitionVerified": true,
+    "canonicalBuildings": 82490,
+    "sourceFieldsVerifiedInGeometryBuild": true,
+    "geometryAndSemanticBytesUnchanged": true,
+    "sourceLedgerUnchanged": true,
+    "sharedMaterialEquality": true,
+    "files": 19510,
+    "totalBytes": 8369746051,
+    "glbs": 16899,
+    "rootManifestSha256": "876c4a1d1ccc49abbb7644c6aa2df9f0aba2e2ddcc9c6a86fa57cc2065425d19",
+    "originalPublicManifestSha256": "d1f25e4328caf10ddf7e3e6f8e2734b7cfc63b0ac7a28b0eb410af3fc53cf9cc",
+    "runtimeParserCells": 855,
+    "runtimeMaterialAliases": 17955,
+    "authoredCoarseErrorMeters": 2,
+    "runtimeLodExceptionRequired": false,
+    "verificationSeconds": 43.27867869999999
+  },
+  "original": {
+    "tiles": 16915,
+    "vertices": 629133066,
+    "triangles": 209711022,
+    "drawGroups": 138636,
+    "windowCount": 4882875,
+    "inventoryDecodedBytes": 30198387168,
+    "geometryDeliveryBytes": 13376120212
+  },
+  "current": {
+    "tiles": 16882,
+    "vertices": 359294970,
+    "triangles": 119764990,
+    "drawGroups": 138355,
+    "windowCount": 4878284,
+    "inventoryDecodedBytes": 17246158560,
+    "geometryDeliveryBytes": 7889264208
+  },
+  "determinism": {
+    "scope": "two fresh independent builds of exact 167-building control cell",
+    "evidence": "docs/evidence/facade-roofs-prototype-20260909.json",
+    "wholeCityRebuiltTwice": false
+  },
+  "tests": {
+    "visualTests": 92,
+    "failed": 0,
+    "metadataFreshPairIdentical": true,
+    "interruptedResume": true
+  },
+  "limitations": [
+    "Appearance is authored visual synthesis, not observed architecture.",
+    "All-city second geometry compilation was not run; determinism was verified on two fresh 167-building control builds and metadata-only fixture builds.",
+    "Render quality, moving-camera performance and final acceptance remain separate gates.",
+    "Static control captures preserve current UI and do not establish SimCity-level art acceptance or solve the separately reported camera-motion slowdown."
+  ],
+  "staticControls": {
+    "method": "separate Chrome contexts; descriptor-whitelisted immutable bytes served by isolated network override; no public file changes; authored two-metre coarse LOD from verified tileset bytes; no runtime LOD helper override",
+    "recording": false,
+    "performanceClaim": false,
+    "artifact": "omnitwin-full-facades-20260909/controls-final.json",
+    "sha256": "ee4c2c5d3ddc76aa820c7e5adc351e1eb55aff96e7f6492523d600a370698e6d",
+    "sourceFingerprint": "aaf9c895672102d75c875a26ae84802030560a5972864e3171ffb62371f95e1f",
+    "sourceStable": true,
+    "viewportCss": [
+      770,
+      792
+    ],
+    "deviceScaleFactor": 2.25,
+    "coldPaused": true,
+    "actorInventoryEmptyInTheseStaticRuns": true,
+    "runs": [
+      {
+        "pose": {
+          "name": "01-rejected-wide",
+          "lon": 61.409959,
+          "lat": 55.163784,
+          "zoom": 15.703,
+          "pitch": 55.5,
+          "bearing": 109.565,
+          "minutes": 984.87
+        },
+        "mode": "before",
+        "artifact": "omnitwin-full-facades-20260909/01-rejected-wide-before.png",
+        "sha256": "068a5a7e411eb3dd56f1de9d3eec07dca5efd0784678ebfa16b00d2925f503db",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "drawingBuffer": [
+          988,
+          1348
+        ],
+        "draws": 71,
+        "triangles": 287911,
+        "verifiedPrototypeResponses": 0,
+        "verifiedPrototypeBytes": 0,
+        "pausedWindowMs": 2101.399999976158,
+        "pausedMapRenderFrames": 0,
+        "signals": {
+          "representation": "visual_synthesis",
+          "state": "empty",
+          "heads": 0,
+          "draws": 0,
+          "red": 0,
+          "amber": 0,
+          "green": 0,
+          "omittedPlacements": 0,
+          "truncated": false,
+          "geometryUpdates": 1,
+          "aspectUpdates": 1,
+          "retainedBytes": 187688,
+          "lastError": null
+        },
+        "errors": []
+      },
+      {
+        "pose": {
+          "name": "01-rejected-wide",
+          "lon": 61.409959,
+          "lat": 55.163784,
+          "zoom": 15.703,
+          "pitch": 55.5,
+          "bearing": 109.565,
+          "minutes": 984.87
+        },
+        "mode": "after",
+        "artifact": "omnitwin-full-facades-20260909/01-rejected-wide-after.png",
+        "sha256": "3d8f638cd29584263b7fd234856dc5fa067862c8c70a22ad2b254c7c418061ba",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "drawingBuffer": [
+          988,
+          1348
+        ],
+        "draws": 71,
+        "triangles": 347251,
+        "verifiedPrototypeResponses": 54,
+        "verifiedPrototypeBytes": 32525250,
+        "pausedWindowMs": 2113,
+        "pausedMapRenderFrames": 0,
+        "signals": {
+          "representation": "visual_synthesis",
+          "state": "empty",
+          "heads": 0,
+          "draws": 0,
+          "red": 0,
+          "amber": 0,
+          "green": 0,
+          "omittedPlacements": 0,
+          "truncated": false,
+          "geometryUpdates": 1,
+          "aspectUpdates": 1,
+          "retainedBytes": 187688,
+          "lastError": null
+        },
+        "errors": []
+      },
+      {
+        "pose": {
+          "name": "02-source-panel-close",
+          "lon": 61.40977565,
+          "lat": 55.165203500000004,
+          "zoom": 18.8,
+          "pitch": 60,
+          "bearing": 109.565,
+          "minutes": 984.87,
+          "source": "openmaptiles_buildings:1160636710 source footprint bounds centre"
+        },
+        "mode": "before",
+        "artifact": "omnitwin-full-facades-20260909/02-source-panel-close-before.png",
+        "sha256": "2ca237ebeeeaf1e326e9802ac64fec7e5ee9e6fd02d07207614a0d942a648a07",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "drawingBuffer": [
+          988,
+          1348
+        ],
+        "draws": 37,
+        "triangles": 122887,
+        "verifiedPrototypeResponses": 0,
+        "verifiedPrototypeBytes": 0,
+        "pausedWindowMs": 2105.899999976158,
+        "pausedMapRenderFrames": 0,
+        "signals": {
+          "representation": "visual_synthesis",
+          "state": "empty",
+          "heads": 0,
+          "draws": 0,
+          "red": 0,
+          "amber": 0,
+          "green": 0,
+          "omittedPlacements": 0,
+          "truncated": false,
+          "geometryUpdates": 1,
+          "aspectUpdates": 1,
+          "retainedBytes": 187688,
+          "lastError": null
+        },
+        "errors": []
+      },
+      {
+        "pose": {
+          "name": "02-source-panel-close",
+          "lon": 61.40977565,
+          "lat": 55.165203500000004,
+          "zoom": 18.8,
+          "pitch": 60,
+          "bearing": 109.565,
+          "minutes": 984.87,
+          "source": "openmaptiles_buildings:1160636710 source footprint bounds centre"
+        },
+        "mode": "after",
+        "artifact": "omnitwin-full-facades-20260909/02-source-panel-close-after.png",
+        "sha256": "11ff5aab86994c2632777de7d98074b4e44abb2186f4c90fc0072a4ef208359b",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "drawingBuffer": [
+          988,
+          1348
+        ],
+        "draws": 37,
+        "triangles": 51205,
+        "verifiedPrototypeResponses": 30,
+        "verifiedPrototypeBytes": 14095529,
+        "pausedWindowMs": 2102.5,
+        "pausedMapRenderFrames": 0,
+        "signals": {
+          "representation": "visual_synthesis",
+          "state": "empty",
+          "heads": 0,
+          "draws": 0,
+          "red": 0,
+          "amber": 0,
+          "green": 0,
+          "omittedPlacements": 0,
+          "truncated": false,
+          "geometryUpdates": 1,
+          "aspectUpdates": 1,
+          "retainedBytes": 187688,
+          "lastError": null
+        },
+        "errors": []
+      },
+      {
+        "pose": {
+          "name": "03-miass-waterfront",
+          "lon": 61.40175104141235,
+          "lat": 55.16893869067019,
+          "zoom": 17.9,
+          "pitch": 55,
+          "bearing": 0,
+          "minutes": 707.7335833333341,
+          "source": "Exact Miass source-line vertex; water polygon 25606292"
+        },
+        "mode": "before",
+        "artifact": "omnitwin-full-facades-20260909/03-miass-waterfront-before.png",
+        "sha256": "9ad01676a552fca63e3e3b0b9abea4c1edcf2fb63286a41d46785bab7cc6ff2f",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "drawingBuffer": [
+          988,
+          1348
+        ],
+        "draws": 24,
+        "triangles": 21441,
+        "verifiedPrototypeResponses": 0,
+        "verifiedPrototypeBytes": 0,
+        "pausedWindowMs": 2113.2999999523163,
+        "pausedMapRenderFrames": 1,
+        "signals": {
+          "representation": "visual_synthesis",
+          "state": "empty",
+          "heads": 0,
+          "draws": 0,
+          "red": 0,
+          "amber": 0,
+          "green": 0,
+          "omittedPlacements": 0,
+          "truncated": false,
+          "geometryUpdates": 1,
+          "aspectUpdates": 1,
+          "retainedBytes": 187688,
+          "lastError": null
+        },
+        "errors": []
+      },
+      {
+        "pose": {
+          "name": "03-miass-waterfront",
+          "lon": 61.40175104141235,
+          "lat": 55.16893869067019,
+          "zoom": 17.9,
+          "pitch": 55,
+          "bearing": 0,
+          "minutes": 707.7335833333341,
+          "source": "Exact Miass source-line vertex; water polygon 25606292"
+        },
+        "mode": "after",
+        "artifact": "omnitwin-full-facades-20260909/03-miass-waterfront-after.png",
+        "sha256": "cc56746ca3df029e8887d16a598f0681ce7cc3ea788f87daf453f44d02cfe647",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "drawingBuffer": [
+          988,
+          1348
+        ],
+        "draws": 24,
+        "triangles": 14371,
+        "verifiedPrototypeResponses": 25,
+        "verifiedPrototypeBytes": 11876639,
+        "pausedWindowMs": 2101.7000000476837,
+        "pausedMapRenderFrames": 0,
+        "signals": {
+          "representation": "visual_synthesis",
+          "state": "empty",
+          "heads": 0,
+          "draws": 0,
+          "red": 0,
+          "amber": 0,
+          "green": 0,
+          "omittedPlacements": 0,
+          "truncated": false,
+          "geometryUpdates": 1,
+          "aspectUpdates": 1,
+          "retainedBytes": 187688,
+          "lastError": null
+        },
+        "errors": []
+      }
+    ],
+    "interpretation": [
+      "Close-panel geometry is materially cheaper with varied room/stair window dimensions and sparse physical recesses.",
+      "Coarse wide geometry increases by 20.6% for distributed windows and parapets; draw count is unchanged.",
+      "The exact Miass vertex view is mostly water in the current narrow canvas, so it is a surface continuity control with limited facade visibility.",
+      "Cold-paused runtime has zero motion actors in these runs; these screenshots do not establish cars, pedestrians, signals, or movement performance."
+    ]
+  }
+}

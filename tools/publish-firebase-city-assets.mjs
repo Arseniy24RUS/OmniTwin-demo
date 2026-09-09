@@ -237,10 +237,11 @@ function sameRemote(remote, expected) {
 }
 
 /** Explicit upload entry point. No auth discovery, bucket mutation, ACL or overwrite operation exists. */
-export async function publishFirebaseCityAssets(plan,{projectId=PROJECT_ID,bucket,getAccessToken,fetchImpl=fetch,signal:outerSignal}={}) {
+export async function publishFirebaseCityAssets(plan,{projectId=PROJECT_ID,bucket,getAccessToken,fetchImpl=fetch,signal:outerSignal,concurrency=PUBLICATION_LIMITS.concurrency}={}) {
   const local=privatePlans.get(plan)??readVisualPublicationPlan(plan)??readMovementPublicationPlan(plan);
   if(!local)fail('Expected an in-process verified publication plan.');
   if(projectId!==PROJECT_ID||bucket!==PUBLIC_ASSET_BUCKET||typeof getAccessToken!=='function'||typeof fetchImpl!=='function')fail('Explicit approved project, dedicated bucket and trusted auth provider required.');
+  if(!Number.isInteger(concurrency)||concurrency<1||concurrency>8)fail('Upload concurrency must be an integer from 1 to 8.');
   if(outerSignal?.aborted)fail('Publication cancelled.');
   // A build may have changed after the printed dry-run; reject it before auth.
   if(local.revalidate)await local.revalidate(outerSignal);
@@ -295,14 +296,14 @@ export async function publishFirebaseCityAssets(plan,{projectId=PROJECT_ID,bucke
   };
   const rootPaths=local.rootPaths??ROOTS;
   const manifestPaths=new Set([...rootPaths,...local.dependentManifests]);
-  await runBatch(plan.objects.filter(item=>!manifestPaths.has(item.path)),PUBLICATION_LIMITS.concurrency);
+  await runBatch(plan.objects.filter(item=>!manifestPaths.has(item.path)),concurrency);
   // The nested movement manifest and its opaque gzip alias cannot precede
   // their leaf pages/contexts, even while a second upload is still in flight.
   await runBatch(local.dependentManifests.map(path=>plan.objects.find(item=>item.path===path)),1);
   // New root manifests cannot advertise leaves that this invocation has not yet
   // verified remotely. This is publication ordering, not mutable activation.
   await runBatch(rootPaths.map(path=>plan.objects.find(item=>item.path===path)),1);
-  return {releaseId:plan.releaseId,prefix:plan.prefix,bucket,projectId:PROJECT_ID,uploaded,skipped,totalStoredBytes:plan.totalStoredBytes,
+  return {releaseId:plan.releaseId,prefix:plan.prefix,bucket,projectId:PROJECT_ID,uploaded,skipped,concurrency,totalStoredBytes:plan.totalStoredBytes,
     manifestUrls:Object.fromEntries(rootPaths.map(path=>[path,`https://storage.googleapis.com/${bucket}/${plan.prefix}${path}`])),publicReady:false};
 }
 

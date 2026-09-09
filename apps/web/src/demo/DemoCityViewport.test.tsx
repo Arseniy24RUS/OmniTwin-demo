@@ -34,6 +34,16 @@ function makeProvider(prepareViewport: StaticDemoProvider['prepareViewport'], la
 }
 afterEach(() => { cleanup(); fixture.props = null; fixture.frameMinutes.length = 0; fixture.flowOptions.length = 0; });
 
+it('does not rebuild the hidden aggregate-flow graph while viewing individual actors',async()=>{
+  const prepareViewport=vi.fn(async()=>{}),provider=makeProvider(prepareViewport);
+  const context={...DEFAULT_CONTEXT,camera:{...DEFAULT_CONTEXT.camera,zoom:15.7},cityGraphicsBackend:'tiled_game' as const};
+  render(<DemoCity provider={provider} context={context}/>);
+  await waitFor(()=>expect(prepareViewport).toHaveBeenCalledOnce());
+  act(()=>fixture.props?.onViewportChange?.({camera:context.camera,bbox:[61.39,55.15,61.43,55.2],widthCss:494,heightCss:674,revision:'close-pan'}));
+  await waitFor(()=>expect(prepareViewport).toHaveBeenCalledTimes(2));
+  expect(fixture.flowOptions).toHaveLength(0);
+});
+
 it('forwards exact connected-corridor source road provenance to the game scene',async()=>{
   const layout:DemoLayout={buildings:[],roads:[{id:'osm-connected-corridor-v1:car:fixture',coordinates:[[61.4,55.16],[61.401,55.16]],
     sourceRoadIds:['osm-road:10','osm-road:11'],segments:[{roadId:'osm-road:10',fromNodeId:'n1',toNodeId:'n2'},{roadId:'osm-road:11',fromNodeId:'n2',toNodeId:'n3'}]}]};

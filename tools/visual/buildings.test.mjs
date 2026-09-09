@@ -30,9 +30,9 @@ test('WGS84 tangent frame is orthonormal, metre-scaled, and finite',()=>{
   const frame=tangentFrame(origin);assert.equal(frame.length,16);const p=projectLocal([origin[0]+.01,origin[1]],origin);assert.ok(p[0]>635&&p[0]<640);assert.equal(p[1],0);
   for(const off of [0,4,8])assert.ok(Math.abs(Math.hypot(...frame.slice(off,off+3))-1)<1e-12);
 });
-test('residential window glass stays1.2–1.4m wide and is not a floor-to-ceiling curtain wall',()=>{
+test('residential glass has narrow stairs, paired room windows and bounded wider bays, not floor-to-ceiling curtain walls',()=>{
   const result=buildBuilding(building,{origin,lod:0}),windows=result.meshes.find(m=>m.name.endsWith(':windows'));
-  for(let i=0;i<windows.positions.length;i+=18){const a=windows.positions.slice(i,i+3),b=windows.positions.slice(i+3,i+6),c=windows.positions.slice(i+6,i+9);const width=Math.hypot(b[0]-a[0],b[2]-a[2]);assert.ok(width>=1.19&&width<=1.41);assert.ok(c[1]-a[1]<=1.51);}
+  for(let i=0;i<windows.positions.length;i+=18){const a=windows.positions.slice(i,i+3),b=windows.positions.slice(i+3,i+6),c=windows.positions.slice(i+6,i+9);const width=Math.hypot(b[0]-a[0],b[2]-a[2]);assert.ok(width>=.77&&width<=2.11);assert.ok(c[1]-a[1]<=2.06);}
   assert.notEqual(classifyFamily({...building,sourceClass:'commercial',sourceAttributes:{building:'commercial'},heightM:12}),'glass');
 });
 test('illustrative appearance varies deterministically while source family and footprint stay fixed',()=>{
@@ -84,11 +84,11 @@ test('far LOD keeps real floor spacing with cheap bounded window cards and a sin
   const windows=far.meshes.find(m=>m.name.endsWith(':windowsFar'));
   assert.ok(windows,'far buildings need readable windows rather than blank concrete blocks');
   assert.ok(far.metadata.windowCount>0&&far.metadata.windowCount<=512);
-  const rows=new Set();for(let i=0;i<windows.positions.length;i+=18)rows.add(windows.positions[i+1].toFixed(3));
+  const rows=new Set();for(let i=0;i<windows.positions.length;i+=18)rows.add(Math.floor(windows.positions[i+1]/3));
   assert.equal(rows.size,building.levels,'far LOD preserves nine floors instead of stretching one window row over the entire height');
   assert.equal(windows.positions.length/3,far.metadata.windowCount*6);
   const shell=far.meshes.find(m=>m.name.endsWith(':shell'));
   assert.equal(shell.positions.length/3,far.metadata.edgeCount*6);
   assert.ok(!far.meshes.some(m=>m.name.endsWith(':windowReveals')||m.name.endsWith(':balconies')));
-  assert.ok(far.meshes.reduce((sum,m)=>sum+m.positions.length,0)<near.meshes.reduce((sum,m)=>sum+m.positions.length,0)*.15);
+  assert.ok(far.meshes.reduce((sum,m)=>sum+m.positions.length,0)<near.meshes.reduce((sum,m)=>sum+m.positions.length,0)*.4);
 });

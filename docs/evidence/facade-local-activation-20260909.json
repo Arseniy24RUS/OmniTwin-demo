@@ -1,0 +1,35 @@
+{
+  "contract": "OmniTwinLocalFacadeActivationEvidenceV1",
+  "date": "2026-09-09",
+  "scope": "local_preview_only",
+  "status": "activated_pending_combined_acceptance",
+  "publicationHeld": true,
+  "publicActivationChanged": false,
+  "sourceDatasetVersion": "138afac3f0d74f256838eda3b7afd24259f640fac0dcd4a60ff49140a18f66a4",
+  "rootManifest": {
+    "path": "apps/web/public/city-visual-v1/manifest.json",
+    "bytes": 167143,
+    "sha256": "1aa147a06516bd9a5926d67bdcadcd2cba08f3b80da732ef18c282d6f039ce47"
+  },
+  "catalog": {
+    "uri": "catalog/build-cbb8ae2ecc550dbf/catalog-13f118a1b6e0af68.json",
+    "bytes": 4491720,
+    "sha256": "13f118a1b6e0af680e836979be0bef0f6a69bf6615a3ea3761b3e660bcc2b221"
+  },
+  "preparation": {
+    "command": "node tools/prepare-city-visual-catalog-preview.mjs .cache/city-visual-catalog-facades-v4-metric-lod/build-cbb8ae2ecc550dbf/catalog-13f118a1b6e0af68.json",
+    "exitCode": 0,
+    "verifiedCopiedAssets": 19468,
+    "plannedCells": 1331,
+    "compiledNonemptyCells": 855,
+    "emptyCells": 476,
+    "coverage": "complete",
+    "previousLocalManifestBackedUp": true,
+    "previousCatalogFilesPreserved": true
+  },
+  "limitations": [
+    "Local activation and verified asset copying do not close visual or moving-camera acceptance.",
+    "The combined diagnostic still contains long cold-pan and cold-zoom frames; publication remains held.",
+    "A catalog-load failure may show the previous standalone quarter with an explicit degraded status; it is not the new full-city artwork."
+  ]
+}

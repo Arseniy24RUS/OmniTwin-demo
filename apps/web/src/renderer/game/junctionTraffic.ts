@@ -39,6 +39,13 @@ interface Crossing { point: Point; radius: number; longitudinal:boolean; corrido
 interface Approach { id: string; pathKey: string; kind: JunctionKind; station: number; entry: number; exit: number;
   heading: number; axis: number; stopPoint: Point; signalPoint: Point | null; roadHalfWidthMeters?: number }
 interface Node { id: string; point: Point; radius: number; approaches: Approach[]; longitudinal:boolean }
+interface IndexedActor { actor: JunctionActor; distance: number }
+interface ActorStations { entries: IndexedActor[]; maxAdvance: number }
+function firstStation(entries: readonly IndexedActor[], minimum: number): number {
+  let low = 0, high = entries.length;
+  while (low < high) { const mid = (low + high) >>> 1; if (entries[mid]!.distance < minimum) low = mid + 1; else high = mid; }
+  return low;
+}
 const physicalApproaches=(node:Node)=>[...new Map(node.approaches.map(approach=>[approach.id,approach])).values()];
 const EPS = 1e-7, GRID = 64, RETAIN_SECONDS = 120;
 const TURNING_RADIUS = Math.hypot(2.25,1), HEADING_SAMPLE_HORIZON=.25;
@@ -400,31 +407,62 @@ export class JunctionTraffic {
           signalPoint:approach.signalPoint,roadHalfWidthMeters:approach.roadHalfWidthMeters}))}));}
       return result;
     }
-    const phase = phaseAt(time), byPath = new Map<string, JunctionActor[]>();
-    for (const actor of actors) { const entries = byPath.get(actor.pathKey) ?? []; entries.push(actor); byPath.set(actor.pathKey, entries); }
+    const phase = phaseAt(time), byPath = new Map<string, ActorStations>();
+    for (const actor of actors) {
+      if (!actor.entered) continue;
+      let group = byPath.get(actor.pathKey);
+      if (!group) { group = { entries: [], maxAdvance: .05 }; byPath.set(actor.pathKey, group); }
+      const distance = actor.distance;
+      group.entries.push({ actor, distance });
+      group.maxAdvance = Math.max(group.maxAdvance, result.get(actor.id)!.distance - distance);
+    }
+    for (const group of byPath.values()) group.entries.sort((a, b) => a.distance - b.distance);
     const signals: JunctionSignal[] = [];
     for (const node of this.nodes) {
-      const visitors = node.approaches.flatMap(approach => (byPath.get(approach.pathKey) ?? []).map(actor => ({ actor, approach })));
+      const visitors: { actor: JunctionActor; approach: Approach }[] = [];
+      for (const approach of node.approaches) {
+        const group = byPath.get(approach.pathKey);
+        if (!group) continue;
+        // An upper bound on every desired advance gives a conservative local
+        // station interval. Long leaps only widen the query; they never skip a
+        // crossed zone. Caps shrink later, so this index remains valid all pass.
+        const roundoff = 2 * EPS + 4 * Number.EPSILON * Math.max(1, Math.abs(approach.entry), group.maxAdvance);
+        const first = firstStation(group.entries, approach.entry - group.maxAdvance - roundoff);
+        for (let index = first; index < group.entries.length; index++) {
+          const { actor, distance } = group.entries[index]!;
+          if (distance >= approach.exit - EPS) break;
+          // Keep every incumbent inside the zone even if its desired stop is
+          // low. The final priority sort restores distance order; both stable
+          // sorts retain source input order when priority and distance tie.
+          if (!actor.entered || actor.distance >= approach.exit - EPS
+            || result.get(actor.id)!.distance <= approach.entry + EPS && actor.distance < approach.entry - .05) continue;
+          visitors.push({ actor, approach });
+        }
+      }
       const occupied = visitors.filter(({ actor, approach }) => actor.entered && !actor.fresh && actor.distance > approach.entry + EPS && actor.distance < approach.exit - EPS);
+      const occupiedIds = new Set(occupied.map(item => item.actor.id));
       const permitted = (approach: Approach) => phase.kind === approach.kind && (approach.kind === 'pedestrian' || approach.axis === phase.axis);
       const compatible = (a: Approach, b: Approach) => a.kind === 'pedestrian' && b.kind === 'pedestrian' || a.id === b.id;
       const reservations = [...occupied];
-      const counts = new Map(node.approaches.map(approach => [approach.id, { waiting: 0, occupied: occupied.filter(o => o.approach.id === approach.id).length }]));
+      const counts = record ? new Map(node.approaches.map(approach => [approach.id, { waiting: 0, occupied: 0 }])) : null;
+      if (counts) for (const item of occupied) counts.get(item.approach.id)!.occupied++;
       visitors.sort((a, b) => Number(a.actor.fresh) - Number(b.actor.fresh) || Number(permitted(b.approach)) - Number(permitted(a.approach))
         || b.actor.distance - a.actor.distance || a.actor.id.localeCompare(b.actor.id));
       for (const visitor of visitors) {
         const { actor, approach } = visitor, cap = result.get(actor.id)!;
         if (!actor.entered || actor.distance >= approach.exit - EPS
           || cap.distance <= approach.entry + EPS && actor.distance < approach.entry - .05) continue;
-        if (occupied.some(item => item.actor.id === actor.id)) continue;
+        if (occupiedIds.has(actor.id)) continue;
         const free = reservations.every(item => item.actor.id === actor.id || compatible(approach, item.approach));
         if (permitted(approach) && free) reservations.push(visitor);
         else {
           cap.distance = Math.min(cap.distance, actor.fresh ? Math.max(0, approach.entry) : Math.max(actor.distance, approach.entry));
           if (actor.fresh && approach.entry < 0) cap.visible = false;
-          counts.get(approach.id)!.waiting++;
+          if (counts) counts.get(approach.id)!.waiting++;
         }
       }
+      // Prediction consumes caps only; its signal snapshot would be discarded.
+      if (!counts) continue;
       const heldForOccupancy = occupied.some(item => !permitted(item.approach));
       signals.push({ id: node.id, point: node.point, radiusMeters: node.radius, phase: phase.kind, heldForOccupancy,
         approaches: physicalApproaches(node).map(approach => {

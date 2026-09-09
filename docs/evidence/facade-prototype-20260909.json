@@ -1,0 +1,296 @@
+{
+  "contract": "OmniTwinFacadePrototypeEvidenceV1",
+  "date": "2026-09-09",
+  "status": "isolated_prototype_review_only",
+  "publicationHeld": true,
+  "fullGraphicsAccepted": false,
+  "scope": {
+    "canonicalCell": "z15-x21973-y10338",
+    "canonicalBuildings": 167,
+    "fullCityRebuild": false,
+    "publicManifestChanged": false,
+    "sourceClaims": "source_geometry_with_visual_synthesis"
+  },
+  "diagnosis": {
+    "sharedPlasterSourceBuildings": 145,
+    "sourceCellBuildings": 167,
+    "materialFamilySources": 7,
+    "materialTextures": 21,
+    "texturePoolDuplicationReproduced": false,
+    "dominantDetailCost": "per-window surround and sill geometry"
+  },
+  "compiler": {
+    "tools/visual/buildings.mjs": "a1d13774f877a66fa0a7f28f78e48282eb32baa46013c6cb49f840b413e01ca3",
+    "tools/visual/building-details.mjs": "022299369efb515159b16e7ec8134f5c33d9eb2171c52402d8876c8b3ccd2543"
+  },
+  "build": {
+    "prototypeCatalogSha256": "1a141406fb89798c757844dda289a00298a3cb47bfff227390eae8493f708038",
+    "hybridCatalogSha256": "f4f4b80a60048dec833fcdcc2fae477000983716d9f4f81d6618a08293d487ba",
+    "baselineCatalogSha256": "bca4ff81f5a4c1a8c3517f0b1faeceddd6042cf20d811c70661993ecec72a819",
+    "prototypeManifestSha256": "3e0a32004f6be346f92acfd37c61d1e6819ce764184cc2fca321180d1eb4dddf",
+    "freshBuilds": 2,
+    "byteIdenticalInventories": true,
+    "verifiedAssetsPerBuild": 39,
+    "glbCount": 37,
+    "sourceManifestSha256": "e8e1627801eb79ac353e9a1bf37419519980ad48d071d9c1f9b67318c2f3f62a",
+    "sourceDatasetVersion": "138afac3f0d74f256838eda3b7afd24259f640fac0dcd4a60ff49140a18f66a4",
+    "sourceCells": [
+      {
+        "key": "16/43946/20676",
+        "bytes": 87149,
+        "sha256": "37bcd2cc59db6d15599df213ad42caa1731e07f57d9735c74f6784262078db07"
+      },
+      {
+        "key": "16/43946/20677",
+        "bytes": 75702,
+        "sha256": "8a1763fe7aaba251030a8fd0e9b875975b0b599cd0469133142fa6d4cd1169eb"
+      },
+      {
+        "key": "16/43947/20676",
+        "bytes": 86961,
+        "sha256": "46f4237d4ef9ec198b80622f77ad39a5c96aa273e2341daa11a38d3256120d2d"
+      },
+      {
+        "key": "16/43947/20677",
+        "bytes": 96581,
+        "sha256": "eebd8a73799c4d312fa19587d4a9578e6d9f44482054d966972e9d425b927a9d"
+      }
+    ],
+    "canonicalSourceFieldsEqual": true,
+    "original": {
+      "sourceCells": 4,
+      "sourceBytes": 346393,
+      "buildings": 167,
+      "roads": 0,
+      "trees": 0,
+      "courtyardDecorations": 0,
+      "sourceRoadsForExclusion": 305,
+      "tiles": 37,
+      "vertices": 3320412,
+      "triangles": 1106804,
+      "drawGroups": 361,
+      "windowCount": 26357,
+      "inventoryDecodedBytes": 159379776,
+      "geometryDeliveryBytes": 67918764
+    },
+    "prototype": {
+      "sourceCells": 4,
+      "sourceBytes": 346393,
+      "buildings": 167,
+      "roads": 0,
+      "trees": 0,
+      "courtyardDecorations": 0,
+      "sourceRoadsForExclusion": 305,
+      "tiles": 37,
+      "vertices": 1401606,
+      "triangles": 467202,
+      "drawGroups": 361,
+      "windowCount": 26218,
+      "inventoryDecodedBytes": 67277088,
+      "geometryDeliveryBytes": 28377328
+    }
+  },
+  "runtime": {
+    "method": "one exact canonical cell replaced in an in-memory hybrid catalog; every served prototype byte hash verified; public files untouched; same current runtime material treatment on both sides; runtime LOD helper accepts hybrid hash only in this isolated response",
+    "sourceFingerprintBefore": "ffe2647b4729f975cd76050d70c73896a982566d9977274872f54a06f1094692",
+    "sourceFingerprintAfter": "ffe2647b4729f975cd76050d70c73896a982566d9977274872f54a06f1094692",
+    "sourceStable": true,
+    "viewportCss": [
+      770,
+      792
+    ],
+    "deviceScaleFactor": 2.25,
+    "measurement": "static art comparison only, no FPS claim",
+    "runs": [
+      {
+        "pose": {
+          "name": "01-original-wide",
+          "lon": 61.409959,
+          "lat": 55.163784,
+          "zoom": 15.703,
+          "pitch": 55.5,
+          "bearing": 109.565,
+          "minutes": 984.87
+        },
+        "mode": "before",
+        "artifact": "omnitwin-facade-compiler-20260909/01-original-wide-before.png",
+        "sha256": "fdc10a7eaf8de7e42ddb4a3337301f2adb87a2d931508f666d5b0cfb0ff200d3",
+        "prototypeResponses": 0,
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "drawingBuffer": [
+          988,
+          1348
+        ],
+        "draws": 77,
+        "triangles": 293087,
+        "textures": {
+          "textures": 18,
+          "retainedBytes": 44040204,
+          "resolution": 512
+        },
+        "sourceSignature": "e4e5336e8d5f123e",
+        "meshBuildings": 1066,
+        "errors": []
+      },
+      {
+        "pose": {
+          "name": "01-original-wide",
+          "lon": 61.409959,
+          "lat": 55.163784,
+          "zoom": 15.703,
+          "pitch": 55.5,
+          "bearing": 109.565,
+          "minutes": 984.87
+        },
+        "mode": "after",
+        "artifact": "omnitwin-facade-compiler-20260909/01-original-wide-after.png",
+        "sha256": "bb3fb20f0f68f605a9c4350a812036273a971e9e322ede1f443a6a9c7d8a8eb7",
+        "prototypeResponses": 3,
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "drawingBuffer": [
+          988,
+          1348
+        ],
+        "draws": 77,
+        "triangles": 302139,
+        "textures": {
+          "textures": 18,
+          "retainedBytes": 44040204,
+          "resolution": 512
+        },
+        "sourceSignature": "e4e5336e8d5f123e",
+        "meshBuildings": 1066,
+        "errors": []
+      },
+      {
+        "pose": {
+          "name": "02-original-close",
+          "lon": 61.409959,
+          "lat": 55.163784,
+          "zoom": 18,
+          "pitch": 55.5,
+          "bearing": 109.565,
+          "minutes": 984.87
+        },
+        "mode": "before",
+        "artifact": "omnitwin-facade-compiler-20260909/02-original-close-before.png",
+        "sha256": "fd5999d6a7f470f4f24bedbf7d91df2a04521da654b14d47daf80bb165c839b6",
+        "prototypeResponses": 0,
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "drawingBuffer": [
+          988,
+          1348
+        ],
+        "draws": 85,
+        "triangles": 303928,
+        "textures": {
+          "textures": 9,
+          "retainedBytes": 22020102,
+          "resolution": 512
+        },
+        "sourceSignature": "d7530f0fd9cdf63b",
+        "meshBuildings": 29,
+        "errors": []
+      },
+      {
+        "pose": {
+          "name": "02-original-close",
+          "lon": 61.409959,
+          "lat": 55.163784,
+          "zoom": 18,
+          "pitch": 55.5,
+          "bearing": 109.565,
+          "minutes": 984.87
+        },
+        "mode": "after",
+        "artifact": "omnitwin-facade-compiler-20260909/02-original-close-after.png",
+        "sha256": "601734070ddc29adfc334174196ca866db6b3d73cbb7bb192fa1f5e2f20a8474",
+        "prototypeResponses": 9,
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "drawingBuffer": [
+          988,
+          1348
+        ],
+        "draws": 85,
+        "triangles": 186644,
+        "textures": {
+          "textures": 9,
+          "retainedBytes": 22020102,
+          "resolution": 512
+        },
+        "sourceSignature": "d7530f0fd9cdf63b",
+        "meshBuildings": 29,
+        "errors": []
+      },
+      {
+        "pose": {
+          "name": "03-source-panel-close",
+          "lon": 61.40977565,
+          "lat": 55.165203500000004,
+          "zoom": 18.8,
+          "pitch": 60,
+          "bearing": 109.565,
+          "minutes": 984.87,
+          "sourceCamera": "source footprint bounds centre openmaptiles_buildings:1160636710"
+        },
+        "mode": "before",
+        "artifact": "omnitwin-facade-compiler-20260909/03-source-panel-close-before.png",
+        "sha256": "3d0a52fac02e36c292808e1e263ce969167f173ec84387f8189282e3b8eb7fdf",
+        "prototypeResponses": 0,
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "drawingBuffer": [
+          988,
+          1348
+        ],
+        "draws": 51,
+        "triangles": 191939,
+        "textures": {
+          "textures": 9,
+          "retainedBytes": 22020102,
+          "resolution": 512
+        },
+        "sourceSignature": "6d771056b24fa3f6",
+        "meshBuildings": 19,
+        "errors": []
+      },
+      {
+        "pose": {
+          "name": "03-source-panel-close",
+          "lon": 61.40977565,
+          "lat": 55.165203500000004,
+          "zoom": 18.8,
+          "pitch": 60,
+          "bearing": 109.565,
+          "minutes": 984.87,
+          "sourceCamera": "source footprint bounds centre openmaptiles_buildings:1160636710"
+        },
+        "mode": "after",
+        "artifact": "omnitwin-facade-compiler-20260909/03-source-panel-close-after.png",
+        "sha256": "fddd933c1775648442c69183c6b4699de5d41353c761f38dcb751f93ad4ba622",
+        "prototypeResponses": 5,
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "drawingBuffer": [
+          988,
+          1348
+        ],
+        "draws": 51,
+        "triangles": 119219,
+        "textures": {
+          "textures": 9,
+          "retainedBytes": 22020102,
+          "resolution": 512
+        },
+        "sourceSignature": "6d771056b24fa3f6",
+        "meshBuildings": 19,
+        "errors": []
+      }
+    ]
+  },
+  "limitations": [
+    "Only one source cell has new geometry; the hybrid catalog is a response-only local experiment.",
+    "Window layout, finish, entrances and rooftop equipment are authored visual synthesis, not observations.",
+    "Coarse triangles rise slightly for parapets and better-distributed windows; detailed geometry falls substantially.",
+    "Static frames do not establish camera-motion responsiveness or citywide acceptance.",
+    "This remains stylized art; the overall visual acceptance gate stays open."
+  ]
+}

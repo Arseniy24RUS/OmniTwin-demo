@@ -12,6 +12,7 @@ import { decodeMovementPage, movementContextAt, decodeMovementCellContext } from
 import movementCodecSource from '../../../../../shared/demo-population/movement-index.mjs?raw';
 import { corridorIntersectsBounds, movementContextKey, movementScheduleSamples, movementWindow } from './movementContinuity';
 import { loadMovementPreviewOverlay, type MovementPreviewOverlay, type MovementPreviewOverlayOptions } from './MovementPreviewOverlay';
+import { MovementPresenceCache } from './MovementPresenceCache';
 
 interface RangeAsset extends DemoAsset { startIndex: number; count: number }
 interface BuildingRangeAsset extends DemoAsset { firstIndex: number; count: number }
@@ -36,6 +37,7 @@ interface SpatialManifest {
 type Bounds = readonly [number, number, number, number];
 interface MovementCell { key:string; bbox:Bounds; context:DemoAsset; pages:(DemoAsset & {count:number;firstPersonIndex:number;lastPersonIndex:number})[] }
 interface MovementManifest { contract:'DemoMovementIndexManifestV2'; datasetId:string; representation:'visual_synthesis'; scientificClaim:false; cellZoom:16; pageSize:number; sourceHashes:{populationManifest:string;geographyManifest:string;spatialCodec:string;codec:string}; cells:MovementCell[] }
+interface CachedMovementPage {page:ReturnType<typeof decodeMovementPage>;bytes:number;contexts:(ReturnType<typeof movementContextAt>|undefined)[];scheduleKey:string|null;origins:((number|null)[]|undefined)[]}
 export interface MovementCoverage { mode:'lifetime_sample'|'activity_index'; status:'loading'|'ready'|'partial'|'error'; reason:string|null; cellsAvailable:number; cellsScanned:number; pagesAvailable:number; pagesScanned:number; recordsScanned:number; eligiblePeople:number; eligibleVehicles:number; networkBytes:number; decodedBytes:number; retainedCandidates:number }
 export interface CommittedMovementGeneration {
   generation:number; contextKey:string; viewportRevision:string|null; bounds:Bounds|null;
@@ -78,13 +80,15 @@ export class CityDemoProviderV2 extends StaticDemoProvider {
   private readonly spatial: SpatialManifest;
   private readonly movement:MovementManifest|null;
   private readonly movementStore:VerifiedShardStore;
-  private readonly decodedMovementPages=new Map<string,{page:ReturnType<typeof decodeMovementPage>;bytes:number}>();
+  private readonly decodedMovementPages=new Map<string,CachedMovementPage>();
   private readonly movementPageCacheBudget=MOVEMENT_BUDGET.decoded;
   private movementPageCacheBytes=0;
+  private movementPageCacheRows=0;
   private movementPageCacheHits=0;
   private movementPageCacheMisses=0;
+  private readonly movementPresence=new MovementPresenceCache();
   /** Budget accounts verified serialized bytes, not engine-specific JS object overhead. */
-  get movementPageCacheStats(){return{entries:this.decodedMovementPages.size,serializedBytes:this.movementPageCacheBytes,maxSerializedBytes:this.movementPageCacheBudget,hits:this.movementPageCacheHits,misses:this.movementPageCacheMisses};}
+  get movementPageCacheStats(){return{entries:this.decodedMovementPages.size,serializedBytes:this.movementPageCacheBytes,maxSerializedBytes:this.movementPageCacheBudget,contextRows:this.movementPageCacheRows,maxContextRows:MOVEMENT_BUDGET.records,hits:this.movementPageCacheHits,misses:this.movementPageCacheMisses,householdTrips:this.movementPresence.stats};}
   private readonly preview:MovementPreviewOverlay|null;
   private readonly previewDependencies:SpatialDependencies={metadata:new Map(),bindings:new Map(),routes:new Map()};
   get movementPreviewOverlay(){return this.preview?{scope:'local_preview' as const,delivery:this.preview.activation?'public_pinned' as const:'local_preview' as const,
@@ -314,18 +318,19 @@ export class CityDemoProviderV2 extends StaticDemoProvider {
     if(bytes.byteLength!==asset.bytes)throw new Error('Movement page byte length mismatch');
     const key=`DemoMovementPageV2:${asset.sha256}:${asset.bytes}`;
     const cached=this.decodedMovementPages.get(key);
-    const page=cached?.page??decodeMovementPage(bytes);
+    const entry:CachedMovementPage=cached??{page:decodeMovementPage(bytes),bytes:asset.bytes,contexts:[],scheduleKey:null,origins:[]},page=entry.page;
     if(page.key!==cellKey||page.count!==asset.count)throw new Error('Movement page descriptor mismatch');
-    if(movementContextAt(page,0).record.personIndex!==asset.firstPersonIndex||movementContextAt(page,page.count-1).record.personIndex!==asset.lastPersonIndex)throw new Error('Movement page range mismatch');
+    const first=entry.contexts[0]??=movementContextAt(page,0),last=entry.contexts[page.count-1]??=movementContextAt(page,page.count-1);
+    if(first.record.personIndex!==asset.firstPersonIndex||last.record.personIndex!==asset.lastPersonIndex)throw new Error('Movement page range mismatch');
     if(cached){this.movementPageCacheHits++;this.decodedMovementPages.delete(key);this.decodedMovementPages.set(key,cached);}
     else{
       this.movementPageCacheMisses++;
-      while(this.decodedMovementPages.size&&(this.movementPageCacheBytes+asset.bytes>this.movementPageCacheBudget||this.decodedMovementPages.size>=MOVEMENT_BUDGET.pages)){
-        const oldest=this.decodedMovementPages.keys().next().value!;this.movementPageCacheBytes-=this.decodedMovementPages.get(oldest)!.bytes;this.decodedMovementPages.delete(oldest);
+      while(this.decodedMovementPages.size&&(this.movementPageCacheBytes+asset.bytes>this.movementPageCacheBudget||this.decodedMovementPages.size>=MOVEMENT_BUDGET.pages||this.movementPageCacheRows+page.count>MOVEMENT_BUDGET.records)){
+        const oldest=this.decodedMovementPages.keys().next().value!,removed=this.decodedMovementPages.get(oldest)!;this.movementPageCacheBytes-=removed.bytes;this.movementPageCacheRows-=removed.page.count;this.decodedMovementPages.delete(oldest);
       }
-      if(asset.bytes<=this.movementPageCacheBudget){this.decodedMovementPages.set(key,{page,bytes:asset.bytes});this.movementPageCacheBytes+=asset.bytes;}
+      if(asset.bytes<=this.movementPageCacheBudget&&page.count<=MOVEMENT_BUDGET.records){this.decodedMovementPages.set(key,entry);this.movementPageCacheBytes+=asset.bytes;this.movementPageCacheRows+=page.count;}
     }
-    return page;
+    return entry;
   }
   private async prepareMovementViewport(context:DemoContextV1,camera:DemoContextV1['camera'],supplied:Bounds|undefined,epoch:number,signal?:AbortSignal,viewportRevision:string|null=null){
     const radius=Math.min(3000,Math.max(350,700*2**(16.5-camera.zoom))),dy=radius/110540,dx=radius/(111320*Math.cos(camera.latitude*Math.PI/180));
@@ -336,6 +341,7 @@ export class CityDemoProviderV2 extends StaticDemoProvider {
     const visible=new Map<number,PersonState>(),entities=new Set<string>();
     const staged:SpatialDependencies={metadata:new Map(),bindings:new Map(),routes:new Map()};
     const scheduleSamples=movementScheduleSamples(context.presentationMinutes),roadIntersections=new Map<number,boolean>();
+    const scheduleKey=JSON.stringify([context.year,context.scenario,scheduleSamples]);
     const hasCorridor=(origin:number|null,previous?:SpatialDependencies)=>{
       if(origin===null)return false;const dependencies=this.previewDependencies.bindings.has(origin)?this.previewDependencies:staged.bindings.has(origin)?staged:previous;const binding=dependencies?.bindings.get(origin);if(!binding)return false;
       return binding.some(index=>{if(index===null)return false;const road=dependencies!.routes.get(index);if(!road)return false;
@@ -372,14 +378,15 @@ export class CityDemoProviderV2 extends StaticDemoProvider {
           if(coverage.pagesScanned>=MOVEMENT_BUDGET.pages){partial('page_budget');break scan;}
           if(coverage.recordsScanned+descriptor.count>MOVEMENT_BUDGET.records){partial('record_budget');break scan;}
           const bytes=await read(descriptor,store);if(!bytes)break scan;
-          const page=this.movementPage(bytes,descriptor,cell.key);
+          const cachedPage=this.movementPage(bytes,descriptor,cell.key),page=cachedPage.page;
+          if(cachedPage.scheduleKey!==scheduleKey){cachedPage.scheduleKey=scheduleKey;cachedPage.origins=[];}
           if(staged.metadata.size+page.buildings.filter(building=>!staged.metadata.has(building.index)).length>16384){partial('metadata_budget');break scan;}
           for(const building of page.buildings)staged.metadata.set(building.index,building);
           coverage.pagesScanned++;
           let sliceStart=performance.now();
           for(let ordinal=0;ordinal<page.count;ordinal++){
             if(ordinal%1024===0||performance.now()-sliceStart>=4){await new Promise<void>(resolve=>setTimeout(resolve,0));check();sliceStart=performance.now();}
-            coverage.recordsScanned++;const item=movementContextAt(page,ordinal),record=item.record;
+            coverage.recordsScanned++;const item=cachedPage.contexts[ordinal]??=movementContextAt(page,ordinal),record=item.record;
             if(visible.has(record.personIndex)||!isActive(record,context.year,context.scenario)||context.year-record.birthYear<7)continue;
             const districtId=item.districtIndex===null?ROOT:DISTRICT_IDS[item.districtIndex]!;
             if(!matches({ageBand:coarseAgeBand(context.year-record.birthYear),sex:record.sex,employment:employmentFor(record,context.year),territoryId:districtId},{territoryId:context.territoryId,...context.cohort}))continue;
@@ -387,7 +394,13 @@ export class CityDemoProviderV2 extends StaticDemoProvider {
             // people currently indoors or hidden in an open-road reset gap. The
             // exact shared position/activity is still checked only at draw time.
             const previous=this.cachedState(record.personIndex)?.dependencies;
-            const potential=scheduleSamples.some(minute=>{const current=presenceFor(record,item.targets,item.homeBuildingIndex,context.year,context.scenario,minute,{householdRecords:item.householdRecords});return ['travel','leisure'].includes(current.role??'')&&hasCorridor(current.originBuildingIndex??current.buildingIndex??item.homeBuildingIndex,previous);});
+            // Only the source schedule is reusable. Route availability, retained
+            // dependencies and intersection with the current viewport stay live.
+            let origins=cachedPage.origins[ordinal];
+            if(!origins){origins=[];for(const minute of scheduleSamples){const current=this.movementPresence.presence(record,item.targets,item.homeBuildingIndex,context.year,context.scenario,minute,item.householdRecords);
+              const origin=current.originBuildingIndex??current.buildingIndex??item.homeBuildingIndex;if(['travel','leisure'].includes(current.role??'')&&!origins.includes(origin))origins.push(origin);
+            }cachedPage.origins[ordinal]=origins;}
+            const potential=origins.some(origin=>hasCorridor(origin,previous));
             if(!potential)continue;
             const binding=item.homeBuildingIndex===null?null:staged.bindings.get(item.homeBuildingIndex);
             const state:PersonState={record,home:item.homeBuildingIndex,district:item.districtIndex,targets:item.targets,walk:binding?.[0]??null,car:binding?.[1]??null,householdSize:null,householdRecords:item.householdRecords,dependencies:staged};
@@ -419,7 +432,7 @@ export class CityDemoProviderV2 extends StaticDemoProvider {
     }catch(error){if(epoch===this.viewportEpoch&&!signal?.aborted){this.movementState={...coverage,status:'error',reason:'index_unavailable'};}throw error;}
   }
   private presence(state: PersonState, minutes: number, scenario: DemoScenarioId, year: number): DemoPresence | null {
-    const minute = ((minutes % 1440) + 1440) % 1440; const current = presenceFor(state.record, state.targets, state.home, year, scenario, minute, { householdRecords: state.householdRecords }); if (!current.active) return null;
+    const minute = ((minutes % 1440) + 1440) % 1440; const current = this.movementPresence.presence(state.record, state.targets, state.home, year, scenario, minute, state.householdRecords); if (!current.active) return null;
     const base = { personId: state.record.id, buildingId: null, vehicleId: null, roadId: null, position: null, representation: 'visual_synthesis' as const };
     const dependencies=state.dependencies??{metadata:this.metadata,bindings:this.bindings,routes:this.routes};
     const origin = current.originBuildingIndex ?? current.buildingIndex ?? state.home; const binding = origin === null ? null : dependencies.bindings.get(origin);

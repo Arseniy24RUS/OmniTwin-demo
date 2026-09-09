@@ -1,10 +1,33 @@
 import {describe,it,expect,vi} from 'vitest';
 import {MeshStandardMaterial,ShaderLib,Texture,Vector2,WebGLRenderer} from 'three';
-import {applyGameRoofMaterial,sampleGameRoofMaterial,GAME_ROOF_FILTER_VERSION} from './gameRoofMaterial';
+import {applyGameRoofMaterial,sampleGameRoofMaterial,sampleGameMetalRoofNormalWeight,GAME_ROOF_FILTER_VERSION} from './gameRoofMaterial';
 
 const fixture={representation:'visual_synthesis',sourceId:'corrugated_iron',repeatMeters:[3,3],license:'CC0-1.0'};
 const material=(name='metal')=>{const m=new MeshStandardMaterial({map:new Texture(),normalMap:new Texture(),roughnessMap:new Texture(),metalnessMap:new Texture()});m.name=name;m.userData={...fixture,sourceId:name==='bitumen'?'asphalt_02':'corrugated_iron'};m.normalScale=new Vector2(.45,.45);return m;};
 describe('runtime metric roof filtering',()=>{
+  it('fully removes the measured 15-cycle corrugation at the physical Nyquist limit',()=>{
+    // Pinned 1024px e98b839a normal: mean-red FFT has 95.12% energy at
+    // 15 cycles across U. Authored three-metre repeat means 0.20m pitch.
+    expect(sampleGameRoofMaterial('metal',[0,0],[.2,.2,.2],.1).normalWeight).toBe(0);
+    expect(sampleGameRoofMaterial('metal',[0,0],[.2,.2,.2],.35).normalWeight).toBe(0);
+    expect(sampleGameMetalRoofNormalWeight(.02,3)).toBeCloseTo(.298);
+    expect(sampleGameMetalRoofNormalWeight(.05,3)).toBeGreaterThan(0);
+    expect(sampleGameMetalRoofNormalWeight(.1,3)).toBe(0);
+    expect(sampleGameMetalRoofNormalWeight(.1,6)).toBeCloseTo(sampleGameMetalRoofNormalWeight(.05,3));
+    expect(sampleGameMetalRoofNormalWeight(.05,1.5)).toBe(0);
+    let previous=1;
+    for(let i=0;i<=300;i++){const weight=sampleGameMetalRoofNormalWeight(i/1000,3);expect(Number.isFinite(weight)).toBe(true);expect(weight).toBeLessThanOrEqual(previous);expect(weight).toBeGreaterThanOrEqual(0);previous=weight;}
+    for(const args of [[NaN,3],[-1,3],[.1,0],[.1,Infinity]])expect(()=>sampleGameMetalRoofNormalWeight(...args as [number,number])).toThrow();
+  });
+  it('filters actual transformed normal U derivatives and records the measured metric pitch without disabling normal maps',()=>{
+    const m=material(),normal=m.normalMap,scale=m.normalScale.clone(),shader={vertexShader:ShaderLib.standard.vertexShader,fragmentShader:ShaderLib.standard.fragmentShader,uniforms:{}};
+    applyGameRoofMaterial(m);m.onBeforeCompile(shader,{} as WebGLRenderer);
+    expect(shader.fragmentShader).toContain('vNormalMapUv.x * roofRepeatMeters.x');
+    expect(shader.fragmentShader).toContain('roofRepeatMeters.x / 15.0');
+    expect(shader.fragmentShader).toContain('smoothstep(0.125,0.5,roofCorrugationCyclesPerPixel)');
+    expect(m.userData.roofFilter.corrugation).toMatchObject({cyclesPerURepeat:15,pitchMeters:.2,fullDetailPixelsPerCycle:8,zeroDetailPixelsPerCycle:2});
+    expect(m.normalMap).toBe(normal);expect(m.normalScale.equals(scale)).toBe(true);
+  });
   it('does not repeat the source rust/metal mask as bright diagonal stamps on a painted roof',()=>{
     const painted=sampleGameRoofMaterial('metal',[100,80],[.2,.2,.2],.35,0);
     const exposed=sampleGameRoofMaterial('metal',[100,80],[.2,.2,.2],.35,1);

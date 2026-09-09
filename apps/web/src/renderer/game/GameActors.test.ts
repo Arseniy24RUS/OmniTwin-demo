@@ -49,11 +49,24 @@ describe('baked source-backed game actors', () => {
       expect(createHash('sha256').update(await readFile(new URL(license.url, assets))).digest('hex')).toBe(license.sha256);
     }
   });
-  it('keeps the glow until eight pixels and completes body handoff at fourteen', () => {
-    expect(gameActorBodyMix(5)).toBe(0); expect(gameActorBodyMix(8)).toBe(0);
-    expect(gameActorBodyMix(11)).toBeCloseTo(0.5); expect(gameActorBodyMix(14)).toBe(1);
+  it('hands the distant glow to a recognizable body within four to eight CSS pixels', () => {
+    expect(gameActorBodyMix(3)).toBe(0); expect(gameActorBodyMix(4)).toBe(0);
+    expect(gameActorBodyMix(6)).toBeCloseTo(0.5); expect(gameActorBodyMix(8)).toBe(1);
     expect(() => gameActorBodyMix(Number.NaN)).toThrow();
-    expect(GAME_ACTOR_VERTEX_SHADER).toContain('smoothstep(8.0, 14.0');
+    expect(GAME_ACTOR_VERTEX_SHADER).toContain('smoothstep(4.0, 8.0');
+  });
+  it('shows and picks the real pedestrian at a narrow courtyard scale without a dominant glow', async () => {
+    const actors=await loadActors(),view=camera(200);view.aspect=494/674;view.updateProjectionMatrix();
+    const foot=new THREE.Vector3().project(view),head=new THREE.Vector3(0,1.8,0).project(view);
+    const cssHeight=Math.hypot((head.x-foot.x)*494/2,(head.y-foot.y)*674/2);
+    expect(cssHeight).toBeGreaterThan(7);expect(cssHeight).toBeLessThan(8);
+    actors.updateCamera(view,494,674);actors.updateColumns(columns());actors.setTime(100.1);
+    expect(actors.telemetry.nearPeople).toBe(1);expect(gameActorBodyMix(cssHeight)).toBeGreaterThan(.9);
+    const probe=actors.readMotionProbe(['fictional-0']).actors[0]!;
+    expect(probe.near).toBe(true);expect(probe.meshName).not.toContain('sprite');
+    expect(actors.pick(new THREE.Ray(new THREE.Vector3(0,1.1,10),new THREE.Vector3(0,0,-1)))?.id).toBe('fictional-0');
+    actors.updateCamera(camera(1000),494,674);expect(actors.telemetry.nearPeople).toBe(0);
+    expect(actors.readMotionProbe(['fictional-0']).actors[0]!.id).toBe('fictional-0');actors.dispose();
   });
   it('wraps interpolation inside each authored animation, including negative times', () => {
     const clip = { offset: 8, count: 16, duration: 1.2 };

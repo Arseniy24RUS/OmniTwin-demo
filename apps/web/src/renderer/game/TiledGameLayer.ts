@@ -4,7 +4,7 @@ import {
   Box3, BufferGeometry, Color, DirectionalLight, EdgesGeometry, HemisphereLight, ImageBitmapLoader,
   LessEqualCompare, LineBasicMaterial, LineSegments, Matrix4, Mesh, ACESFilmicToneMapping, Object3D,
   PCFShadowMap, PerspectiveCamera, PlaneGeometry, Ray, Raycaster, Scene, ShadowMaterial, SRGBColorSpace,
-  Vector2, Vector3, WebGLRenderer, WebGLRenderTarget,
+  Vector2, Vector3, WebGLRenderer, WebGLRenderTarget, MeshDepthMaterial,
 } from 'three';
 import { TilesRenderer } from '3d-tiles-renderer/three';
 import { DownloadPriorityQueue, LRUCache, PriorityQueue, type Tile } from '3d-tiles-renderer/core';
@@ -38,6 +38,13 @@ import {applyGameWindowMaterial} from './gameWindowMaterial';
 import {GameCourtyardGround} from './GameCourtyardGround';
 import {GameBuildingContacts} from './GameBuildingContacts';
 import {GameTrafficSignals,type GameTrafficSignalSnapshot} from './GameTrafficSignals';
+import {createGameBuildingLodPolicy,gameLodResolution,type GameBuildingLodDiagnostics} from './gameBuildingLod';
+import {GameShaderReadiness,type GameShaderPreparation} from './GameShaderReadiness';
+import {GameSurfaceClient,type GameSurfaceAppliedResult} from './GameSurfaceClient';
+import type {GameSurfaceJob} from './gameSurfaceProtocol';
+import {prepareGameObjectShaders,releaseGameDepthMaterials} from './gameShaderPreparation';
+import {GameObjectShaderReadiness} from './GameObjectShaderReadiness';
+import {prepareGameEnvironment,type GameEnvironmentPreparation} from './gameEnvironmentPreparation';
 
 export type GameQualityTier = 'low' | 'medium' | 'high';
 export interface GamePick { kind: 'person' | 'vehicle' | 'building'; id: string; longitude: number; latitude: number }
@@ -65,6 +72,9 @@ export interface GameDiagnostics {
   aggregateFlowOpacity: number;
   renderedAggregateFlowSegments: number;
   error: string | null;
+  surfaces?:GameSurfaceClient['diagnostics']|null;
+  buildingLod?:GameBuildingLodDiagnostics|null;
+  shaders?:{pending:number;queued:number;ready:number;failed:number;lastError:string|null;parallelSupported:boolean;depthMaterials:number;cachedPrograms:number;pendingObjects?:number;readyObjects?:number;environmentReady?:boolean};
 }
 export interface TiledGameLayerOptions {
   id?: string;
@@ -87,6 +97,7 @@ export interface TiledGameLayerOptions {
   sunUtcOffsetHours?: number;
   onReady?: (diagnostics: GameDiagnostics) => void;
   onDiagnostics?: (diagnostics: GameDiagnostics) => void;
+  onSurfaceShadersReady?:()=>void;
   onPick?: (pick: GamePick) => void;
   /** The caller commits the matching native bank before displaying this frontier. */
   onFrontier?: (frontier: BuildingFrontier) => void;
@@ -272,6 +283,14 @@ export class TiledGameLayer implements CustomLayerInterface {
   private readonly scene = new Scene();
   private readonly camera = new PerspectiveCamera();
   private readonly cells = new Map<Tile, LoadedCell>();
+  private surfaceClient:GameSurfaceClient|null=null;
+  private surfaceFailure:string|null=null;
+  private shaderReadiness:GameShaderReadiness<LoadedCell>|null=null;
+  private objectShaderReadiness:GameObjectShaderReadiness|null=null;
+  private environmentPreparation:GameEnvironmentPreparation|null=null;
+  private environmentReady=false;
+  private actorAssetsReady=false;
+  private readonly shaderDepthMaterials=new Map<Mesh,MeshDepthMaterial>();
   private readonly assetPolicy: ReturnType<typeof createGameAssetPolicy> | ReturnType<typeof createCatalogAssetPolicy>;
   private readonly assetAbort = new AbortController();
   private readonly sun = new DirectionalLight(0xffeed5, 2.5);
@@ -299,6 +318,7 @@ export class TiledGameLayer implements CustomLayerInterface {
   private readonly texturePool: GameTexturePool;
   private readonly environment=createGameEnvironment();
   private readonly windowDaylight={value:1};
+  private readonly buildingLod:ReturnType<typeof createGameBuildingLodPolicy>;
   private candidateFrontier: BuildingFrontier | null = null;
   private committedFrontier: BuildingFrontier | null = null;
   private flowSnapshot: AggregateRoadFlowSnapshot | null = null;
@@ -316,7 +336,7 @@ export class TiledGameLayer implements CustomLayerInterface {
   private selectionDirty = true;
   private selectedId: string | null = null;
   private highlight: LineSegments | null = null;
-  private currentTime = { presentationSeconds: 0, playing: false };
+  private currentTime:{presentationSeconds:number;actorSeconds?:number;playing:boolean} = { presentationSeconds: 0, playing: false };
   private actorSnapshot: RendererLivingSnapshot | null = null;
   private actorOptions: GameActorsUpdateOptions = {};
   private actorColumns: GameActorColumns | null = null;
@@ -330,6 +350,7 @@ export class TiledGameLayer implements CustomLayerInterface {
   };
 
   constructor(private readonly options: TiledGameLayerOptions) {
+    this.buildingLod=createGameBuildingLodPolicy(options.catalog?.catalogSha256);
     this.cacheAdmission=options.catalog?new BuildingCacheAdmission({maxBytes:gameQualityPolicy(options.qualityTier).maxCacheBytes,maxStaging:2}):null;
     this.texturePool=new GameTexturePool({maxBytes:(options.qualityTier==='high'?208:options.qualityTier==='medium'?56:16)*1024*1024});
     this.assetPolicy = options.cityEnabled===false?null:options.catalog?createCatalogAssetPolicy(options.catalog,options.origin!):createGameAssetPolicy(options);
@@ -350,14 +371,20 @@ export class TiledGameLayer implements CustomLayerInterface {
   private get committedDrawable():boolean{
     const keys=this.committedFrontier?.tileKeys;
     if(!this.renderingAvailable||!keys?.length)return false;
-    const loaded=new Set([...this.cells.values()].map(cell=>cell.key));
+    const loaded=new Set([...this.cells.values()].filter(cell=>this.shaderReadiness?.isReady(cell.key)).map(cell=>cell.key));
     return keys.every(key=>loaded.has(key));
   }
   get bounds(): [number, number, number, number] | null { return this.coverageBounds ? [...this.coverageBounds] : null; }
-  get diagnostics(): GameDiagnostics { return { ...this.diagnosticsValue }; }
+  get diagnostics(): GameDiagnostics {
+    const tiles=this.shaderReadiness?.diagnostics??{pending:0,queued:0,ready:0,failed:0,lastError:null},objects=this.objectShaderReadiness?.diagnostics;
+    return { ...this.diagnosticsValue,surfaces:this.surfaceClient?.diagnostics??null,buildingLod:this.buildingLod?{...this.buildingLod.diagnostics}:null,
+      shaders:{...tiles,pending:tiles.pending+(objects?.compilingBatches??0),failed:tiles.failed+(objects?.failures??0),lastError:objects?.lastError??tiles.lastError,
+        parallelSupported:this.renderer?.extensions.has('KHR_parallel_shader_compile')??false,
+        depthMaterials:this.shaderDepthMaterials.size,cachedPrograms:this.renderer?.info.programs?.length??0,
+        pendingObjects:objects?.pendingMeshes??0,readyObjects:objects?.readyMeshes??0,environmentReady:this.environmentReady} }; }
   get frontier(): BuildingFrontier | null { return this.candidateFrontier; }
   get displayedFrontier(): BuildingFrontier | null { return this.committedFrontier; }
-  get waterDiagnostics() { return this.water.telemetry; }
+  get waterDiagnostics() { return {...this.water.telemetry,shaderReady:this.objectShaderReadiness?.isReady(this.water.object)??false}; }
   get vegetationDiagnostics(){return this.vegetation.telemetry;}
   get roadSurfaceDiagnostics(){return this.roadSurfaces.telemetry;}
   get landCoverDiagnostics(){return this.landCover.telemetry;}
@@ -375,6 +402,7 @@ export class TiledGameLayer implements CustomLayerInterface {
     if (this.disposed) throw new Error('A disposed game layer cannot be reattached.');
     if (this.renderer) throw new Error('The game layer is already attached.');
     this.map = map;
+    if(this.options.catalog)this.initializeSurfaceClient();
     this.diagnosticsValue.state = this.cityFailed?'error':'loading';
     this.renderer = new WebGLRenderer({ canvas: map.getCanvas(), context: gl, alpha: true,
       antialias: true, logarithmicDepthBuffer: false, reversedDepthBuffer: false });
@@ -385,7 +413,7 @@ export class TiledGameLayer implements CustomLayerInterface {
     this.renderer.outputColorSpace = SRGBColorSpace;
     this.renderer.toneMapping = ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.05;
-    this.scene.environment=this.environment;this.scene.environmentIntensity=0.5;
+    this.scene.environment=null;this.scene.environmentIntensity=0.5;
     const policy = gameQualityPolicy(this.options.qualityTier);
     this.renderer.shadowMap.enabled = policy.shadowSize > 0;
     this.renderer.shadowMap.type = PCFShadowMap;
@@ -411,7 +439,9 @@ export class TiledGameLayer implements CustomLayerInterface {
     this.updateShadowFocus();
     this.updateSunLighting();
     if (policy.shadowSize) this.shadowScratch = new WebGLRenderTarget(1, 1);
+    this.beginEnvironmentPreparation();this.createShaderReadiness();
     const tiles = this.tiles = new TilesRenderer(this.assetPolicy&&'tilesetUrl' in this.assetPolicy?this.assetPolicy.tilesetUrl:this.options.tilesetUrl);
+    if(this.buildingLod)tiles.registerPlugin(this.buildingLod);
     // The library's default per-tile estimate repeats every shared material map.
     // Geometry is admitted per tile; the bounded kit is accounted once above.
     const budgetedTiles=tiles as TilesRenderer & {calculateBytesUsed:(tile:Tile,scene:Object3D|null)=>number};
@@ -536,8 +566,11 @@ export class TiledGameLayer implements CustomLayerInterface {
         }
         if (typeof mesh.userData.canonicalId === 'string' && mesh.userData.canonicalId.startsWith('openmaptiles_buildings:')) canonicalIds.add(mesh.userData.canonicalId);
       });
-      this.cells.set(tile, { scene, bounds: new Box3(), boundsReady: false,
-        key: tile.content?.uri ?? `tile-${this.cells.size}`, canonicalIds: [...canonicalIds].sort(),residentBytes });
+      const cell:LoadedCell={ scene, bounds: new Box3(), boundsReady: false,
+        key: tile.content?.uri ?? `tile-${this.cells.size}`, canonicalIds: [...canonicalIds].sort(),residentBytes };
+      this.cells.set(tile,cell);
+      scene.visible=false;
+      this.shaderReadiness?.stage(cell.key,cell);
       if (tile===tiles.root && this.options.onFrontier) {
         // The canonical bank supplies complete source coverage. Requiring every
         // sibling GLB to fit simultaneously would otherwise stall refinement.
@@ -546,7 +579,11 @@ export class TiledGameLayer implements CustomLayerInterface {
       this.shadowDirty = true; this.selectionDirty = true; this.requestFrame();
     });
     tiles.addEventListener('dispose-model', ({ tile }) => {
-      this.cells.delete(tile); this.shadowDirty = true; this.selectionDirty = true; this.requestFrame();
+      const cell=this.cells.get(tile);
+      this.cells.delete(tile);
+      // Release resources before the freed gate slot starts another queued job.
+      if(cell){releaseGameDepthMaterials(cell.scene,this.shaderDepthMaterials);this.shaderReadiness?.release(cell.key);}
+      this.shadowDirty = true; this.selectionDirty = true; this.requestFrame();
     });
     tiles.addEventListener('tile-visibility-change', () => { this.shadowDirty = true; this.selectionDirty = true; this.requestFrame(); });
     tiles.addEventListener('needs-update', this.requestFrame);
@@ -560,6 +597,61 @@ export class TiledGameLayer implements CustomLayerInterface {
     map.on('webglcontextlost', this.contextLost);
     map.on('webglcontextrestored', this.contextRestored);
     this.emit(true); this.requestFrame();
+  }
+
+  private beginEnvironmentPreparation():void{
+    if(!this.renderer)return;this.environmentPreparation?.cancel();this.environmentReady=false;this.scene.environment=null;
+    const job=prepareGameEnvironment(this.renderer,this.environment);this.environmentPreparation=job;
+    void job.promise.then(target=>{
+      if(this.disposed||this.environmentPreparation!==job||this.diagnosticsValue.state==='context_lost')return;
+      this.scene.environment=target.texture;this.environmentReady=true;this.stageSurfaceShaders();this.requestFrame();this.emit(true);
+    }).catch(error=>{if(!this.disposed&&this.environmentPreparation===job&&this.diagnosticsValue.state!=='context_lost')this.fail(error);});
+  }
+  private prepareShaderObjects(objects:readonly Object3D[],shadowModes:readonly boolean[],onCompiled:()=>void=()=>{}):GameShaderPreparation{
+    let cancelled=false,child:GameShaderPreparation|null=null;
+    const compile=()=>{
+      if(cancelled||!this.renderer||!objects.length)throw new DOMException('Shader preparation cancelled','AbortError');
+      const live=new Set<Mesh>();this.scene.traverse(object=>{if((object as Mesh).isMesh)live.add(object as Mesh);});
+      for(const loaded of this.cells.values())loaded.scene.traverse(object=>{if((object as Mesh).isMesh)live.add(object as Mesh);});
+      for(const [mesh,depth]of this.shaderDepthMaterials)if(!live.has(mesh)){if(mesh.customDepthMaterial===depth)mesh.customDepthMaterial=undefined;depth.dispose();this.shaderDepthMaterials.delete(mesh);}
+      child=prepareGameObjectShaders({renderer:this.renderer,root:objects[0]!,extraRoots:objects.slice(1),camera:this.camera,scene:this.scene,
+        scratch:this.shadowScratch,shadowModes,depthMaterials:this.shaderDepthMaterials});onCompiled();return child.promise;
+    };
+    if(this.environmentReady)return{promise:compile(),cancel:()=>{cancelled=true;child?.cancel();}};
+    if(!this.environmentPreparation)throw Error('Environment preparation unavailable');
+    return{promise:this.environmentPreparation.promise.then(compile),cancel:()=>{cancelled=true;child?.cancel();}};
+  }
+  /** Called after applying worker surfaces and before each render pass. Stable
+   * material/layout signatures reuse ready programs despite new vertex buffers. */
+  private stageSurfaceShaders():void{
+    if(!this.objectShaderReadiness||this.disposed||this.diagnosticsValue.state==='context_lost')return;
+    this.objectShaderReadiness.stage([this.water.object,this.vegetation.object,this.roadSurfaces.object,this.landCover.object,this.landUseGround.object,
+      this.courtyardGround.object,this.buildingContacts.object,this.trafficSignals.object,...(this.actors?[this.actors.object]:[]),
+      ...(this.flows?[this.flows.object]:[]),...(this.shadowReceiver?[this.shadowReceiver]:[]),...(this.highlight?[this.highlight]:[])]);
+    if(this.actors&&this.actorAssetsReady)this.diagnosticsValue.actorsState=this.objectShaderReadiness.hasFailed(this.actors.object)?'error':this.objectShaderReadiness.isReady(this.actors.object)?'ready':'loading';
+  }
+  private createShaderReadiness():void{
+    this.shaderReadiness?.dispose();
+    this.objectShaderReadiness?.dispose();
+    this.objectShaderReadiness=new GameObjectShaderReadiness({maxObjects:256,
+      onRelease:object=>releaseGameDepthMaterials(object,this.shaderDepthMaterials),
+      prepare:(objects,onCompiled)=>this.prepareShaderObjects(objects,this.renderer?.shadowMap.enabled?[false,true]:[false],onCompiled),
+      onChange:()=>{
+        if(this.disposed||this.diagnosticsValue.state==='context_lost')return;
+        this.stageSurfaceShaders();this.options.onSurfaceShadersReady?.();this.shadowDirty=true;this.requestFrame();this.emit(true);
+      }});
+    this.shaderReadiness=new GameShaderReadiness<LoadedCell>({maxPending:2,maxEntries:gameQualityPolicy(this.options.qualityTier).maxTiles+2,
+      prepare:cell=>this.prepareShaderObjects([cell.scene],[this.renderer?.shadowMap.enabled??false]),onChange:(key,status)=>{
+        if(this.disposed||this.diagnosticsValue.state==='context_lost')return;
+        if(status==='failed'){
+          this.diagnosticsValue.error='A building shader failed; previous/native coverage retained: '+this.shaderReadiness?.diagnostics.lastError;
+          for(const [tile,cell]of this.cells)if(cell.key===key&&!this.committedFrontier?.tileKeys.includes(key)){
+            this.cacheAdmission?.reject(key);this.tiles?.lruCache.remove(tile);break;
+          }
+        }
+        this.shadowDirty=true;this.requestFrame();this.emit(true);
+      }});
+    this.stageSurfaceShaders();
   }
 
   /** Own-target-only shadow cache preparation; never clear the shared main FBO. */
@@ -589,6 +681,7 @@ export class TiledGameLayer implements CustomLayerInterface {
         if (this.flows) this.flows.object.visible = false;
         if (this.shadowReceiver) this.shadowReceiver.visible = true;
         if (this.highlight) this.highlight.visible = false;
+        this.stageSurfaceShaders();this.objectShaderReadiness?.enforce();
         this.renderer.shadowMap.needsUpdate = true;
         this.renderer.render(this.scene, this.camera);
         if (this.sun.shadow.map?.depthTexture?.compareFunction !== LessEqualCompare) {
@@ -617,7 +710,8 @@ export class TiledGameLayer implements CustomLayerInterface {
     try {
       applyMapLibreCamera(this.camera, input, this.origin);
       const canvas = map.getCanvas();
-      tiles.setResolution(this.camera, canvas.width, canvas.height);
+      const lodResolution=gameLodResolution(canvas);
+      tiles.setResolution(this.camera,lodResolution.width,lodResolution.height);
       this.scene.updateMatrixWorld(true);
       this.pinFrontiers();
       if(!this.cityFailed)tiles.update();
@@ -633,10 +727,11 @@ export class TiledGameLayer implements CustomLayerInterface {
         this.announceReady();
         if (!this.shadowInitialized) this.requestFrame();
       }
-      this.actors?.setTime(this.currentTime.presentationSeconds);
+      this.actors?.setTime(this.currentTime.actorSeconds??this.currentTime.presentationSeconds);
       this.actors?.updateCamera(this.camera, canvas.clientWidth, canvas.clientHeight);
       this.flows?.updateCamera(this.camera, canvas.clientWidth, canvas.clientHeight);
       if (this.selectionDirty) this.updateHighlight(visible);
+      this.stageSurfaceShaders();
       const cityVisible = this.diagnosticsValue.visible && this.committedDrawable;
       const actorsVisible = this.diagnosticsValue.actorsState === 'ready';
       const flowAlpha = gameOverviewOpacity(map.getZoom?.() ?? 14);
@@ -669,6 +764,7 @@ export class TiledGameLayer implements CustomLayerInterface {
           // Source-road shader has no shadow inputs. Do not introduce an
           // uninitialized PCF program while the native map owns the city.
           renderer.shadowMap.enabled = cityVisible && shadowEnabled;
+          this.objectShaderReadiness?.enforce();
           renderer.render(this.scene, this.camera);
         } finally {
           renderer.shadowMap.enabled = shadowEnabled;
@@ -692,9 +788,9 @@ export class TiledGameLayer implements CustomLayerInterface {
     if (!visible) this.diagnosticsValue.renderedVisibleTiles = 0;
     this.emit(true); this.requestFrame();
   }
-  setTime(time: { presentationSeconds: number; playing: boolean }): void {
-    if (!Number.isFinite(time.presentationSeconds)) throw new Error('Invalid game presentation time.');
-    this.currentTime = { ...time }; this.actors?.setTime(time.presentationSeconds);
+  setTime(time: { presentationSeconds: number; actorSeconds?:number; playing: boolean }): void {
+    if (!Number.isFinite(time.presentationSeconds)||time.actorSeconds!==undefined&&!Number.isFinite(time.actorSeconds)) throw new Error('Invalid game presentation time.');
+    this.currentTime = { ...time }; this.actors?.setTime(time.actorSeconds??time.presentationSeconds);
     this.flows?.setTime(time.presentationSeconds);
     this.water.setTime(time.presentationSeconds);
     this.updateSunLighting();
@@ -703,30 +799,73 @@ export class TiledGameLayer implements CustomLayerInterface {
   updateWater(features: readonly GameWaterFeature[]): void {
     const prior = this.water.telemetry.geometryUpdates;
     this.water.update(features, this.origin, this.options.qualityTier);
+    this.stageSurfaceShaders();
     if (prior !== this.water.telemetry.geometryUpdates) this.requestFrame();
   }
   updateVegetation(features:readonly GameVegetationFeature[],options:Omit<GameVegetationOptions,'origin'|'qualityTier'>):void{
-    const previous=this.vegetation.telemetry.bufferUpdates,previousGround=this.courtyardGround.telemetry.geometryUpdates,previousContacts=this.buildingContacts.telemetry.geometryUpdates;
-    this.vegetation.update(features,{...options,origin:this.origin,qualityTier:this.options.qualityTier});
-    this.courtyardGround.update({...options,origin:this.origin,qualityTier:this.options.qualityTier});
-    this.buildingContacts.update({...options,origin:this.origin,qualityTier:this.options.qualityTier});
-    if(previous!==this.vegetation.telemetry.bufferUpdates||previousGround!==this.courtyardGround.telemetry.geometryUpdates){this.shadowDirty=true;this.requestFrame();}
-    else if(previousContacts!==this.buildingContacts.telemetry.geometryUpdates)this.requestFrame();
+    const config={...options,origin:this.origin,qualityTier:this.options.qualityTier};
+    this.requestSurfaces([{kind:'vegetation',features,options:config},
+      {kind:'courtyardGround',options:config,previousRetainedBytes:this.courtyardGround.telemetry.retainedBytes},
+      {kind:'buildingContacts',options:config,previousRetainedBytes:this.buildingContacts.telemetry.retainedBytes}]);
   }
   updateRoadSurfaces(roads:readonly GameRoadSurfaceSource[],options:Omit<GameRoadSurfacesOptions,'origin'|'qualityTier'>):void{
-    const previous=this.roadSurfaces.telemetry.geometryUpdates;
-    this.roadSurfaces.update(roads,{...options,origin:this.origin,qualityTier:this.options.qualityTier});
-    if(previous!==this.roadSurfaces.telemetry.geometryUpdates){this.shadowDirty=true;this.requestFrame();}
+    this.requestSurfaces([{kind:'roads',roads,options:{...options,origin:this.origin,qualityTier:this.options.qualityTier}}]);
   }
   updateLandCover(features:readonly GameVegetationFeature[],options:Omit<GameLandCoverOptions,'origin'|'qualityTier'>&Partial<Pick<GameLandUseGroundOptions,'buildings'|'roads'|'waterFeatures'>>):void{
-    const previous=this.landCover.telemetry.geometryUpdates,previousLandUse=this.landUseGround.telemetry.geometryUpdates;
-    this.landCover.update(features,{...options,origin:this.origin,qualityTier:this.options.qualityTier});
-    if(options.bounds&&options.roads&&options.waterFeatures)this.landUseGround.update(features,{...options,bounds:options.bounds,buildings:options.buildings??null,roads:options.roads,waterFeatures:options.waterFeatures,origin:this.origin,qualityTier:this.options.qualityTier});
-    if(previous!==this.landCover.telemetry.geometryUpdates||previousLandUse!==this.landUseGround.telemetry.geometryUpdates){this.shadowDirty=true;this.requestFrame();}
+    const jobs:GameSurfaceJob[]=[{kind:'landCover',features,options:{...options,origin:this.origin,qualityTier:this.options.qualityTier},previousRetainedBytes:this.landCover.telemetry.retainedBytes}];
+    if(options.bounds&&options.roads&&options.waterFeatures)jobs.push({kind:'landUseGround',features,
+      options:{...options,bounds:options.bounds,buildings:options.buildings??null,roads:options.roads,waterFeatures:options.waterFeatures,origin:this.origin,qualityTier:this.options.qualityTier},previousRetainedBytes:this.landUseGround.telemetry.retainedBytes});
+    this.requestSurfaces(jobs);
+  }
+  private surfaceOwner(kind:GameSurfaceJob['kind']){
+    return{roads:this.roadSurfaces,landCover:this.landCover,landUseGround:this.landUseGround,
+      vegetation:this.vegetation,courtyardGround:this.courtyardGround,buildingContacts:this.buildingContacts}[kind];
+  }
+  private initializeSurfaceClient():void{
+    try{
+      this.surfaceClient=new GameSurfaceClient(new Worker(new URL('./gameSurfaceWorker.ts',import.meta.url),{type:'module'}),{
+        onResults:results=>this.applySurfaceResults(results),onError:(message,jobs)=>{
+          this.surfaceFailure=message;
+          for(const job of jobs)this.surfaceOwner(job.kind).retainFailure(message,job.options.origin);
+          this.diagnosticsValue.error='Сохранены прежние покрытия: подготовка поверхностей недоступна.';this.emit(true);
+        }});
+    }catch{this.surfaceFailure='Surface worker unavailable';this.diagnosticsValue.error='Сохранены прежние покрытия: подготовка поверхностей недоступна.';}
+  }
+  private requestSurfaces(jobs:readonly GameSurfaceJob[]):void{
+    if(this.disposed)return;
+    for(const job of jobs){const owner=this.surfaceOwner(job.kind);
+      if(this.surfaceClient&&!this.surfaceFailure)owner.retainWhilePreparing(job.options.origin);
+      else owner.retainFailure(this.surfaceFailure??'Surface worker unavailable',job.options.origin);
+    }
+    // Errors retain the already drawn surfaces/native map. No source compiler
+    // is invoked as an implicit fallback on the rendering thread.
+    this.surfaceClient?.request(jobs);
+  }
+  private applySurfaceResults(results:readonly GameSurfaceAppliedResult[]):void{
+    if(this.disposed)return;let applied=false;
+    for(const {job,result} of results){
+      const owner=this.surfaceOwner(job.kind);
+      if(result.status==='error'){owner.retainFailure(result.message,job.options.origin);continue;}
+      if(result.status==='retained'){
+        owner.retainWhilePreparing(job.options.origin);
+        if(result.reason==='unverified'&&(job.kind==='roads'||job.kind==='vegetation'))owner.telemetry.state='unverified_retained';
+        continue;
+      }
+      if(result.kind==='roads'&&job.kind==='roads')this.roadSurfaces.applyPrepared(result.prepared,job.options);
+      else if(result.kind==='landCover'&&job.kind==='landCover')this.landCover.applyPrepared(result.prepared,job.options);
+      else if(result.kind==='landUseGround'&&job.kind==='landUseGround')this.landUseGround.applyPrepared(result.prepared,job.options);
+      else if(result.kind==='vegetation'&&job.kind==='vegetation')this.vegetation.applyPrepared(result.prepared,job.options);
+      else if(result.kind==='courtyardGround'&&job.kind==='courtyardGround')this.courtyardGround.applyPrepared(result.prepared,job.options);
+      else if(result.kind==='buildingContacts'&&job.kind==='buildingContacts')this.buildingContacts.applyPrepared(result.prepared,job.options);
+      else throw Error('Surface application kind mismatch');
+      applied=true;
+    }
+    if(applied){this.stageSurfaceShaders();this.shadowDirty=true;this.requestFrame();}
+    this.emit(true);
   }
   /** Called synchronously with the prepared native bank swap. */
   commitFrontier(frontier: BuildingFrontier | null): void {
-    const loaded = new Set([...this.cells.values()].map(cell => cell.key));
+    const loaded = new Set([...this.cells.values()].filter(cell=>this.shaderReadiness?.isReady(cell.key)).map(cell => cell.key));
     if (frontier?.tileKeys.some(key => !loaded.has(key))) throw new Error('Cannot commit an unavailable building frontier.');
     if (this.committedFrontier?.revision === frontier?.revision){this.reconcileCache();return;}
     if(this.cacheAdmission&&this.candidateFrontier){
@@ -765,7 +904,10 @@ export class TiledGameLayer implements CustomLayerInterface {
     // parameter stays identical. Old exclusions cannot deny the reopened strip.
     if(!old||distance>=100||Math.abs(camera.zoom-old.zoom)>=.5||bearing>=30||Math.abs(camera.pitch-old.pitch)>=10
       ||camera.width!==old.width||camera.height!==old.height){this.cacheAnchor=camera;this.cacheEpoch++;}
-    const retired=new Set(this.cacheAdmission.reconcile(this.committedFrontier?.tileKeys??[],this.candidateFrontier?.tileKeys??[],String(this.cacheEpoch),{frontierReviewed}));
+    // Parsed but not shader-ready cells still occupy the same two reserved
+    // staging slots. They have not yet been reviewed as drawable candidates.
+    const shaderPending=Boolean(this.shaderReadiness&&(this.shaderReadiness.diagnostics.pending+this.shaderReadiness.diagnostics.queued));
+    const retired=new Set(this.cacheAdmission.reconcile(this.committedFrontier?.tileKeys??[],this.candidateFrontier?.tileKeys??[],String(this.cacheEpoch),{frontierReviewed:frontierReviewed&&!shaderPending}));
     for(const [tile,cell]of this.cells)if(retired.has(cell.key))this.tiles.lruCache.remove(tile);
   }
   private updateFrontier(): void {
@@ -773,13 +915,16 @@ export class TiledGameLayer implements CustomLayerInterface {
     if (!tiles?.root) return;
     const inventory = [...this.cells].map(([tile, cell]) => ({ key: cell.key,
       parentKey: tile.parent ? this.cells.get(tile.parent)?.key ?? null : null,
-      canonicalIds: cell.canonicalIds, drawable: true }));
-    const readyDetail=this.options.onFrontier?[...this.cells].filter(([tile])=>tile!==tiles.root&&tile.traversal?.inFrustum
+      canonicalIds: cell.canonicalIds, drawable: this.shaderReadiness?.isReady(cell.key)===true }));
+    const readyDetail=this.options.onFrontier?[...this.cells].filter(([tile,cell])=>this.shaderReadiness?.isReady(cell.key)&&tile!==tiles.root&&tile.traversal?.inFrustum
       &&(tile.parent?.traversal?.error??Infinity)>tiles.errorTarget).map(([,cell])=>cell.key):[];
     const requested=readyDetail.length?readyDetail:[...tiles.visibleTiles].flatMap(tile => {
       const cell = this.cells.get(tile); return cell ? [cell.key] : [];
     });
-    const requestedFrontier = chooseBuildingFrontier(inventory, requested, this.cells.get(tiles.root)?.key ?? '',Boolean(this.options.onFrontier));
+    // A slow replacement must not retire the matched, visible old bank merely
+    // because TilesRenderer already selected its not-yet-ready child.
+    const retained=this.options.onFrontier?this.shaderReadiness?.retainWhilePending([...this.cells].filter(([tile,cell])=>tile.traversal?.inFrustum&&this.committedFrontier?.tileKeys.includes(cell.key)).map(([,cell])=>cell.key))??[]:[];
+    const requestedFrontier = chooseBuildingFrontier(inventory, [...requested,...retained], this.cells.get(tiles.root)?.key ?? '',Boolean(this.options.onFrontier));
     const candidate=this.options.onFrontier?fitBuildingFrontier(inventory,requestedFrontier,
       [...this.cells].map(([tile,cell])=>({key:cell.key,bytes:cell.residentBytes,distance:tile.traversal?.distanceFromCamera??Infinity})),
       gameQualityPolicy(this.options.qualityTier).maxCacheBytes):requestedFrontier;
@@ -799,7 +944,7 @@ export class TiledGameLayer implements CustomLayerInterface {
   private applyFrontier(): void {
     const keys = new Set(this.committedFrontier?.tileKeys ?? []);
     for (const cell of this.cells.values()) {
-      cell.scene.visible = keys.has(cell.key);
+      cell.scene.visible = keys.has(cell.key)&&this.shaderReadiness?.isReady(cell.key)===true;
       // TilesRenderer detaches a replaced parent. Pinning its cache allocation
       // alone does not keep it drawable during native worker preparation.
       if (cell.scene.visible && this.tiles && !this.tiles.group.children.includes(cell.scene)) this.tiles.group.add(cell.scene);
@@ -874,11 +1019,11 @@ export class TiledGameLayer implements CustomLayerInterface {
     const actors = this.actors;
     void actors.load().then(() => {
       if (this.disposed || this.actors !== actors) return;
-      this.diagnosticsValue.actorsState = 'ready';
+      this.actorAssetsReady=true;
       if (this.actorSnapshot) actors.update(this.actorSnapshot, this.actorOptions);
       if (this.actorColumns) actors.updateColumns(this.actorColumns, this.actorOptions);
       actors.setLighting({ sunDirection: [this.sunDirection.x, this.sunDirection.y, this.sunDirection.z] });
-      actors.setTime(this.currentTime.presentationSeconds); this.emit(true); this.requestFrame();
+      actors.setTime(this.currentTime.actorSeconds??this.currentTime.presentationSeconds);this.stageSurfaceShaders();this.emit(true);this.requestFrame();
     }).catch(() => { if (!this.disposed) { this.diagnosticsValue.actorsState = 'error'; this.emit(true); } });
   }
   private resetRoadFlows(): void {
@@ -945,13 +1090,16 @@ export class TiledGameLayer implements CustomLayerInterface {
     }
   }
   private requestFrame = (): void => { if (!this.disposed) this.map?.triggerRepaint(); };
-  private contextLost = (): void => { this.diagnosticsValue.state = 'context_lost'; this.emit(true); };
+  private contextLost = (): void => {
+    this.diagnosticsValue.state='context_lost';this.shaderReadiness?.dispose();this.objectShaderReadiness?.dispose();this.environmentPreparation?.cancel();this.emit(true);
+  };
   private contextRestored = (): void => {
     if (this.disposed) return;
     this.shadowInitialized = this.shadowScratch === null;
     this.diagnosticsValue.shadowReady = this.shadowInitialized;
     this.readyAnnounced = false;
     this.diagnosticsValue.state = this.prepared ? 'prepared' : 'loading';
+    this.beginEnvironmentPreparation();this.createShaderReadiness();for(const cell of this.cells.values())this.shaderReadiness?.stage(cell.key,cell);
     this.shadowDirty = true; this.requestFrame(); this.emit(true);
   };
   private announceReady(): void {
@@ -975,11 +1123,15 @@ export class TiledGameLayer implements CustomLayerInterface {
     this.assetAbort.abort();
     if (this.disposed) return;
     this.disposed = true;
+    this.surfaceClient?.dispose();this.surfaceClient=null;
+    this.shaderReadiness?.dispose();this.shaderReadiness=null;
+    this.objectShaderReadiness?.dispose();this.objectShaderReadiness=null;this.environmentPreparation?.cancel();this.environmentPreparation=null;
     this.map?.off('webglcontextlost', this.contextLost); this.map?.off('webglcontextrestored', this.contextRestored);
     this.actors?.dispose(); this.actors = null;
     this.flows?.dispose(); this.flows = null; this.flowSnapshot = null;
     this.water.dispose();this.vegetation.dispose();this.roadSurfaces.dispose();this.landCover.dispose();this.landUseGround.dispose();this.courtyardGround.dispose();this.buildingContacts.dispose();this.trafficSignals.dispose(); this.candidateFrontier = null; this.committedFrontier = null;
     this.tiles?.dispose(); this.tiles = null; this.cells.clear();
+    for(const depth of this.shaderDepthMaterials.values())depth.dispose();this.shaderDepthMaterials.clear();
     this.texturePool.dispose();
     this.environment.dispose();
     this.ktx2?.dispose(); this.ktx2 = null;

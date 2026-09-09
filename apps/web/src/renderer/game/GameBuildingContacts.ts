@@ -89,8 +89,11 @@ export class GameBuildingContacts{
   private mesh:Mesh<InstancedBufferGeometry,ShaderMaterial>|null=null;private origin:GameOrigin|null=null;private packed:Float32Array|null=null;private disposed=false;
   constructor(){this.object.name='source-building-contact-lighting';this.object.matrixAutoUpdate=false;this.object.userData.lightingOnly=true;}
   private retain(origin:GameOrigin){if(this.origin)try{this.object.matrix.copy(localToMercatorMatrix(origin).invert().multiply(localToMercatorMatrix(this.origin)));this.object.matrixWorldNeedsUpdate=true;}catch{}}
-  update(options:GameVegetationOptions){if(this.disposed)return this.telemetry;if(options.loading){this.telemetry.state='loading_retained';this.retain(options.origin);return this.telemetry;}
-    try{const result=prepareGameBuildingContacts(options,this.telemetry.retainedBytes),changed=!this.packed||this.packed.length!==result.packed.length||this.packed.some((v,i)=>v!==result.packed[i]);
+  applyPrepared(result:ReturnType<typeof prepareGameBuildingContacts>,options:GameVegetationOptions){return this.update(options,result);}
+  retainWhilePreparing(origin:GameOrigin):void{if(this.disposed)return;this.telemetry.state='loading_retained';this.retain(origin);}
+  retainFailure(message:string,origin:GameOrigin):void{if(this.disposed)return;this.telemetry.state='error_retained';this.telemetry.lastError=message.slice(0,180);this.retain(origin);}
+  update(options:GameVegetationOptions,preparedResult?:ReturnType<typeof prepareGameBuildingContacts>){if(this.disposed)return this.telemetry;if(options.loading){this.telemetry.state='loading_retained';this.retain(options.origin);return this.telemetry;}
+    try{const result=preparedResult??prepareGameBuildingContacts(options,this.telemetry.retainedBytes),changed=!this.packed||this.packed.length!==result.packed.length||this.packed.some((v,i)=>v!==result.packed[i]);
       if(changed){const g=new InstancedBufferGeometry();g.setAttribute('position',new BufferAttribute(new Float32Array([-.5,-.5,0,.5,-.5,0,.5,.5,0,-.5,.5,0]),3));g.setIndex([0,2,1,0,3,2]);
         for(let n=0;n<9;n++){const array=new Float32Array(result.cells.length*4);for(let i=0;i<result.cells.length;i++)array.set(result.packed.subarray(i*36+n*4,i*36+n*4+4),i*4);g.setAttribute(n===0?'contactCell':`contactEdge${n-1}`,new InstancedBufferAttribute(array,4));}g.instanceCount=result.cells.length;
         if(this.mesh){this.mesh.geometry.dispose();this.mesh.geometry=g;}else{this.mesh=new Mesh(g,material());this.mesh.frustumCulled=false;this.mesh.raycast=()=>{};this.object.add(this.mesh);}this.packed=result.packed;this.telemetry.geometryUpdates++;}

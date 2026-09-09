@@ -1,108 +1,241 @@
 {
   "contract": "OmniTwinCleanGraphicsBuildEvidenceV1",
-  "checkedAt": "2026-09-09T13:34:00.755Z",
-  "status": "passed_before_public_activation",
-  "baselineCommit": "21ee9a4543f7ee1acc4004fe5c11aea043490724",
+  "checkedAt": "2026-09-09T16:40:09.424Z",
+  "status": "passed_current_runtime_before_final_public_activation",
   "snapshot": {
-    "files": 582,
-    "bytes": 46780783,
-    "sha256": "71c580554758b5ecdba6508e047ebc4078bd8171d9e9ffd13610fef158e7ee2b",
-    "changedDuringCopy": []
+    "files": 629,
+    "bytes": 47062880,
+    "sha256": "d603627bcf947542deff78cc05ae5ab2855a92515d622c3083684c63fe824eed",
+    "changedDuringCopy": [],
+    "staleSnapshotFiles": [],
+    "sourceChangedDuringChecks": []
   },
   "packageLockSha256": "7cc904a0833cceefe6cab6293eb185972fd7fcd26f9def9d226ff54e5987dce4",
   "isolation": {
-    "dependencyInstallation": "separate exact-lock npm ci in Temp; shared workspace node_modules unchanged",
+    "dependencyInstallation": "Reused independent exact-lock npm ci installation in Temp, with matching four workspace manifests and lock SHA; shared workspace junction untouched",
+    "npmCiExecutedThisPass": false,
     "fullBulkAssetsCopied": false,
     "sourceSecretFilesCopied": false
   },
   "checks": [
     {
+      "command": "npm run build",
+      "environment": "clean exact-lock snapshot; DEMO_BASE=/OmniTwin-demo/",
+      "exitCode": 0,
+      "typecheck": "passed",
+      "productionBuild": "passed",
+      "modules": 2893
+    },
+    {
+      "command": "node tools/check-public-build.mjs",
+      "exitCode": 0,
+      "publicFiles": 128,
+      "publicBytes": 45134461,
+      "recognizedEmbeddedKeys": false
+    },
+    {
       "command": "npm test",
-      "environment": "clean exact-lock snapshot",
-      "filesPassed": 103,
+      "environment": "clean exact-lock snapshot after test-contract repairs",
+      "exitCode": 0,
+      "filesPassed": 123,
       "filesSkipped": 2,
-      "testsPassed": 774,
-      "testsSkipped": 10,
-      "seconds": 34.15
+      "testsPassed": 884,
+      "testsSkipped": 10
     },
     {
       "command": "node --test --test-concurrency=1 shared/demo-population/test/*.test.mjs shared/demo-population/route-corridors.test.mjs shared/demo-population/movement-road-policy.test.mjs tools/geo/*.test.mjs tools/tests/*.test.mjs tools/visual/*.test.mjs tools/visual-actors/*.test.mjs",
-      "environment": "clean exact-lock snapshot",
-      "testsPassed": 177,
-      "testsSkipped": 7,
-      "seconds": 8.51842
-    },
-    {
-      "command": "npx vitest run apps/web/src/demo/data/CityDemoProviderV2.full.test.ts apps/web/src/demo/data/CityDemoProviderV2.movement.full.test.ts",
-      "environment": "complete local assets",
-      "testsPassed": 2,
-      "testsSkipped": 0
-    },
-    {
-      "command": "npx vitest run apps/web/src/demo/cityVisualPack.test.ts apps/web/src/demo/actorFootprintClearance.test.ts apps/web/src/demo/data/MovementPreviewOverlay.test.ts",
-      "environment": "complete local assets",
-      "testsPassed": 49,
-      "testsSkipped": 0,
-      "note": "Includes the remaining eight bulk-dependent cases plus repeated surrounding unit cases."
-    },
-    {
-      "command": "node --test --test-concurrency=1 shared/demo-population/test/*full*.test.mjs",
-      "environment": "complete local assets",
-      "testsPassed": 5,
-      "testsSkipped": 0
-    },
-    {
-      "command": "node --test tools/geo/*.test.mjs",
-      "environment": "complete local assets",
-      "testsPassed": 6,
-      "testsSkipped": 0,
-      "note": "Includes the two bulk-dependent geographic cases."
-    },
-    {
-      "command": "npm run build; node tools/check-public-build.mjs",
-      "environment": "clean exact-lock snapshot with DEMO_BASE=/OmniTwin-demo/",
-      "typecheck": "passed",
-      "build": "passed",
-      "publicFiles": 125,
-      "publicBytes": 44285063,
-      "recognizedEmbeddedKeys": false
+      "environment": "clean exact-lock snapshot including latest bounded uploader concurrency",
+      "exitCode": 0,
+      "testsPassed": 189,
+      "testsSkipped": 7
     }
   ],
+  "initialFailure": {
+    "webTestsFailed": 14,
+    "webFilesFailed": 2,
+    "classification": "stale test harness contracts",
+    "testOnlyCorrections": [
+      "Faithful PMREM/program ports and asynchronous shader readiness/structured-clone SurfaceWorker delivery in lifecycle tests; original native bank and PCF assertions retained",
+      "LOD roof comparison now matches exact source-height cap while allowing intentional coarse parapet triangle differences; canonical ID, footprint, height and 2m omission assertions retained"
+    ],
+    "runtimeChangedForRepairs": false
+  },
+  "production": {
+    "workers": [
+      {
+        "path": "assets/gameMotionWorker-CDb6ZMV4.js",
+        "bytes": 377269,
+        "sha256": "880949b3126ed572ef7ecb78bcc3635b0bb5bdef81903bc7c4ecb81d6587225f"
+      },
+      {
+        "path": "assets/gameSurfaceWorker-EtRoIplO.js",
+        "bytes": 478317,
+        "sha256": "7873c4cf88321179832d9d7ff284cbc81edc1adf4620a1f97aff1a84e6701f12"
+      }
+    ],
+    "devDomProbeNamesAbsent": [
+      "readGameMotionProbe",
+      "readGameTrafficProbe",
+      "readGameSignalProbe",
+      "readGameFrameHistory",
+      "readGameOwnershipProbe"
+    ],
+    "motionWorkerFullProbeOption": false,
+    "qualification": "Application DEV DOM hooks are absent and production Worker initializes full probing false. This does not claim removal of every generic debug-capable method or third-party diagnostics implementation.",
+    "bundleInventorySha256": "00544c78d9d5d3a5d81f9d54bad1519c89b5dff2b923ae452cae2b3980d8e686"
+  },
+  "buildSnapshot": {
+    "sha256": "5a1b9ecc05da3b4d53ee9c491ebab60038b1e2cc5136f84fb94103ffbbd83130",
+    "changesAfterBuild": [
+      "apps/web/src/demo/gameLayerLifecycle.test.ts",
+      "apps/web/src/renderer/game/gameBuildingLod.test.ts",
+      "tools/publish-firebase-city-assets.mjs",
+      "tools/tests/publish-firebase-city-assets.test.mjs"
+    ],
+    "runtimeBuildInputsUnchanged": true,
+    "reason": "Only two test files and publisher tool/test changed after successful production build. Final activation JSON is handled separately."
+  },
   "logs": [
     {
-      "name": "clean-final-test.log",
+      "name": "clean-current-build.log",
+      "bytes": 2500,
+      "sha256": "7d22e08bbf3614948f636f3ee6d747cf801490da9821d2b1857d14bac9e8c6e0"
+    },
+    {
+      "name": "clean-current-web-tests.log",
+      "bytes": 22174,
+      "sha256": "1dd538baca1365d8d3825272d68938fdb78ec4934419901d5954981fd25144cc"
+    },
+    {
+      "name": "clean-current-node-tests.log",
+      "bytes": 19897,
+      "sha256": "c9a33668eec4dc5b57891ac0be539649f1da8aeb4790f418a688358b67e357e8"
+    },
+    {
+      "name": "clean-current-web-recheck.log",
       "bytes": 469,
-      "sha256": "fff0233d90e1a1eda8d9b99df9a1fbc5f03849ed768dd9984516095872c092f9"
+      "sha256": "568d078b7e6a6eeaf77beea14259e6fdfbe1c4beae57bd0edd25a2d9bbb68789"
     },
     {
-      "name": "clean-final-node.log",
-      "bytes": 18673,
-      "sha256": "e506bbf88e7c086b380e2293d308bd954913e266a82907ee978ba99d246e51d7"
-    },
-    {
-      "name": "clean-final-build.log",
-      "bytes": 2263,
-      "sha256": "7aa6b12ebefc7ba60537bb61e7a8682e29f1567d70cf4d9be8a16ce8c479e73a"
-    },
-    {
-      "name": "final-full-assets-web.log",
-      "bytes": 1826,
-      "sha256": "5a0d50427f017b3833f6ef70b9bef594920b7ec30e5ab52049496d0e568f6a01"
-    },
-    {
-      "name": "final-full-assets-node.log",
-      "bytes": 1695,
-      "sha256": "3ac1cd136e291229fbe0130986077a5733e8bbb3a4dc42b9b83a13b8beb17aa2"
-    },
-    {
-      "name": "final-full-assets-extra.log",
-      "bytes": 233,
-      "sha256": "400eca3b8d1d57f3c4de0a415baa71c0f9c680ba089cdd030ecff4d34e066808"
+      "name": "clean-current-node-recheck.log",
+      "bytes": 19979,
+      "sha256": "dba4670ff6c185858f5b92c3fbfca121d7cc06d41ac545e354544e81f9c9377d"
     }
   ],
   "limits": [
-    "This snapshot precedes public activation JSON and does not assert deployment.",
-    "Local large-asset checks reuse the workspace dependency installation; the clean snapshot covers the exact lockfile.",
-    "Technical verification is separate from artistic review and actual hardware/public-browser evidence."
+    "No browser/FPS/artistic acceptance or deployment is asserted by this clean build receipt.",
+    "Ten web cases and seven Node cases skipped because bulk city/population/visual assets were intentionally excluded from the isolated install; prior separate asset checks remain historical evidence.",
+    "Public activation/default dataset JSON was not finalized in this pass; verify its final copy and public build separately."
+  ],
+  "historicalRuns": [
+    {
+      "evidenceSha256": "544ebe007ce5c4860adbee6394e279b1cdfb15de2cfd1d26eede9a9296042b09",
+      "contract": "OmniTwinCleanGraphicsBuildEvidenceV1",
+      "checkedAt": "2026-09-09T13:34:00.755Z",
+      "status": "passed_before_public_activation",
+      "baselineCommit": "21ee9a4543f7ee1acc4004fe5c11aea043490724",
+      "snapshot": {
+        "files": 582,
+        "bytes": 46780783,
+        "sha256": "71c580554758b5ecdba6508e047ebc4078bd8171d9e9ffd13610fef158e7ee2b",
+        "changedDuringCopy": []
+      },
+      "packageLockSha256": "7cc904a0833cceefe6cab6293eb185972fd7fcd26f9def9d226ff54e5987dce4",
+      "isolation": {
+        "dependencyInstallation": "separate exact-lock npm ci in Temp; shared workspace node_modules unchanged",
+        "fullBulkAssetsCopied": false,
+        "sourceSecretFilesCopied": false
+      },
+      "checks": [
+        {
+          "command": "npm test",
+          "environment": "clean exact-lock snapshot",
+          "filesPassed": 103,
+          "filesSkipped": 2,
+          "testsPassed": 774,
+          "testsSkipped": 10,
+          "seconds": 34.15
+        },
+        {
+          "command": "node --test --test-concurrency=1 shared/demo-population/test/*.test.mjs shared/demo-population/route-corridors.test.mjs shared/demo-population/movement-road-policy.test.mjs tools/geo/*.test.mjs tools/tests/*.test.mjs tools/visual/*.test.mjs tools/visual-actors/*.test.mjs",
+          "environment": "clean exact-lock snapshot",
+          "testsPassed": 177,
+          "testsSkipped": 7,
+          "seconds": 8.51842
+        },
+        {
+          "command": "npx vitest run apps/web/src/demo/data/CityDemoProviderV2.full.test.ts apps/web/src/demo/data/CityDemoProviderV2.movement.full.test.ts",
+          "environment": "complete local assets",
+          "testsPassed": 2,
+          "testsSkipped": 0
+        },
+        {
+          "command": "npx vitest run apps/web/src/demo/cityVisualPack.test.ts apps/web/src/demo/actorFootprintClearance.test.ts apps/web/src/demo/data/MovementPreviewOverlay.test.ts",
+          "environment": "complete local assets",
+          "testsPassed": 49,
+          "testsSkipped": 0,
+          "note": "Includes the remaining eight bulk-dependent cases plus repeated surrounding unit cases."
+        },
+        {
+          "command": "node --test --test-concurrency=1 shared/demo-population/test/*full*.test.mjs",
+          "environment": "complete local assets",
+          "testsPassed": 5,
+          "testsSkipped": 0
+        },
+        {
+          "command": "node --test tools/geo/*.test.mjs",
+          "environment": "complete local assets",
+          "testsPassed": 6,
+          "testsSkipped": 0,
+          "note": "Includes the two bulk-dependent geographic cases."
+        },
+        {
+          "command": "npm run build; node tools/check-public-build.mjs",
+          "environment": "clean exact-lock snapshot with DEMO_BASE=/OmniTwin-demo/",
+          "typecheck": "passed",
+          "build": "passed",
+          "publicFiles": 125,
+          "publicBytes": 44285063,
+          "recognizedEmbeddedKeys": false
+        }
+      ],
+      "logs": [
+        {
+          "name": "clean-final-test.log",
+          "bytes": 469,
+          "sha256": "fff0233d90e1a1eda8d9b99df9a1fbc5f03849ed768dd9984516095872c092f9"
+        },
+        {
+          "name": "clean-final-node.log",
+          "bytes": 18673,
+          "sha256": "e506bbf88e7c086b380e2293d308bd954913e266a82907ee978ba99d246e51d7"
+        },
+        {
+          "name": "clean-final-build.log",
+          "bytes": 2263,
+          "sha256": "7aa6b12ebefc7ba60537bb61e7a8682e29f1567d70cf4d9be8a16ce8c479e73a"
+        },
+        {
+          "name": "final-full-assets-web.log",
+          "bytes": 1826,
+          "sha256": "5a0d50427f017b3833f6ef70b9bef594920b7ec30e5ab52049496d0e568f6a01"
+        },
+        {
+          "name": "final-full-assets-node.log",
+          "bytes": 1695,
+          "sha256": "3ac1cd136e291229fbe0130986077a5733e8bbb3a4dc42b9b83a13b8beb17aa2"
+        },
+        {
+          "name": "final-full-assets-extra.log",
+          "bytes": 233,
+          "sha256": "400eca3b8d1d57f3c4de0a415baa71c0f9c680ba089cdd030ecff4d34e066808"
+        }
+      ],
+      "limits": [
+        "This snapshot precedes public activation JSON and does not assert deployment.",
+        "Local large-asset checks reuse the workspace dependency installation; the clean snapshot covers the exact lockfile.",
+        "Technical verification is separate from artistic review and actual hardware/public-browser evidence."
+      ]
+    }
   ]
 }

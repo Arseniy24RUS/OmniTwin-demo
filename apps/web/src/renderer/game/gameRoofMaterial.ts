@@ -1,6 +1,6 @@
 import {ShaderChunk,Vector2,type Material,type MeshStandardMaterial} from 'three';
 
-export const GAME_ROOF_FILTER_VERSION='metric-roof-filter-v2';
+export const GAME_ROOF_FILTER_VERSION='metric-roof-filter-v3';
 type RoofKind='metal'|'bitumen';
 type Point=readonly [number,number];
 type RGB=readonly [number,number,number];
@@ -9,6 +9,14 @@ const SOURCE_WEIGHT={metal:[.015,.05],bitumen:[.02,.08]} as const;
 const mod=(v:number,p:number)=>((v%p)+p)%p;
 const mix=(a:number,b:number,t:number)=>a+(b-a)*t;
 const smooth=(a:number,b:number,v:number)=>{const t=Math.max(0,Math.min(1,(v-a)/(b-a)));return t*t*(3-2*t);};
+// The pinned corrugated_iron normal e98b839a has 95.12% of its averaged
+// tangent-X spectral energy at 15 cycles per U repeat (0.20m at 3m UV scale).
+// Fade from eight to two pixels per ridge, reaching zero before aliasing.
+const METAL_RIDGES_PER_REPEAT=15;
+export function sampleGameMetalRoofNormalWeight(footprintAcrossRidges:number,repeatMetersU=3):number{
+  if(!Number.isFinite(footprintAcrossRidges)||footprintAcrossRidges<0||!Number.isFinite(repeatMetersU)||repeatMetersU<.1||repeatMetersU>64)throw Error('Invalid roof corrugation footprint');
+  return .298*(1-smooth(.125,.5,footprintAcrossRidges/(repeatMetersU/METAL_RIDGES_PER_REPEAT)));
+}
 function hash(x:number,z:number){let h=(Math.imul(mod(x,4096),1597334677)^Math.imul(mod(z,4096),3812015801))>>>0;h=Math.imul(h^(h>>>13),1274126177)>>>0;return(h&65535)/65535;}
 function noise(x:number,z:number){const ix=Math.floor(x),iz=Math.floor(z),fx=x-ix,fz=z-iz,u=fx*fx*(3-2*fx),v=fz*fz*(3-2*fz);return mix(mix(hash(ix,iz),hash(ix+1,iz),u),mix(hash(ix,iz+1),hash(ix+1,iz+1),u),v);}
 
@@ -22,7 +30,7 @@ export function sampleGameRoofMaterial(kind:RoofKind,worldMeters:Point,sourceCol
     +(noise((worldMeters[0]+worldMeters[1])*.707106781/61,(worldMeters[1]-worldMeters[0])*.707106781/61)-.5)*.06;
   const sourceWeight=mix(SOURCE_WEIGHT[kind][0],SOURCE_WEIGHT[kind][1],detail);
   return{color:sourceColor.map((v,i)=>mix(ANCHOR[kind][i]!,v,sourceWeight)*macro) as [number,number,number],
-    normalWeight:bitumen?.02+.30*detail:.018+.28*detail,roughnessFloor:bitumen?.94:.76+.14*(1-detail),
+    normalWeight:bitumen?.02+.30*detail:sampleGameMetalRoofNormalWeight(pixelFootprint),roughnessFloor:bitumen?.94:.76+.14*(1-detail),
     metalness:bitumen?0:mix(.035,sourceMetalness,.03+.09*detail)};
 }
 
@@ -60,7 +68,10 @@ export function applyGameRoofMaterial(input:Material):boolean{
     `sampledDiffuseColor.rgb=mix(vec3(${anchor}),sampledDiffuseColor.rgb,${sourceWeight})*roofMacroShade;\ndiffuseColor *= sampledDiffuseColor;`);
   material.userData.roofFilter={version:GAME_ROOF_FILTER_VERSION,representation:'visual_synthesis',sourceKind:kind,
     physicalUvUnchanged:true,sourceColorWeight:[...weights],pixelFootprintMeters:[.018,.18],normalDetailPolicy:'attenuate_unresolved_normal_variance',
-    surfaceFinish:bitumen?'nonmetallic_bitumen':'painted_weathered_metal',metalMaskWeight:bitumen?0:[.03,.12],extraTextureSamples:0};
+    surfaceFinish:bitumen?'nonmetallic_bitumen':'painted_weathered_metal',metalMaskWeight:bitumen?0:[.03,.12],extraTextureSamples:0,
+    ...(!bitumen?{corrugation:{cyclesPerURepeat:METAL_RIDGES_PER_REPEAT,pitchMeters:repeat[0]/METAL_RIDGES_PER_REPEAT,
+      fullDetailPixelsPerCycle:8,zeroDetailPixelsPerCycle:2,footprint:'transformed_normal_u_derivative_l1',
+      sourceNormalSha256:'e98b839ae681ba929eb80f07348c70d0731b48239abe69268effab18420cd271'}}:{})};
   material.onBeforeCompile=(shader,renderer)=>{
     prior.call(material,shader,renderer);shader.uniforms.roofRepeatMeters={value:new Vector2(repeat[0],repeat[1])};
     shader.vertexShader=shader.vertexShader.replace('#include <common>','#include <common>\nvarying vec2 roofWorldMetres;')
@@ -68,7 +79,14 @@ export function applyGameRoofMaterial(input:Material):boolean{
     const detail=/* glsl */`
 float roofPixelFootprint=max(length(dFdx( vMapUv * roofRepeatMeters )),length(dFdy( vMapUv * roofRepeatMeters )));
 float roofResolvedDetail=1.0-smoothstep(0.018,0.18,roofPixelFootprint);
-float roofNormalWeight=${bitumen?'0.02+0.30':'0.018+0.28'}*roofResolvedDetail;
+${bitumen?'float roofNormalWeight=0.02+0.30*roofResolvedDetail;':/* glsl */`
+float roofNormalWeight=0.0;
+#ifdef USE_NORMALMAP
+float roofNormalFootprintU=abs(dFdx( vNormalMapUv.x * roofRepeatMeters.x ))+abs(dFdy( vNormalMapUv.x * roofRepeatMeters.x ));
+float roofCorrugationCyclesPerPixel=roofNormalFootprintU/(roofRepeatMeters.x / 15.0);
+roofNormalWeight=0.298*(1.0-smoothstep(0.125,0.5,roofCorrugationCyclesPerPixel));
+#endif
+`}
 float roofMacroShade=1.0+(roofNoise(roofWorldMetres/23.0)-0.5)*0.10
   +(roofNoise(vec2(roofWorldMetres.x+roofWorldMetres.y,roofWorldMetres.y-roofWorldMetres.x)*0.707106781/61.0)-0.5)*0.06;
 `;

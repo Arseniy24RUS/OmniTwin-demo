@@ -1,0 +1,325 @@
+{
+  "contract": "DemoProviderMovementCacheEvidenceV1",
+  "date": "2026-09-09",
+  "status": "verified_output_parity_and_bounded_reuse",
+  "graphicsAcceptance": "open",
+  "publication": "held",
+  "representation": "engineering_measurement",
+  "scientificClaim": false,
+  "changes": [
+    "Reuse verified movement context rows by immutable page hash and ordinal.",
+    "Reuse the latest year/scenario household trip only, keyed by weak immutable household array identity.",
+    "Reuse possible source origins only for the identical year/scenario/schedule sample array; recompute corridor availability and current viewport intersection."
+  ],
+  "sourceSha256": {
+    "apps/web/src/demo/data/CityDemoProviderV2.ts": "cbe980bdf94f6a43260c60013d1994578163a744d5272e82a9a8ee4cb59e2a1c",
+    "apps/web/src/demo/data/MovementPresenceCache.ts": "7e30ca2cda326b030b356b4f2da26514865062abdc93204940a9526e14c3f0af",
+    "apps/web/src/demo/data/MovementPreviewOverlay.ts": "a3b1b2e838ba953f515ad97ef177d5504c40a37e5323887eb97a6e6d824a0d47",
+    "shared/demo-population/index.mjs": "3ec8f31f17a6df306e639985ea7550a0090da54ec8d47eb9b91e7f08cbf5dbb2",
+    "shared/demo-population/spatial.mjs": "f8498ea9ca0e882cb8e08d95a51b044530cfea5fb0b576c32eb0be0c98b44fd9",
+    "shared/demo-population/movement-index.mjs": "f79cb5d78865d4f86f3ab13b7b6181ac8f80106b4f75ef8a0d77b061b9ecc7e9"
+  },
+  "baselineProviderSha256": "021c2fd30c9a3c934c617a17cd5ced19286f197da0f4d90ba5967fc54acc985f",
+  "pins": {
+    "population": "646bef9ee30c2f061f80b1ce26cd9d7ca2c7da170c6d55c086dea24d2d95bca1",
+    "spatial": "ec886d770baa1bbb83afab4973b857a6d50d9a1eac0135c1f90508a88557567d",
+    "overlay": "625391b37ea50add3c40c4ad715124e8fcf395cbd5610f55bc7f5a68b74a7245"
+  },
+  "regressions": {
+    "rowReconstruction": {
+      "requests": 4,
+      "beforeCalls": 36,
+      "beforeColdRequestCalls": 9,
+      "beforeAdditionalWarmCalls": 27,
+      "afterAdditionalWarmCalls": 0
+    },
+    "sameScheduleChangedViewport": {
+      "beforeRepeatedScheduleCalls": 6,
+      "afterRepeatedScheduleCalls": 0,
+      "corridorOutsideViewportStillExcluded": true
+    },
+    "presenceRule": {
+      "exactComparisons": 69120,
+      "minutes": 1440,
+      "years": [
+        2026,
+        2027,
+        2029,
+        2036
+      ],
+      "scenarios": [
+        "baseline",
+        "inflow",
+        "ageing"
+      ],
+      "peoplePerContext": 4,
+      "householdMembers": 9,
+      "sharedPassengerCap": 7,
+      "sourceTripComputations": 12
+    },
+    "focusedTests": {
+      "passed": 41,
+      "typecheck": "passed",
+      "command": "npm run test --workspace @omnitwin/demo-web -- src/demo/data/CityDemoProviderV2.test.ts src/demo/data/MovementPresenceCache.test.ts src/demo/data/movementContinuity.test.ts"
+    }
+  },
+  "replay": {
+    "environment": "Node25.8.2 + Vite SSR; local verified source files through offline fetch; no browser, network, GPU or FPS assertion",
+    "camera": {
+      "longitude": 61.409959388417604,
+      "latitude": 55.16378357247956,
+      "pitch": 55.5,
+      "bearing": 109.56580251900425
+    },
+    "minutes": 1105.7,
+    "year": 2026,
+    "scenario": "baseline",
+    "viewport": "Provider default radius-derived bounds; supplied browser bbox was not captured, so this is not an exact visible-bounds browser trace.",
+    "method": "Seven sequential camera zoom requests preserve existing retained-dependency history. SHA covers complete returned profiles, presences, roads, vehicles and occupant profiles. Timings measure preparation before output extraction and include cooperative timer yields; CPU samples are process user+system and can vary with background load.",
+    "allSevenOutputsEqual": true,
+    "runs": [
+      {
+        "index": 0,
+        "zoom": 15.703,
+        "sha256": "f7da4aa023ccffd29313b301da22c4537eefe5c15a356a6b45901146f0fc6189",
+        "people": 2051,
+        "vehicles": 644,
+        "beforePrepareMs": 3179.32,
+        "afterPrepareMs": 3135.82,
+        "beforeCpuMs": 2750,
+        "afterCpuMs": 2781,
+        "coverageStatus": "partial",
+        "coverageReason": "decoded_budget",
+        "recordsScanned": 101061,
+        "contextRows": 101061,
+        "serializedBytes": 24277871
+      },
+      {
+        "index": 1,
+        "zoom": 15.703,
+        "sha256": "f7da4aa023ccffd29313b301da22c4537eefe5c15a356a6b45901146f0fc6189",
+        "people": 2051,
+        "vehicles": 644,
+        "beforePrepareMs": 2790.91,
+        "afterPrepareMs": 1484.79,
+        "beforeCpuMs": 984,
+        "afterCpuMs": 905,
+        "coverageStatus": "partial",
+        "coverageReason": "decoded_budget",
+        "recordsScanned": 101061,
+        "contextRows": 101061,
+        "serializedBytes": 24277871
+      },
+      {
+        "index": 2,
+        "zoom": 16.1,
+        "sha256": "2a253c4f407066bc29c2013084601412c92310978e5b172f098c2830ed0121ca",
+        "people": 1837,
+        "vehicles": 574,
+        "beforePrepareMs": 2734.29,
+        "afterPrepareMs": 1482.48,
+        "beforeCpuMs": 1484,
+        "afterCpuMs": 625,
+        "coverageStatus": "partial",
+        "coverageReason": "decoded_budget",
+        "recordsScanned": 101061,
+        "contextRows": 101061,
+        "serializedBytes": 24277871
+      },
+      {
+        "index": 3,
+        "zoom": 16.8,
+        "sha256": "fa7641352a29296209148489703f921c42b14920c7660b0f53df1428cd2ea2f2",
+        "people": 580,
+        "vehicles": 385,
+        "beforePrepareMs": 2675.71,
+        "afterPrepareMs": 1424.82,
+        "beforeCpuMs": 1484,
+        "afterCpuMs": 1047,
+        "coverageStatus": "partial",
+        "coverageReason": "decoded_budget",
+        "recordsScanned": 101061,
+        "contextRows": 101061,
+        "serializedBytes": 24277871
+      },
+      {
+        "index": 4,
+        "zoom": 18.4898,
+        "sha256": "80bb0b24555c8c607a0ca94069d8e2231f9713888c7afb326f230b2c93d59d70",
+        "people": 1502,
+        "vehicles": 645,
+        "beforePrepareMs": 3649.92,
+        "afterPrepareMs": 3152.8,
+        "beforeCpuMs": 2750,
+        "afterCpuMs": 3250,
+        "coverageStatus": "partial",
+        "coverageReason": "decoded_budget",
+        "recordsScanned": 102571,
+        "contextRows": 106667,
+        "serializedBytes": 25147471
+      },
+      {
+        "index": 5,
+        "zoom": 15.703,
+        "sha256": "7076db7098e64afc60b1104dd2b308ae104e9c41692875abfd5a5b197c3f425a",
+        "people": 2276,
+        "vehicles": 718,
+        "beforePrepareMs": 3686.98,
+        "afterPrepareMs": 3266.01,
+        "beforeCpuMs": 2578,
+        "afterCpuMs": 2157,
+        "coverageStatus": "partial",
+        "coverageReason": "decoded_budget",
+        "recordsScanned": 101061,
+        "contextRows": 103109,
+        "serializedBytes": 24740771
+      },
+      {
+        "index": 6,
+        "zoom": 15.703,
+        "sha256": "7076db7098e64afc60b1104dd2b308ae104e9c41692875abfd5a5b197c3f425a",
+        "people": 2276,
+        "vehicles": 718,
+        "beforePrepareMs": 2804.71,
+        "afterPrepareMs": 1662.93,
+        "beforeCpuMs": 1422,
+        "afterCpuMs": 844,
+        "coverageStatus": "partial",
+        "coverageReason": "decoded_budget",
+        "recordsScanned": 101061,
+        "contextRows": 103109,
+        "serializedBytes": 24740771
+      }
+    ]
+  },
+  "memory": {
+    "method": "Explicit Node GC after all output derivation; retains full provider, Vite SSR module graph and identical offline byte fixture cache. Heap and ArrayBuffers recorded separately. Budget24 is Temp-only virtual source transform, not production.",
+    "retentionBounds": {
+      "serializedPageBytes": 25165824,
+      "decodedPages": 128,
+      "contextRows": 131072,
+      "householdContextsPerArray": 1,
+      "scheduleWindowsPerPage": 1
+    },
+    "serializedCapIsNotHeapCap": true,
+    "overlayShardStoreBudgetBytes": 8388608,
+    "overlayBudgetUnchanged": true,
+    "firstRequestHeapBefore": 256039600,
+    "firstRequestHeapAfter": 350529680,
+    "firstRequestHeapDelta": 94490080,
+    "maximumMeasuredContextRows": 106667,
+    "maximumMeasuredHeapAfter": 355843400,
+    "runs": [
+      {
+        "index": 0,
+        "heapBefore": 256039600,
+        "heapAfter": 350529680,
+        "heapDelta": 94490080,
+        "arrayBuffersBefore": 39868413,
+        "arrayBuffersAfter": 42024395,
+        "overlayRetainedBytes": 8263860,
+        "requestDelta": 111
+      },
+      {
+        "index": 1,
+        "heapBefore": 256009200,
+        "heapAfter": 350478200,
+        "heapDelta": 94469000,
+        "arrayBuffersBefore": 53000613,
+        "arrayBuffersAfter": 46021019,
+        "overlayRetainedBytes": 8263860,
+        "requestDelta": 63
+      },
+      {
+        "index": 2,
+        "heapBefore": 255651088,
+        "heapAfter": 348695808,
+        "heapDelta": 93044720,
+        "arrayBuffersBefore": 33868245,
+        "arrayBuffersAfter": 76012304,
+        "overlayRetainedBytes": 8263860,
+        "requestDelta": 63
+      },
+      {
+        "index": 3,
+        "heapBefore": 253835768,
+        "heapAfter": 347405928,
+        "heapDelta": 93570160,
+        "arrayBuffersBefore": 53009227,
+        "arrayBuffersAfter": 75564463,
+        "overlayRetainedBytes": 8263860,
+        "requestDelta": 64
+      },
+      {
+        "index": 4,
+        "heapBefore": 256763176,
+        "heapAfter": 355843400,
+        "heapDelta": 99080224,
+        "arrayBuffersBefore": 43587207,
+        "arrayBuffersAfter": 44645706,
+        "overlayRetainedBytes": 8359829,
+        "requestDelta": 64
+      },
+      {
+        "index": 5,
+        "heapBefore": 258807400,
+        "heapAfter": 355014104,
+        "heapDelta": 96206704,
+        "arrayBuffersBefore": 59768741,
+        "arrayBuffersAfter": 61565579,
+        "overlayRetainedBytes": 8263860,
+        "requestDelta": 63
+      },
+      {
+        "index": 6,
+        "heapBefore": 258976000,
+        "heapAfter": 355179768,
+        "heapDelta": 96203768,
+        "arrayBuffersBefore": 65137804,
+        "arrayBuffersAfter": 60061929,
+        "overlayRetainedBytes": 8263860,
+        "requestDelta": 63
+      }
+    ],
+    "caveat": "Measured retained heap increases by about94.5MB on the first101061-row viewport. This bounded object-retention tradeoff is explicit; it is not a24MiB heap claim. Vite SSR/module graph and identical fixture file cache are included. ArrayBuffers/external memory may include response buffers pending later reclamation."
+  },
+  "limits": [
+    "This does not establish browser FPS or close camera-performance acceptance.",
+    "Cold page validation and decoding remain synchronous; new pages still cost CPU.",
+    "Existing decoded-budget partial coverage remains unchanged and reported; the cache does not imply full-city actor coverage.",
+    "Warm overlay transport still rereads/decompresses pages when its8MiB verified-byte working set thrashes; no transport-budget change or verification bypass was made.",
+    "Source population, scientific rules, codecs, source manifests, IDs, routes, profiles and passengers were not changed."
+  ],
+  "artifacts": [
+    {
+      "name": "replay.mjs",
+      "bytes": 3783,
+      "sha256": "d790115ab810ebd335f3aac44b2216a916d924a837e99d5ca4bb68633f6584a8"
+    },
+    {
+      "name": "before.json",
+      "bytes": 6463,
+      "sha256": "5f3aed560e37cc4b052e2f373e765c9aeda511642cdeae20f7846346cf05f3e1"
+    },
+    {
+      "name": "after-schedule.json",
+      "bytes": 7875,
+      "sha256": "7db3012aec06e93fa19555f28e46e04341bf87741e05ca402d68bc509b2016f3"
+    },
+    {
+      "name": "memory-replay.mjs",
+      "bytes": 5155,
+      "sha256": "5253f57885bfa4f960247c65d5f097121213f23c1ccdf3e2b67a5e1570fbf4e8"
+    },
+    {
+      "name": "memory-before.json",
+      "bytes": 9277,
+      "sha256": "0af218de29146d2bbef89d67949683090f2f4884741b0c77573dfea111a9d069"
+    },
+    {
+      "name": "memory-after.json",
+      "bytes": 10689,
+      "sha256": "ce711b3b975fd7ed7c1aa8d7e71f63d4f8b486616283bb9b94a5db43902804fc"
+    }
+  ]
+}

@@ -1,6 +1,8 @@
 export interface GameSurfaceRefreshOptions {
   setActive(active:boolean):void;
   isReady():boolean;
+  /** Camera frames must not run synchronous decorative geometry compilation. */
+  isInteracting?():boolean;
   flush():void;
   onError?(error:unknown):void;
 }
@@ -11,11 +13,11 @@ export class GameSurfaceRefresh {
   constructor(private readonly options:GameSurfaceRefreshOptions){}
   mark():void{
     if(this.disposed)return;this.telemetry.dirty=true;this.telemetry.invalidations++;
-    if(this.options.isReady())this.options.setActive(true);
+    if(this.options.isReady()&&!this.options.isInteracting?.())this.options.setActive(true);
   }
   frame(now:number):void{
     if(this.disposed)return;
-    if(!this.telemetry.dirty||!this.options.isReady()){this.options.setActive(false);return;}
+    if(!this.telemetry.dirty||!this.options.isReady()||this.options.isInteracting?.()){this.options.setActive(false);return;}
     if(now-this.telemetry.lastFlushMs<this.telemetry.minimumIntervalMs){this.options.setActive(true);return;}
     this.telemetry.dirty=false;this.telemetry.lastFlushMs=now;this.telemetry.flushes++;
     try{this.options.flush()}catch(error){this.telemetry.failures++;this.options.onError?.(error)}

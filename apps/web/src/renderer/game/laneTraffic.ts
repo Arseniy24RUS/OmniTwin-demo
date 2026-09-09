@@ -23,7 +23,9 @@ export interface LaneTrafficVehicle {
   readonly sourceCorridorKey?:string;
 }
 export interface LaneTrafficSample { readonly distance: number; readonly length: number; readonly point: Point; readonly heading: number; readonly visible: boolean; readonly speed: number;readonly traversal:'once'|'ping_pong' }
-interface Path { points: readonly Point[]; distances: number[]; length: number; key: string; segmentKeys: string[] }
+interface PathSegment { length: number; key: string; stationStart: number; stationEnd: number; heading: number }
+interface Path { points: readonly Point[]; distances: number[]; length: number; key: string; segmentKeys: string[]; segments: PathSegment[];
+  junctionKeys: Partial<Record<JunctionKind, string>> }
 interface State { input: LaneTrafficVehicle; path: Path;basePath:Path;reversePath:Path;reversed:boolean; distance: number; fresh: boolean; entered: boolean; speed: number; junctionFresh:boolean; junctionBlocked:boolean }
 const HEADWAY = 8;
 const pointKey = (point: Point) => `${Math.round(point[0] * 100000)},${Math.round(point[1] * 100000)}`;
@@ -35,22 +37,32 @@ function compilePath(points: readonly Point[]): Path {
     if (length < .00001) throw Error('Degenerate source traffic segment');
     distances.push(distances.at(-1)! + length); segmentKeys.push(`${pointKey(a)}>${pointKey(b)}`);
   }
-  return { points, distances, length: distances.at(-1)!, key: points.map(pointKey).join(';'), segmentKeys };
+  const segments: PathSegment[] = [];
+  for (let i = 1; i < points.length; i++) {
+    const a = points[i - 1]!, b = points[i]!;
+    // Use the original location() subtraction after cumulative summation, not
+    // raw hypot: its floating-point rounding is part of existing lane identity.
+    const length = distances[i]! - distances[i - 1]!;
+    const dx = (b[0] - a[0]) / length, dz = (b[1] - a[1]) / length;
+    const stationStart = a[0] * dx + a[1] * dz;
+    segments.push({ length, key: `${Math.round(Math.atan2(dz,dx)*1e8)}:${Math.round((-a[0]*dz+a[1]*dx)*100000)}`,
+      stationStart, stationEnd: stationStart + length,
+      heading: (Math.atan2(b[0] - a[0], -(b[1] - a[1])) * 180 / Math.PI + 360) % 360 });
+  }
+  return { points, distances, length: distances.at(-1)!, key: points.map(pointKey).join(';'), segmentKeys, segments, junctionKeys: {} };
 }
 function location(path: Path, distance: number) {
   distance = Math.min(path.length, Math.max(0, distance));
   let low = 1, high = path.points.length - 1;
   while (low < high) { const mid = (low + high) >>> 1; if (path.distances[mid]! < distance) low = mid + 1; else high = mid; }
   const a = path.points[low - 1]!, b = path.points[low]!, start = path.distances[low - 1]!, along = distance - start;
-  const length = path.distances[low]! - start, t = along / length;
-  const dx=(b[0]-a[0])/length,dz=(b[1]-a[1])/length,stationStart=a[0]*dx+a[1]*dz;
+  const segment = path.segments[low - 1]!, length = segment.length, t = along / length;
   // Numeric equality of a directed source supporting line, with a 10 micrometre
   // round-off tolerance. Overlapping authored intervals are checked separately;
   // a merely nearby or disjoint road does not become the same lane.
-  const lineKey=`${Math.round(Math.atan2(dz,dx)*1e8)}:${Math.round((-a[0]*dz+a[1]*dx)*100000)}`;
   return { point: [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t] as Point,
-    key: lineKey, along, start, station:stationStart+along,stationStart,stationEnd:stationStart+length,
-    heading: (Math.atan2(b[0] - a[0], -(b[1] - a[1])) * 180 / Math.PI + 360) % 360 };
+    key: segment.key, along, start, station:segment.stationStart+along,stationStart:segment.stationStart,stationEnd:segment.stationEnd,
+    heading: segment.heading };
 }
 type Location=ReturnType<typeof location>;
 const sameLane=(a:Location,b:Location)=>a.key===b.key&&Math.max(a.stationStart,b.stationStart)<=Math.min(a.stationEnd,b.stationEnd)+.00001;
@@ -74,18 +86,31 @@ function sourcePosition(state:State,time:number):void{
 }
 const active = (state: State) => state.entered && (state.input.traversal==='ping_pong'||state.distance < state.path.length - 1e-7);
 const vehicle = (state: State) => state.input.kind !== 'pedestrian';
-const junctionKey = (state: State, path = state.path) => `${state.input.kind ?? 'vehicle'}:${path.key}`;
+const junctionKey = (state: State, path = state.path) => {
+  const kind = state.input.kind ?? 'vehicle';
+  // Preserve the exact geometry identity, but hash its long string only once
+  // per compiled path/kind rather than once per actor in every safety substep.
+  return path.junctionKeys[kind] ??= `${kind}:${path.key}`;
+};
 function groups(states: Iterable<State>, key: (state: State) => string) {
   const result = new Map<string, State[]>();
   for (const state of states) if (active(state)) { const id = key(state), list = result.get(id) ?? []; list.push(state); result.set(id, list); }
   return result;
 }
 function sharedGroups(states:Iterable<State>,distances?:ReadonlyMap<State,number>):State[][]{
-  const lines=groups(states,state=>location(state.path,distances?.get(state)??state.distance).key),result:State[][]=[];
+  // All states/distances are immutable for this grouping call. Reuse the same
+  // location in keying, sort comparisons and interval partitioning.
+  const positions = new Map<State, Location>();
+  const atState = (state: State) => {
+    let at = positions.get(state);
+    if (!at) { at = location(state.path, distances?.get(state) ?? state.distance); positions.set(state, at); }
+    return at;
+  };
+  const lines=groups(states,state=>atState(state).key),result:State[][]=[];
   for(const group of lines.values()){
-    group.sort((a,b)=>location(a.path,distances?.get(a)??a.distance).stationStart-location(b.path,distances?.get(b)??b.distance).stationStart);
+    group.sort((a,b)=>atState(a).stationStart-atState(b).stationStart);
     let component:State[]=[],end=-Infinity;
-    for(const state of group){const at=location(state.path,distances?.get(state)??state.distance);
+    for(const state of group){const at=atState(state);
       if(at.stationStart>end+.00001&&component.length){result.push(component);component=[];}
       component.push(state);end=Math.max(end,at.stationEnd);
     }
@@ -167,6 +192,13 @@ export class LaneTraffic {
 
   /** Bounded presentation evidence; carries no passengers or population records. */
   readProbe(ids:readonly string[]=[]){
+    return this.buildProbe(ids,64);
+  }
+  /** Worker DEV capture only; one scan pins every current ID to its displayed frame. */
+  readProbeAllForDevelopment(){
+    return this.buildProbe([],4096);
+  }
+  private buildProbe(ids:readonly string[],rowLimit:number){
     const selected=ids.length?new Set(ids.slice(0,64)):null;
     const rows=[...this.states.values()].filter(state=>!selected||selected.has(state.input.id)).map(state=>{
       const at=location(state.path,state.distance);
@@ -180,7 +212,7 @@ export class LaneTraffic {
       admissionOverflows:this.admissionOverflows,
       followingOverflows:this.followingOverflows,
       opposingLaneSections:this.opposing.diagnostics.sections,opposingLaneOverflows:this.opposing.diagnostics.overflow,
-      vehicles:rows.filter(row=>row.kind==='vehicle').slice(0,64),pedestrians:rows.filter(row=>row.kind==='pedestrian').slice(0,64)};
+      vehicles:rows.filter(row=>row.kind==='vehicle').slice(0,rowLimit),pedestrians:rows.filter(row=>row.kind==='pedestrian').slice(0,rowLimit)};
   }
 
   sampleWindow(time: number, interval = .2): { previous: ReadonlyMap<string, LaneTrafficSample>; next: ReadonlyMap<string, LaneTrafficSample> } {

@@ -29,7 +29,7 @@ test('roof equipment complete envelopes and caps stay inside actual holes and bo
 
 test('close facade has bounded true recesses, distinct family profiles and source-invariant roof parapets',()=>{
   const snapshot=JSON.stringify(source),near=buildBuilding(source,{origin}),far=buildBuilding(source,{origin,lod:1}),grammar=near.metadata.appearance.facadeGrammar;
-  assert.equal(grammar.version,3);assert.ok(grammar.deepWindowCount>0&&grammar.deepWindowCount<=256);assert.equal(far.metadata.appearance.facadeGrammar.deepWindowCount,0);
+  assert.equal(grammar.version,4);assert.ok(grammar.deepWindowCount>0&&grammar.deepWindowCount<=48);assert.equal(far.metadata.appearance.facadeGrammar.deepWindowCount,0);
   assert.ok(grammar.windowVariantCounts.filter(n=>n>0).length>=3);assert.ok(grammar.bandCount<=64);
   assert.deepEqual(near.metadata.footprint,source.footprint);assert.equal(near.metadata.sourceHeightM,27);assert.equal(JSON.stringify(source),snapshot);
   const profiles=['apartments','brick','school','industrial','house'].map(kind=>buildBuilding({...source,sourceClass:kind,sourceAttributes:{building:kind}},{origin}).metadata.appearance.facadeGrammar.windowProfile);

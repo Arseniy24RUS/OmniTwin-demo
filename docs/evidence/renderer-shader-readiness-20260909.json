@@ -1,0 +1,562 @@
+{
+  "schema": "OmniTwinShaderReadinessEvidenceV2",
+  "date": "2026-09-09",
+  "status": "functional_causal_profile_and_bounded_uninstrumented_camera_checks_pass_full_regression_deferred",
+  "change": "Building frontier readiness plus independent bounded readiness for late auxiliary objects; first actor appearance and authored environment GGX convolution are prepared before visible rendering. Source geometry/material textures and authored environment values are unchanged.",
+  "scope": {
+    "catalog": "13f118a1b6e0af680e836979be0bef0f6a69bf6615a3ea3761b3e660bcc2b221",
+    "pose": {
+      "longitude": 61.409959388417604,
+      "latitude": 55.16378357247956,
+      "zoom": 15.70305732422355,
+      "targetZoom": 18.5,
+      "pitch": 55.5,
+      "bearing": 109.56580251900425,
+      "minutes": 1105.7
+    },
+    "viewport": {
+      "width": 770,
+      "height": 792,
+      "dpr": 2.25,
+      "canvas": [
+        988,
+        1348
+      ]
+    },
+    "browser": "Dedicated headless hardware Chrome context; installed Playwright; no shared user tab",
+    "classification": "CPU/material-call instrumentation, NOT FPS acceptance"
+  },
+  "diagnosis": {
+    "clock": {
+      "navigationStartMs": 712422941.3199999,
+      "calibrated": true,
+      "calibrations": [
+        {
+          "before": 7491.300000071526,
+          "after": 7511.5,
+          "monotonicMs": 712430435.197,
+          "navigationStartMs": 712422941.3199999,
+          "offsetLowerMs": 712422923.697,
+          "offsetUpperMs": 712422943.897,
+          "uncertaintyMs": 20.199999928474426
+        },
+        {
+          "before": 37762.39999997616,
+          "after": 37770.200000047684,
+          "monotonicMs": 712460705.173,
+          "navigationStartMs": 712422941.3199999,
+          "offsetLowerMs": 712422934.9729999,
+          "offsetUpperMs": 712422942.773,
+          "uncertaintyMs": 7.800000071525574
+        }
+      ]
+    },
+    "sourceStable": true,
+    "calibratedTasks": [
+      {
+        "startMs": 6410.2,
+        "durationMs": 1070,
+        "mainFirstUseMs": 528.947,
+        "prerenderFirstUseMs": 493.176
+      },
+      {
+        "startMs": 24557,
+        "durationMs": 352,
+        "surfaceFlushInclusiveMs": 328.28,
+        "roadSurfaceInclusiveMs": 131.281
+      },
+      {
+        "startMs": 37236.7,
+        "durationMs": 437,
+        "mainFirstUseMs": 211.542,
+        "prerenderFirstUseMs": 195.878
+      }
+    ],
+    "exactMaterialBefore": [
+      {
+        "startMs": 2394.399999976158,
+        "durationMs": 275.7000000476837,
+        "name": "PMREMGGXConvolution",
+        "object": "",
+        "shadowEnabled": false,
+        "outputColorSpace": "srgb-linear"
+      },
+      {
+        "startMs": 2672,
+        "durationMs": 51.800000071525574,
+        "name": "",
+        "object": "metric-road-asphalt",
+        "shadowEnabled": false,
+        "outputColorSpace": "srgb"
+      },
+      {
+        "startMs": 2725.399999976158,
+        "durationMs": 51.90000009536743,
+        "name": "",
+        "object": "metric-road-paving",
+        "shadowEnabled": false,
+        "outputColorSpace": "srgb"
+      },
+      {
+        "startMs": 2778.399999976158,
+        "durationMs": 51.800000071525574,
+        "name": "",
+        "object": "metric-road-curb",
+        "shadowEnabled": false,
+        "outputColorSpace": "srgb"
+      },
+      {
+        "startMs": 2831.399999976158,
+        "durationMs": 148.80000007152557,
+        "name": "source-metric-turf-soil",
+        "object": "metric-source-ground",
+        "shadowEnabled": false,
+        "outputColorSpace": "srgb"
+      },
+      {
+        "startMs": 2982,
+        "durationMs": 85.60000002384186,
+        "name": "",
+        "object": "source-tree-trunks",
+        "shadowEnabled": false,
+        "outputColorSpace": "srgb"
+      },
+      {
+        "startMs": 3069.399999976158,
+        "durationMs": 87.20000004768372,
+        "name": "",
+        "object": "source-tree-crowns-1",
+        "shadowEnabled": false,
+        "outputColorSpace": "srgb"
+      },
+      {
+        "startMs": 32474.300000071526,
+        "durationMs": 152.39999997615814,
+        "name": "neutral-landuse-ground",
+        "object": "source-class-neutral-ground",
+        "shadowEnabled": true,
+        "outputColorSpace": "srgb-linear"
+      },
+      {
+        "startMs": 32676.800000071526,
+        "durationMs": 170.69999992847443,
+        "name": "neutral-landuse-ground",
+        "object": "source-class-neutral-ground",
+        "shadowEnabled": true,
+        "outputColorSpace": "srgb"
+      }
+    ],
+    "findings": [
+      "Existing building PBR/depth variants were already prepared; missing coverage was late source-derived surfaces outside the tile-load callback.",
+      "Late neutral landuse material cost152.4ms scratch plus170.7ms main in the instrumented wheel task.",
+      "Startup PMREMGGXConvolution cost275.7ms; ordinary public converter precompile does not include this pinned Three185 generated convolution shader.",
+      "Road mesh replacement disposed the last material/program reference; root independently introduced pooled road materials.",
+      "A169ms sender walltime included143ms GC; it is not treated as169ms structured-clone execution."
+    ]
+  },
+  "policy": {
+    "tilePreparation": {
+      "maximumActive": 2,
+      "maximumEntries": "quality maxTiles+2",
+      "ownership": "Only ready building keys qualify the native/mesh matching frontier; previous bank/detail remains during pending work."
+    },
+    "auxiliaryPreparation": {
+      "maximumActiveBatches": 1,
+      "maximumCurrentObjects": 256,
+      "coalescing": "One current object inventory. New variants wait hidden; ready incumbent meshes remain. Same pooled material/layout survives replacement. New shadow casters acquire their own depth material.",
+      "signature": "Material identity, shader/layout features and versions. Ordinary double-sided transparent ShaderMaterial draw version increments are excluded; actual shader source/defines/features remain tracked.",
+      "history": "Ready signatures reused only from current inventory; material shader-source metadata uses WeakMap."
+    },
+    "passes": "Each auxiliary compiles main and owned scratch targets with configured shadows enabled and disabled. PCF depth uses the same geometry/map/alpha/side/displacement. Building material variants remain tile-scoped.",
+    "authoredEnvironment": {
+      "contract": "Strict pinned Three185 PMREM adapter allocates the existing generator actual converter/GGX materials, waits for their programs, then invokes its unchanged fromEquirectangular(source,ownedOutput). Unsupported internals reject explicitly.",
+      "sourcePixelsBytes": 32768,
+      "outputHalfFloatTypedEstimateBytes": 344064,
+      "outputPlusTemporaryPingPongTextureEstimateBytes": 688128,
+      "estimateExcludes": "Driver program storage, alignment, render-target bookkeeping and JS heap.",
+      "disposal": "Generator scratch/materials released after conversion; returned environment target retained by Layer until loss/disposal; source texture retains original Layer owner."
+    },
+    "driverPollMs": 10,
+    "maximumReadinessWaitMs": 15000,
+    "programValidation": "KHR completion precedes normal LINK_STATUS/getUniforms/getAttributes; shader error checking remains enabled.",
+    "waterContinuity": "Native water remains until waterDiagnostics.shaderReady and polygons>0. Readiness callback only synchronizes native visibility.",
+    "failures": "New failed auxiliary meshes stay hidden with diagnostic. Tile failures retain matching native/detail coverage. Disposal/context loss cancel pending work and cannot publish stale completion.",
+    "noParallelExtension": "Missing KHR is explicit parallelSupported=false. A yield precedes driver validation, but this configuration cannot promise nonblocking driver linking."
+  },
+  "tests": {
+    "localTime": "19:16:59",
+    "files": 4,
+    "passed": 24,
+    "typecheck": "pass",
+    "commands": [
+      "npm test -- src/renderer/game/gameEnvironmentPreparation.test.ts src/renderer/game/GameObjectShaderReadiness.test.ts src/renderer/game/gameShaderPreparation.test.ts src/renderer/game/GameShaderReadiness.test.ts",
+      "npm run typecheck"
+    ],
+    "cases": [
+      "Late auxiliary arrival after tile readiness preserves incumbent and withholds only new mesh",
+      "Both main/scratch and shadow modes are prepared",
+      "Pooled material/vertex layout reuses ready programs across mesh replacement",
+      "New caster retains explicit depth ownership",
+      "Three per-render double-sided transparent material version increments do not cause actor flicker/recompile loop",
+      "Slow/rejected/cancelled shader and environment jobs do not render early",
+      "Removed meshes cannot reappear after stale completion",
+      "Cancellation disposes only owned environment/depth resources",
+      "Bounded current inventory and200tile lifecycle cycles"
+    ]
+  },
+  "actualAfter": {
+    "sourceStable": true,
+    "errors": [],
+    "observedProgramFirstUses": 206,
+    "maximumFirstUseMs": 5.5,
+    "firstUsesOver10ms": 0,
+    "maximumObservedLongTaskMs": 129,
+    "longTasksOver250ms": 0,
+    "states": [
+      {
+        "phase": "cold-pan",
+        "time": 10448.200000047684,
+        "city": "rendering",
+        "actorsState": "ready",
+        "actorsVisible": true,
+        "visibleBuildings": 7,
+        "shadowReady": true,
+        "shaders": {
+          "pending": 0,
+          "queued": 0,
+          "ready": 7,
+          "failed": 0,
+          "lastError": null,
+          "parallelSupported": true,
+          "depthMaterials": 78,
+          "cachedPrograms": 93,
+          "pendingObjects": 0,
+          "readyObjects": 26,
+          "environmentReady": true
+        },
+        "surfaceWorker": {
+          "mode": "worker_prepared",
+          "inFlight": false,
+          "pendingKinds": [],
+          "maximumPendingKinds": 6,
+          "postedMessages": 2,
+          "discardedResults": 0,
+          "maxPostMs": 19.5,
+          "maxRoundTripMs": 276.2999999523163,
+          "lastPreparation": {
+            "inputBytes": 10700212,
+            "sourceVertices": 53087,
+            "resultBytes": 37458,
+            "bufferBytes": 7512,
+            "prepareMs": 207.80000007152557
+          },
+          "error": null
+        },
+        "sourceRefresh": {
+          "dirty": false,
+          "invalidations": 144,
+          "flushes": 2,
+          "failures": 0,
+          "lastFlushMs": 10424.800000071526,
+          "minimumIntervalMs": 250
+        },
+        "canvas": [
+          988,
+          1348
+        ]
+      },
+      {
+        "phase": "warm-return",
+        "time": 18673.400000095367,
+        "city": "rendering",
+        "actorsState": "ready",
+        "actorsVisible": true,
+        "visibleBuildings": 7,
+        "shadowReady": true,
+        "shaders": {
+          "pending": 0,
+          "queued": 0,
+          "ready": 7,
+          "failed": 0,
+          "lastError": null,
+          "parallelSupported": true,
+          "depthMaterials": 74,
+          "cachedPrograms": 91,
+          "pendingObjects": 0,
+          "readyObjects": 26,
+          "environmentReady": true
+        },
+        "surfaceWorker": {
+          "mode": "worker_prepared",
+          "inFlight": false,
+          "pendingKinds": [],
+          "maximumPendingKinds": 6,
+          "postedMessages": 2,
+          "discardedResults": 0,
+          "maxPostMs": 19.5,
+          "maxRoundTripMs": 276.2999999523163,
+          "lastPreparation": {
+            "inputBytes": 10700212,
+            "sourceVertices": 53087,
+            "resultBytes": 37458,
+            "bufferBytes": 7512,
+            "prepareMs": 207.80000007152557
+          },
+          "error": null
+        },
+        "sourceRefresh": {
+          "dirty": true,
+          "invalidations": 274,
+          "flushes": 2,
+          "failures": 0,
+          "lastFlushMs": 10424.800000071526,
+          "minimumIntervalMs": 250
+        },
+        "canvas": [
+          988,
+          1348
+        ]
+      },
+      {
+        "phase": "cold-wheel",
+        "time": 31209.700000047684,
+        "city": "rendering",
+        "actorsState": "ready",
+        "actorsVisible": true,
+        "visibleBuildings": 6,
+        "shadowReady": true,
+        "shaders": {
+          "pending": 0,
+          "queued": 0,
+          "ready": 6,
+          "failed": 0,
+          "lastError": null,
+          "parallelSupported": true,
+          "depthMaterials": 60,
+          "cachedPrograms": 95,
+          "pendingObjects": 0,
+          "readyObjects": 26,
+          "environmentReady": true
+        },
+        "surfaceWorker": {
+          "mode": "worker_prepared",
+          "inFlight": true,
+          "pendingKinds": [],
+          "maximumPendingKinds": 6,
+          "postedMessages": 4,
+          "discardedResults": 0,
+          "maxPostMs": 19.5,
+          "maxRoundTripMs": 276.2999999523163,
+          "lastPreparation": {
+            "inputBytes": 6847462,
+            "sourceVertices": 29928,
+            "resultBytes": 206474,
+            "bufferBytes": 141912,
+            "prepareMs": 68.89999997615814
+          },
+          "error": null
+        },
+        "sourceRefresh": {
+          "dirty": true,
+          "invalidations": 1109,
+          "flushes": 4,
+          "failures": 0,
+          "lastFlushMs": 30996.700000047684,
+          "minimumIntervalMs": 250
+        },
+        "canvas": [
+          988,
+          1348
+        ]
+      },
+      {
+        "phase": "context-restored",
+        "time": 33370.5,
+        "city": "rendering",
+        "actorsState": "ready",
+        "actorsVisible": true,
+        "visibleBuildings": 2,
+        "shadowReady": true,
+        "shaders": {
+          "pending": 0,
+          "queued": 0,
+          "ready": 4,
+          "failed": 0,
+          "lastError": null,
+          "parallelSupported": true,
+          "depthMaterials": 38,
+          "cachedPrograms": 103,
+          "pendingObjects": 0,
+          "readyObjects": 28,
+          "environmentReady": true
+        },
+        "surfaceWorker": {
+          "mode": "worker_prepared",
+          "inFlight": false,
+          "pendingKinds": [],
+          "maximumPendingKinds": 6,
+          "postedMessages": 2,
+          "discardedResults": 1,
+          "maxPostMs": 16.799999952316284,
+          "maxRoundTripMs": 398.89999997615814,
+          "lastPreparation": {
+            "inputBytes": 2921928,
+            "sourceVertices": 13380,
+            "resultBytes": 464582,
+            "bufferBytes": 291900,
+            "prepareMs": 149.20000004768372
+          },
+          "error": null
+        },
+        "sourceRefresh": {
+          "dirty": false,
+          "invalidations": 15,
+          "flushes": 3,
+          "failures": 0,
+          "lastFlushMs": 33017.90000009537,
+          "minimumIntervalMs": 250
+        },
+        "canvas": [
+          988,
+          1348
+        ]
+      }
+    ],
+    "limits": [
+      "The final-settled snapshot before context loss still had a SurfaceClient request in flight; the context-restored snapshot was idle. Subsequent acceptance must wait for both shader and surface-worker queues.",
+      "This diagnostic captured aggregate SurfaceClient state rather than every family-specific output telemetry.",
+      "Context loss deliberately includes a disposed/remounted transitional state; the restored renderer/actors/canvas are the acceptance sample.",
+      "All before/after diagnostic samples include profiler and response-wrapper overhead. Uninstrumented FPS/tail acceptance is separate."
+    ]
+  },
+  "sourceHashes": {
+    "TiledGameLayer.ts": "7f35bb8f22bfc201f591cfd0258e910d99a92b33f08aef52e57fbb06a22580c0",
+    "GameShaderReadiness.ts": "012dd0fabd5126a8dd8ceaa10f3237f1f1013863bc487eacfd2c3035df52d086",
+    "gameShaderPreparation.ts": "579312e487063e6b47585356d92e78a3c1eaa4e2e478677772fd879e787772bb",
+    "GameObjectShaderReadiness.ts": "926cc4201752d301b8c375f91c2d2dc853aea409165eb6622fec1d715bac4049",
+    "gameEnvironmentPreparation.ts": "dedb376783b7125c11d7f8bbb90956f18b15064620b0b0c70089ead4882e53c6"
+  },
+  "artifacts": [
+    {
+      "filename": "profile-combined-01/report.json",
+      "sha256": "f9c19befa146487c71fb2c8bca7a246145b48df5a5271391383fa131b2898d35"
+    },
+    {
+      "filename": "profile-combined-01/profile.cpuprofile",
+      "sha256": "70433ace8fc8811414bd080d7f557e0092d4d46d7d1169c79ec0dc636b353932"
+    },
+    {
+      "filename": "profile-combined-01/cpu-stacks.json",
+      "sha256": "33d2171ebfc1215c344c969108615bf3833b8513a6aee4efe5b92e4749242135"
+    },
+    {
+      "filename": "profile-shader-material-01/report.json",
+      "sha256": "6b1cb8fac1692003ff41069ca422c237a68f7f84782597cf5c09b0400b776dd1"
+    },
+    {
+      "filename": "profile-shader-material-01/profile.cpuprofile",
+      "sha256": "8f1389b991e9a48980119d518774e6c5426189358757b5c1851ce72257d46474"
+    },
+    {
+      "filename": "profile-shader-material-02/report.json",
+      "sha256": "b8cd4a707a3fa793849309c83f9d9d2bed04bf93777394656da5270d78489f3c"
+    },
+    {
+      "filename": "profile-shader-material-02/profile.cpuprofile",
+      "sha256": "6ed8b29bcd3b18df856ba937093e74827c386d87bb313c0e3223bafb75de17d6"
+    },
+    {
+      "filename": "profile-shader-material-02/material-stalls.json",
+      "sha256": "33919f2681adcb1daba3c3624dac37b89ab08ccbd8055d89a69af29c46ebb654"
+    },
+    {
+      "filename": "profile-shader-material-02/final.png",
+      "sha256": "a3c1d0a99a8e0d731724d2fffb9f010ca84b1ee91c071fc0c3f689e25c1c2249"
+    }
+  ],
+  "history": {
+    "initialTileOnlyEvidenceSchema": "OmniTwinShaderReadinessEvidenceV1",
+    "initialGateLimitation": "Tile-only shader readiness passed functional checks but did not cover later auxiliary meshes; the later failed moving-camera run superseded that limited acceptance."
+  },
+  "remaining": [
+    "User requested publication of the current version before the chat limit; the adapted 300 zoom-state/seven-district/five-fault browser suite was deliberately not rerun after the newest shader, SurfaceWorker and catalog changes.",
+    "Minimal clean-production/public smoke is separate and must verify the actually deployed artifact; local catalog tests do not prove Pages delivery.",
+    "KHR_parallel_shader_compile unavailable: adapter yields and validates results but cannot guarantee nonblocking driver link/first use.",
+    "PMREM adapter is deliberately pinned to Three revision185 and its tested internal material contract; dependency upgrades require explicit revalidation.",
+    "Long navigation shader/driver memory and program count growth have not been established for the full city; sampled counts are not a global bound.",
+    "No claim that every structured clone, texture upload, GC or driver tail has been eliminated; camera samples still include 104–123ms maximum gaps.",
+    "Artistic acceptance and source-backed visual variation are separate from technical readiness; no SimCity equivalence claim."
+  ],
+  "uninstrumentedAcceptance": {
+    "artifact": "user-moving-combined-02/report.json",
+    "sha256": "2bba879f7a35235a80c82252e03ac6538b3ab8fc4bdc3adf9d6ef79cea265426",
+    "sourceStable": true,
+    "errorCount": 0,
+    "networkFailureCount": 5,
+    "numericChecksPass": true,
+    "verdict": "numeric_gates_pass_visual_and_frame_tail_review_pending",
+    "classification": "Independent unrecorded hardware Chrome MapLibre render-event intervals; not monitor-presented FPS and not a whole-city performance guarantee.",
+    "windows": [
+      {
+        "name": "cold-pan-arc",
+        "elapsedMs": 8152.399999976158,
+        "mapRenderFrames": 869,
+        "p95Ms": 17,
+        "maximumGapMs": 122.60000002384186,
+        "framesOver250Ms": 0
+      },
+      {
+        "name": "warm-return",
+        "elapsedMs": 8057.899999976158,
+        "mapRenderFrames": 731,
+        "p95Ms": 37.299999952316284,
+        "maximumGapMs": 121.09999990463257,
+        "framesOver250Ms": 0
+      },
+      {
+        "name": "wheel-to18.5",
+        "elapsedMs": 12462.5,
+        "mapRenderFrames": 1226,
+        "p95Ms": 22.600000023841858,
+        "maximumGapMs": 104.39999997615814,
+        "framesOver250Ms": 0
+      },
+      {
+        "name": "near-rotate",
+        "elapsedMs": 8029.600000023842,
+        "mapRenderFrames": 896,
+        "p95Ms": 12.799999952316284,
+        "maximumGapMs": 118,
+        "framesOver250Ms": 0
+      },
+      {
+        "name": "near-pan-return",
+        "elapsedMs": 8026.699999928474,
+        "mapRenderFrames": 948,
+        "p95Ms": 9.700000047683716,
+        "maximumGapMs": 25.899999976158142,
+        "framesOver250Ms": 0
+      },
+      {
+        "name": "wheel-back15.703",
+        "elapsedMs": 12124.199999928474,
+        "mapRenderFrames": 1394,
+        "p95Ms": 10.899999976158142,
+        "maximumGapMs": 43.89999997615814,
+        "framesOver250Ms": 0
+      },
+      {
+        "name": "paused-settled",
+        "elapsedMs": 2207.8000000715256,
+        "mapRenderFrames": 0,
+        "p95Ms": null,
+        "maximumGapMs": 2207.8000000715256,
+        "framesOver250Ms": 0
+      }
+    ],
+    "browserContextsClosed": true,
+    "networkCancellationCodes": {
+      "net::ERR_ABORTED": 5
+    }
+  }
+}

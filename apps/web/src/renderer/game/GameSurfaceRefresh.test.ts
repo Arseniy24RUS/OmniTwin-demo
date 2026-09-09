@@ -3,6 +3,19 @@ import {FrameScheduler} from '../runtime/FrameScheduler';
 import {GameSurfaceRefresh} from './GameSurfaceRefresh';
 
 describe('shared-render surface refresh',()=>{
+  it('retains surfaces throughout a camera gesture and coalesces all dirty work after it ends',()=>{
+    let interacting=true;
+    const flush=vi.fn(),active=vi.fn();
+    const refresh=new GameSurfaceRefresh({setActive:active,isReady:()=>true,isInteracting:()=>interacting,flush});
+    for(let now=0;now<=3000;now+=16){refresh.mark();refresh.frame(now)}
+    expect(flush).not.toHaveBeenCalled();
+    expect(refresh.telemetry.dirty).toBe(true);
+    expect(active).toHaveBeenLastCalledWith(false);
+    interacting=false;refresh.mark();refresh.frame(3016);
+    expect(flush).toHaveBeenCalledOnce();
+    expect(refresh.telemetry.dirty).toBe(false);
+    refresh.frame(6000);expect(flush).toHaveBeenCalledOnce();
+  });
   it('flushes arriving sources during continuous playback without an idle event, at most every 250ms',()=>{
     const active=vi.fn(),times:number[]=[];let now=0;
     const refresh=new GameSurfaceRefresh({setActive:active,isReady:()=>true,flush:()=>times.push(now)});

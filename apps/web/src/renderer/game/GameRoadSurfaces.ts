@@ -389,6 +389,7 @@ export class GameRoadSurfaces {
     laneMarkings:0,skippedJunctionMarks:0,skippedClearanceMarks:0,markingsTruncated:false,markingClearanceBytes:0,markingClearanceUnavailable:false,
     vertexCount: 0, partial: false, lastError: null as string | null };
   private meshes: Mesh<BufferGeometry, MeshStandardMaterial>[] = [];
+  private readonly materials=new Map<Surface,MeshStandardMaterial>();
   private signature = '';
   private origin: GameOrigin | null = null;
   private disposed = false;
@@ -397,14 +398,17 @@ export class GameRoadSurfaces {
     if (!this.origin) return;
     try { this.object.matrix.copy(localToMercatorMatrix(origin).invert().multiply(localToMercatorMatrix(this.origin))); this.object.matrixWorldNeedsUpdate = true; } catch {}
   }
-  update(roads: readonly GameRoadSurfaceSource[], options: GameRoadSurfacesOptions): void {
+  applyPrepared(result:ReturnType<typeof prepareGameRoadSurfaces>,options:GameRoadSurfacesOptions):void{this.update([],options,result);}
+  retainWhilePreparing(origin:GameOrigin):void{if(this.disposed)return;this.telemetry.state='loading_retained';this.retain(origin);}
+  retainFailure(message:string,origin:GameOrigin):void{if(this.disposed)return;this.telemetry.state='error_retained';this.telemetry.lastError=message.slice(0,180);this.retain(origin);}
+  update(roads: readonly GameRoadSurfaceSource[], options: GameRoadSurfacesOptions, preparedResult?:ReturnType<typeof prepareGameRoadSurfaces>): void {
     if (this.disposed) return;
     if (options.loading) { this.telemetry.state = 'loading_retained'; this.retain(options.origin); return; }
     if (!options.buildings || options.buildings.coverage !== 'complete_viewport' || options.buildings.invalidBuildings || options.buildings.omittedBuildings) {
       this.telemetry.state = 'unverified_retained'; this.retain(options.origin); return;
     }
     try {
-      const result = prepareGameRoadSurfaces(roads, options);
+      const result = preparedResult??prepareGameRoadSurfaces(roads, options);
       const signature = geometryFingerprint(result.batches, options.origin);
       if (signature !== this.signature) {
         const prepared: Mesh<BufferGeometry, MeshStandardMaterial>[] = [];
@@ -413,14 +417,18 @@ export class GameRoadSurfaces {
             const data = result.batches[surface]; if (!data.positions.length) continue;
             const geometry = new BufferGeometry(); geometry.setAttribute('position', new BufferAttribute(data.positions, 3));
             geometry.setAttribute('normal', new BufferAttribute(data.normals, 3)); geometry.computeBoundingBox(); geometry.computeBoundingSphere();
-            const material = materialFor(surface), anchor = MercatorCoordinate.fromLngLat([options.origin.longitude, options.origin.latitude]);
+            let material=this.materials.get(surface);if(!material){material=materialFor(surface);this.materials.set(surface,material);}
+            const anchor = MercatorCoordinate.fromLngLat([options.origin.longitude, options.origin.latitude]);
             (material.userData.roadOrigin as { value: Vector2 }).value.set(anchor.x * CIRCUMFERENCE % 256, anchor.y * CIRCUMFERENCE % 256);
             (material.userData.roadScale as { value: number }).value = anchor.meterInMercatorCoordinateUnits() * CIRCUMFERENCE;
             const mesh = new Mesh(geometry, material); mesh.name = `metric-road-${surface}`; mesh.receiveShadow = true; mesh.castShadow = surface === 'curb';
             mesh.userData.provenance = 'visual_synthesis'; prepared.push(mesh);
           }
-        } catch (error) { for (const mesh of prepared) { mesh.geometry.dispose(); mesh.material.dispose(); } throw error; }
-        for (const mesh of this.meshes) { this.object.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); }
+        } catch (error) { for (const mesh of prepared) mesh.geometry.dispose(); throw error; }
+        // Geometry changes do not retire the shared road programs. Otherwise
+        // the last old material can delete a program before its replacement's
+        // first render, forcing another synchronous GPU compile on every pan.
+        for (const mesh of this.meshes) { this.object.remove(mesh); mesh.geometry.dispose(); }
         this.meshes = prepared; this.object.add(...prepared); this.signature = signature; this.telemetry.geometryUpdates++;
       }
       this.origin = { ...options.origin }; this.object.matrix.identity(); this.object.matrixWorldNeedsUpdate = true;
@@ -430,7 +438,8 @@ export class GameRoadSurfaces {
   }
   dispose(): void {
     if (this.disposed) return; this.disposed = true;
-    for (const mesh of this.meshes) { mesh.geometry.dispose(); mesh.material.dispose(); }
+    for (const mesh of this.meshes) mesh.geometry.dispose();
+    for(const material of this.materials.values())material.dispose();this.materials.clear();
     this.meshes = []; this.signature = ''; this.origin = null; this.object.clear();
     Object.assign(this.telemetry, { state: 'disposed', geometryBytes: 0, retainedBytes: 0, draws: 0, vertexCount: 0 });
   }

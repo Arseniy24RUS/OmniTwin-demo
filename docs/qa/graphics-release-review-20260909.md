@@ -1,5 +1,28 @@
 # Graphics release review — 2026-09-09
 
+## Current owner instruction: publish this version with deferred bugs
+
+The owner subsequently requested immediate publication of the current version,
+with remaining individual bugs deferred. This supersedes the historical hold
+below, without asserting complete artistic acceptance or completed deployment.
+Runtime is frozen. The current exact-user replay and the roof comparison are
+recorded in [combined02 evidence](../evidence/moving-combined02-evidence-20260909.json)
+and [roof v3 evidence](../evidence/roof-normal-filter-v3-evidence-20260909.json).
+Known source-surface budget fallbacks, input pacing and material-assignment bugs
+remain in [the deferred list](graphics-current-known-limitations-20260909.md).
+
+## Historical rejection during actual camera movement
+
+The owner subsequently reported approximately 5 FPS while panning, slow
+sequential facade appearance and uniform building materials. Publication is
+held. The stationary-camera review below is historical and is not current
+acceptance. Moving-camera CPU traces reproduced large traffic-constraint and
+surface-reconstruction costs. The recovery plan is recorded at the top of
+`../../IMPLEMENTATION_PLAN.md`; no Pages push has been made for local commit
+08da267. New movement and visual evidence is required before release.
+
+## Earlier local review
+
 The integration is accepted for publication of this graphics revision with the
 content limitations below. This is a qualitative review of the actual rendered
 application, not a claim of measured visual equivalence to SimCity 2013.

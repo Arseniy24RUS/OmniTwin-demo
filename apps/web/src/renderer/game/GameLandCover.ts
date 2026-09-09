@@ -88,10 +88,13 @@ export class GameLandCover{
   private mesh:Mesh<BufferGeometry,MeshStandardMaterial>|null=null;private origin:GameOrigin|null=null;private disposed=false;
   constructor(){this.object.name='source-metric-land-cover';this.object.userData.provenance='visual_synthesis';this.object.matrixAutoUpdate=false;}
   private retain(origin:GameOrigin){if(this.origin)try{this.object.matrix.copy(localToMercatorMatrix(origin).invert().multiply(localToMercatorMatrix(this.origin)));this.object.matrixWorldNeedsUpdate=true;}catch{}}
-  update(features:readonly GameVegetationFeature[],options:GameLandCoverOptions){
+  applyPrepared(result:ReturnType<typeof prepareGameLandCover>,options:GameLandCoverOptions){return this.update([],options,result);}
+  retainWhilePreparing(origin:GameOrigin):void{if(this.disposed)return;this.telemetry.state='loading_retained';this.retain(origin);}
+  retainFailure(message:string,origin:GameOrigin):void{if(this.disposed)return;this.telemetry.state='error_retained';this.telemetry.lastError=message.slice(0,180);this.retain(origin);}
+  update(features:readonly GameVegetationFeature[],options:GameLandCoverOptions,preparedResult?:ReturnType<typeof prepareGameLandCover>){
     if(this.disposed)return this.telemetry;if(options.loading){this.telemetry.state='loading_retained';this.retain(options.origin);return this.telemetry;}
     try{
-      const result=prepareGameLandCover(features,options,this.telemetry.retainedBytes),old=this.mesh?.geometry;
+      const result=preparedResult??prepareGameLandCover(features,options,this.telemetry.retainedBytes),old=this.mesh?.geometry;
       const changed=!old||!equals(old.getAttribute('position').array,result.positions)||!equals(old.getIndex()!.array,result.indices);
       if(changed){const geometry=new BufferGeometry();geometry.setAttribute('position',new BufferAttribute(result.positions,3));geometry.setAttribute('normal',new BufferAttribute(result.normals,3));geometry.setIndex(new BufferAttribute(result.indices,1));
         if(result.positions.length){geometry.computeBoundingBox();geometry.computeBoundingSphere();}

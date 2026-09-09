@@ -30,13 +30,12 @@ describe('exact building highlight with the installed MapLibre tile pipeline', (
     expect(filter.filter({ zoom: 17.3 }, tileFeature(159526354, {}))).toBe(false);
   });
 
-  it('keeps source material selection independent of raw tile IDs, without a fabricated numeric palette seed', () => {
+  it('keeps explicit source materials independent of raw tile IDs while synthesized finishes may vary', () => {
     for (const [expression, properties, expected] of [
-      [BUILDING_FACADE_PATTERN_EXPRESSION, { building: 'commercial' }, 'omnitwin:facade-slate'],
-      [BUILDING_FACADE_PATTERN_EXPRESSION, { building: 'apartments' }, 'omnitwin:facade-plaster'],
+      [BUILDING_FACADE_PATTERN_EXPRESSION, { building: 'commercial', 'building:material':'glass' }, 'omnitwin:facade-slate'],
+      [BUILDING_FACADE_PATTERN_EXPRESSION, { building: 'apartments', 'building:material':'plaster' }, 'omnitwin:facade-plaster'],
       [BUILDING_ROOF_PATTERN_EXPRESSION, { 'roof:material': 'metal' }, 'omnitwin:roof-metal'],
     ] as const) {
-      expect(JSON.stringify(expression)).not.toContain('["id"]');
       const compiled = createExpression(expression, 'layers[0].paint.fill-extrusion-pattern');
       if (compiled.result !== 'success') throw new Error('Fixture material expression did not compile');
       for (const id of [17, 853220400, 'openmaptiles_buildings:853220400']) {

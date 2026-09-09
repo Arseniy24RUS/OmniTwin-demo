@@ -36,6 +36,17 @@ function covered(positions: Float32Array, x: number, z: number) {
 }
 
 describe('source metric road surfaces', () => {
+  it('retains material programs across changed and temporarily empty road geometry',()=>{
+    const surfaces=new GameRoadSurfaces(),config=options();surfaces.update([road('moving',[[-40,0],[40,0]])],config);
+    const original=new Map(surfaces.object.children.map(object=>[object.name,(object as Mesh).material]));
+    const disposals=[...original.values()].map(material=>vi.spyOn(material as MeshBasicMaterial,'dispose'));
+    surfaces.update([road('moving',[[-40,4],[40,4]])],config);
+    for(const object of surfaces.object.children)expect((object as Mesh).material).toBe(original.get(object.name));
+    surfaces.update([],config);expect(disposals.every(spy=>spy.mock.calls.length===0)).toBe(true);
+    surfaces.update([road('moving',[[-40,8],[40,8]])],config);
+    for(const object of surfaces.object.children)expect((object as Mesh).material).toBe(original.get(object.name));
+    surfaces.dispose();expect(disposals.every(spy=>spy.mock.calls.length===1)).toBe(true);
+  });
   it('adds bounded light lane paint while preserving bridge holes, building clearance and original road coordinates',()=>{
     const config=options();config.buildings.data.features.push({type:'Feature',id:'obstacle',properties:{},geometry:{type:'Polygon',coordinates:
       [[[-5,-5],[5,-5],[5,5],[-5,5],[-5,-5]].map(geographic)]}});

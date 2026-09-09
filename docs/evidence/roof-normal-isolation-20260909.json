@@ -1,0 +1,662 @@
+{
+  "schema": "OmniTwinRoofNormalIsolationV1",
+  "date": "2026-09-09",
+  "verdict": "metal_normal_response_isolated_roof_only",
+  "performanceClaim": false,
+  "overallArtPass": false,
+  "sourceBefore": {
+    "source": "327528bcde3d9617116b8805ed07e5be29fe64cb942dc180dc98a71f31e0f7c1",
+    "sourceFiles": 192,
+    "sourceBytes": 2172093,
+    "visualManifest": "1aa147a06516bd9a5926d67bdcadcd2cba08f3b80da732ef18c282d6f039ce47",
+    "catalog": "13f118a1b6e0af680e836979be0bef0f6a69bf6615a3ea3761b3e660bcc2b221"
+  },
+  "sourceAfter": {
+    "source": "327528bcde3d9617116b8805ed07e5be29fe64cb942dc180dc98a71f31e0f7c1",
+    "sourceFiles": 192,
+    "sourceBytes": 2172093,
+    "visualManifest": "1aa147a06516bd9a5926d67bdcadcd2cba08f3b80da732ef18c282d6f039ce47",
+    "catalog": "13f118a1b6e0af680e836979be0bef0f6a69bf6615a3ea3761b3e660bcc2b221"
+  },
+  "sourceStable": true,
+  "startedAt": "2026-09-09T16:00:44.735Z",
+  "endedAt": "2026-09-09T16:01:13.896Z",
+  "rawReport": {
+    "artifact": "roof-stripe-isolation-01/report.json",
+    "sha256": "e3501777681f324fd0dadd9382e326b09859519d9e774677b850599f5c20c1e0",
+    "bytes": 649216,
+    "retention": "Local diagnostic, raw states retained"
+  },
+  "method": "Three sequential isolated Chrome contexts. Exact captured near and rotated cameras, identical fixed paused presentation time, CSS770x792/DPR2.25 with selected building. Temp response override changes metal normalScale only, or metal receiveShadow only. Production files were not edited during capture.",
+  "fixedMinutes": 1106.2750050000234,
+  "sourceFrequency": {
+    "sourceId": "corrugated_iron",
+    "role": "normal",
+    "sha256": "e98b839ae681ba929eb80f07348c70d0731b48239abe69268effab18420cd271",
+    "bytes": 755185,
+    "dimensions": [
+      1024,
+      1024
+    ],
+    "method": "Mean red tangent-normal channel over perpendicular axis; real FFT energy excluding DC, original JPEG decoded without resizing. No source-image modifications.",
+    "uSpectrum": [
+      {
+        "cycles": 15,
+        "fraction": 0.9511989025959358
+      },
+      {
+        "cycles": 14,
+        "fraction": 0.01177208268460653
+      },
+      {
+        "cycles": 16,
+        "fraction": 0.01070290677939131
+      },
+      {
+        "cycles": 45,
+        "fraction": 0.0038232385012273726
+      },
+      {
+        "cycles": 12,
+        "fraction": 0.0031131586121797873
+      },
+      {
+        "cycles": 11,
+        "fraction": 0.002104862160500381
+      },
+      {
+        "cycles": 19,
+        "fraction": 0.0020638831229600743
+      },
+      {
+        "cycles": 18,
+        "fraction": 0.0019918719859792927
+      }
+    ],
+    "vSpectrum": [
+      {
+        "cycles": 4,
+        "fraction": 0.2791263801590612
+      },
+      {
+        "cycles": 2,
+        "fraction": 0.16894895357965978
+      },
+      {
+        "cycles": 3,
+        "fraction": 0.16004673632477784
+      },
+      {
+        "cycles": 7,
+        "fraction": 0.03503431521344892
+      },
+      {
+        "cycles": 5,
+        "fraction": 0.02167363296044368
+      },
+      {
+        "cycles": 9,
+        "fraction": 0.0200161864949601
+      },
+      {
+        "cycles": 15,
+        "fraction": 0.01605431585173228
+      },
+      {
+        "cycles": 6,
+        "fraction": 0.014583009359896482
+      }
+    ],
+    "uMeanVariance": 2541.0839902005814,
+    "vMeanVariance": 0.08823228550227213,
+    "authoredRepeatMeters": [
+      3,
+      3
+    ]
+  },
+  "findings": [
+    "Opened all six actual PNGs. Fine parallel stripes on the foreground metal roof persist in baseline and receiveShadow=false at both bearings, and disappear when metal normalScale=0.",
+    "Shadow-only treatment removes fixture shadows but preserves stripes. This supports corrugated tangent normal response as the artifact source, rather than PCF shadow acne.",
+    "Pinned source normal has15 dominant U cycles per repeat; authored3m repeat gives0.20m physical ridge pitch. Existing material keeps weight0.155407539 at0.10m/pixel and residual0.018 beyond0.18m/pixel, allowing unresolved ridges to affect shading.",
+    "Proposed fix fades actual normal-U footprint from8 to2pixels per measured ridge, reaches exactly zero at Nyquist, and retains existing full normal strength nearby. No texture removal, new maps/draws, source-UV changes or shadow suppression."
+  ],
+  "limitations": [
+    "The readiness predicate admitted initial empty Worker inventories in both modified variants:0 people/vehicles while the baseline had38/21 near and36/20 rotated. Actor presence and identical actor population were NOT established; all raw states were retained.",
+    "The recorded2.2s windows were still loading sources and rendered12/65/72frames. They are not settled pause measurements or regressions against the earlier fully settled0-frame moving-run window.",
+    "Near building frontier24 canonical mesh IDs matched across all variants; rotated baseline had38 versus24 in the variants. The shared foreground roof is visibly the same geometry, but full-scene geometry was not claimed identical.",
+    "No performance acceptance, full visual acceptance, or publication approval follows from this isolated diagnosis."
+  ],
+  "rows": [
+    {
+      "variant": "baseline",
+      "errors": [],
+      "overrideMatches": 1,
+      "originalModuleSha256": "0922d77c38a5ac0da59cbb0919a4603f6ec1f0d721fb4c6585d6efb92ebd968b",
+      "pause": {
+        "frames": 12,
+        "elapsedMs": 2200,
+        "bodyTimeBefore": 66376.5003000014,
+        "bodyTimeAfter": 66376.5003000014
+      },
+      "shots": [
+        {
+          "label": "03-near",
+          "image": {
+            "filename": "baseline-03-near.png",
+            "bytes": 1360679,
+            "sha256": "35200fc0811bf76e20a6e8642eba8dae2b81aa858a6b93bfe5acaafef3312a96"
+          },
+          "imageReviewed": true,
+          "settleError": null,
+          "camera": {
+            "longitude": 61.40903412862579,
+            "latitude": 55.16397139376605,
+            "zoom": 18.500000062092244,
+            "pitch": 55.5,
+            "bearing": 109.56580251900425
+          },
+          "frames": 132,
+          "meshIds": [
+            "openmaptiles_buildings:10043653890",
+            "openmaptiles_buildings:10043653920",
+            "openmaptiles_buildings:11369341190",
+            "openmaptiles_buildings:1160636710",
+            "openmaptiles_buildings:12169307510",
+            "openmaptiles_buildings:2147788680",
+            "openmaptiles_buildings:362688740",
+            "openmaptiles_buildings:521183890",
+            "openmaptiles_buildings:521183920",
+            "openmaptiles_buildings:521183930",
+            "openmaptiles_buildings:521183940",
+            "openmaptiles_buildings:521183950",
+            "openmaptiles_buildings:524957560",
+            "openmaptiles_buildings:524957570",
+            "openmaptiles_buildings:524957580",
+            "openmaptiles_buildings:524957590",
+            "openmaptiles_buildings:524957600",
+            "openmaptiles_buildings:6286451280",
+            "openmaptiles_buildings:6286451290",
+            "openmaptiles_buildings:6286459010",
+            "openmaptiles_buildings:7105980570",
+            "openmaptiles_buildings:7715854650",
+            "openmaptiles_buildings:853220170",
+            "openmaptiles_buildings:904153980"
+          ],
+          "actorCounts": {
+            "people": "38",
+            "vehicles": "21"
+          },
+          "worker": {
+            "mode": "worker_buffered",
+            "bufferedFrames": 0,
+            "inFlight": false,
+            "displayed": true,
+            "presentationSeconds": 66376.5003000014,
+            "availableUntilSeconds": 66376.7503000014,
+            "lagSeconds": 0,
+            "underflow": false,
+            "catchupMultiplier": 1,
+            "maximumCatchupMultiplier": 1.1,
+            "maximumBufferedFrames": 5,
+            "stepSeconds": 0.25,
+            "horizonSeconds": 0.25,
+            "generation": 2,
+            "sourceRevision": 2,
+            "configuredRevision": 2,
+            "displayedRevision": 2,
+            "sourcePending": false,
+            "roundTripMaxMs": 125,
+            "postMaxMs": 2.5,
+            "postedMessages": 4,
+            "error": null
+          },
+          "bodyTime": 66376.5003000014,
+          "override": {
+            "metalMeshes": 6,
+            "bitumenMeshes": 4,
+            "normalDisabled": 0,
+            "shadowDisabled": 0
+          }
+        },
+        {
+          "label": "04-rotated",
+          "image": {
+            "filename": "baseline-04-rotated.png",
+            "bytes": 1335016,
+            "sha256": "14b8be5c7f21c12fd21834a0e583b5a60f122a563b0a8280b46efccf06bc0266"
+          },
+          "imageReviewed": true,
+          "settleError": null,
+          "camera": {
+            "longitude": 61.40903412862576,
+            "latitude": 55.16397139376605,
+            "zoom": 18.500000062092244,
+            "pitch": 55.5,
+            "bearing": 105.58058002516829
+          },
+          "frames": 109,
+          "meshIds": [
+            "openmaptiles_buildings:10043653890",
+            "openmaptiles_buildings:10043653920",
+            "openmaptiles_buildings:10043653930",
+            "openmaptiles_buildings:10043654000",
+            "openmaptiles_buildings:10043654010",
+            "openmaptiles_buildings:10043654020",
+            "openmaptiles_buildings:10043654030",
+            "openmaptiles_buildings:1126523450",
+            "openmaptiles_buildings:11369341190",
+            "openmaptiles_buildings:11455887150",
+            "openmaptiles_buildings:1160636670",
+            "openmaptiles_buildings:1160636710",
+            "openmaptiles_buildings:12169307510",
+            "openmaptiles_buildings:13523652090",
+            "openmaptiles_buildings:2147788680",
+            "openmaptiles_buildings:328979560",
+            "openmaptiles_buildings:362688740",
+            "openmaptiles_buildings:521183890",
+            "openmaptiles_buildings:521183920",
+            "openmaptiles_buildings:521183930",
+            "openmaptiles_buildings:521183940",
+            "openmaptiles_buildings:521183950",
+            "openmaptiles_buildings:521183960",
+            "openmaptiles_buildings:524957560",
+            "openmaptiles_buildings:524957570",
+            "openmaptiles_buildings:524957580",
+            "openmaptiles_buildings:524957590",
+            "openmaptiles_buildings:524957600",
+            "openmaptiles_buildings:6286451280",
+            "openmaptiles_buildings:6286451290",
+            "openmaptiles_buildings:6286459010",
+            "openmaptiles_buildings:6853634470",
+            "openmaptiles_buildings:6853634600",
+            "openmaptiles_buildings:7105980570",
+            "openmaptiles_buildings:7715854650",
+            "openmaptiles_buildings:853220170",
+            "openmaptiles_buildings:874850240",
+            "openmaptiles_buildings:904153980"
+          ],
+          "actorCounts": {
+            "people": "36",
+            "vehicles": "20"
+          },
+          "worker": {
+            "mode": "worker_buffered",
+            "bufferedFrames": 0,
+            "inFlight": false,
+            "displayed": true,
+            "presentationSeconds": 66376.5003000014,
+            "availableUntilSeconds": 66376.7503000014,
+            "lagSeconds": 0,
+            "underflow": false,
+            "catchupMultiplier": 1,
+            "maximumCatchupMultiplier": 1.1,
+            "maximumBufferedFrames": 5,
+            "stepSeconds": 0.25,
+            "horizonSeconds": 0.25,
+            "generation": 1,
+            "sourceRevision": 2,
+            "configuredRevision": 2,
+            "displayedRevision": 2,
+            "sourcePending": false,
+            "roundTripMaxMs": 201.10000002384186,
+            "postMaxMs": 4.899999976158142,
+            "postedMessages": 4,
+            "error": null
+          },
+          "bodyTime": 66376.5003000014,
+          "override": {
+            "metalMeshes": 14,
+            "bitumenMeshes": 10,
+            "normalDisabled": 0,
+            "shadowDisabled": 0
+          }
+        }
+      ]
+    },
+    {
+      "variant": "metal-normal-zero",
+      "errors": [],
+      "overrideMatches": 1,
+      "originalModuleSha256": "0922d77c38a5ac0da59cbb0919a4603f6ec1f0d721fb4c6585d6efb92ebd968b",
+      "pause": {
+        "frames": 65,
+        "elapsedMs": 2200,
+        "bodyTimeBefore": 66376.5003000014,
+        "bodyTimeAfter": 66376.5003000014
+      },
+      "shots": [
+        {
+          "label": "03-near",
+          "image": {
+            "filename": "metal-normal-zero-03-near.png",
+            "bytes": 1263722,
+            "sha256": "a80e6c977b725bc9d0c1f6ff7f3a094e8d3bf0352f46e4aa2ca5fb56d6a802df"
+          },
+          "imageReviewed": true,
+          "settleError": null,
+          "camera": {
+            "longitude": 61.40903412862579,
+            "latitude": 55.16397139376605,
+            "zoom": 18.500000062092244,
+            "pitch": 55.5,
+            "bearing": 109.56580251900425
+          },
+          "frames": 102,
+          "meshIds": [
+            "openmaptiles_buildings:10043653890",
+            "openmaptiles_buildings:10043653920",
+            "openmaptiles_buildings:11369341190",
+            "openmaptiles_buildings:1160636710",
+            "openmaptiles_buildings:12169307510",
+            "openmaptiles_buildings:2147788680",
+            "openmaptiles_buildings:362688740",
+            "openmaptiles_buildings:521183890",
+            "openmaptiles_buildings:521183920",
+            "openmaptiles_buildings:521183930",
+            "openmaptiles_buildings:521183940",
+            "openmaptiles_buildings:521183950",
+            "openmaptiles_buildings:524957560",
+            "openmaptiles_buildings:524957570",
+            "openmaptiles_buildings:524957580",
+            "openmaptiles_buildings:524957590",
+            "openmaptiles_buildings:524957600",
+            "openmaptiles_buildings:6286451280",
+            "openmaptiles_buildings:6286451290",
+            "openmaptiles_buildings:6286459010",
+            "openmaptiles_buildings:7105980570",
+            "openmaptiles_buildings:7715854650",
+            "openmaptiles_buildings:853220170",
+            "openmaptiles_buildings:904153980"
+          ],
+          "actorCounts": {
+            "people": "0",
+            "vehicles": "0"
+          },
+          "worker": {
+            "mode": "worker_buffered",
+            "bufferedFrames": 0,
+            "inFlight": false,
+            "displayed": true,
+            "presentationSeconds": 66376.5003000014,
+            "availableUntilSeconds": 66376.7503000014,
+            "lagSeconds": 0,
+            "underflow": false,
+            "catchupMultiplier": 1,
+            "maximumCatchupMultiplier": 1.1,
+            "maximumBufferedFrames": 5,
+            "stepSeconds": 0.25,
+            "horizonSeconds": 0.25,
+            "generation": 1,
+            "sourceRevision": 1,
+            "configuredRevision": 1,
+            "displayedRevision": 1,
+            "sourcePending": false,
+            "roundTripMaxMs": 261.09999990463257,
+            "postMaxMs": 3.5999999046325684,
+            "postedMessages": 2,
+            "error": null
+          },
+          "bodyTime": 66376.5003000014,
+          "override": {
+            "metalMeshes": 6,
+            "bitumenMeshes": 4,
+            "normalDisabled": 6,
+            "shadowDisabled": 0
+          }
+        },
+        {
+          "label": "04-rotated",
+          "image": {
+            "filename": "metal-normal-zero-04-rotated.png",
+            "bytes": 1222159,
+            "sha256": "aa26a38e5718d021808dc7f1b2a3002106ca96d8aa96ca4e9f554612b9296a82"
+          },
+          "imageReviewed": true,
+          "settleError": null,
+          "camera": {
+            "longitude": 61.40903412862576,
+            "latitude": 55.16397139376605,
+            "zoom": 18.500000062092244,
+            "pitch": 55.5,
+            "bearing": 105.58058002516829
+          },
+          "frames": 84,
+          "meshIds": [
+            "openmaptiles_buildings:10043653890",
+            "openmaptiles_buildings:10043653920",
+            "openmaptiles_buildings:11369341190",
+            "openmaptiles_buildings:1160636710",
+            "openmaptiles_buildings:12169307510",
+            "openmaptiles_buildings:2147788680",
+            "openmaptiles_buildings:362688740",
+            "openmaptiles_buildings:521183890",
+            "openmaptiles_buildings:521183920",
+            "openmaptiles_buildings:521183930",
+            "openmaptiles_buildings:521183940",
+            "openmaptiles_buildings:521183950",
+            "openmaptiles_buildings:524957560",
+            "openmaptiles_buildings:524957570",
+            "openmaptiles_buildings:524957580",
+            "openmaptiles_buildings:524957590",
+            "openmaptiles_buildings:524957600",
+            "openmaptiles_buildings:6286451280",
+            "openmaptiles_buildings:6286451290",
+            "openmaptiles_buildings:6286459010",
+            "openmaptiles_buildings:7105980570",
+            "openmaptiles_buildings:7715854650",
+            "openmaptiles_buildings:853220170",
+            "openmaptiles_buildings:904153980"
+          ],
+          "actorCounts": {
+            "people": "0",
+            "vehicles": "0"
+          },
+          "worker": {
+            "mode": "worker_buffered",
+            "bufferedFrames": 0,
+            "inFlight": false,
+            "displayed": true,
+            "presentationSeconds": 66376.5003000014,
+            "availableUntilSeconds": 66376.7503000014,
+            "lagSeconds": 0,
+            "underflow": false,
+            "catchupMultiplier": 1,
+            "maximumCatchupMultiplier": 1.1,
+            "maximumBufferedFrames": 5,
+            "stepSeconds": 0.25,
+            "horizonSeconds": 0.25,
+            "generation": 1,
+            "sourceRevision": 1,
+            "configuredRevision": 1,
+            "displayedRevision": 1,
+            "sourcePending": false,
+            "roundTripMaxMs": 334.39999997615814,
+            "postMaxMs": 9.5,
+            "postedMessages": 2,
+            "error": null
+          },
+          "bodyTime": 66376.5003000014,
+          "override": {
+            "metalMeshes": 12,
+            "bitumenMeshes": 8,
+            "normalDisabled": 12,
+            "shadowDisabled": 0
+          }
+        }
+      ]
+    },
+    {
+      "variant": "metal-no-receive-shadow",
+      "errors": [],
+      "overrideMatches": 1,
+      "originalModuleSha256": "0922d77c38a5ac0da59cbb0919a4603f6ec1f0d721fb4c6585d6efb92ebd968b",
+      "pause": {
+        "frames": 72,
+        "elapsedMs": 2200,
+        "bodyTimeBefore": 66376.5003000014,
+        "bodyTimeAfter": 66376.5003000014
+      },
+      "shots": [
+        {
+          "label": "03-near",
+          "image": {
+            "filename": "metal-no-receive-shadow-03-near.png",
+            "bytes": 1348349,
+            "sha256": "29ce6f862a52c74d15d013c335d646d64c08dc317e1f1e0fe20ddd7c71181e89"
+          },
+          "imageReviewed": true,
+          "settleError": null,
+          "camera": {
+            "longitude": 61.40903412862579,
+            "latitude": 55.16397139376605,
+            "zoom": 18.500000062092244,
+            "pitch": 55.5,
+            "bearing": 109.56580251900425
+          },
+          "frames": 105,
+          "meshIds": [
+            "openmaptiles_buildings:10043653890",
+            "openmaptiles_buildings:10043653920",
+            "openmaptiles_buildings:11369341190",
+            "openmaptiles_buildings:1160636710",
+            "openmaptiles_buildings:12169307510",
+            "openmaptiles_buildings:2147788680",
+            "openmaptiles_buildings:362688740",
+            "openmaptiles_buildings:521183890",
+            "openmaptiles_buildings:521183920",
+            "openmaptiles_buildings:521183930",
+            "openmaptiles_buildings:521183940",
+            "openmaptiles_buildings:521183950",
+            "openmaptiles_buildings:524957560",
+            "openmaptiles_buildings:524957570",
+            "openmaptiles_buildings:524957580",
+            "openmaptiles_buildings:524957590",
+            "openmaptiles_buildings:524957600",
+            "openmaptiles_buildings:6286451280",
+            "openmaptiles_buildings:6286451290",
+            "openmaptiles_buildings:6286459010",
+            "openmaptiles_buildings:7105980570",
+            "openmaptiles_buildings:7715854650",
+            "openmaptiles_buildings:853220170",
+            "openmaptiles_buildings:904153980"
+          ],
+          "actorCounts": {
+            "people": "0",
+            "vehicles": "0"
+          },
+          "worker": {
+            "mode": "worker_buffered",
+            "bufferedFrames": 0,
+            "inFlight": false,
+            "displayed": true,
+            "presentationSeconds": 66376.5003000014,
+            "availableUntilSeconds": 66376.7503000014,
+            "lagSeconds": 0,
+            "underflow": false,
+            "catchupMultiplier": 1,
+            "maximumCatchupMultiplier": 1.1,
+            "maximumBufferedFrames": 5,
+            "stepSeconds": 0.25,
+            "horizonSeconds": 0.25,
+            "generation": 1,
+            "sourceRevision": 1,
+            "configuredRevision": 1,
+            "displayedRevision": 1,
+            "sourcePending": false,
+            "roundTripMaxMs": 217.89999997615814,
+            "postMaxMs": 3.5,
+            "postedMessages": 2,
+            "error": null
+          },
+          "bodyTime": 66376.5003000014,
+          "override": {
+            "metalMeshes": 6,
+            "bitumenMeshes": 4,
+            "normalDisabled": 0,
+            "shadowDisabled": 6
+          }
+        },
+        {
+          "label": "04-rotated",
+          "image": {
+            "filename": "metal-no-receive-shadow-04-rotated.png",
+            "bytes": 1291697,
+            "sha256": "66514bfd2de8290e63a9a6228c336a8ba46960c31d2f78e6092baaea2e0a292a"
+          },
+          "imageReviewed": true,
+          "settleError": null,
+          "camera": {
+            "longitude": 61.40903412862576,
+            "latitude": 55.16397139376605,
+            "zoom": 18.500000062092244,
+            "pitch": 55.5,
+            "bearing": 105.58058002516829
+          },
+          "frames": 80,
+          "meshIds": [
+            "openmaptiles_buildings:10043653890",
+            "openmaptiles_buildings:10043653920",
+            "openmaptiles_buildings:11369341190",
+            "openmaptiles_buildings:1160636710",
+            "openmaptiles_buildings:12169307510",
+            "openmaptiles_buildings:2147788680",
+            "openmaptiles_buildings:362688740",
+            "openmaptiles_buildings:521183890",
+            "openmaptiles_buildings:521183920",
+            "openmaptiles_buildings:521183930",
+            "openmaptiles_buildings:521183940",
+            "openmaptiles_buildings:521183950",
+            "openmaptiles_buildings:524957560",
+            "openmaptiles_buildings:524957570",
+            "openmaptiles_buildings:524957580",
+            "openmaptiles_buildings:524957590",
+            "openmaptiles_buildings:524957600",
+            "openmaptiles_buildings:6286451280",
+            "openmaptiles_buildings:6286451290",
+            "openmaptiles_buildings:6286459010",
+            "openmaptiles_buildings:7105980570",
+            "openmaptiles_buildings:7715854650",
+            "openmaptiles_buildings:853220170",
+            "openmaptiles_buildings:904153980"
+          ],
+          "actorCounts": {
+            "people": "0",
+            "vehicles": "0"
+          },
+          "worker": {
+            "mode": "worker_buffered",
+            "bufferedFrames": 0,
+            "inFlight": false,
+            "displayed": true,
+            "presentationSeconds": 66376.5003000014,
+            "availableUntilSeconds": 66376.7503000014,
+            "lagSeconds": 0,
+            "underflow": false,
+            "catchupMultiplier": 1,
+            "maximumCatchupMultiplier": 1.1,
+            "maximumBufferedFrames": 5,
+            "stepSeconds": 0.25,
+            "horizonSeconds": 0.25,
+            "generation": 1,
+            "sourceRevision": 1,
+            "configuredRevision": 1,
+            "displayedRevision": 1,
+            "sourcePending": false,
+            "roundTripMaxMs": 246.79999995231628,
+            "postMaxMs": 8.700000047683716,
+            "postedMessages": 2,
+            "error": null
+          },
+          "bodyTime": 66376.5003000014,
+          "override": {
+            "metalMeshes": 12,
+            "bitumenMeshes": 8,
+            "normalDisabled": 0,
+            "shadowDisabled": 12
+          }
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

@@ -1,16 +1,13 @@
 import {BufferAttribute,type Mesh,type MeshStandardMaterial} from 'three';
+import {MINERAL_FACADE_PALETTES,canonicalFacadeVariant} from '../buildingFacadePolicy';
+import {applyGameFacadeGrammar} from './gameFacadeGrammar';
 
 type RGB=readonly [number,number,number];
 type Family='panel'|'plaster'|'civic'|'neutral';
 interface Range {firstTriangle:number;triangleCount:number;canonicalId:string}
-export const GAME_FACADE_APPEARANCE_VERSION='canonical-mineral-facades-v1';
+export const GAME_FACADE_APPEARANCE_VERSION='canonical-mineral-facades-v2';
 // Linear albedo multipliers. These are authored finishes, not surveyed colours.
-const PALETTES:Record<Family,readonly RGB[]>={
-  panel:[[.82,.83,.80],[.65,.73,.78],[.88,.77,.62],[.66,.72,.66]],
-  plaster:[[.89,.80,.66],[.83,.66,.49],[.67,.74,.70],[.87,.85,.79]],
-  civic:[[.92,.86,.74],[.82,.73,.58],[.84,.85,.82],[.70,.76,.77]],
-  neutral:[[.79,.79,.72],[.84,.70,.56],[.65,.74,.78],[.70,.74,.66]],
-};
+const PALETTES=MINERAL_FACADE_PALETTES;
 // The pinned compiler's muted-facades-v1 tint is removed before the new finish.
 // This preserves its independent floor, entrance and recess shading exactly.
 const COMPILED_TINTS:readonly RGB[]=[[1,.95,.86],[.84,.91,1],[.88,1,.90],[1,.83,.73],[.94,.87,.96],[1,1,1]];
@@ -18,7 +15,7 @@ function hash(value:string){let h=2166136261;for(const char of value)h=Math.imul
 const owner=(id:unknown):id is string=>typeof id==='string'&&/^openmaptiles_buildings:[0-9]+$/.test(id);
 export function gameFacadePalette(id:string,family:Family):RGB{
   if(!owner(id)||!Object.hasOwn(PALETTES,family))throw Error('Invalid canonical facade identity');
-  return PALETTES[family][hash(`mineral-facade:${id}`)%PALETTES[family].length]!;
+  return PALETTES[family][canonicalFacadeVariant(id)]!;
 }
 
 /** Recolour only the pinned compiler's owned mineral wall batches, before first draw.
@@ -64,6 +61,7 @@ export function applyGameFacadeAppearance(mesh:Mesh):boolean{
     }
   }
   if(changed)colors.needsUpdate=true;
+  applyGameFacadeGrammar(material);
   geometry.userData.facadeAppearance={version:GAME_FACADE_APPEARANCE_VERSION,state:'applied',representation:'visual_synthesis',family:material.name,
     canonicalRanges:ranges.length,verticesChanged:changed,extraRetainedBytes:0,sourceGeometryUnchanged:true,sourceUvUnchanged:true,
     neutralTintParts:'matching_gray_balcony_parts_follow_material_finish'};

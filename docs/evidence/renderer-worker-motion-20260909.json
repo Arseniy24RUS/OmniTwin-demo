@@ -1,0 +1,349 @@
+{
+  "schema": "OmniTwinRendererMotionWorkerEvidenceV1",
+  "date": "2026-09-09",
+  "status": "worker_semantics_pass_cold_zoom_tail_gate_open",
+  "scope": "Local renderer presentation only; population, route/source identity, safety constraints and scientific state unchanged. This receipt is not publication approval.",
+  "artifacts": [
+    {
+      "filename": "worker-replay.json",
+      "sha256": "88ab80f37b617f3d4d52185eea7632c5fafd732c51e6345a82fcbe07abe93777"
+    },
+    {
+      "filename": "replay-worker.mjs",
+      "sha256": "7c206d7f801a3dd654925ca8ad6622b9403582a3a302480ae52218f3952e5059"
+    },
+    {
+      "filename": "worker-source-after-01/capture.json",
+      "sha256": "7069bd3e72a306951d4ebe7c0215b862c8127b04c81a00bf38e79b091751b64d"
+    },
+    {
+      "filename": "worker-smoke.json",
+      "sha256": "8865ec01794435ad745bc67d6c0a6b34edaa0ca58a0f6a1c9e0413c37ed14f66"
+    },
+    {
+      "filename": "worker-scene-smoke.json",
+      "sha256": "2869e0096fc5e849d08d9b28ba81c048bdc66c1efc054100fcf4757301ae62c5"
+    },
+    {
+      "filename": "user-moving-after-01/report.json",
+      "sha256": "ee165de9e1c7a2984db531bbdec438aa21fe4aeec4bcb24e94dc416234cf5543"
+    },
+    {
+      "filename": "cold-wheel-worker-01/profile.cpuprofile",
+      "sha256": "6c459b06929a4c40f835f24dfbfa6d3e96515b8de635f9b55c31f1f49427c0e0"
+    },
+    {
+      "filename": "cold-wheel-worker-01/report.json",
+      "sha256": "b86e15fe25d3a8039c6f44ee94ff5eb85e94062694e4597413eafd7fd63a518a"
+    },
+    {
+      "filename": "cold-wheel-worker-01/cpu-summary.json",
+      "sha256": "51145c3e945e4c8bf6980ef76e2564ca38cd0020233975a9cb7db9b2d6eaa9df"
+    }
+  ],
+  "architecture": {
+    "solver": "Persistent ActorColumnsBridge + LaneTraffic + verified-footprint clearance + exact source road hints inside a dedicated Worker; no main-thread solver fallback",
+    "configure": "Full initial serializable source; later patches name the exact last acknowledged base revision. Complete merged payload validates in Worker. Ordinary source refresh retains traffic state; context/seek generation resets it.",
+    "clock": "Main Scene schedules explicit messages; Worker owns no RAF/timer. Actor/signal/heading/walking/picking presentation clock consumes contiguous validated slices, independently from environment time.",
+    "stream": {
+      "stepSeconds": 0.25,
+      "horizonSeconds": 0.25,
+      "maximumReadyFrames": 5,
+      "maximumInFlightRequests": 1,
+      "maximumDisplayedFrame": 1,
+      "maximumCatchupMultiplier": 1.1,
+      "underflow": "Hold at the last contiguous valid endpoint; never extrapolate or consume accumulated stalled wall time as a jump",
+      "failure": "Explicit error/unsupported state, retain safe display, no synchronous solver fallback"
+    },
+    "output": "Each sample deep-owns copied typed columns and matching signal/probe state before transfer. DEV full probe belongs to the displayed frame; production omits it."
+  },
+  "tests": {
+    "commands": [
+      "npm test -- src/renderer/game/GameMotionWorkerCore.test.ts src/renderer/game/GameMotionClient.test.ts src/renderer/game/GameMotionStream.seams.test.ts src/renderer/game/GameMotionStream.test.ts",
+      "npm run typecheck"
+    ],
+    "passed": 35,
+    "files": 4,
+    "typecheck": "pass",
+    "runLocalTime": "18:24:53",
+    "coverage": [
+      "Synchronous bridge parity through source refresh/reset",
+      "Transfer does not detach retained bridge or mutate delivered snapshots",
+      "Stale revision/generation, invalid delta base and unknown patch field rejection",
+      "Sticky solver failure and explicit reset recovery",
+      "Displayed full DEV probe bounded to 4096 actors",
+      "Delayed/out-of-order replies, bounded queue, pause/seek/1x/16x",
+      "Touching .25/.25 intervals have zero positional seams; old .2/.25 overlap fixture exposed up to .8m seam"
+    ]
+  },
+  "actualReplay": {
+    "filename": "capture.json",
+    "sha256": "7069bd3e72a306951d4ebe7c0215b862c8127b04c81a00bf38e79b091751b64d",
+    "messages": 93,
+    "configure": 7,
+    "samples": 86,
+    "maxActors": 862,
+    "semanticDigest": "232728ab6dd839abc4db1f888ed1e06b887e06c8afb9421da1c46b2601525934",
+    "fullAndDeltaExactlyEqual": true,
+    "transferredCopiesDetached": true,
+    "retainedDeliveredFrameImmutable": true,
+    "sourceStable": true,
+    "sourceHashes": {
+      "renderer/game/GameMotionWorkerCore.ts": "53b7dc4d1e27573b073bf91057ac3c8c69fd63b2c92fb63bd7cb771a2d540b6d",
+      "renderer/game/actorColumnsBridge.ts": "a59c750cbf355690148177a880764c995d45f2c60b67b3d0d460f451e775e913",
+      "renderer/game/gameRoadWidth.ts": "0b3fdae33a0eae8efb93e76ab0b6563f548f869d82a089117b7c23c0fc761fd0",
+      "renderer/game/actorFootprintClearance.ts": "3c396e0d2ab10152b6f2061406781855378ab50e6081a8846a875bd2ae21ed38",
+      "renderer/game/laneTraffic.ts": "a76bb6b16577cdeb6324683fc406a1945295a95e23ea97898353000f9da7314f",
+      "renderer/game/junctionTraffic.ts": "bcbc2115e87f54f0316a9f5a4b239ac0d23c122c20fd3bf8b2c5e20ba8031191",
+      "renderer/game/gameActorHeading.ts": "5c8578fc50e6cd95d019a163b321d92564656eea71cffb5f7bcf9b053cbc3690",
+      "renderer/game/opposingLaneReservations.ts": "9d0456a87350508df21716865d8ac6039d3bc71cb817c55602f45cd3ca6e43d4",
+      "renderer/game/gameMotionProtocol.ts": "a327d388d4e432f5b91bfd7cb65d28a51453e9553a72c497c72442ff48769c63"
+    },
+    "deltaWorkerCpu": {
+      "totalMs": {
+        "count": 86,
+        "total": 2034.142300000001,
+        "median": 26.82479999999987,
+        "p95": 59.3741,
+        "max": 70.78690000000006
+      },
+      "sampleMs": {
+        "count": 86,
+        "total": 1775.9568999999983,
+        "median": 23.160699999999906,
+        "p95": 53.05400000000009,
+        "max": 64.43679999999995
+      },
+      "copyMs": {
+        "count": 86,
+        "total": 257.45950000000164,
+        "median": 3.6789999999996326,
+        "p95": 6.757499999999709,
+        "max": 8.135399999999208
+      },
+      "fullProbeMs": {
+        "count": 86,
+        "total": 173.13609999999778,
+        "median": 2.5014000000001033,
+        "p95": 4.594900000000052,
+        "max": 5.230500000000575
+      },
+      "fullProbeJsonBytes": {
+        "count": 86,
+        "total": 30460553,
+        "median": 607358,
+        "p95": 663516,
+        "max": 663558
+      }
+    },
+    "fullWorkerCpu": {
+      "totalMs": {
+        "count": 86,
+        "total": 2074.9561999999974,
+        "median": 26.74649999999997,
+        "p95": 60.64990000000034,
+        "max": 79.63049999999976
+      },
+      "sampleMs": {
+        "count": 86,
+        "total": 1815.299199999995,
+        "median": 22.922199999999975,
+        "p95": 53.86620000000039,
+        "max": 72.20339999999987
+      },
+      "copyMs": {
+        "count": 86,
+        "total": 258.87949999999995,
+        "median": 3.580500000000029,
+        "p95": 7.187399999999798,
+        "max": 7.86239999999998
+      },
+      "fullProbeMs": {
+        "count": 86,
+        "total": 175.3937000000003,
+        "median": 2.410200000000259,
+        "p95": 4.702500000000327,
+        "max": 5.602100000000064
+      },
+      "fullProbeJsonBytes": {
+        "count": 86,
+        "total": 30460553,
+        "median": 607358,
+        "p95": 663516,
+        "max": 663558
+      }
+    },
+    "fullSourceCloneCpuMs": {
+      "count": 7,
+      "total": 152.3999000000004,
+      "median": 17.953000000000088,
+      "p95": 52.121000000000095,
+      "max": 52.121000000000095
+    },
+    "deltaSourceCloneCpuMs": {
+      "count": 7,
+      "total": 93.49339999999967,
+      "median": 13.39409999999998,
+      "p95": 26.071500000000015,
+      "max": 26.071500000000015
+    },
+    "meaning": "Node CPU-only replay with two sequential solver instances and real MapLibre metric implementation. Clone timing is not browser postMessage timing; no GPU or FPS claim."
+  },
+  "memory": {
+    "units": "bytes",
+    "encodedSourceUtf8Max": 5544416,
+    "sourceFingerprintUtf16Max": 11040570,
+    "indexedClearanceTypedMax": 251216,
+    "outgoingColumnsTypedMax": 36204,
+    "fullDevProbeEncodedUtf8Max": 663558,
+    "signalsEncodedUtf8Max": 148550,
+    "defaultProbeEncodedUtf8Max": 102807,
+    "fiveReadyKnownEncodedPlusTypedBytes": 4755595,
+    "fiveReadyPlusDisplayedKnownEncodedPlusTypedBytes": 5706714,
+    "limits": {
+      "sourceValidationBytes": 33554432,
+      "sourceValues": 2000000,
+      "actors": 4096,
+      "fullDevProbeEncodedUtf8BytesPerFrame": 16777216,
+      "theoreticalFiveReadyDevProbeEncodedBytes": 83886080,
+      "theoreticalFiveReadyPlusDisplayedDevProbeEncodedBytes": 100663296
+    },
+    "limitations": [
+      "Encoded JSON bytes and typed-buffer bytes are separate measurements, not exact JS heap sizes",
+      "Queue estimate sums per-field maxima and excludes object/array/string overhead and the Worker in-flight copy",
+      "Worker retains one validated source plus fingerprint/guard-key strings and solver indexes; source byte limit does not bound total heap to 32MiB",
+      "DEV 16MiB probe check happens after JSON encoding; it is an output payload ceiling, not a hard transient heap ceiling",
+      "Node peak heap/RSS includes both replay solvers and recorded inputs; raw report retained for context, not used as browser memory budget"
+    ]
+  },
+  "actualBrowser": {
+    "nativeWorkerStartup": "PASS: module/MapLibre import, configure, samples and stale rejection; 0 errors",
+    "sceneSmoke": "PASS: real scene reached 975 source actors, ready signal props, 0 errors; old pre-delta sender postMax23.8ms, not FPS evidence",
+    "unwrappedAfterDelta": {
+      "sourceStable": true,
+      "postMaxMs": 19.199999928474426,
+      "finalLagSeconds": 0.17919999703008216,
+      "windows": [
+        {
+          "name": "cold-pan-arc",
+          "intervals": {
+            "count": 878,
+            "p50": 8.300000071525574,
+            "p95": 13.399999976158142,
+            "max": 214.10000002384186,
+            "longFrames": {
+              "over50": 4,
+              "over100": 2,
+              "over250": 0
+            }
+          },
+          "maximumObservedNoRenderMs": 214.10000002384186,
+          "mapRenderFrames": 879
+        },
+        {
+          "name": "warm-return",
+          "intervals": {
+            "count": 903,
+            "p50": 8.399999976158142,
+            "p95": 10.700000047683716,
+            "max": 50.199999928474426,
+            "longFrames": {
+              "over50": 1,
+              "over100": 0,
+              "over250": 0
+            }
+          },
+          "maximumObservedNoRenderMs": 50.199999928474426,
+          "mapRenderFrames": 904
+        },
+        {
+          "name": "wheel-to18.5",
+          "intervals": {
+            "count": 1099,
+            "p50": 8.300000071525574,
+            "p95": 24,
+            "max": 647.1999999284744,
+            "longFrames": {
+              "over50": 13,
+              "over100": 5,
+              "over250": 2
+            }
+          },
+          "maximumObservedNoRenderMs": 647.1999999284744,
+          "mapRenderFrames": 1100
+        },
+        {
+          "name": "near-rotate",
+          "intervals": {
+            "count": 897,
+            "p50": 8.300000071525574,
+            "p95": 11.700000047683716,
+            "max": 45.200000047683716,
+            "longFrames": {
+              "over50": 0,
+              "over100": 0,
+              "over250": 0
+            }
+          },
+          "maximumObservedNoRenderMs": 45.200000047683716,
+          "mapRenderFrames": 898
+        },
+        {
+          "name": "near-pan-return",
+          "intervals": {
+            "count": 949,
+            "p50": 8.299999952316284,
+            "p95": 9.799999952316284,
+            "max": 26.899999976158142,
+            "longFrames": {
+              "over50": 0,
+              "over100": 0,
+              "over250": 0
+            }
+          },
+          "maximumObservedNoRenderMs": 26.899999976158142,
+          "mapRenderFrames": 950
+        },
+        {
+          "name": "wheel-back15.703",
+          "intervals": {
+            "count": 1352,
+            "p50": 8.299999952316284,
+            "p95": 15.799999952316284,
+            "max": 83.20000004768372,
+            "longFrames": {
+              "over50": 1,
+              "over100": 0,
+              "over250": 0
+            }
+          },
+          "maximumObservedNoRenderMs": 83.20000004768372,
+          "mapRenderFrames": 1353
+        },
+        {
+          "name": "paused-settled",
+          "intervals": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "max": null,
+            "longFrames": {
+              "over50": 0,
+              "over100": 0,
+              "over250": 0
+            }
+          },
+          "maximumObservedNoRenderMs": 2212.7000000476837,
+          "mapRenderFrames": 0
+        }
+      ],
+      "meaning": "Independent unrecorded moving-camera run; completed MapLibre callbacks are not monitor-presented FPS. Cold zoom still has 647.2ms maximum gap and two frames above250ms; sender configure maximum19.2ms also misses the intended <10ms main-thread bound."
+    },
+    "instrumentedSourceCapture": "Capture postMax89.4ms is contaminated by the deliberate postMessage input-copy/JSON wrapper and must not be presented as normal sender performance."
+  },
+  "remaining": [
+    "18-second actual input capture reached862 actors, below requested900+ and below975-actor earlier smoke; no citywide worst-case claim",
+    "Cold wheel shader first-use and provider preparation tails remain open for targeted follow-up",
+    "No new catalogue visual-quality approval or public activation is implied"
+  ]
+}

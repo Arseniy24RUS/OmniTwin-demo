@@ -97,7 +97,7 @@ const smoothstep = (a: number, b: number, value: number) => { const t = THREE.Ma
 /** The glow remains readable until the physical body actually occupies 8–14 CSS px. */
 export function gameActorBodyMix(projectedHeight: number): number {
   if (!Number.isFinite(projectedHeight) || projectedHeight < 0) throw new RangeError('Actor screen height must be finite and non-negative');
-  return smoothstep(8, 14, projectedHeight);
+  return smoothstep(4, 8, projectedHeight);
 }
 /** Shared CPU/GPU frame addressing; idle and walk never cross their baked clip boundaries. */
 export function gameActorPose(clip: Clip, seconds: number, phase: number): readonly [number, number, number] {
@@ -161,7 +161,7 @@ void main() {
   vec3 origin = actorOrigin();
   worldNormal = normalize(actorRotation() * n);
   actorColor = color * (0.88 + 0.24 * actorDetails.y);
-  bodyMix = smoothstep(8.0, 14.0, screenPixels(origin, 1.8));
+  bodyMix = smoothstep(4.0, 8.0, screenPixels(origin, 1.8));
   // Cars retain their volume at smaller scale; they do not inherit person glow thresholds.
   #ifdef VEHICLE
     bodyMix = 1.0;
@@ -192,7 +192,7 @@ ${commonVertex}
 uniform float vehicle;
 void main() {
   vec3 origin = actorOrigin();
-  bodyMix = smoothstep(8.0, 14.0, screenPixels(origin, 1.8));
+  bodyMix = smoothstep(4.0, 8.0, screenPixels(origin, 1.8));
   vec3 offset = vehicle > 0.5 ? actorRotation() * vec3(position.x * 2.0,0.0,-position.y * 5.0)
     : cameraRight * position.x * 1.2255 + vec3(0.0,(position.y + 0.5) * 1.8,0.0);
   #ifdef CONTACT_SHADOW
@@ -482,7 +482,7 @@ export class GameActors {
     const ranked = [...this.actors].sort((a, b) => Number(b.selected) - Number(a.selected) || b.pixels - a.pixels || a.seed - b.seed);
     let people = 0, vehicles = 0;
     for (const actor of ranked) {
-      if (actor.pixels < (actor.kind === 'vehicle' ? 3 : 8) && !actor.selected) continue;
+      if (actor.pixels < (actor.kind === 'vehicle' ? 3 : 6) && !actor.selected) continue;
       if (actor.kind === 'person' && people < caps.nearPeople) { actor.near = true; people++; }
       if (actor.kind === 'vehicle' && vehicles < caps.nearVehicles) { actor.near = true; vehicles++; }
     }

@@ -6,6 +6,7 @@ import type {
   RendererBuildingSelection,
 } from './types';
 import { VERIFIED_CITY_BUILDING_PROVIDER_ID } from './verifiedCityBuildingTypes';
+import {CANONICAL_FACADE_VARIANT_EXPRESSION} from './buildingFacadePolicy';
 
 type StyleExpression = readonly unknown[];
 
@@ -259,7 +260,15 @@ const BUILDING_CLASS_EXPRESSION: StyleExpression = [
   '',
 ];
 
-/** Pre-tinted atlas selection because fill-extrusion-pattern replaces color. */
+const facadeVariants=(...patterns:readonly string[]):StyleExpression=>[
+  'match',CANONICAL_FACADE_VARIANT_EXPRESSION,0,`omnitwin:facade-${patterns[0]}`,1,`omnitwin:facade-${patterns[1]}`,
+  2,`omnitwin:facade-${patterns[2]}`,`omnitwin:facade-${patterns[3]}`,
+];
+const RESIDENTIAL_FACADE_VARIANTS:StyleExpression=['case',['>=',BUILDING_HEIGHT_EXPRESSION,15],
+  facadeVariants('concrete','plaster','civic','concrete'),facadeVariants('plaster','ochre','sandstone','civic')];
+/** Pre-tinted atlas selection because fill-extrusion-pattern replaces color.
+ * Explicit source materials win. Unobserved finishes vary only as deterministic
+ * visual synthesis; IDs, source tags, heights and footprints are never modified. */
 export const BUILDING_FACADE_PATTERN_EXPRESSION: StyleExpression = Object.freeze([
   'match',
   FACADE_MATERIAL_EXPRESSION,
@@ -274,15 +283,15 @@ export const BUILDING_FACADE_PATTERN_EXPRESSION: StyleExpression = Object.freeze
     BUILDING_CLASS_EXPRESSION,
     ['industrial', 'warehouse', 'manufacture'], 'omnitwin:facade-industrial',
     ['school', 'university', 'college', 'kindergarten', 'hospital', 'clinic', 'civic', 'public', 'government'], 'omnitwin:facade-civic',
-    ['commercial', 'retail', 'office'], 'omnitwin:facade-slate',
+    ['commercial', 'retail', 'office'], facadeVariants('plaster','slate','civic','sandstone'),
     ['house', 'detached', 'semidetached_house'], 'omnitwin:facade-ochre',
-    ['apartments', 'residential'], 'omnitwin:facade-plaster',
+    ['apartments', 'residential'], RESIDENTIAL_FACADE_VARIANTS,
     [
       'step',
       BUILDING_HEIGHT_EXPRESSION,
-      'omnitwin:facade-sandstone',
-      12, 'omnitwin:facade-brick',
-      30, 'omnitwin:facade-concrete',
+      facadeVariants('sandstone','plaster','ochre','brick'),
+      12, facadeVariants('plaster','brick','civic','sandstone'),
+      30, facadeVariants('concrete','slate','plaster','civic'),
       80, 'omnitwin:facade-slate',
     ],
   ],

@@ -2,7 +2,92 @@
 
 ## Courtyard graphics overhaul — owner approved 2026-09-09
 
-### Current integration acceptance — 2026-09-09
+### Current release instruction — 2026-09-09
+
+The owner explicitly requested publishing the current working version to GitHub
+and GitHub Pages now, deferring remaining individual bugs. This supersedes the
+publication hold below; it does not constitute complete artistic acceptance.
+Freeze runtime changes, validate the production build, publish the current
+immutable 13f118 catalog and matching activation, preserve the previous release
+for rollback, then verify the deployed page. Keep population/chat pins unchanged
+and do not repeat the two already completed paid chat checks. Record remaining
+surface-budget fallbacks and deferred extended regressions for the next pass.
+The current moving-camera replay removes the earlier 0.6–1 s frame stalls;
+its detailed qualifications remain in the evidence. For this large upload,
+allow an explicit bounded leaf concurrency of eight (default two); manifests
+remain sequential after verified leaves. Test the bound, ordering and rejection
+of invalid concurrency before uploading. No new application dependencies.
+
+### Reopened: actual camera movement and visual consistency — 2026-09-09
+
+The owner rejected the current local experience: approximately 5 FPS while
+panning, sequential facade appearance and uniform building materials. Publication
+is held. Commit 08da267 is local only; no Pages push was performed. Earlier
+stationary-camera throughput and root artistic acceptance are insufficient for
+this gate and are superseded by this rejection. Existing cloud assets and the
+compatible chat revision remain unchanged.
+
+Reproduce the current z15.703/pitch55.5/bearing109.565 camera in continuous drag,
+including the actual narrow 494 CSS-pixel canvas and high-DPI display. Capture
+frame-time tails and CPU stacks during movement, cold entry and revisiting tiles.
+The initial profile identifies intersection constraint work and synchronous
+surface reconstruction, not GPU rasterization alone. Work packages: preserve
+traffic policies while eliminating repeated constraint work; retain surfaces
+during gestures and rebuild only relevant data; budget LOD by useful screen
+detail; make base/detail architectural materials consistent and varied; verify
+physical display resolution. Each fix needs a reproducing test or trace, followed
+by the same moving-camera workload and actual image inspection. No publication
+until these gates pass. Canonical identities, turn/queue/signal safety, profile
+links and pause behavior remain required.
+
+
+The dense rejected-camera replay (958 actors / 90 paths) reduced the original
+solver p95 from 198.60 to 75.62 ms with identical positions, visibility, signals
+and diagnostics. That still exceeds a render-frame budget. The complete retained
+traffic/bridge/footprint calculation now lives in one persistent Worker, with a
+bounded FIFO protocol, coalesced source deltas and no main-thread solver fallback.
+Five touching .25-second windows retain canonical membership and the matching
+signal state. Actual entry/turn fixtures exposed up to .8 m seams with overlapping
+.2/.25 windows; touching windows remove those witnessed seams. The shared actor
+clock holds at missing coverage, then recovers ordinary latency with an explicit
+maximum 1.1 presentation pacing multiplier. It never extrapolates through a
+crossing. World/population clocks are unchanged. Sustained overload, especially
+at accelerated time, is reported as visual lag. A paused source update retains
+the current participants until playback resumes, with an explicit UI notice;
+the worker never rewinds its retained queues to refresh a paused viewport.
+
+The runtime-only actual narrow/high-DPI camera diagnostic improved warm panning
+to 112.50 MapLibre render events/s (p95 10.7 ms), but cold zoom still contained
+a 647 ms frame. It is explicitly not an acceptance pass. The subsequent CPU
+profile identified first-use colour/depth shader queries and repeated provider
+movement decoding. Tile replacement now waits for colour, scratch-target and
+PCF depth programs, with two pending preparations, cancellation and retained
+ownership. Actual WebGL startup and context restoration passed; combined moving
+camera performance is still pending. Provider caches retain exact decoded and
+schedule results under explicit bounds; source-output parity is required.
+Evidence: `docs/evidence/moving-runtime-diagnostic-20260909.json` and
+`docs/evidence/renderer-worker-motion-20260909.json`.
+
+The new full-city compiler preserves 82,490 canonical buildings and source
+geometry fields, while reducing delivered geometry from 13.376 to 7.889 GB.
+Grouped apartment/stairwell bays, shop glazing, roof equipment and cheaper
+window frames replace the previous repetitive detailing. Catalog
+13f118a1b6e0af680e836979be0bef0f6a69bf6615a3ea3761b3e660bcc2b221 declares the
+audited 2 m coarse detail error directly, with a separate immutable metadata
+transformation and complete hash-verified closure. Three actual static controls
+were inspected; their cold-paused empty actor inventory is a documented defect,
+not an actor/FPS acceptance result. Empty and partial cold-paused inventories
+now refresh at the same frozen instant without advancing retained queues.
+Evidence: `docs/evidence/facade-full-catalog-20260909.json`.
+
+Seven-CSS-pixel pedestrians now receive their existing baked model, with the
+distant glow fading over 4–8 CSS pixels and unchanged instance caps. A projected
+camera/picking regression failed first and passes after the change. Actual
+close-view appearance and its frame cost remain part of the combined run.
+A temporary segmented tree-crown candidate was visually rejected and was not
+integrated. Earlier published immutable resources remain intact.
+
+### Historical integration acceptance before owner rejection — 2026-09-09
 
 The full fine-detail catalog is active locally. Two additional cache races now
 have failing-first tests: a native-bank commit rebases the next candidate within

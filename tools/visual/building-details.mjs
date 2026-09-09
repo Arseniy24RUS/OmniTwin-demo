@@ -7,7 +7,38 @@ export const FACADE_GRAMMAR=Object.freeze({
   industrial:{bayM:5.6,frameM:.055,plinthM:.8,balconies:false,windowM:[1.8,2.5,1.1],recessM:.14},civic:{bayM:3.6,frameM:.14,plinthM:.85,balconies:false,windowM:[1.5,1.85,1.75],recessM:.24},
   timber:{bayM:3.2,frameM:.08,plinthM:.45,balconies:false,windowM:[.9,1.15,1.25],recessM:.12},neutral:{bayM:3.8,frameM:.075,plinthM:.6,balconies:false,windowM:[1.15,1.4,1.4],recessM:.16},
 });
-export const BUILDING_DETAIL_LIMITS=Object.freeze({deepWindows:256,bands:64,roofNear:24,roofFar:8,roofCandidates:512,roofTrianglesNear:2400,roofTrianglesFar:240});
+export const BUILDING_DETAIL_LIMITS=Object.freeze({deepWindows:48,bands:64,roofNear:24,roofFar:8,roofCandidates:512,roofTrianglesNear:2400,roofTrianglesFar:240});
+
+const BAY_PATTERNS={
+  panel:{widths:[1.3,2.1,1.3,.78,1.8,1.3],weights:[1,1.12,1,.66,1.12,1],stair:3},
+  brick:{widths:[1.2,1.55,1.2,1.05],weights:[1,1.08,1,.88],stair:-1},
+  plaster:{widths:[1.4,1.95,1.4,.82,1.7],weights:[1,1.14,1,.7,1.08],stair:3},
+  glass:{widths:[2.1,2.3,2.1],weights:[1,1,1],stair:-1},
+  industrial:{widths:[3,3,1.4],weights:[1.1,1.1,.8],stair:-1},
+  civic:{widths:[1.8,1.8,1.3,1.8,1.8],weights:[1,1,.84,1,1],stair:-1},
+  timber:{widths:[1,1.25,1],weights:[1,1.12,1],stair:-1},
+  neutral:{widths:[1.2,1.75,1.2],weights:[1,1.12,1],stair:-1},
+};
+export function facadeLayoutProfile(id,family){
+  const pattern=BAY_PATTERNS[family],variant=stableHash(`facade-layout:${id}`)%3;
+  return{version:4,representation:'visual_synthesis',variant,pattern:pattern.widths,
+    bayM:FACADE_GRAMMAR[family].bayM+[0,.28,-.18][variant],weights:pattern.weights,stair:pattern.stair};
+}
+/** Nonuniform room/stair bays fill the exact source edge without extending it. */
+export function facadeEdgeBays(profile,length){
+  const count=Math.max(1,Math.ceil(length/profile.bayM)),offset=profile.variant,weights=Array.from({length:count},(_,i)=>profile.weights[(i+offset)%profile.weights.length]),sum=weights.reduce((a,b)=>a+b,0);
+  let cursor=0;return weights.map((weight,i)=>{const start=cursor;cursor+=weight/sum;const index=(i+offset)%profile.pattern.length;
+    return{start,end:i===count-1?1:cursor,widthM:profile.pattern[index],stair:count>=5&&index===profile.stair,index};});
+}
+
+/** Three exposed faces, with no hidden bottom/end caps along continuous roofs. */
+export function coarseParapet(out,a,b,height){
+  const length=Math.hypot(b[0]-a[0],b[1]-a[1]),normal=[(b[1]-a[1])/length,-(b[0]-a[0])/length];
+  const p=(q,y,offset)=>[q[0]+normal[0]*offset,y,-q[1]-normal[1]*offset];
+  quad(out,[p(a,height,-.015),p(b,height,-.015),p(b,height+.28,-.015),p(a,height+.28,-.015)],.82);
+  quad(out,[p(a,height+.28,-.015),p(b,height+.28,-.015),p(b,height+.28,-.20),p(a,height+.28,-.20)],1);
+  quad(out,[p(a,height+.28,-.20),p(b,height+.28,-.20),p(b,height,-.20),p(a,height,-.20)],.65);
+}
 
 /** Physical reveal behind a shallow projecting window surround. The glass is
  * recessed relative to the frame while remaining ahead of the source wall. */
@@ -48,7 +79,8 @@ export function roofFixtures(id,polygons,height,{family='neutral',lod=0}={}) {
   const out=mesh(`${id}:roofFixtures`,'metal',id),placements=[],candidates=[],L=BUILDING_DETAIL_LIMITS;
   const large=family==='industrial',envelopeW=large?5.2:3.8,envelopeD=large?3.4:2.8,radius=Math.hypot(envelopeW,envelopeD)/2;
   const area=polygons.reduce((sum,rings)=>sum+Math.max(0,Math.abs(signedArea(rings[0]))-rings.slice(1).reduce((n,r)=>n+Math.abs(signedArea(r)),0)),0);
-  const target=Math.min(L.roofNear,Math.max(1,Math.ceil(area/420))),phase=stableHash(`rooftop:${id}`)%127;
+  const areaPerGroupM2={panel:180,plaster:240,civic:280,industrial:420,neutral:320,brick:240,glass:280,timber:320}[family]??320;
+  const target=Math.min(L.roofNear,Math.max(1,Math.ceil(area/areaPerGroupM2))),phase=stableHash(`rooftop:${id}`)%127;
   let attempts=0;
   const radical=(n,base)=>{let value=0,p=1/base;while(n){value+=(n%base)*p;n=Math.floor(n/base);p/=base;}return value;};
   for(const rings of polygons){
@@ -73,7 +105,13 @@ export function roofFixtures(id,polygons,height,{family='neutral',lod=0}={}) {
   const kinds=['air_handler','access_headhouse','vent_cluster','duct_bank'];
   for(const [i,[x,y]]of selected.slice(0,lod?L.roofFar:L.roofNear).entries()){
     const variant=(stableHash(`roof-kind:${id}`)+i)%4,kind=kinds[variant],w=large?4.4:variant===1?3:2.8,d=large?2.6:variant===1?2.1:1.8,h=variant===1?1.65:variant===2?1.3:.85;
-    if(lod){box(x,y,w,d,height+.035,height+h);box(x,y,w+.16,d+.16,height+h,height+h+.10);}
+    if(lod){
+      box(x,y,w,d,height+.035,height+h);
+      quad(out,[[x-w/2-.08,height+h+.10,-y+d/2+.08],[x+w/2+.08,height+h+.10,-y+d/2+.08],[x+w/2+.08,height+h+.10,-y-d/2-.08],[x-w/2-.08,height+h+.10,-y-d/2-.08]],.86);
+      if(variant===0){fan(x-w*.24,y,height+h+.105,.42);fan(x+w*.24,y,height+h+.105,.42);}
+      else if(variant===1)quad(out,[[x-.43,height+.15,-y+d/2+.005],[x+.43,height+.15,-y+d/2+.005],[x+.43,height+1.5,-y+d/2+.005],[x-.43,height+1.5,-y+d/2+.005]],.42);
+      else for(let bar=0;bar<3;bar++){const z=height+.30+bar*.13;quad(out,[[x-w*.35,z,-y+d/2+.005],[x+w*.35,z,-y+d/2+.005],[x+w*.35,z+.035,-y+d/2+.005],[x-w*.35,z+.035,-y+d/2+.005]],.45);}
+    }
     else{
       box(x,y,w+.3,d+.3,height+.025,height+.15);
       if(variant===2){for(const dx of [-.65,.65]){box(x+dx,y,.55,.7,height+.15,height+h);box(x+dx,y,.8,.95,height+h,height+h+.1);}}
@@ -85,5 +123,6 @@ export function roofFixtures(id,polygons,height,{family='neutral',lod=0}={}) {
     placements.push({center:[x,y],corners:corners(x,y,w,d),envelopeCorners:corners(x,y,envelopeW,envelopeD),topM:height+h+.11,kind,representation:'visual_synthesis'});
   }
   if(out.indices.length/3>(lod?L.roofTrianglesFar:L.roofTrianglesNear))throw Error('Roof detail triangle budget exceeded');
-  return {mesh:out,placements};
+  return {mesh:out,placements,policy:{version:2,representation:'visual_synthesis',areaPerGroupM2,sourceRoofAreaM2:area,
+    maximumNear:L.roofNear,maximumFar:L.roofFar,minimumSeparationM:8,footprintEdgeClearanceM:1.5}};
 }

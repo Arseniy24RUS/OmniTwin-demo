@@ -62,14 +62,17 @@ export class GameVegetation {
     } catch { /* Preserve the last valid coordinate transform along with the last valid source state. */ }
   }
 
-  update(features: readonly GameVegetationFeature[], options: GameVegetationOptions): void {
+  applyPrepared(result:ReturnType<typeof prepareGameVegetation>,options:GameVegetationOptions):void{this.update([],options,result);}
+  retainWhilePreparing(origin:GameOrigin):void{if(this.disposed)return;this.telemetry.state='loading_retained';this.retainAtOrigin(origin);}
+  retainFailure(message:string,origin:GameOrigin):void{if(this.disposed)return;this.telemetry.state='error_retained';this.telemetry.lastError=message.slice(0,180);this.retainAtOrigin(origin);}
+  update(features: readonly GameVegetationFeature[], options: GameVegetationOptions, preparedResult?:ReturnType<typeof prepareGameVegetation>): void {
     if (this.disposed) return;
     if (options.loading) { this.telemetry.state = 'loading_retained'; this.retainAtOrigin(options.origin); return; }
     if (!options.buildings || options.buildings.coverage !== 'complete_viewport' || options.buildings.invalidBuildings || options.buildings.omittedBuildings) {
       this.telemetry.state = 'unverified_retained'; this.retainAtOrigin(options.origin); return;
     }
     try {
-      const prepared = prepareGameVegetation(features, options);
+      const prepared = preparedResult??prepareGameVegetation(features, options);
       const signature = JSON.stringify(prepared.placements.map(p => [p.id, p.x, p.y, p.z, p.radius, p.height, p.rotation, p.color]));
       Object.assign(this.telemetry, prepared.diagnostics);
       this.placementValues = prepared.placements;

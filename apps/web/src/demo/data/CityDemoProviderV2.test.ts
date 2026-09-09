@@ -8,6 +8,7 @@ import { DATASET_ID, decodePersonShard, recordAt, encodePersonShard, encodeHouse
 import { encodeTargetShard, SPATIAL_NONE, presenceFor, dailyMovement } from '../../../../../shared/demo-population/spatial.mjs';
 import { decodeMovementCellContext, encodeMovementPage } from '../../../../../shared/demo-population/movement-index.mjs';
 import * as movementCodec from '../../../../../shared/demo-population/movement-index.mjs';
+import { MovementPresenceCache } from './MovementPresenceCache';
 import type { DemoAsset, DemoContextV1, DemoLegacyExport, DemoScenarioId, DemoSnapshot } from '../types';
 
 async function fixture() {
@@ -248,6 +249,29 @@ describe('compact city-scale provider', () => {
       await provider.prepareViewport({...context,presentationMinutes:context.presentationMinutes+1.5},undefined,viewport);
       expect(decode).toHaveBeenCalledTimes(2);expect(provider.getPresence('demo2-p-0000000',context.presentationMinutes)).toEqual(presence);
     }finally{decode.mockRestore();}
+  });
+  it('reuses decoded canonical movement rows through repeated viewport requests without changing routes or passengers',async()=>{
+    const {provider,context,viewport}=await movementFixture(),at=vi.spyOn(movementCodec,'movementContextAt');
+    try{
+      await provider.prepareViewport(context,undefined,viewport);
+      const before=provider.getVisibleCandidates('baseline',2026,5000,{longitude:61.402,latitude:55.16,radiusMeters:2500,minutes:context.presentationMinutes}).map(p=>({profile:p,presence:provider.getPresence(p.id,context.presentationMinutes)}));
+      const decoded=at.mock.calls.length;
+      for(let i=0;i<3;i++)await provider.prepareViewport(context,undefined,{...viewport,revision:`wheel-${i}`});
+      expect(at.mock.calls.length,'warm camera changes must not reconstruct verified person/target rows').toBe(decoded);
+      const after=provider.getVisibleCandidates('baseline',2026,5000,{longitude:61.402,latitude:55.16,radiusMeters:2500,minutes:context.presentationMinutes}).map(p=>({profile:p,presence:provider.getPresence(p.id,context.presentationMinutes)}));
+      expect(after).toEqual(before);
+    }finally{at.mockRestore();}
+  });
+  it('reuses an exact schedule window but recomputes corridor membership for a changed viewport',async()=>{
+    const {provider,context,viewport}=await movementFixture(),presence=vi.spyOn(MovementPresenceCache.prototype,'presence');
+    try{
+      await provider.prepareViewport(context,undefined,viewport);expect(provider.movementCoverage.retainedCandidates).toBeGreaterThan(0);presence.mockClear();
+      await provider.prepareViewport(context,undefined,{...viewport,bbox:[61.399,55.1605,61.405,55.161],revision:'outside-road'});
+      expect(provider.movementCoverage.retainedCandidates).toBe(0);
+      expect(presence,'unchanged immutable schedule must not run again for a camera-only request').not.toHaveBeenCalled();
+      await provider.prepareViewport({...context,presentationMinutes:context.presentationMinutes+1.5},undefined,viewport);
+      expect(presence).toHaveBeenCalled();
+    }finally{presence.mockRestore();}
   });
   it('evicts decoded pages under its byte budget and revalidates them on the next use',async()=>{
     const {provider,context,viewport,movement}=await movementFixture();

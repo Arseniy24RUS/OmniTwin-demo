@@ -1,0 +1,517 @@
+{
+  "schema": "OmniTwinRoofNormalFilterV3Evidence",
+  "date": "2026-09-09",
+  "verdict": "targeted_roof_alias_reduction_verified",
+  "overallArtPass": false,
+  "performanceClaim": false,
+  "startedAt": "2026-09-09T16:20:34.752Z",
+  "endedAt": "2026-09-09T16:21:00.075Z",
+  "sourceBefore": {
+    "source": "49edc39630e6145a011490a78003475b44ea924d7ca2213bf077501661754237",
+    "sourceFiles": 198,
+    "sourceBytes": 2215820,
+    "visualManifest": "1aa147a06516bd9a5926d67bdcadcd2cba08f3b80da732ef18c282d6f039ce47",
+    "catalog": "13f118a1b6e0af680e836979be0bef0f6a69bf6615a3ea3761b3e660bcc2b221"
+  },
+  "sourceAfter": {
+    "source": "49edc39630e6145a011490a78003475b44ea924d7ca2213bf077501661754237",
+    "sourceFiles": 198,
+    "sourceBytes": 2215820,
+    "visualManifest": "1aa147a06516bd9a5926d67bdcadcd2cba08f3b80da732ef18c282d6f039ce47",
+    "catalog": "13f118a1b6e0af680e836979be0bef0f6a69bf6615a3ea3761b3e660bcc2b221"
+  },
+  "sourceStable": true,
+  "sourceChange": {
+    "files": [
+      "apps/web/src/renderer/game/gameRoofMaterial.ts",
+      "apps/web/src/renderer/game/gameRoofMaterial.test.ts"
+    ],
+    "version": "metric-roof-filter-v3",
+    "sourceNormalSha256": "e98b839ae681ba929eb80f07348c70d0731b48239abe69268effab18420cd271",
+    "measuredCyclesPerURepeat": 15,
+    "authoredRepeatMeters": 3,
+    "ridgePitchMeters": 0.2,
+    "fadePixelsPerRidge": [
+      8,
+      2
+    ],
+    "unresolvedWeight": 0,
+    "nearWeight": 0.298,
+    "unchanged": [
+      "source UV and maps",
+      "geometry",
+      "PCF shadows",
+      "roof fixtures",
+      "clock",
+      "draw passes"
+    ]
+  },
+  "validation": {
+    "focusedTests": 8,
+    "reproducedBeforeFix": [
+      "At0.10m/pixel old normalWeight0.155407539 remained instead of zero.",
+      "Shader lacked frequency-aware transformed normal-U footprint."
+    ],
+    "typecheck": "npm run typecheck --workspace apps/web passed after shared surface integration completed.",
+    "commands": [
+      "npm exec --workspace apps/web -- vitest run src/renderer/game/gameRoofMaterial.test.ts --maxWorkers=1",
+      "npm run typecheck --workspace apps/web"
+    ]
+  },
+  "method": "Two fresh isolated Chrome contexts. Original saved v2 roof source served through a Temp response override against the same current Layer, versus current v3. Exact near/rotated cameras from combined01 and fixed paused actor/world time. Waited for loaded actors, all shaders/environment and surface Worker, then stable render count. No timed GPU/FPS claim.",
+  "rawReport": {
+    "artifact": "roof-normal-filter-v3-03/report.json",
+    "bytes": 288651,
+    "sha256": "0d832abb1711ddafce6c1a8c50a98683c631c3301fea208ccde352333dbeb688"
+  },
+  "pixelComparison": {
+    "method": "Original PNG RGB arithmetic mean in one fixed foreground roof rectangle; remove least-squares luminance plane for contrast measure. No image resampling or edited images produced. Comparison is local roof evidence, not a perceptual-quality score.",
+    "rows": [
+      {
+        "variant": "original-roof-v2",
+        "pose": "03-near",
+        "roiPixels": [
+          730,
+          1270,
+          900,
+          1330
+        ],
+        "mean8bitLuma": 95.36343137254902,
+        "planeDetrendedStd8bit": 1.7863182362510495,
+        "verticalFirstDifferenceRms8bit": 2.6364733015971034,
+        "maxVerticalDifference8bit": 6
+      },
+      {
+        "variant": "metric-normal-v3",
+        "pose": "03-near",
+        "roiPixels": [
+          730,
+          1270,
+          900,
+          1330
+        ],
+        "mean8bitLuma": 95.3228431372549,
+        "planeDetrendedStd8bit": 0.7864081492197781,
+        "verticalFirstDifferenceRms8bit": 1.1046093141971893,
+        "maxVerticalDifference8bit": 2.6666666666666714
+      },
+      {
+        "pose": "03-near",
+        "meanAbsoluteBeforeAfterDifference8bit": 0.9460130718954244
+      },
+      {
+        "variant": "original-roof-v2",
+        "pose": "04-rotated",
+        "roiPixels": [
+          730,
+          1270,
+          900,
+          1330
+        ],
+        "mean8bitLuma": 95.25539215686274,
+        "planeDetrendedStd8bit": 1.756745180114021,
+        "verticalFirstDifferenceRms8bit": 2.6501147998568864,
+        "maxVerticalDifference8bit": 6
+      },
+      {
+        "variant": "metric-normal-v3",
+        "pose": "04-rotated",
+        "roiPixels": [
+          730,
+          1270,
+          900,
+          1330
+        ],
+        "mean8bitLuma": 95.22039215686274,
+        "planeDetrendedStd8bit": 0.8172751070012253,
+        "verticalFirstDifferenceRms8bit": 1.176926354611269,
+        "maxVerticalDifference8bit": 3
+      },
+      {
+        "pose": "04-rotated",
+        "meanAbsoluteBeforeAfterDifference8bit": 0.887222222222222
+      }
+    ]
+  },
+  "findings": [
+    "Opened all4 actual PNGs. Foreground roof stripe contrast is reduced56% near and53% rotated; mean tone differs<0.05/255. Faint physical corrugation remains rather than a broad interference stamp.",
+    "Near geometry146650tri/24 canonical IDs and38people/21vehicles matches between variants. Rotated168686tri/38IDs and36people/20vehicles also matches.",
+    "Both paused2.2s windows produced0render callbacks; actor clock stayed66376.5003000014. All captured environment/auxiliary shaders and surface preparation completed without errors.",
+    "Retain v3 as a bounded normal antialiasing correction. This does not claim all roofs are texture-free or that the overall art target is met."
+  ],
+  "rows": [
+    {
+      "variant": "original-roof-v2",
+      "errors": [],
+      "pause": {
+        "frames": 0,
+        "elapsedMs": 2200,
+        "bodyTimeBefore": 66376.5003000014,
+        "bodyTimeAfter": 66376.5003000014
+      },
+      "oldRoof": {
+        "sourceSha256": "9d5ae64eb9f1d100fe0d4926fc17c67c2c5a8d3162aa37667c4d0e8b7a13ecfd",
+        "servedSha256": "e5dbaede3400bdc0bef1417c111914e262475cbfaadbb7bda9f9f1ee15786837"
+      },
+      "shots": [
+        {
+          "camera": {
+            "longitude": 61.40903412862579,
+            "latitude": 55.16397139376605,
+            "zoom": 18.500000062092244,
+            "pitch": 55.5,
+            "bearing": 109.56580251900425
+          },
+          "image": {
+            "filename": "original-roof-v2-03-near.png",
+            "bytes": 1360679,
+            "sha256": "35200fc0811bf76e20a6e8642eba8dae2b81aa858a6b93bfe5acaafef3312a96",
+            "reviewed": true,
+            "relativePath": "roof-normal-filter-v3-20260909/original-roof-v2-03-near.png"
+          },
+          "settleError": null,
+          "triangles": 146650,
+          "meshIds": [
+            "openmaptiles_buildings:10043653890",
+            "openmaptiles_buildings:10043653920",
+            "openmaptiles_buildings:11369341190",
+            "openmaptiles_buildings:1160636710",
+            "openmaptiles_buildings:12169307510",
+            "openmaptiles_buildings:2147788680",
+            "openmaptiles_buildings:362688740",
+            "openmaptiles_buildings:521183890",
+            "openmaptiles_buildings:521183920",
+            "openmaptiles_buildings:521183930",
+            "openmaptiles_buildings:521183940",
+            "openmaptiles_buildings:521183950",
+            "openmaptiles_buildings:524957560",
+            "openmaptiles_buildings:524957570",
+            "openmaptiles_buildings:524957580",
+            "openmaptiles_buildings:524957590",
+            "openmaptiles_buildings:524957600",
+            "openmaptiles_buildings:6286451280",
+            "openmaptiles_buildings:6286451290",
+            "openmaptiles_buildings:6286459010",
+            "openmaptiles_buildings:7105980570",
+            "openmaptiles_buildings:7715854650",
+            "openmaptiles_buildings:853220170",
+            "openmaptiles_buildings:904153980"
+          ],
+          "people": "38",
+          "vehicles": "21",
+          "bodyTime": 66376.5003000014,
+          "shaders": {
+            "pending": 0,
+            "queued": 0,
+            "ready": 6,
+            "failed": 0,
+            "lastError": null,
+            "parallelSupported": true,
+            "depthMaterials": 60,
+            "cachedPrograms": 99,
+            "pendingObjects": 0,
+            "readyObjects": 28,
+            "environmentReady": true
+          },
+          "surfaceWorker": {
+            "mode": "worker_prepared",
+            "inFlight": false,
+            "pendingKinds": [],
+            "maximumPendingKinds": 6,
+            "postedMessages": 4,
+            "discardedResults": 0,
+            "maxPostMs": 2.100000023841858,
+            "maxRoundTripMs": 232.89999997615814,
+            "lastPreparation": {
+              "inputBytes": 2921468,
+              "sourceVertices": 13379,
+              "resultBytes": 258108,
+              "bufferBytes": 149988,
+              "prepareMs": 53
+            },
+            "error": null
+          }
+        },
+        {
+          "camera": {
+            "longitude": 61.40903412862576,
+            "latitude": 55.16397139376605,
+            "zoom": 18.500000062092244,
+            "pitch": 55.5,
+            "bearing": 105.58058002516829
+          },
+          "image": {
+            "filename": "original-roof-v2-04-rotated.png",
+            "bytes": 1335026,
+            "sha256": "8789068064e67f5a466e41e8e0b7f8993283d55c4a36706216004e93aa7c1c25",
+            "reviewed": true,
+            "retention": "Local diagnostic PNG"
+          },
+          "settleError": null,
+          "triangles": 168686,
+          "meshIds": [
+            "openmaptiles_buildings:10043653890",
+            "openmaptiles_buildings:10043653920",
+            "openmaptiles_buildings:10043653930",
+            "openmaptiles_buildings:10043654000",
+            "openmaptiles_buildings:10043654010",
+            "openmaptiles_buildings:10043654020",
+            "openmaptiles_buildings:10043654030",
+            "openmaptiles_buildings:1126523450",
+            "openmaptiles_buildings:11369341190",
+            "openmaptiles_buildings:11455887150",
+            "openmaptiles_buildings:1160636670",
+            "openmaptiles_buildings:1160636710",
+            "openmaptiles_buildings:12169307510",
+            "openmaptiles_buildings:13523652090",
+            "openmaptiles_buildings:2147788680",
+            "openmaptiles_buildings:328979560",
+            "openmaptiles_buildings:362688740",
+            "openmaptiles_buildings:521183890",
+            "openmaptiles_buildings:521183920",
+            "openmaptiles_buildings:521183930",
+            "openmaptiles_buildings:521183940",
+            "openmaptiles_buildings:521183950",
+            "openmaptiles_buildings:521183960",
+            "openmaptiles_buildings:524957560",
+            "openmaptiles_buildings:524957570",
+            "openmaptiles_buildings:524957580",
+            "openmaptiles_buildings:524957590",
+            "openmaptiles_buildings:524957600",
+            "openmaptiles_buildings:6286451280",
+            "openmaptiles_buildings:6286451290",
+            "openmaptiles_buildings:6286459010",
+            "openmaptiles_buildings:6853634470",
+            "openmaptiles_buildings:6853634600",
+            "openmaptiles_buildings:7105980570",
+            "openmaptiles_buildings:7715854650",
+            "openmaptiles_buildings:853220170",
+            "openmaptiles_buildings:874850240",
+            "openmaptiles_buildings:904153980"
+          ],
+          "people": "36",
+          "vehicles": "20",
+          "bodyTime": 66376.5003000014,
+          "shaders": {
+            "pending": 0,
+            "queued": 0,
+            "ready": 8,
+            "failed": 0,
+            "lastError": null,
+            "parallelSupported": true,
+            "depthMaterials": 81,
+            "cachedPrograms": 103,
+            "pendingObjects": 0,
+            "readyObjects": 28,
+            "environmentReady": true
+          },
+          "surfaceWorker": {
+            "mode": "worker_prepared",
+            "inFlight": false,
+            "pendingKinds": [],
+            "maximumPendingKinds": 6,
+            "postedMessages": 2,
+            "discardedResults": 0,
+            "maxPostMs": 3.799999952316284,
+            "maxRoundTripMs": 127.59999990463257,
+            "lastPreparation": {
+              "inputBytes": 2921468,
+              "sourceVertices": 13379,
+              "resultBytes": 244780,
+              "bufferBytes": 144300,
+              "prepareMs": 98.20000004768372
+            },
+            "error": null
+          }
+        }
+      ]
+    },
+    {
+      "variant": "metric-normal-v3",
+      "errors": [],
+      "pause": {
+        "frames": 0,
+        "elapsedMs": 2200,
+        "bodyTimeBefore": 66376.5003000014,
+        "bodyTimeAfter": 66376.5003000014
+      },
+      "shots": [
+        {
+          "camera": {
+            "longitude": 61.40903412862579,
+            "latitude": 55.16397139376605,
+            "zoom": 18.500000062092244,
+            "pitch": 55.5,
+            "bearing": 109.56580251900425
+          },
+          "image": {
+            "filename": "metric-normal-v3-03-near.png",
+            "bytes": 1315019,
+            "sha256": "66319e53ed0d42305d0d6a7bd763760b9aacd411bbf216391d97549b56629cd8",
+            "reviewed": true,
+            "relativePath": "roof-normal-filter-v3-20260909/metric-normal-v3-03-near.png"
+          },
+          "settleError": null,
+          "triangles": 146650,
+          "meshIds": [
+            "openmaptiles_buildings:10043653890",
+            "openmaptiles_buildings:10043653920",
+            "openmaptiles_buildings:11369341190",
+            "openmaptiles_buildings:1160636710",
+            "openmaptiles_buildings:12169307510",
+            "openmaptiles_buildings:2147788680",
+            "openmaptiles_buildings:362688740",
+            "openmaptiles_buildings:521183890",
+            "openmaptiles_buildings:521183920",
+            "openmaptiles_buildings:521183930",
+            "openmaptiles_buildings:521183940",
+            "openmaptiles_buildings:521183950",
+            "openmaptiles_buildings:524957560",
+            "openmaptiles_buildings:524957570",
+            "openmaptiles_buildings:524957580",
+            "openmaptiles_buildings:524957590",
+            "openmaptiles_buildings:524957600",
+            "openmaptiles_buildings:6286451280",
+            "openmaptiles_buildings:6286451290",
+            "openmaptiles_buildings:6286459010",
+            "openmaptiles_buildings:7105980570",
+            "openmaptiles_buildings:7715854650",
+            "openmaptiles_buildings:853220170",
+            "openmaptiles_buildings:904153980"
+          ],
+          "people": "38",
+          "vehicles": "21",
+          "bodyTime": 66376.5003000014,
+          "shaders": {
+            "pending": 0,
+            "queued": 0,
+            "ready": 6,
+            "failed": 0,
+            "lastError": null,
+            "parallelSupported": true,
+            "depthMaterials": 60,
+            "cachedPrograms": 103,
+            "pendingObjects": 0,
+            "readyObjects": 28,
+            "environmentReady": true
+          },
+          "surfaceWorker": {
+            "mode": "worker_prepared",
+            "inFlight": false,
+            "pendingKinds": [],
+            "maximumPendingKinds": 6,
+            "postedMessages": 4,
+            "discardedResults": 0,
+            "maxPostMs": 5.099999904632568,
+            "maxRoundTripMs": 134.70000004768372,
+            "lastPreparation": {
+              "inputBytes": 2921468,
+              "sourceVertices": 13379,
+              "resultBytes": 258108,
+              "bufferBytes": 149988,
+              "prepareMs": 72.09999990463257
+            },
+            "error": null
+          }
+        },
+        {
+          "camera": {
+            "longitude": 61.40903412862576,
+            "latitude": 55.16397139376605,
+            "zoom": 18.500000062092244,
+            "pitch": 55.5,
+            "bearing": 105.58058002516829
+          },
+          "image": {
+            "filename": "metric-normal-v3-04-rotated.png",
+            "bytes": 1293079,
+            "sha256": "55da4c203a93ea4716ad01f2d222051b95ecd1c80662cf5a7aec438d22486a28",
+            "reviewed": true,
+            "retention": "Local diagnostic PNG"
+          },
+          "settleError": null,
+          "triangles": 168686,
+          "meshIds": [
+            "openmaptiles_buildings:10043653890",
+            "openmaptiles_buildings:10043653920",
+            "openmaptiles_buildings:10043653930",
+            "openmaptiles_buildings:10043654000",
+            "openmaptiles_buildings:10043654010",
+            "openmaptiles_buildings:10043654020",
+            "openmaptiles_buildings:10043654030",
+            "openmaptiles_buildings:1126523450",
+            "openmaptiles_buildings:11369341190",
+            "openmaptiles_buildings:11455887150",
+            "openmaptiles_buildings:1160636670",
+            "openmaptiles_buildings:1160636710",
+            "openmaptiles_buildings:12169307510",
+            "openmaptiles_buildings:13523652090",
+            "openmaptiles_buildings:2147788680",
+            "openmaptiles_buildings:328979560",
+            "openmaptiles_buildings:362688740",
+            "openmaptiles_buildings:521183890",
+            "openmaptiles_buildings:521183920",
+            "openmaptiles_buildings:521183930",
+            "openmaptiles_buildings:521183940",
+            "openmaptiles_buildings:521183950",
+            "openmaptiles_buildings:521183960",
+            "openmaptiles_buildings:524957560",
+            "openmaptiles_buildings:524957570",
+            "openmaptiles_buildings:524957580",
+            "openmaptiles_buildings:524957590",
+            "openmaptiles_buildings:524957600",
+            "openmaptiles_buildings:6286451280",
+            "openmaptiles_buildings:6286451290",
+            "openmaptiles_buildings:6286459010",
+            "openmaptiles_buildings:6853634470",
+            "openmaptiles_buildings:6853634600",
+            "openmaptiles_buildings:7105980570",
+            "openmaptiles_buildings:7715854650",
+            "openmaptiles_buildings:853220170",
+            "openmaptiles_buildings:874850240",
+            "openmaptiles_buildings:904153980"
+          ],
+          "people": "36",
+          "vehicles": "20",
+          "bodyTime": 66376.5003000014,
+          "shaders": {
+            "pending": 0,
+            "queued": 0,
+            "ready": 8,
+            "failed": 0,
+            "lastError": null,
+            "parallelSupported": true,
+            "depthMaterials": 81,
+            "cachedPrograms": 103,
+            "pendingObjects": 0,
+            "readyObjects": 28,
+            "environmentReady": true
+          },
+          "surfaceWorker": {
+            "mode": "worker_prepared",
+            "inFlight": false,
+            "pendingKinds": [],
+            "maximumPendingKinds": 6,
+            "postedMessages": 4,
+            "discardedResults": 0,
+            "maxPostMs": 9.700000047683716,
+            "maxRoundTripMs": 191.40000009536743,
+            "lastPreparation": {
+              "inputBytes": 2921468,
+              "sourceVertices": 13379,
+              "resultBytes": 244780,
+              "bufferBytes": 144300,
+              "prepareMs": 70.5
+            },
+            "error": null
+          }
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "The full moving01 versus02 performance difference includes shader/surface-worker changes and is not attributed to this material fix.",
+    "Two prior helper import failures happened before any browser launch; their failure receipts remain in local output01/02. No failed rendered frames were discarded.",
+    "PNG measurements use one fixed roof rectangle and are not a universal perceptual score."
+  ]
+}

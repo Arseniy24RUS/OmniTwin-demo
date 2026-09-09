@@ -112,7 +112,7 @@ export function DemoCity({ provider, context, selectedId = null, quality = 'bala
   const exactBuildingSource = individualView && verifiedCityBuildings?.coverage === 'complete_viewport' ? verifiedCityBuildings : null;
   const handoff=cityMovementHandoff(individualView,preparation.lastCommittedRenderable,frame.peopleCount+frame.vehicleCount);
   const previousFlows=useRef<ReturnType<typeof buildAggregateRoadFlows>|null>(null);
-  const availableFlows = useMemo(() => buildAggregateRoadFlows({
+  const availableFlows = useMemo(() => individualView?null:buildAggregateRoadFlows({
     origin: [viewport?.camera.longitude ?? context.camera.longitude, viewport?.camera.latitude ?? context.camera.latitude],
     viewport: viewport ?? undefined,
     roads: provider.getLayout().roads.map(road => ({ ...road,

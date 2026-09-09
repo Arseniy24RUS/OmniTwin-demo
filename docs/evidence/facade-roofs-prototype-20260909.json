@@ -1,0 +1,176 @@
+{
+  "contract": "OmniTwinFacadePrototypeEvidenceV1",
+  "date": "2026-09-09",
+  "status": "isolated_prototype_review_only",
+  "publicationHeld": true,
+  "fullGraphicsAccepted": false,
+  "scope": {
+    "canonicalCell": "z15-x21973-y10338",
+    "canonicalBuildings": 167,
+    "fullCityRebuild": false,
+    "publicManifestChanged": false,
+    "sourceClaims": "source_geometry_with_visual_synthesis"
+  },
+  "diagnosis": {
+    "sharedPlasterSourceBuildings": 145,
+    "sourceCellBuildings": 167,
+    "materialFamilySources": 7,
+    "materialTextures": 21,
+    "texturePoolDuplicationReproduced": false,
+    "dominantDetailCost": "per-window surround and sill geometry"
+  },
+  "compiler": {
+    "tools/visual/buildings.mjs": "1130d02c49bfa3aea7ae2f27b71b0c33712384b0b439045f9f981ad3bc20bdad",
+    "tools/visual/building-details.mjs": "f9c1d48e39c5bd22ee148b249c6578ba92fa62d0481fb21be0b0b528dc1cc493"
+  },
+  "build": {
+    "prototypeCatalogSha256": "e25f70a2cd1ccaf3ccff9321a3a7ff82c9bfb44892a314dae6249e38f4970478",
+    "hybridCatalogSha256": "83f5043f585025983f2d379caef8277d617a769698b6bdde4d2b87e18a7c77c5",
+    "baselineCatalogSha256": "bca4ff81f5a4c1a8c3517f0b1faeceddd6042cf20d811c70661993ecec72a819",
+    "prototypeManifestSha256": "78b226506b04100a8f8be2e29a7cf44024bc6ada49457f76ca9040110f456ce1",
+    "freshBuilds": 2,
+    "byteIdenticalInventories": true,
+    "verifiedAssetsPerBuild": 39,
+    "glbCount": 37,
+    "sourceManifestSha256": "e8e1627801eb79ac353e9a1bf37419519980ad48d071d9c1f9b67318c2f3f62a",
+    "sourceDatasetVersion": "138afac3f0d74f256838eda3b7afd24259f640fac0dcd4a60ff49140a18f66a4",
+    "sourceCells": [
+      {
+        "key": "16/43946/20676",
+        "bytes": 87149,
+        "sha256": "37bcd2cc59db6d15599df213ad42caa1731e07f57d9735c74f6784262078db07"
+      },
+      {
+        "key": "16/43946/20677",
+        "bytes": 75702,
+        "sha256": "8a1763fe7aaba251030a8fd0e9b875975b0b599cd0469133142fa6d4cd1169eb"
+      },
+      {
+        "key": "16/43947/20676",
+        "bytes": 86961,
+        "sha256": "46f4237d4ef9ec198b80622f77ad39a5c96aa273e2341daa11a38d3256120d2d"
+      },
+      {
+        "key": "16/43947/20677",
+        "bytes": 96581,
+        "sha256": "eebd8a73799c4d312fa19587d4a9578e6d9f44482054d966972e9d425b927a9d"
+      }
+    ],
+    "canonicalSourceFieldsEqual": true,
+    "original": {
+      "sourceCells": 4,
+      "sourceBytes": 346393,
+      "buildings": 167,
+      "roads": 0,
+      "trees": 0,
+      "courtyardDecorations": 0,
+      "sourceRoadsForExclusion": 305,
+      "tiles": 37,
+      "vertices": 3320412,
+      "triangles": 1106804,
+      "drawGroups": 361,
+      "windowCount": 26357,
+      "inventoryDecodedBytes": 159379776,
+      "geometryDeliveryBytes": 67918764
+    },
+    "prototype": {
+      "sourceCells": 4,
+      "sourceBytes": 346393,
+      "buildings": 167,
+      "roads": 0,
+      "trees": 0,
+      "courtyardDecorations": 0,
+      "sourceRoadsForExclusion": 305,
+      "tiles": 37,
+      "vertices": 1432236,
+      "triangles": 477412,
+      "drawGroups": 361,
+      "windowCount": 26218,
+      "inventoryDecodedBytes": 68747328,
+      "geometryDeliveryBytes": 28898556
+    }
+  },
+  "runtime": {
+    "method": "one exact canonical cell replaced in an in-memory hybrid catalog; every served prototype byte hash verified; public files untouched; same current runtime material treatment on both sides; runtime LOD helper accepts hybrid hash only in this isolated response",
+    "sourceFingerprintBefore": "2cb92819bb0b553914f892726338847577fbb8e5e2f11a5c9923528b700413f2",
+    "sourceFingerprintAfter": "2cb92819bb0b553914f892726338847577fbb8e5e2f11a5c9923528b700413f2",
+    "sourceStable": true,
+    "viewportCss": [
+      770,
+      792
+    ],
+    "deviceScaleFactor": 2.25,
+    "measurement": "static art comparison only, no FPS claim",
+    "runs": [
+      {
+        "pose": {
+          "name": "03-source-panel-close",
+          "lon": 61.40977565,
+          "lat": 55.165203500000004,
+          "zoom": 18.8,
+          "pitch": 60,
+          "bearing": 109.565,
+          "minutes": 984.87,
+          "sourceCamera": "source footprint bounds centre openmaptiles_buildings:1160636710"
+        },
+        "mode": "before",
+        "artifact": "omnitwin-facade-roofs-20260909/03-source-panel-close-before.png",
+        "sha256": "3d0a52fac02e36c292808e1e263ce969167f173ec84387f8189282e3b8eb7fdf",
+        "prototypeResponses": 0,
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "drawingBuffer": [
+          988,
+          1348
+        ],
+        "draws": 51,
+        "triangles": 191939,
+        "textures": {
+          "textures": 9,
+          "retainedBytes": 22020102,
+          "resolution": 512
+        },
+        "sourceSignature": "6d771056b24fa3f6",
+        "meshBuildings": 19,
+        "errors": []
+      },
+      {
+        "pose": {
+          "name": "03-source-panel-close",
+          "lon": 61.40977565,
+          "lat": 55.165203500000004,
+          "zoom": 18.8,
+          "pitch": 60,
+          "bearing": 109.565,
+          "minutes": 984.87,
+          "sourceCamera": "source footprint bounds centre openmaptiles_buildings:1160636710"
+        },
+        "mode": "after",
+        "artifact": "omnitwin-facade-roofs-20260909/03-source-panel-close-after.png",
+        "sha256": "7526f24bb78d7f028ea8801862a2d0eb2d30eeee7fa1c5c3c61dc3b801f8112a",
+        "prototypeResponses": 5,
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "drawingBuffer": [
+          988,
+          1348
+        ],
+        "draws": 51,
+        "triangles": 120257,
+        "textures": {
+          "textures": 9,
+          "retainedBytes": 22020102,
+          "resolution": 512
+        },
+        "sourceSignature": "6d771056b24fa3f6",
+        "meshBuildings": 19,
+        "errors": []
+      }
+    ]
+  },
+  "limitations": [
+    "Only one source cell has new geometry; the hybrid catalog is a response-only local experiment.",
+    "Window layout, finish, entrances and rooftop equipment are authored visual synthesis, not observations.",
+    "Coarse triangles rise slightly for parapets and better-distributed windows; detailed geometry falls substantially.",
+    "Static frames do not establish camera-motion responsiveness or citywide acceptance.",
+    "This remains stylized art; the overall visual acceptance gate stays open."
+  ]
+}

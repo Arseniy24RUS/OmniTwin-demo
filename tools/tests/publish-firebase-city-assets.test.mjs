@@ -200,6 +200,20 @@ test('uploads are immutable, bounded to two and resumable only with exact remote
   const second=await publishFirebaseCityAssets(plan,options(mock.fetchImpl));assert.equal(second.skipped,18);assert.equal(mock.posts,18);
   assert.ok(mock.calls.every(c=>c.method==='GET'||c.method==='POST'));
 });
+test('explicit upload concurrency is bounded and preserves manifest-last ordering',async t=>{
+  const f=await fixture(t),plan=await planFirebaseCityAssets({publicRoot:f.root});
+  const mock=transport(plan,{gate:()=>new Promise(resolve=>setTimeout(resolve,10))});
+  await publishFirebaseCityAssets(plan,{...options(mock.fetchImpl),concurrency:8});
+  assert.equal(mock.peak,8);
+  const posted=mock.calls.filter(call=>call.method==='POST').map(call=>new URL(call.url).searchParams.get('name').slice(plan.prefix.length));
+  assert.deepEqual(posted.slice(-3),['city-v2/manifest.json','demo-v2/manifest.json','demo-v2/spatial/manifest.json']);
+  for(const concurrency of [0,9,1.5,NaN,'8']){
+    let auth=0;
+    await assert.rejects(publishFirebaseCityAssets(plan,{...options(mock.fetchImpl),concurrency,getAccessToken:async()=>{auth++;return 'unused';}}),/concurrency/i);
+    assert.equal(auth,0);
+  }
+});
+
 test('existing mismatches and a bucket from another project stop without overwrite',async t=>{
   const f=await fixture(t);const plan=await planFirebaseCityAssets({publicRoot:f.root});
   const wrong=transport(plan,{projectNumber:'999'});await assert.rejects(publishFirebaseCityAssets(plan,options(wrong.fetchImpl)),/project/i);assert.equal(wrong.posts,0);
