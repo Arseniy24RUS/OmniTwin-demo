@@ -1,8 +1,9 @@
 # Current graphics: deferred limitations
 
 The owner requested publication of the current version on 2026-09-09 and
-deferred individual remaining bugs. This note records known limits; it does not
-claim complete artistic acceptance or that deployment has already occurred.
+deferred individual remaining bugs. Activation commit `4c62a5a` is deployed;
+the minimal public smoke passed. This note does not claim complete artistic
+acceptance or replace the deferred extended camera/traffic regressions.
 
 - At wide views, neutral landuse ground can exceed its preparation memory bound
   and contact lighting can exceed its grid bound. Each keeps its previous valid

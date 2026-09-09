@@ -1,0 +1,897 @@
+{
+  "contract": "OmniTwinCurrentPublicSmokeEvidenceV1",
+  "date": "2026-09-09",
+  "status": "bounded_public_production_smoke_pass",
+  "baseUrl": "https://arseniy24rus.github.io/OmniTwin-demo/",
+  "deployedApplicationCommit": "4c62a5a28cef2e0c77c29c6c3340622a7ae1acfc",
+  "deployment": {
+    "actionsRunId": 34378878812,
+    "url": "https://github.com/Arseniy24rus/OmniTwin-demo/actions/runs/34378878812",
+    "headSha": "4c62a5a28cef2e0c77c29c6c3340622a7ae1acfc",
+    "conclusion": "success",
+    "completedAt": "2026-09-09T16:48:36Z",
+    "verification": "The release owner separately verified the read-only GitHub Actions API. The smoke helper independently compared 28 served HTTP files against the reviewed clean dist and matched the pinned visual root; it does not independently establish the Git/Actions artifact chain."
+  },
+  "visualRoot": {
+    "url": "https://storage.googleapis.com/omnitwin-demo-city-assets/packs/7ee3bd08c9973dd94ce727a6e3b148513e4dd125f2c82531541cf0b34971c83e/city-visual-v1/manifest.json",
+    "bytes": 167143,
+    "sha256": "1aa147a06516bd9a5926d67bdcadcd2cba08f3b80da732ef18c282d6f039ce47",
+    "catalog": {
+      "uri": "catalog/build-cbb8ae2ecc550dbf/catalog-13f118a1b6e0af68.json",
+      "bytes": 4491720,
+      "sha256": "13f118a1b6e0af680e836979be0bef0f6a69bf6615a3ea3761b3e660bcc2b221"
+    }
+  },
+  "startedAt": "2026-09-09T16:50:59.281Z",
+  "endedAt": "2026-09-09T16:51:31.779Z",
+  "browserVersion": "152.0.7977.83",
+  "browserClosed": true,
+  "viewport": {
+    "width": 1280,
+    "height": 800,
+    "deviceScaleFactor": 1
+  },
+  "productionDOMOnly": true,
+  "devProbeCalls": 0,
+  "paidChatCalls": 0,
+  "cloudWrites": 0,
+  "fpsClaim": false,
+  "recordedVideo": false,
+  "cleanDefault": {
+    "url": "https://arseniy24rus.github.io/OmniTwin-demo/#/world?scenario=baseline&year=2026&territory=RU-CHE-SET&minutes=1100.016671666668&paused=0&speed=1&weather=clear&lon=61.4026&lat=55.1684&zoom=16.7&pitch=58&bearing=-24&stats=observed&observedYear=2024&dataset=omnitwin-fictional-city-v2&graphics=tiled_game",
+    "dataset": "omnitwin-fictional-city-v2",
+    "graphics": "tiled_game",
+    "pass": true
+  },
+  "explicitCloseUrl": "https://arseniy24rus.github.io/OmniTwin-demo/#/world?scenario=baseline&year=2026&territory=RU-CHE-SET&minutes=707.7335833333341&paused=1&speed=1&weather=clear&lon=61.40335931261333&lat=55.166641128116765&zoom=18.5&pitch=46.49661799282392&bearing=-172.97699800600026&stats=observed&observedYear=2024&dataset=omnitwin-fictional-city-v2&graphics=tiled_game",
+  "checks": [
+    {
+      "name": "clean_url_defaults_to_v2",
+      "pass": true
+    },
+    {
+      "name": "production_v2",
+      "pass": true
+    },
+    {
+      "name": "canvas_and_3d",
+      "pass": true
+    },
+    {
+      "name": "canonical_frontier",
+      "pass": true
+    },
+    {
+      "name": "full_catalog",
+      "pass": true
+    },
+    {
+      "name": "shader_ready",
+      "pass": true
+    },
+    {
+      "name": "actors_visible",
+      "pass": true
+    },
+    {
+      "name": "motion_worker",
+      "pass": true
+    },
+    {
+      "name": "surface_worker",
+      "pass": true
+    },
+    {
+      "name": "signals_healthy",
+      "pass": true
+    },
+    {
+      "name": "no_close_flow_dashes",
+      "pass": true
+    },
+    {
+      "name": "play_control_advances_worker",
+      "pass": true
+    },
+    {
+      "name": "pause_controls_hold",
+      "pass": true
+    },
+    {
+      "name": "actual_canonical_building_click",
+      "pass": true
+    },
+    {
+      "name": "final_production_v2",
+      "pass": true
+    },
+    {
+      "name": "final_canvas_and_3d",
+      "pass": true
+    },
+    {
+      "name": "final_canonical_frontier",
+      "pass": true
+    },
+    {
+      "name": "final_full_catalog",
+      "pass": true
+    },
+    {
+      "name": "final_shader_ready",
+      "pass": true
+    },
+    {
+      "name": "final_actors_visible",
+      "pass": true
+    },
+    {
+      "name": "final_motion_worker",
+      "pass": true
+    },
+    {
+      "name": "final_surface_worker",
+      "pass": true
+    },
+    {
+      "name": "final_signals_healthy",
+      "pass": true
+    },
+    {
+      "name": "final_no_close_flow_dashes",
+      "pass": true
+    }
+  ],
+  "errorCount": 0,
+  "pause": {
+    "elapsedMs": 2217.7000000476837,
+    "mapRenderEvents": 0,
+    "motionSecondsBefore": 42465.857100000125,
+    "motionSecondsAfter": 42465.857100000125
+  },
+  "pick": {
+    "attempts": [
+      {
+        "x": 547.52,
+        "y": 289.28,
+        "fx": 0.58,
+        "fy": 0.24,
+        "kind": "building"
+      }
+    ],
+    "targetBasis": "First public smoke PNG was inspected: canvas center was open pavement; the visible roof is at normalized canvas [0.58,0.24]. No canonical ID is injected.",
+    "canonicalId": "openmaptiles_buildings:1003057950",
+    "classification": "occupancy_ready",
+    "inDisplayedFrontier": true,
+    "sameSelection": true,
+    "cardLoaded": true,
+    "pass": true
+  },
+  "settled": {
+    "state": "rendering",
+    "renderedVisibleTiles": 6,
+    "meshBuildings": 45,
+    "sourceBuildings": 595,
+    "people": 39,
+    "vehicles": 29,
+    "shader": {
+      "pending": 0,
+      "queued": 0,
+      "ready": 6,
+      "failed": 0,
+      "lastError": null,
+      "parallelSupported": true,
+      "depthMaterials": 64,
+      "cachedPrograms": 97,
+      "pendingObjects": 0,
+      "readyObjects": 28,
+      "environmentReady": true
+    },
+    "motionWorker": {
+      "mode": "worker_buffered",
+      "bufferedFrames": 0,
+      "inFlight": false,
+      "displayed": true,
+      "presentationSeconds": 42464.01500000004,
+      "availableUntilSeconds": 42464.26500000004,
+      "lagSeconds": 0,
+      "underflow": false,
+      "catchupMultiplier": 1,
+      "maximumCatchupMultiplier": 1.1,
+      "maximumBufferedFrames": 5,
+      "stepSeconds": 0.25,
+      "horizonSeconds": 0.25,
+      "generation": 2,
+      "sourceRevision": 2,
+      "configuredRevision": 2,
+      "displayedRevision": 2,
+      "sourcePending": false,
+      "roundTripMaxMs": 79,
+      "postMaxMs": 4.600000023841858,
+      "postedMessages": 4,
+      "error": null
+    },
+    "surfaceWorker": {
+      "mode": "worker_prepared",
+      "inFlight": false,
+      "pendingKinds": [],
+      "maximumPendingKinds": 6,
+      "postedMessages": 4,
+      "discardedResults": 0,
+      "maxPostMs": 17.600000023841858,
+      "maxRoundTripMs": 233.39999997615814,
+      "lastPreparation": {
+        "inputBytes": 3403492,
+        "sourceVertices": 16481,
+        "resultBytes": 756796,
+        "bufferBytes": 537312,
+        "prepareMs": 146.10000002384186
+      },
+      "error": null
+    },
+    "surfaceRefresh": {
+      "dirty": false,
+      "invalidations": 21,
+      "flushes": 4,
+      "failures": 0,
+      "lastFlushMs": 18248.600000023842,
+      "minimumIntervalMs": 250
+    },
+    "water": {
+      "representation": "source_water_visual_synthesis",
+      "polygons": 3,
+      "vertices": 44,
+      "triangles": 38,
+      "duplicates": 0,
+      "skippedFeatures": 0,
+      "truncatedPolygons": 0,
+      "geometryUpdates": 1,
+      "geometryBytes": 756,
+      "retainedBytes": 4984,
+      "static": false,
+      "repairedPolygons": 0,
+      "repairIntersections": 0,
+      "shaderReady": true
+    },
+    "surfaceFamilies": {
+      "gameVegetation": {
+        "representation": "visual_synthesis",
+        "state": "ready",
+        "instances": 2,
+        "draws": 2,
+        "geometryBytes": 12080,
+        "bufferBytes": 205200,
+        "retainedBytes": 435788,
+        "bufferUpdates": 1,
+        "sourceAreas": 20,
+        "sourceTrees": 0,
+        "sourceWidthRoads": 0,
+        "laneWidthRoads": 93,
+        "classWidthRoads": 972,
+        "rejectedCandidates": 4,
+        "lastError": null,
+        "roadWidthPolicy": "source_width_else_visual_lanes_3m_plus_0_6m_else_visual_class_width",
+        "collisionPolicy": "crown_radius_plus_2_5m",
+        "truncated": false,
+        "operations": 139,
+        "appearancePolicy": "continuous_broad_or_upright_canopy_v2",
+        "placementPolicy": "world_cell_scatter_with_density_v2",
+        "gridCandidates": 99,
+        "densitySkippedCandidates": 26
+      },
+      "gameRoadSurfaces": {
+        "state": "ready",
+        "provenance": "visual_synthesis",
+        "geometryUpdates": 1,
+        "geometryBytes": 139176,
+        "retainedBytes": 278446,
+        "draws": 3,
+        "sourceWidthRoads": 0,
+        "laneWidthRoads": 113,
+        "classWidthRoads": 1093,
+        "omittedElevatedRoads": 70,
+        "retainedSegments": 67,
+        "curbEdges": 202,
+        "bridgeDeckPolygons": 0,
+        "bridgeDeckTriangles": 0,
+        "confirmedBridgeRoads": 0,
+        "bridgeRoadSegments": 0,
+        "laneMarkings": 28,
+        "skippedJunctionMarks": 3,
+        "skippedClearanceMarks": 12,
+        "markingsTruncated": false,
+        "markingClearanceBytes": 80020,
+        "markingClearanceUnavailable": false,
+        "vertexCount": 5799,
+        "partial": false,
+        "lastError": null,
+        "skippedNonTraversable": 0,
+        "laneMarkingPolicy": "source_width_and_lanes_else_visual_two_way_class",
+        "duplicateSegments": 54,
+        "operations": 17222,
+        "widthPolicy": "source_width_else_visual_lanes_3m_plus_0_6m_else_visual_class_width",
+        "elevationPolicy": "source_bridge_deck_at_visual_surface_height_other_unmeasured_elevations_omitted"
+      },
+      "gameLandCover": {
+        "representation": "source_landcover_visual_synthesis",
+        "state": "ready",
+        "polygons": 4,
+        "duplicates": 0,
+        "ignoredFeatures": 38,
+        "omittedPolygons": 79,
+        "collapsedPolygons": 0,
+        "collapsedRings": 0,
+        "sourceVertices": 704,
+        "vertices": 22,
+        "triangles": 14,
+        "repairedPolygons": 0,
+        "repairIntersections": 0,
+        "boundaryChecks": 82,
+        "geometryUpdates": 1,
+        "geometryBytes": 696,
+        "retainedBytes": 1392,
+        "estimatedPeakBytes": 95628,
+        "draws": 1,
+        "lastError": null
+      },
+      "gameLandUseGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+        "sourceAreas": 31,
+        "sourceClasses": [
+          "commercial",
+          "education",
+          "hospital",
+          "residential",
+          "retail"
+        ],
+        "ignoredFeatures": 7,
+        "duplicates": 55,
+        "sourceVertices": 15318,
+        "projectedVertices": 194,
+        "maskPieces": 215,
+        "indexEntries": 344,
+        "operations": 1457113,
+        "vertices": 14691,
+        "triangles": 4897,
+        "truncated": false,
+        "estimatedPeakBytes": 2531344,
+        "geometryBytes": 352584,
+        "retainedBytes": 705168,
+        "geometryUpdates": 1,
+        "draws": 1,
+        "lastError": null
+      },
+      "gameCourtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 2,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 4976,
+        "projectedVertices": 98,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 108884,
+        "draws": 0,
+        "lastError": null
+      },
+      "gameBuildingContacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 19,
+        "raisedBuildings": 0,
+        "cells": 1278,
+        "sourceEdges": 127,
+        "duplicates": 2,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 184092,
+        "retainedBytes": 552216,
+        "estimatedPeakBytes": 1809170,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 4976,
+        "gridEntries": 1636,
+        "gridCells": 1278,
+        "operations": 2017
+      }
+    },
+    "signals": {
+      "representation": "visual_synthesis",
+      "state": "ready",
+      "heads": 11,
+      "draws": 3,
+      "red": 9,
+      "amber": 0,
+      "green": 2,
+      "omittedPlacements": 54,
+      "truncated": false,
+      "geometryUpdates": 2,
+      "aspectUpdates": 2,
+      "retainedBytes": 187688,
+      "lastError": null
+    }
+  },
+  "final": {
+    "state": "rendering",
+    "renderedVisibleTiles": 6,
+    "meshBuildings": 45,
+    "sourceBuildings": 595,
+    "people": 39,
+    "vehicles": 29,
+    "shader": {
+      "pending": 0,
+      "queued": 0,
+      "ready": 6,
+      "failed": 0,
+      "lastError": null,
+      "parallelSupported": true,
+      "depthMaterials": 64,
+      "cachedPrograms": 101,
+      "pendingObjects": 0,
+      "readyObjects": 29,
+      "environmentReady": true
+    },
+    "motionWorker": {
+      "mode": "worker_buffered",
+      "bufferedFrames": 4,
+      "inFlight": false,
+      "displayed": true,
+      "presentationSeconds": 42465.857100000125,
+      "availableUntilSeconds": 42467.01500000004,
+      "lagSeconds": 0.005399999921792187,
+      "underflow": false,
+      "catchupMultiplier": 1,
+      "maximumCatchupMultiplier": 1.1,
+      "maximumBufferedFrames": 5,
+      "stepSeconds": 0.25,
+      "horizonSeconds": 0.25,
+      "generation": 2,
+      "sourceRevision": 4,
+      "configuredRevision": 4,
+      "displayedRevision": 2,
+      "sourcePending": true,
+      "roundTripMaxMs": 84.30000007152557,
+      "postMaxMs": 4.600000023841858,
+      "postedMessages": 17,
+      "error": null
+    },
+    "surfaceWorker": {
+      "mode": "worker_prepared",
+      "inFlight": false,
+      "pendingKinds": [],
+      "maximumPendingKinds": 6,
+      "postedMessages": 4,
+      "discardedResults": 0,
+      "maxPostMs": 17.600000023841858,
+      "maxRoundTripMs": 233.39999997615814,
+      "lastPreparation": {
+        "inputBytes": 3403492,
+        "sourceVertices": 16481,
+        "resultBytes": 756796,
+        "bufferBytes": 537312,
+        "prepareMs": 146.10000002384186
+      },
+      "error": null
+    },
+    "surfaceRefresh": {
+      "dirty": false,
+      "invalidations": 21,
+      "flushes": 4,
+      "failures": 0,
+      "lastFlushMs": 18248.600000023842,
+      "minimumIntervalMs": 250
+    },
+    "water": {
+      "representation": "source_water_visual_synthesis",
+      "polygons": 3,
+      "vertices": 44,
+      "triangles": 38,
+      "duplicates": 0,
+      "skippedFeatures": 0,
+      "truncatedPolygons": 0,
+      "geometryUpdates": 1,
+      "geometryBytes": 756,
+      "retainedBytes": 4984,
+      "static": false,
+      "repairedPolygons": 0,
+      "repairIntersections": 0,
+      "shaderReady": true
+    },
+    "surfaceFamilies": {
+      "gameVegetation": {
+        "representation": "visual_synthesis",
+        "state": "ready",
+        "instances": 2,
+        "draws": 2,
+        "geometryBytes": 12080,
+        "bufferBytes": 205200,
+        "retainedBytes": 435788,
+        "bufferUpdates": 1,
+        "sourceAreas": 20,
+        "sourceTrees": 0,
+        "sourceWidthRoads": 0,
+        "laneWidthRoads": 93,
+        "classWidthRoads": 972,
+        "rejectedCandidates": 4,
+        "lastError": null,
+        "roadWidthPolicy": "source_width_else_visual_lanes_3m_plus_0_6m_else_visual_class_width",
+        "collisionPolicy": "crown_radius_plus_2_5m",
+        "truncated": false,
+        "operations": 139,
+        "appearancePolicy": "continuous_broad_or_upright_canopy_v2",
+        "placementPolicy": "world_cell_scatter_with_density_v2",
+        "gridCandidates": 99,
+        "densitySkippedCandidates": 26
+      },
+      "gameRoadSurfaces": {
+        "state": "ready",
+        "provenance": "visual_synthesis",
+        "geometryUpdates": 1,
+        "geometryBytes": 139176,
+        "retainedBytes": 278446,
+        "draws": 3,
+        "sourceWidthRoads": 0,
+        "laneWidthRoads": 113,
+        "classWidthRoads": 1093,
+        "omittedElevatedRoads": 70,
+        "retainedSegments": 67,
+        "curbEdges": 202,
+        "bridgeDeckPolygons": 0,
+        "bridgeDeckTriangles": 0,
+        "confirmedBridgeRoads": 0,
+        "bridgeRoadSegments": 0,
+        "laneMarkings": 28,
+        "skippedJunctionMarks": 3,
+        "skippedClearanceMarks": 12,
+        "markingsTruncated": false,
+        "markingClearanceBytes": 80020,
+        "markingClearanceUnavailable": false,
+        "vertexCount": 5799,
+        "partial": false,
+        "lastError": null,
+        "skippedNonTraversable": 0,
+        "laneMarkingPolicy": "source_width_and_lanes_else_visual_two_way_class",
+        "duplicateSegments": 54,
+        "operations": 17222,
+        "widthPolicy": "source_width_else_visual_lanes_3m_plus_0_6m_else_visual_class_width",
+        "elevationPolicy": "source_bridge_deck_at_visual_surface_height_other_unmeasured_elevations_omitted"
+      },
+      "gameLandCover": {
+        "representation": "source_landcover_visual_synthesis",
+        "state": "ready",
+        "polygons": 4,
+        "duplicates": 0,
+        "ignoredFeatures": 38,
+        "omittedPolygons": 79,
+        "collapsedPolygons": 0,
+        "collapsedRings": 0,
+        "sourceVertices": 704,
+        "vertices": 22,
+        "triangles": 14,
+        "repairedPolygons": 0,
+        "repairIntersections": 0,
+        "boundaryChecks": 82,
+        "geometryUpdates": 1,
+        "geometryBytes": 696,
+        "retainedBytes": 1392,
+        "estimatedPeakBytes": 95628,
+        "draws": 1,
+        "lastError": null
+      },
+      "gameLandUseGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+        "sourceAreas": 31,
+        "sourceClasses": [
+          "commercial",
+          "education",
+          "hospital",
+          "residential",
+          "retail"
+        ],
+        "ignoredFeatures": 7,
+        "duplicates": 55,
+        "sourceVertices": 15318,
+        "projectedVertices": 194,
+        "maskPieces": 215,
+        "indexEntries": 344,
+        "operations": 1457113,
+        "vertices": 14691,
+        "triangles": 4897,
+        "truncated": false,
+        "estimatedPeakBytes": 2531344,
+        "geometryBytes": 352584,
+        "retainedBytes": 705168,
+        "geometryUpdates": 1,
+        "draws": 1,
+        "lastError": null
+      },
+      "gameCourtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 2,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 4976,
+        "projectedVertices": 98,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 108884,
+        "draws": 0,
+        "lastError": null
+      },
+      "gameBuildingContacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 19,
+        "raisedBuildings": 0,
+        "cells": 1278,
+        "sourceEdges": 127,
+        "duplicates": 2,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 184092,
+        "retainedBytes": 552216,
+        "estimatedPeakBytes": 1809170,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 4976,
+        "gridEntries": 1636,
+        "gridCells": 1278,
+        "operations": 2017
+      }
+    },
+    "signals": {
+      "representation": "visual_synthesis",
+      "state": "ready",
+      "heads": 11,
+      "draws": 3,
+      "red": 9,
+      "amber": 0,
+      "green": 2,
+      "omittedPlacements": 54,
+      "truncated": false,
+      "geometryUpdates": 2,
+      "aspectUpdates": 2,
+      "retainedBytes": 187688,
+      "lastError": null
+    }
+  },
+  "surfaceFamilyQualifications": {
+    "settled": [],
+    "final": []
+  },
+  "allSurfaceFamiliesAccepted": false,
+  "screenshotReview": {
+    "inspected": true,
+    "confirmed": [
+      "Nonblank public 3D scene with roof/facade geometry and shadows",
+      "Visible vehicles and pedestrians on source streets",
+      "A click on the inspected roof selected the same canonical building and displayed its outline",
+      "Building card completed loading, showed the occupancy row and an explicit visual-synthesis notice"
+    ],
+    "artisticEquivalenceClaim": false
+  },
+  "filesVerified": [
+    {
+      "path": "index.html",
+      "bytes": 868,
+      "sha256": "c683db02efacae22648e8f9e78126aed3a56cb8225c8e55a80844c1732ed0150"
+    },
+    {
+      "path": "runtime-config.json",
+      "bytes": 1397,
+      "sha256": "0c353d936db1c95e735714eb5de470e11e4800b3f33c5e7cf819ea59ccec38b8"
+    },
+    {
+      "path": "city-visual-activation.json",
+      "bytes": 502,
+      "sha256": "1666741146e054117c4b6d0ca4b571f508ba1a119ce2daa1423b18fef68c18cc"
+    },
+    {
+      "path": "assets/BufferGeometryUtils--D7iFRyr.js",
+      "bytes": 730324,
+      "sha256": "864388060b490ee9b22bd0e4edca4c98dca4d0fc20849b0978f87716845ff020"
+    },
+    {
+      "path": "assets/CityDemoProviderV2-RyDJ5PX7.js",
+      "bytes": 156445,
+      "sha256": "27af74205a2cfda70d585e4e952908a80baa2c393bb739e3073ee6ffbdef5c3f"
+    },
+    {
+      "path": "assets/DemoCity-IHeg0hbD.js",
+      "bytes": 647609,
+      "sha256": "c7717eca1e831059c50071d760c7df98151a70fe8c16c68dd1c02967aa4fa934"
+    },
+    {
+      "path": "assets/DemoCity-sH6OMVG6.css",
+      "bytes": 88065,
+      "sha256": "b051e495b8fa2f6428bc2105adda3c4e3df8fe8cea3d223fa703d5502acabfe0"
+    },
+    {
+      "path": "assets/TiledGameScene-CdMDPMCS.js",
+      "bytes": 481990,
+      "sha256": "7135646c878e1364dfaece03f2b43f72ceb51f3983ca4f3277a7b6ceac0be57a"
+    },
+    {
+      "path": "assets/TiledGameScene-sty9272m.css",
+      "bytes": 337,
+      "sha256": "216ed69a9c5445a29b2f9812d46ff8bac125bb53406727fe8bd642fb20ed047d"
+    },
+    {
+      "path": "assets/analytics-ClVA_q3b.js",
+      "bytes": 33350,
+      "sha256": "48d591fa6235539bfd7cdeb88463bca0db94ee3af6fa6f3ba1fa631edb58bf45"
+    },
+    {
+      "path": "assets/basis_transcoder-o4Hde_L7.js",
+      "bytes": 57529,
+      "sha256": "8478b5b6d6b74e7d3082b89f6417321d8d1dc0307f2b30d4484bb11b441696a1"
+    },
+    {
+      "path": "assets/dist-CHXDEJ1F.js",
+      "bytes": 309136,
+      "sha256": "2f15d202d5170402068d1f9de59fb9c5d18215dc22238c80ad5ffd926ca6416f"
+    },
+    {
+      "path": "assets/dist-CJLMbLRZ.js",
+      "bytes": 127140,
+      "sha256": "26a78b5aae524e84a944170cc55f820be17fade1e492755c80109d35a630e2d2"
+    },
+    {
+      "path": "assets/gameMotionWorker-CDb6ZMV4.js",
+      "bytes": 377269,
+      "sha256": "880949b3126ed572ef7ecb78bcc3635b0bb5bdef81903bc7c4ecb81d6587225f"
+    },
+    {
+      "path": "assets/gameSurfaceWorker-EtRoIplO.js",
+      "bytes": 478317,
+      "sha256": "7873c4cf88321179832d9d7ff284cbc81edc1adf4620a1f97aff1a84e6701f12"
+    },
+    {
+      "path": "assets/index-D3cWDJux.js",
+      "bytes": 293442,
+      "sha256": "dfff466ae920dc8d4b994731f368fc8c6d21c6971f97e0f89317389099646d6c"
+    },
+    {
+      "path": "assets/index-va0D9hrK.css",
+      "bytes": 41017,
+      "sha256": "76d5555fca9dd9143578e7eb4c87cbcbda1a193ce013b870b80022a38d30662a"
+    },
+    {
+      "path": "assets/livingSimulation.worker-HecFmP24.js",
+      "bytes": 11935,
+      "sha256": "4a43cbc7865733c9644aa29e8a5b176b07f2d9940815c211f8e7e02bfd654ce1"
+    },
+    {
+      "path": "assets/maplibre-gl-Dw-skPj7.js",
+      "bytes": 980524,
+      "sha256": "f325dba04ec19ea1eecfdb49e74f36cc3cae3350ce7b8d7ab09ee5f3f2d5fc74"
+    },
+    {
+      "path": "assets/maplibre-gl-worker-Dusy17c7.js",
+      "bytes": 470263,
+      "sha256": "6bdabd873cdf47641a352beef9739087bc847959cf5be5f413f3b9f98b8ab537"
+    },
+    {
+      "path": "assets/movementContinuity-DwqrWHBo.js",
+      "bytes": 902,
+      "sha256": "aff354fcf4b93c771eec337b784cc10bb3b5ff758d876d8e68fea6673986acdc"
+    },
+    {
+      "path": "assets/probe-log-KWRgf7TU.js",
+      "bytes": 7573,
+      "sha256": "c68384ea90a56d966d0089baba8771e6b667159bdeb5a3d4af195db44f95ee4f"
+    },
+    {
+      "path": "assets/rolldown-runtime-hePW80VL.js",
+      "bytes": 716,
+      "sha256": "580ad8c58061a4dde99bde0a56905e382f0568516ee2f5b84dbfb52085709021"
+    },
+    {
+      "path": "assets/scenePmtilesProtocol-DnZbmoSB.js",
+      "bytes": 4150,
+      "sha256": "7a60ff53ad8c68fe478828c607aa77cb9627cd7498d14c34c6abfd06b0d5929f"
+    },
+    {
+      "path": "assets/threeAdapter-C4TUGU_o.js",
+      "bytes": 60537,
+      "sha256": "35b43db29dbc9521106a5c9c33dc5abc74bb042f2634584476b815778392f3d3"
+    },
+    {
+      "path": "assets/types-BSlThUXW.js",
+      "bytes": 1175,
+      "sha256": "8b81ee807f3ccd4bbd5378595001bd4768dabe7901ab51b49c905f424362e768"
+    },
+    {
+      "path": "assets/webgl-developer-tools-BKrekbt2.js",
+      "bytes": 147587,
+      "sha256": "ccc7a8bb4f2725ebe8733d8d11bfed533d4b49433de3b25ba539dec171339ac7"
+    },
+    {
+      "path": "assets/webgl-device-PrvwZn_z.js",
+      "bytes": 113002,
+      "sha256": "38f29dc547bcf55faebcbd36faeeb9eb239eb12af3034a85a72ec618dfbbc882"
+    }
+  ],
+  "artifacts": [
+    {
+      "filename": "final-public-minimal-roof/report.json",
+      "bytes": 50414,
+      "sha256": "3889c2ddbb212d23a055a18091c15b7415df4d118c32367e1eb86176414e03a0"
+    },
+    {
+      "filename": "current-public-smoke-20260909/public-scene.png",
+      "bytes": 629096,
+      "sha256": "8ba2d251b22ae65a7ddb375e1306d6f6781235034fa1b2261cb9265c08f24a1e"
+    },
+    {
+      "filename": "current-public-smoke-20260909/public-building-card.png",
+      "bytes": 625210,
+      "sha256": "f2908a3522c51cf9fe7f863be0c39ecb440b1f49ac07487464f4b157d0ef28db"
+    }
+  ],
+  "firstAttempt": {
+    "artifact": "final-public-minimal/report.json",
+    "sha256": "a95177031d82f693baffae11b23a8fbea828124b894995464a2c9853c593b7c7",
+    "classification": "All core checks passed; six arbitrary center offsets landed on open pavement and selected no object. Screenshot inspection provided the roof coordinates for the single repeat. No production changes or canonical ID injection were used."
+  },
+  "helper": {
+    "files": [
+      {
+        "filename": "public-minimal-smoke.mjs",
+        "sha256": "3f6be8e8c72a0fdfad400ce1c311b7dc539697ae9e076eadea25996702d56ec2"
+      },
+      {
+        "filename": "public-minimal-smoke-core.mjs",
+        "sha256": "a2cf6e427755b8db5972702d69f835d1c7d77ca2a2f560242d0cdd3698a93036"
+      },
+      {
+        "filename": "public-minimal-smoke.test.mjs",
+        "sha256": "fef5de599602a17dbb4840437b4e3423cba87fa0ff1a43a6791ca48b135054a5"
+      }
+    ],
+    "offlineTestsPassed": 7,
+    "syntaxPassed": true,
+    "oldPublicRunnerUnchanged": true
+  },
+  "limitations": [
+    "This single-scene smoke does not repeat the 300 zoom states, seven districts, deliberate corrupt/delayed asset failures, context restoration, full ownership partition or performance acceptance.",
+    "Exact reviewed dist hashes prove artifact equality; the release owner must separately attest the commit/Actions/deployment chain.",
+    "Production DOM exposes mesh IDs and source counts, not native GPU IDs.",
+    "Screenshots require human review; no claim of SimCity visual equivalence.",
+    "The core smoke can pass while a surface family explicitly retains prior/native geometry after a budget rejection; family diagnostics and qualifications are recorded separately and are not an all-ground acceptance.",
+    "All six surface Worker families were ready at this close pose, with no family qualifications; this does not close known budget-retention limitations at other poses.",
+    "User requested immediate publication of the current version. The latest full 300-zoom/seven-district/five-fault suite and a public FPS/moving-camera benchmark remain deferred.",
+    "No paid chat was executed during this graphics smoke; previously verified chat receipts remain separate.",
+    "KHR absence and pinned Three185 PMREM adapter limits remain documented in renderer-shader-readiness-20260909.json."
+  ]
+}

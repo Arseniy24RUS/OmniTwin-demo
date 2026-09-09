@@ -24,8 +24,12 @@ passed; 17 bulk-asset tests were skipped in the isolated build. The new visual
 release `7ee3bd08c9973dd94ce727a6e3b148513e4dd125f2c82531541cf0b34971c83e`
 uploaded 19,510 objects (8,369,746,051 bytes); all remote metadata and 44
 anonymous body/CORS samples passed. The next small activation commit switches
-the visual pin and clean-URL default to V2. Remaining work for this requested
-release is deployment confirmation and the bounded actual public scene smoke.
+the visual pin and clean-URL default to V2. This requested publication is now
+complete: activation commit `4c62a5a`, successful Pages run 34378878812, and
+the actual public smoke passed all 24 checks with no browser errors. Public
+3D buildings, people, cars, both Workers, play/pause and canonical building
+selection were verified. The remaining graphics work is explicitly deferred
+to the next iteration, rather than declared artistically complete.
 
 ### Reopened: actual camera movement and visual consistency — 2026-09-09
 
