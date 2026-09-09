@@ -34,11 +34,24 @@ Frontend: **259/259 тестов в 41 файле**, TypeScript без ошиб�
 
 Все FPS/временные измерения в этой кампании — `contaminated_diagnostic`: национальный расчёт не останавливался, фоновая нагрузка не контролировалась. Не заявляется чистый benchmark.
 
+## Публичный checkpoint 1
+
+Frontend `ae36599a3a34d3ab0f8ad7c989c83db1570603e5` опубликован через [успешный GitHub Actions run](https://github.com/Arseniy24RUS/OmniTwin-demo/actions/runs/34167799882). Pages отдаёт `assets/index-D0VRbsPL.js`. Повторный реальный Playwright непосредственно на публичном URL: **4/4, 40,8 с**, desktop и portrait, без чата/платных LLM-запросов. Все **32 публичных PNG** открыты и приняты для этого узкого checkpoint. Оба paused окна: 0 новых кадров за 2200 мс. Backend, Storage, официальные данные и default legacy не переключались.
+
 ## Что не готово к выпуску
 
-1. Проверить checkpoint 1 после публикации на настоящем GitHub Pages; локальная production mobile QA закрыта.
-2. Полный V2 город: улучшить распределение дальних потоков по viewport, проверить видимую плотность улиц, реальные clicks/пагинацию крупного дома и ТЦ во всех нужных сценариях. Счётчик instances не заменяет видимость.
-3. Выложить verified immutable assets в отдельный Firebase-проект, развернуть совместимый backend, проверить канонические V2 профили и только затем атомарно активировать набор. По умолчанию пока legacy.
-4. Проверить release performance при контролируемой фоновой нагрузке; не подменять это кратким функциональным прогоном.
+### Дополнительный публичный material hotfix, 08.09.2026
+
+Физический просмотр regression PNG после переходов через аналитику обнаружил новый путь потери фасадов: atlas-ready приходил во время `isStyleLoaded=false`, а повтор того же policy отбрасывался. `MapStyleController` теперь сохраняет pending reconciliation и применяет последний policy на `sourcedata/idle`; после успеха повторные idle не изменяют слои и не вызывают постоянный repaint. Три characterization failures воспроизведены до исправления; 22/22 узких material/runtime теста прошли.
+
+Отдельный чистый worktree на `21ee9a4543f7ee1acc4004fe5c11aea043490724` использован для production build и headed desktop Playwright `textured city survives analytics, Browser Back and reload`. Локальная серия `omnitwin-material-back-release-20260908`: 1/1, 8,4 с; все шесть исходных viewport/fullpage PNG открыты и приняты именно для сохранности материалов. В shared local dependencies генератор лицензий обнаружил `@loaders.gl/core 4.4.4` вместо lockfile 4.4.5; зависимости исходного OmniTwin не изменялись, локальная среда не объявляется идентичной CI. TypeScript/build и проверка публичного пакета прошли.
+
+[GitHub Actions run 34192668761](https://github.com/Arseniy24RUS/OmniTwin-demo/actions/runs/34192668761) выполнил чистую установку lockfile, проверки и публикацию успешно. Повторный headed Playwright уже на Pages: серия `omnitwin-material-back-pages-20260908`, 1/1, 12,0 с; все шесть PNG открыты. Начальный вид, Browser Back и reload сохраняют текстурированные фасады и прежнюю камеру. Публичный default, данные и backend не переключались. Это не visual gate полного V2 города и не benchmark FPS.
+
+### Оставшиеся gates
+
+1. Полный V2 город: улучшить распределение дальних потоков по viewport, проверить видимую плотность улиц, реальные clicks/пагинацию крупного дома и ТЦ во всех нужных сценариях. Счётчик instances не заменяет видимость.
+2. Выложить verified immutable assets в отдельный Firebase-проект, развернуть совместимый backend, проверить канонические V2 профили и только затем атомарно активировать набор. По умолчанию пока legacy.
+3. Проверить release performance при контролируемой фоновой нагрузке; не подменять это кратким функциональным прогоном.
 
 Научные исходники/расчёты и ранее подготовленные посторонние изменения Yandex не затрагивались. Superseded **сгенерированные демо-артефакты**, не исходники пользователя, перемещены в восстанавливаемые временные архивы; текущие manifest hashes и чанки сохранены.

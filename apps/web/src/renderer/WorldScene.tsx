@@ -131,6 +131,7 @@ function longitudeDistanceDegrees(left: number, right: number): number {
 }
 
 export function WorldScene({
+  verifiedCityBuildings = null,
   aggregateRoadFlows = null,
   presentationMovement = null,
   onMapFeatures,
@@ -394,6 +395,7 @@ export function WorldScene({
         ? legacyBootstrapScenePack?.sourceDetailStatus ?? null
         : null;
     const runtime = new SceneRuntime({
+      verifiedCityBuildings,
       aggregateRoadFlows,
       presentationMovement,
       onMapFeatures: (features) => onMapFeaturesRef.current?.(features),
@@ -472,6 +474,7 @@ export function WorldScene({
     if (!cameraResolved) return;
     const runtime = runtimeRef.current;
     runtime?.updateScene({
+      verifiedCityBuildings,
       aggregateRoadFlows,
       presentationMovement,
       camera: targetCamera,
@@ -492,6 +495,7 @@ export function WorldScene({
   }, [
     cameraResolved,
     aggregateRoadFlows,
+    verifiedCityBuildings,
     presentationMovement,
     presentationMinutes,
     presentationClock,

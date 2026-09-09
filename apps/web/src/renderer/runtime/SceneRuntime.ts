@@ -17,6 +17,7 @@ import {
   loadLocalMapStyle,
 } from '../mapStyle';
 import { MapStyleController } from '../mapStyleController';
+import { VerifiedCityBuildingLayer, verifiedCityBuildingDescriptor } from '../verifiedCityBuildingLayer';
 import { livingFrameAdvanceDue } from './livingFrameCadence';
 import { applyCityTilePack, loadCityTilePack } from '../cityTilePack';
 import {
@@ -28,6 +29,9 @@ import { rendererQualityProfile } from '../qualityProfile';
 import {
   BUILDING_PICK_LAYER_IDS,
   BUILDING_HEIGHT_EXPRESSION,
+  BUILDING_BASE_HEIGHT_EXPRESSION,
+  buildingHighlightFilter,
+  resolveRendererBuildingPick,
   resolveRendererBuildingSelection,
 } from '../buildingSource';
 import {
@@ -300,6 +304,7 @@ export interface SceneRuntimeDependencies {
 }
 
 export interface SceneRuntimeOptions {
+  verifiedCityBuildings?: import('../verifiedCityBuildingTypes').VerifiedCityBuildingSnapshot | null;
   aggregateRoadFlows?: import('../aggregateRoadFlow').AggregateRoadFlowSnapshot | null;
   presentationMovement?: WorldSceneMovementPayload | null;
   onMapFeatures?: (features: RendererMapFeatureSnapshot) => void;
@@ -1160,6 +1165,10 @@ export class SceneRuntime {
   private universalFallbackStyle: MapStyle | null = null;
   private universalBuildingFallbackApplied = false;
   private activeBuildingSource: MapSourceDescriptorV1 | null = null;
+  private readonly verifiedCityBuildingLayer = new VerifiedCityBuildingLayer();
+  private publishedVerifiedBuildingSource: unknown = null;
+  private publishedVerifiedBuildingSignature: string | null = null;
+  private buildingSourceBeforeExact: MapSourceDescriptorV1 | null = null;
   private universalAppearanceFrame: UniversalAppearanceFrame | null = null;
   private readonly baseMapOnly: boolean;
   private scenePack: WorldScenePackBinding | null;
@@ -1348,6 +1357,7 @@ export class SceneRuntime {
     );
     this.clockAnchorNowMs = this.dependencies.now();
     this.currentSnapshot = {
+      verifiedCityBuildings: options.verifiedCityBuildings ?? null,
       aggregateRoadFlows: options.aggregateRoadFlows ?? null,
       presentationMovement: options.presentationMovement,
       camera: options.camera,
@@ -1629,20 +1639,25 @@ export class SceneRuntime {
     const map = this.map;
     if (!map?.isStyleLoaded() || !map.getSource('openmaptiles')) return;
     const layerId = 'demo-selected-building';
-    const featureId = id?.startsWith('openmaptiles_buildings:') ? id.slice('openmaptiles_buildings:'.length) : null;
+    const exact = this.verifiedCityBuildingLayer.snapshot;
+    const sourceId = exact ? UNIVERSAL_BUILDING_SOURCE_ID : 'openmaptiles';
+    const featureId = exact ? id && exact.canonicalIds.has(id) ? id : null
+      : id?.startsWith('openmaptiles_buildings:') && !/\d0$/u.test(id) ? id.slice('openmaptiles_buildings:'.length) : null;
     if (!featureId) {
       if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', 'none');
       return;
     }
-    const filter = ['==', ['to-string', ['coalesce', ['id'], ['get', 'id']]], featureId] as unknown as NonNullable<Parameters<MapLibreMap['setFilter']>[1]>;
+    const filter = buildingHighlightFilter(featureId, Boolean(exact)) as unknown as NonNullable<Parameters<MapLibreMap['setFilter']>[1]>;
+    const previousLayer = map.getLayer(layerId) as unknown as { source?: string } | undefined;
+    if (previousLayer && previousLayer.source !== sourceId) map.removeLayer(layerId);
     if (map.getLayer(layerId)) {
       map.setFilter(layerId, filter);
       map.setLayoutProperty(layerId, 'visibility', 'visible');
     } else {
-      map.addLayer({ id: layerId, type: 'fill-extrusion', source: 'openmaptiles', 'source-layer': 'building',
+      map.addLayer({ id: layerId, type: 'fill-extrusion', source: sourceId, ...(exact ? {} : { 'source-layer': 'building' }),
         filter, paint: { 'fill-extrusion-color': '#66d4c7', 'fill-extrusion-opacity': 0.65,
           'fill-extrusion-height': ['+', BUILDING_HEIGHT_EXPRESSION, 0.8] as never,
-          'fill-extrusion-base': 0, 'fill-extrusion-vertical-gradient': true } });
+          'fill-extrusion-base': BUILDING_BASE_HEIGHT_EXPRESSION as never, 'fill-extrusion-vertical-gradient': true } });
     }
   }
 
@@ -1770,6 +1785,7 @@ export class SceneRuntime {
     this.telemetry.notifyAdaptersChanged();
     this.updateContinuousFrames();
     if (this.rendererMode === 'universal_lowpoly' && this.map && this.loaded) {
+      this.syncVerifiedCityBuildings(this.map);
       this.settleRendererPerformanceIfIdle(this.map);
       this.applyUniversalRenderPhase(this.map, this.resolveUniversalRenderPhase());
       this.applyUniversalAppearance(this.map, this.absolutePresentationSeconds);
@@ -1857,6 +1873,40 @@ export class SceneRuntime {
     if (this.rendererMode === 'universal_lowpoly' && this.map && this.loaded) {
       this.applyUniversalSourceTileLod(this.map, this.universalRenderPhase);
     }
+  }
+
+  private syncVerifiedCityBuildings(map: MapLibreMap): void {
+    if (!this.isActiveMap(map) || this.rendererMode !== 'universal_lowpoly') return;
+    const requested = this.currentSnapshot.verifiedCityBuildings ?? null;
+    if (!requested && this.verifiedCityBuildingLayer.status === 'disabled') return;
+    void this.verifiedCityBuildingLayer.update(map, requested).then(changed => {
+      if (!this.isActiveMap(map)) return;
+      const layer = this.verifiedCityBuildingLayer;
+      const snapshot = layer.snapshot;
+      this.root.dataset.exactBuildingSourceStatus = layer.status;
+      this.root.dataset.exactBuildingSourceError = layer.error ?? 'none';
+      this.root.dataset.exactBuildingCount = String(snapshot?.data.features.length ?? 0);
+      this.root.dataset.exactBuildingCoverage = snapshot?.coverage ?? 'unresolved';
+      this.root.dataset.exactBuildingCells = String(snapshot?.cells.length ?? 0);
+      const source = map.getSource(UNIVERSAL_BUILDING_SOURCE_ID);
+      if (!changed || (this.publishedVerifiedBuildingSource === source
+        && this.publishedVerifiedBuildingSignature === (snapshot?.signature ?? null))) return;
+      this.publishedVerifiedBuildingSource = source;
+      this.publishedVerifiedBuildingSignature = snapshot?.signature ?? null;
+      if (snapshot && this.activeBuildingSource?.id !== verifiedCityBuildingDescriptor(snapshot.datasetVersion).id) {
+        this.buildingSourceBeforeExact = this.activeBuildingSource;
+      }
+      this.updateBuildingSourceSelection({ active: snapshot ? verifiedCityBuildingDescriptor(snapshot.datasetVersion)
+        : this.buildingSourceBeforeExact ?? OPENMAPTILES_BUILDINGS_SOURCE,
+        state: 'ready', fallbackActive: false, reason: snapshot ? 'verified_active_cells_only' : 'basemap_overview_or_incomplete_exact_coverage' });
+      if (!snapshot) this.buildingSourceBeforeExact = null;
+      this.styleController?.apply();
+      this.setHighlightedBuilding(this.highlightedBuildingId);
+      this.applyPerformanceGovernorFeatureVisibility(map);
+      this.applyUniversalAppearance(map, this.absolutePresentationSeconds, true);
+      this.publishMapFeatures(map, readMapCamera(map));
+      this.frameScheduler?.invalidate();
+    });
   }
 
   dispose(): void {
@@ -2144,14 +2194,7 @@ export class SceneRuntime {
         // One click produces exactly one MapLibre feature query. Decoration
         // layers are not present in `layers`, so they cannot steal selection.
         const features = map.queryRenderedFeatures([x, y], { layers });
-        for (const feature of features) {
-          const selection = resolveRendererBuildingSelection(
-            this.activeBuildingSource,
-            feature,
-          );
-          if (selection) return selection;
-        }
-        return null;
+        return resolveRendererBuildingPick(this.activeBuildingSource, features, this.verifiedCityBuildingLayer.snapshot?.canonicalIds);
       },
       allowCpuEntityPicking: this.rendererMode === 'legacy_scene_debug',
       readTargetCamera: () => this.targetCamera,
@@ -2238,7 +2281,7 @@ export class SceneRuntime {
       this.root.dataset.mapProviderErrorCount = String(this.providerErrors);
       this.root.dataset.mapProviderLastError = message || 'unknown_map_provider_error';
       if (this.rendererMode === 'universal_lowpoly') {
-        if (this.isUniversalBuildingError(event, message)) {
+        if (this.isUniversalBuildingError(event, message) && !this.currentSnapshot.verifiedCityBuildings) {
           this.applyOpenMapTilesBuildingFallback(map, message || 'overture_runtime_error');
         }
         // Building and tile failures are degradations of a retained MapLibre
@@ -2257,6 +2300,7 @@ export class SceneRuntime {
       this.appliedUniversalSourceTileLod = null;
       this.vegetationStyleEpoch += 1;
       this.vegetationCacheKey = null;
+      this.syncVerifiedCityBuildings(map);
       this.styleController?.apply();
       this.setHighlightedBuilding(this.highlightedBuildingId);
       this.applyUniversalRenderPhase(map, this.resolveUniversalRenderPhase(readMapCamera(map)), true);
@@ -2363,7 +2407,7 @@ export class SceneRuntime {
           for (const horizontal of [0.5, 0.4, 0.6, 0.3, 0.7]) {
             const x = Math.round(canvas.clientWidth * horizontal), y = Math.round(canvas.clientHeight * vertical);
             const feature = map.queryRenderedFeatures([x, y], { layers })[0];
-            const selection = feature && resolveRendererBuildingSelection(this.activeBuildingSource, feature);
+            const selection = feature && resolveRendererBuildingSelection(this.activeBuildingSource, feature, this.verifiedCityBuildingLayer.snapshot?.canonicalIds);
             if (selection && !buildingCandidates.some((item) => item.id === selection.canonicalId)) buildingCandidates.push({ id: selection.canonicalId, kind: 'building', x, y, onCanvas: true });
           }
           if (buildingCandidates.length >= 4) break;
@@ -2386,6 +2430,7 @@ export class SceneRuntime {
   private handleMapLoad(map: MapLibreMap): void {
     if (!this.isActiveMap(map) || this.loaded) return;
     this.loaded = true;
+    this.syncVerifiedCityBuildings(map);
     this.setHighlightedBuilding(this.highlightedBuildingId);
     this.dependencies.clearTimeout(this.loadTimer);
     this.loadTimer = undefined;
@@ -4077,6 +4122,10 @@ export class SceneRuntime {
   }
 
   private disposeMapSurface(): void {
+    this.verifiedCityBuildingLayer.dispose();
+    this.publishedVerifiedBuildingSource = null;
+    this.publishedVerifiedBuildingSignature = null;
+    this.buildingSourceBeforeExact = null;
     this.dependencies.clearTimeout(this.loadTimer);
     this.loadTimer = undefined;
     this.dependencies.clearTimeout(this.vegetationRefreshTimer);

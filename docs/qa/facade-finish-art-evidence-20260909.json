@@ -1,0 +1,436 @@
+{
+  "contract": "OmniTwinFacadeFinishArtEvidenceV1",
+  "startedAt": "2026-09-09T12:53:39.312Z",
+  "completedAt": "2026-09-09T12:57:52.012Z",
+  "scope": "Independent static visual review of the current canonical facade palette and quiet-glazing-v1 in three controls plus KAL and MET; ten requested desktop/mobile frames and one corrected material diagnostic frame.",
+  "verdict": {
+    "glazing": "visual_improvement_confirmed",
+    "staticRenderingInReviewedViews": "no_new_blocker_observed",
+    "overallSimCity2013ArtTarget": "open_not_certified"
+  },
+  "sourceBefore": "8d400f10ebc02db8b892187cf9b86d6bb7181700983b05afd60fe334481f1b18",
+  "sourceAfter": "f6a1dc8e5d783957928fa18cbcfc5ea4e0cedb962e33b1b42858814703e3c03d",
+  "changedFiles": [
+    {
+      "path": "apps/web/src/renderer/game/gameFacadeAppearance.ts",
+      "before": "491b1d56fb2f3815801c63c49bf970bcdeccc456050a974c9f7f348b47db1450",
+      "after": "38fe3e4bc6f4f437bc167c47d758404882a10fa1342a4a5b8fd62d7987e63c3b"
+    }
+  ],
+  "sourceChangeReview": "The only main-suite source change was gameFacadeAppearance.ts. The earlier and current implementations were read: array allocation in scalar colour validation became direct scalar checks, a comment clarified the neutral tint bucket, and metadata recorded matching gray balcony-part treatment. Palette values, recolouring calculation and geometry were unchanged. The suite is still explicitly not a byte-identical whole-source run.",
+  "stableModules": [
+    {
+      "path": "apps/web/src/renderer/game/TiledGameLayer.ts",
+      "unchanged": true,
+      "sha256": "0c6637d396edd04f73960168b00d1ef9fd5acccb470598e3968e237846bd019c"
+    },
+    {
+      "path": "apps/web/src/renderer/game/TiledGameScene.tsx",
+      "unchanged": true,
+      "sha256": "25f3290a123d5e70c8c01cddd1408b181e94f09b7b1527508ceb80b01ce5df9c"
+    },
+    {
+      "path": "apps/web/src/renderer/game/gameWindowMaterial.ts",
+      "unchanged": true,
+      "sha256": "b83c21f4f3e32b581c9217762273a68bdfb6cdb2180e9d617a80eb3618c9188c"
+    },
+    {
+      "path": "apps/web/src/renderer/game/gameRoofMaterial.ts",
+      "unchanged": true,
+      "sha256": "9d5ae64eb9f1d100fe0d4926fc17c67c2c5a8d3162aa37667c4d0e8b7a13ecfd"
+    },
+    {
+      "path": "apps/web/src/renderer/game/GameLandUseGround.ts",
+      "unchanged": true,
+      "sha256": "60e32811ef0ef30e5adc24b1248e4cf90bf5a29dc8c323b0d8e401b3722b5ba5"
+    },
+    {
+      "path": "apps/web/src/renderer/game/gameLandUseGroundMaterial.ts",
+      "unchanged": true,
+      "sha256": "31d28190b631aab53b1392c38e7dc35d2717070e9c9487953a8e057956eddeba"
+    }
+  ],
+  "method": "Fresh pages in a separate headless Chromium browser, real full navigation per pose, deviceScaleFactor 1. A context-local diagnostic module wrapper exposed the layer. Each view waited for no pending or staged geometry, all native tiles loaded, and six unchanged diagnostic snapshots at 750ms intervals. A further 2200ms pause interval was counted before the actual screenshot. Production files were not edited by this review.",
+  "observations": [
+    {
+      "scene": "user desktop/mobile",
+      "finding": "Foreground roofs, facades, road surfaces and source paths stay visible. Daytime cream window cards no longer dominate the facade; the small reveals read dark and recessed. Broad grass areas and car silhouettes remain stylized."
+    },
+    {
+      "scene": "courtyard desktop/mobile",
+      "finding": "Quiet glazing reduces the glaring pale-on-blue checkerboard, with darker interiors and retained frame geometry. The actual inner court remains open and its ground is preserved. The camera is dominated by a very large plain gray roof with sparse repeated box equipment; this remains a content/art limitation."
+    },
+    {
+      "scene": "waterfront desktop/mobile",
+      "finding": "The source shoreline stays continuous, water has soft multidirectional ripples without the original periodic strips, and the land/road boundaries remain intact. These cameras do not frame the complete bridge, so they do not independently accept bridge continuity."
+    },
+    {
+      "scene": "KAL desktop/mobile",
+      "finding": "Bright alternating window cards are visibly subdued. The canonical facade palette is active but adjacent long panel blocks still look similar in shape, tone and window rhythm. No missing native/detailed building representation is visible in these settled frames."
+    },
+    {
+      "scene": "MET desktop/mobile",
+      "finding": "The previous repeated diagonal roof stamp remains absent. Roofs are quiet, source woodland has organic crown shapes and irregular placements, and the unknown land strip remains unchanged. Garage roofs still read as simple slabs."
+    }
+  ],
+  "materialProbe": {
+    "sourceBefore": "f6a1dc8e5d783957928fa18cbcfc5ea4e0cedb962e33b1b42858814703e3c03d",
+    "sourceAfter": "f6a1dc8e5d783957928fa18cbcfc5ea4e0cedb962e33b1b42858814703e3c03d",
+    "sourceUnchanged": true,
+    "loadedWindowMaterials": 18,
+    "names": [
+      "windows",
+      "windowLight"
+    ],
+    "versions": [
+      "quiet-glazing-v1"
+    ],
+    "roughness": [
+      0.32
+    ],
+    "collectorCorrection": "The main suite optional collector matched window rather than windows/windowLight, so its empty glazing arrays are not material-absence evidence. The supplemental KAL collector uses the actual names and finds quiet-glazing-v1 on all 18 loaded window materials."
+  },
+  "validation": {
+    "requestedFrames": 10,
+    "supplementalFrames": 1,
+    "visuallyOpenedImages": 11,
+    "browserErrors": [],
+    "maximumPauseFramesIn2200ms": 0,
+    "allSettled": true,
+    "productionEditsByReviewer": 0,
+    "newTestClaims": false
+  },
+  "artifacts": [
+    {
+      "filename": "facade-finish-final-review/user-desktop.png",
+      "sha256": "42543cdcf463ba1e2f453013ce517a42caf2b287881cf66eef9db4893b2e58a8",
+      "bytes": 641610,
+      "pose": "user",
+      "mode": "desktop",
+      "viewport": [
+        1280,
+        800
+      ],
+      "capturedAt": "2026-09-09T12:53:58.217Z",
+      "camera": {
+        "lon": 61.40335931261333,
+        "lat": 55.166641128116765,
+        "zoom": 18.5,
+        "pitch": 46.49661799282392,
+        "bearing": -172.97699800600026,
+        "minutes": 707.7335833333341,
+        "paused": 1
+      },
+      "visuallyOpened": true,
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "settledSnapshots": 6,
+      "visibleTiles": 6,
+      "triangles": 210186,
+      "geometryBytes": 33380928,
+      "appliedFacadeBatches": 12
+    },
+    {
+      "filename": "facade-finish-final-review/user-mobile.png",
+      "sha256": "6490e2958db71dd776773a7eaeb9bfecf6f20dc038b6f9786027746f337bea35",
+      "bytes": 151357,
+      "pose": "user",
+      "mode": "mobile",
+      "viewport": [
+        390,
+        844
+      ],
+      "capturedAt": "2026-09-09T12:54:16.186Z",
+      "camera": {
+        "lon": 61.40335931261333,
+        "lat": 55.166641128116765,
+        "zoom": 18.5,
+        "pitch": 46.49661799282392,
+        "bearing": -172.97699800600026,
+        "minutes": 707.7335833333341,
+        "paused": 1
+      },
+      "visuallyOpened": true,
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "settledSnapshots": 6,
+      "visibleTiles": 3,
+      "triangles": 134078,
+      "geometryBytes": 20595456,
+      "appliedFacadeBatches": 7
+    },
+    {
+      "filename": "facade-finish-final-review/courtyard-desktop.png",
+      "sha256": "5838c0ba385d60835a1bf970b1383061a935106a1dbd5b9ff7ccf52a35aa47d2",
+      "bytes": 437564,
+      "pose": "courtyard",
+      "mode": "desktop",
+      "viewport": [
+        1280,
+        800
+      ],
+      "capturedAt": "2026-09-09T12:54:32.355Z",
+      "camera": {
+        "lon": 61.39086657500001,
+        "lat": 55.170028625,
+        "zoom": 19,
+        "pitch": 55.00000000000001,
+        "bearing": -70,
+        "minutes": 707.7335833333341,
+        "paused": 1
+      },
+      "visuallyOpened": true,
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "settledSnapshots": 6,
+      "visibleTiles": 1,
+      "triangles": 124148,
+      "geometryBytes": 8298720,
+      "appliedFacadeBatches": 1
+    },
+    {
+      "filename": "facade-finish-final-review/courtyard-mobile.png",
+      "sha256": "79f81eecc86b86b01e5d305645240667e81c4a8b7e1e5df7ceab52aa18a251b1",
+      "bytes": 137863,
+      "pose": "courtyard",
+      "mode": "mobile",
+      "viewport": [
+        390,
+        844
+      ],
+      "capturedAt": "2026-09-09T12:54:46.887Z",
+      "camera": {
+        "lon": 61.39086657500001,
+        "lat": 55.170028625,
+        "zoom": 19,
+        "pitch": 55.00000000000001,
+        "bearing": -70,
+        "minutes": 707.7335833333341,
+        "paused": 1
+      },
+      "visuallyOpened": true,
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "settledSnapshots": 6,
+      "visibleTiles": 1,
+      "triangles": 56450,
+      "geometryBytes": 8298720,
+      "appliedFacadeBatches": 1
+    },
+    {
+      "filename": "facade-finish-final-review/waterfront-desktop.png",
+      "sha256": "3cb87eb647dbb027e2c19d4a91ee882d8d87259d68f091cea808113b1dfa24e9",
+      "bytes": 398263,
+      "pose": "waterfront",
+      "mode": "desktop",
+      "viewport": [
+        1280,
+        800
+      ],
+      "capturedAt": "2026-09-09T12:55:05.516Z",
+      "camera": {
+        "lon": 61.40175104141235,
+        "lat": 55.16893869067019,
+        "zoom": 17.9,
+        "pitch": 55.00000000000001,
+        "bearing": 0,
+        "minutes": 707.7335833333341,
+        "paused": 1
+      },
+      "visuallyOpened": true,
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "settledSnapshots": 6,
+      "visibleTiles": 4,
+      "triangles": 44580,
+      "geometryBytes": 8771328,
+      "appliedFacadeBatches": 6
+    },
+    {
+      "filename": "facade-finish-final-review/waterfront-mobile.png",
+      "sha256": "f941952186a1979c55f4d70fc140ccf5811d70194a7da09ccb39003623c007cd",
+      "bytes": 118877,
+      "pose": "waterfront",
+      "mode": "mobile",
+      "viewport": [
+        390,
+        844
+      ],
+      "capturedAt": "2026-09-09T12:55:21.553Z",
+      "camera": {
+        "lon": 61.40175104141235,
+        "lat": 55.16893869067019,
+        "zoom": 17.9,
+        "pitch": 55.00000000000001,
+        "bearing": 0,
+        "minutes": 707.7335833333341,
+        "paused": 1
+      },
+      "visuallyOpened": true,
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "settledSnapshots": 6,
+      "visibleTiles": 1,
+      "triangles": 17756,
+      "geometryBytes": 4783104,
+      "appliedFacadeBatches": 2
+    },
+    {
+      "filename": "facade-finish-final-review/RU-CHE-SET-KAL-desktop.png",
+      "sha256": "a6ca02b03ad91c09242ad97e35b94965909e985a952771f9224fddfc217ec444",
+      "bytes": 578251,
+      "pose": "RU-CHE-SET-KAL",
+      "mode": "desktop",
+      "viewport": [
+        1280,
+        800
+      ],
+      "capturedAt": "2026-09-09T12:55:47.835Z",
+      "camera": {
+        "lon": 61.39759185,
+        "lat": 55.1881126,
+        "zoom": 18.25,
+        "pitch": 55.00000000000001,
+        "bearing": -35,
+        "minutes": 707.7335833333341,
+        "paused": 1
+      },
+      "visuallyOpened": true,
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "settledSnapshots": 6,
+      "visibleTiles": 9,
+      "triangles": 414847,
+      "geometryBytes": 59753088,
+      "appliedFacadeBatches": 18
+    },
+    {
+      "filename": "facade-finish-final-review/RU-CHE-SET-KAL-mobile.png",
+      "sha256": "222ba2ff376fce49558fc547528d857eb77bbd8cb063974946cc2379213882aa",
+      "bytes": 170447,
+      "pose": "RU-CHE-SET-KAL",
+      "mode": "mobile",
+      "viewport": [
+        390,
+        844
+      ],
+      "capturedAt": "2026-09-09T12:56:05.153Z",
+      "camera": {
+        "lon": 61.39759185,
+        "lat": 55.1881126,
+        "zoom": 18.25,
+        "pitch": 55.00000000000001,
+        "bearing": -35,
+        "minutes": 707.7335833333341,
+        "paused": 1
+      },
+      "visuallyOpened": true,
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "settledSnapshots": 6,
+      "visibleTiles": 5,
+      "triangles": 127677,
+      "geometryBytes": 30743712,
+      "appliedFacadeBatches": 9
+    },
+    {
+      "filename": "facade-finish-final-review/RU-CHE-SET-MET-desktop.png",
+      "sha256": "9aaa4acad8a669eba6de8c829b2b37493cbfbe08db3c0bed0347a72ea0f27fe9",
+      "bytes": 424737,
+      "pose": "RU-CHE-SET-MET",
+      "mode": "desktop",
+      "viewport": [
+        1280,
+        800
+      ],
+      "capturedAt": "2026-09-09T12:56:24.938Z",
+      "camera": {
+        "lon": 61.40850385,
+        "lat": 55.2572062,
+        "zoom": 18.25,
+        "pitch": 55.00000000000001,
+        "bearing": -35,
+        "minutes": 707.7335833333341,
+        "paused": 1
+      },
+      "visuallyOpened": true,
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "settledSnapshots": 6,
+      "visibleTiles": 6,
+      "triangles": 82666,
+      "geometryBytes": 11816928,
+      "appliedFacadeBatches": 5
+    },
+    {
+      "filename": "facade-finish-final-review/RU-CHE-SET-MET-mobile.png",
+      "sha256": "948130eebd80f19b0336e89e16e0f529c4ada71a980af831e5109767ad202011",
+      "bytes": 116552,
+      "pose": "RU-CHE-SET-MET",
+      "mode": "mobile",
+      "viewport": [
+        390,
+        844
+      ],
+      "capturedAt": "2026-09-09T12:56:40.693Z",
+      "camera": {
+        "lon": 61.40850385,
+        "lat": 55.2572062,
+        "zoom": 18.25,
+        "pitch": 55.00000000000001,
+        "bearing": -35,
+        "minutes": 707.7335833333341,
+        "paused": 1
+      },
+      "visuallyOpened": true,
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "settledSnapshots": 6,
+      "visibleTiles": 2,
+      "triangles": 16898,
+      "geometryBytes": 2051424,
+      "appliedFacadeBatches": 0
+    },
+    {
+      "filename": "facade-finish-material-probe/RU-CHE-SET-KAL-desktop.png",
+      "sha256": "a6ca02b03ad91c09242ad97e35b94965909e985a952771f9224fddfc217ec444",
+      "bytes": 578251,
+      "pose": "RU-CHE-SET-KAL",
+      "mode": "desktop",
+      "viewport": [
+        1280,
+        800
+      ],
+      "capturedAt": "2026-09-09T12:57:51.879Z",
+      "camera": {
+        "lon": 61.39759185,
+        "lat": 55.1881126,
+        "zoom": 18.25,
+        "pitch": 55.00000000000001,
+        "bearing": -35,
+        "minutes": 707.7335833333341,
+        "paused": 1
+      },
+      "visuallyOpened": true,
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "settledSnapshots": 6,
+      "visibleTiles": 9,
+      "triangles": 414847,
+      "geometryBytes": 59753088,
+      "appliedFacadeBatches": 18
+    }
+  ],
+  "remainingArtPriorities": [
+    "Architectural grouping and rhythm within the existing families would have greater impact than increasing window colour randomness. Preserve canonical shell boundaries, scale and source height.",
+    "The large courtyard roof needs restrained, family-appropriate surface/edge and equipment composition if the SimCity 2013 target is held literally; avoid solving it with a high-contrast repeated texture.",
+    "Ground and vegetation are now more coherent, but the overall scene still looks more like a clean city visualization than a fully authored commercial city-builder environment."
+  ],
+  "limitations": [
+    "This review does not declare equivalence to SimCity 2013 or close the overall artistic gate.",
+    "All captures are daytime paused scenes. Night lighting, dynamic actor movement, GPU pose agreement, 30 FPS and WebGL/fault/camera sweeps are separate checks.",
+    "390x844 is a responsive browser viewport, not a real mobile-device hardware performance result.",
+    "The seven-district static review and ground evidence remain separate earlier artifacts; this run refreshes KAL and MET plus the three requested controls.",
+    "PNG artifacts remain local. This portable document stores filenames and hashes only."
+  ]
+}

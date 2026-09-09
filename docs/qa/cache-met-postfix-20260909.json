@@ -1,0 +1,94 @@
+{
+  "contract": "BuildingCacheRaceBrowserEvidenceV1",
+  "classification": "targeted_functional_verification_not_final_release",
+  "date": "2026-09-09",
+  "catalogSha256": "bca4ff81f5a4c1a8c3517f0b1faeceddd6042cf20d811c70661993ecec72a819",
+  "beforeFix": {
+    "targetResidentBytes": 684288,
+    "rejectedWithAvailableBytes": 199959456,
+    "reason": "Parsed model retired by stale native-bank callback before frontier traversal",
+    "sourceIdsPreserved": true
+  },
+  "afterFix": {
+    "before": {
+      "meshIds": [
+        "openmaptiles_buildings:6939524390",
+        "openmaptiles_buildings:6939524400"
+      ],
+      "camera": {
+        "longitude": 61.40850385,
+        "latitude": 55.2572062,
+        "zoom": 18.25,
+        "pitch": 55.00000000000001,
+        "bearing": -35
+      },
+      "memory": {
+        "geometry": {
+          "committedBytes": 11816928,
+          "stagingBytes": 0,
+          "residentBytes": 11816928,
+          "staging": 0,
+          "pending": 0,
+          "denied": 0,
+          "saturated": false
+        },
+        "textures": 22020102,
+        "vegetation": 549294,
+        "roads": 897502,
+        "landCover": 8160,
+        "trafficSignals": 187688,
+        "courtyardGround": 0
+      },
+      "state": "rendering",
+      "error": null,
+      "loading": false,
+      "frame": 25
+    },
+    "after": {
+      "meshIds": [
+        "openmaptiles_buildings:6939524390",
+        "openmaptiles_buildings:6939524400"
+      ],
+      "camera": {
+        "longitude": 61.40850385,
+        "latitude": 55.2572062,
+        "zoom": 18.25,
+        "pitch": 55.00000000000001,
+        "bearing": -35
+      },
+      "memory": {
+        "geometry": {
+          "committedBytes": 11816928,
+          "stagingBytes": 0,
+          "residentBytes": 11816928,
+          "staging": 0,
+          "pending": 0,
+          "denied": 0,
+          "saturated": false
+        },
+        "textures": 22020102,
+        "vegetation": 549294,
+        "roads": 897502,
+        "landCover": 8160,
+        "trafficSignals": 187688,
+        "courtyardGround": 0
+      },
+      "state": "rendering",
+      "error": null,
+      "loading": false,
+      "frame": 25
+    },
+    "elapsedMs": 2213.899999976158
+  },
+  "tests": {
+    "focused": 37,
+    "passed": true,
+    "typecheck": true
+  },
+  "limitations": [
+    "Real target camera and settled frame verified. The complete camera/fault suite must be rerun after integration freeze.",
+    "This read-only probe is not a GPU memory profiler or pixelwise geometry coverage proof."
+  ],
+  "screenshot": "met-after.png",
+  "screenshotSha256": "75ecfc54bdb01ad6dc40a9f092879473e91b6c47e2c6c915913a3c0a51f2e98d"
+}

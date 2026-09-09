@@ -1,0 +1,1217 @@
+{
+  "contract": "OmniTwinLandUseGroundEvidenceV1",
+  "startedAt": "2026-09-09T12:40:29.120Z",
+  "completedAt": "2026-09-09T12:44:15.679Z",
+  "catalogSha256": "bca4ff81f5a4c1a8c3517f0b1faeceddd6042cf20d811c70661993ecec72a819",
+  "gate": "bounded_ground_change_pass_overall_art_gate_open",
+  "representation": "visual_synthesis",
+  "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+  "method": "An independent local Chromium instance captured 1280x800 desktop and 390x844 mobile viewports. The retained ground object alone was hidden for before and shown for after. QA used a context-local module wrapper to access diagnostics, without changing production files. The exact original user camera was moved to zoom 18.5 for courtyard-scale inspection. All scenes were paused; this is not a hardware-mobile or FPS benchmark.",
+  "sourceDiagnosis": [
+    {
+      "district": "KAL",
+      "sourceLayer": "landuse",
+      "id": 1041403132,
+      "class": "education"
+    },
+    {
+      "district": "KAL",
+      "sourceLayer": "landuse",
+      "id": 28603230,
+      "class": "residential"
+    },
+    {
+      "district": "LEN",
+      "sourceLayer": "landuse",
+      "id": 116968350,
+      "class": "residential"
+    },
+    {
+      "district": "MET",
+      "sourceLayer": "landuse",
+      "id": 1264570642,
+      "class": "garages"
+    },
+    {
+      "district": "MET",
+      "sourceLayer": "landcover",
+      "id": 1013800942,
+      "class": "wood",
+      "treatment": "excluded from neutral ground; existing vegetation surface retained"
+    },
+    {
+      "district": "SOV",
+      "sourceLayer": "landuse",
+      "id": 9368164712,
+      "class": "industrial"
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "apps/web/src/renderer/game/GameLandUseGround.ts",
+      "sha256": "60e32811ef0ef30e5adc24b1248e4cf90bf5a29dc8c323b0d8e401b3722b5ba5"
+    },
+    {
+      "path": "apps/web/src/renderer/game/gameLandUseGroundMaterial.ts",
+      "sha256": "31d28190b631aab53b1392c38e7dc35d2717070e9c9487953a8e057956eddeba"
+    },
+    {
+      "path": "apps/web/src/renderer/game/GameLandUseGround.test.ts",
+      "sha256": "f83e79863dd1852198ac567b9ca3dc67f4998ab5cd43afef801c2f7db666919c"
+    },
+    {
+      "path": "apps/web/src/renderer/game/fixtures/kal-education-landuse.json",
+      "sha256": "a11df254325c9bc40815d9d4a4cb0ae41e5fab8ed26ec42e14cab1dc804b71c7"
+    },
+    {
+      "path": "apps/web/src/renderer/game/fixtures/len-collapsed-native-road.json",
+      "sha256": "3aa677b5030b6861d29627dfe4a0658cd11b843dff535141725156f8a4224a17"
+    },
+    {
+      "path": "apps/web/src/renderer/game/waterTriangulation.ts",
+      "sha256": "5b5b79deb0343e4cff4680718af094783ae9e119dbe3e2d4272a8a9a7eab5603"
+    }
+  ],
+  "sourceBefore": "d32af3719e9d45d44375ee4f1bc554ab4b51466fdae5e964eccb66f688c5b699",
+  "sourceAfter": "d291c153825d9fadd9b395ec38a559577a8ad9cff66e035f2921560273c197dd",
+  "sourceChangedFiles": [
+    {
+      "path": "apps/web/src/renderer/game/TiledGameLayer.ts",
+      "before": "ff7e71e8d1bf736be10b36e9f4605798cfa009a27c18d9ff9aced7389d09dab2",
+      "after": "478d5e4d8694bfcf128f858c91791577ac63aa7d0c59d6024d947990abd229c9"
+    },
+    {
+      "path": "apps/web/src/renderer/game/opposingLaneReservations.ts",
+      "before": "723d27d65f508d125b879128e5f72b3beb53f69eb3b7590c9de08f4013ff6ad7",
+      "after": "9d0456a87350508df21716865d8ac6039d3bc71cb817c55602f45cd3ca6e43d4"
+    },
+    {
+      "path": "apps/web/src/renderer/game/gameFacadeAppearance.ts",
+      "before": null,
+      "after": "491b1d56fb2f3815801c63c49bf970bcdeccc456050a974c9f7f348b47db1450"
+    }
+  ],
+  "groundImplementationUnchangedDuringCapture": true,
+  "masks": [
+    "Exact source water polygons and holes",
+    "Source grass, park, garden, wood and forest polygons",
+    "Complete verified canonical building outer rings, including their courtyards",
+    "Metric CityRoadV2 road corridors",
+    "Native transportation LineString/MultiLineString footpaths absent from the movement road subset"
+  ],
+  "nativeRoadRegression": {
+    "actualSourceId": 891837810,
+    "sourceComponents": 40,
+    "retainedNonzeroComponents": 38,
+    "discarded": "Only exact zero-length clipped native components; malformed coordinates still reject the generation.",
+    "routeOrScientificDataChanged": false
+  },
+  "budgets": {
+    "draws": 1,
+    "geometryAndPreparationBytes": 8388608,
+    "topologyOperations": 4000000,
+    "vertices": {
+      "low": 6144,
+      "medium": 49152,
+      "high": 49152
+    },
+    "policy": "Publish a complete generation atomically or retain the previous viable generation; never publish a truncated polygon. Unknown source classes remain on the base map."
+  },
+  "material": {
+    "color": "#999480",
+    "periodMeters": 256,
+    "broadVariationMeters": 32,
+    "secondaryVariationMeters": 8,
+    "soilVariationMeters": 1,
+    "fineGrainMeters": 0.0625,
+    "groundElevationMeters": 0.006,
+    "receiveShadow": true,
+    "newTextures": 0,
+    "newAnimationLoops": 0,
+    "surveyedSurfaceClaim": false
+  },
+  "validation": {
+    "tests": {
+      "command": "npm run test --workspace @omnitwin/demo-web -- src/renderer/game/GameLandUseGround.test.ts src/renderer/game/GameLandCover.test.ts src/renderer/game/GameWater.test.ts src/demo/gameLayerLifecycle.test.ts",
+      "files": 4,
+      "passed": 42,
+      "completedLocalTime": "2026-09-09 15:49:29 Europe/Moscow"
+    },
+    "typecheck": {
+      "command": "npm run typecheck --workspace @omnitwin/demo-web",
+      "status": "pass"
+    },
+    "captureCount": 28,
+    "visuallyOpenedCaptureCount": 17,
+    "afterImagesOpened": 14,
+    "allFramesReady": true,
+    "allGenerationsComplete": true,
+    "browserErrors": [],
+    "maximumServiceFramesIn2200ms": 1,
+    "maximumEstimatedPeakBytes": 7915036,
+    "maximumTopologyOperations": 2699060
+  },
+  "frames": [
+    {
+      "pose": "user",
+      "mode": "desktop",
+      "camera": {
+        "lon": 61.40335931261333,
+        "lat": 55.166641128116765,
+        "zoom": 18.5,
+        "pitch": 46.49661799282392,
+        "bearing": -172.97699800600026,
+        "minutes": 707.7335833333341,
+        "paused": 1,
+        "speed": 1
+      },
+      "ground": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+        "sourceAreas": 31,
+        "sourceClasses": [
+          "commercial",
+          "education",
+          "hospital",
+          "residential",
+          "retail"
+        ],
+        "ignoredFeatures": 7,
+        "duplicates": 55,
+        "sourceVertices": 15318,
+        "projectedVertices": 194,
+        "maskPieces": 215,
+        "indexEntries": 344,
+        "operations": 1457113,
+        "vertices": 14691,
+        "triangles": 4897,
+        "truncated": false,
+        "estimatedPeakBytes": 2531344,
+        "geometryBytes": 352584,
+        "retainedBytes": 705168,
+        "geometryUpdates": 1,
+        "draws": 1,
+        "lastError": null
+      },
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "buildingIdsUnchangedBetweenPair": true
+    },
+    {
+      "pose": "user",
+      "mode": "mobile",
+      "camera": {
+        "lon": 61.40335931261333,
+        "lat": 55.166641128116765,
+        "zoom": 18.5,
+        "pitch": 46.49661799282392,
+        "bearing": -172.97699800600026,
+        "minutes": 707.7335833333341,
+        "paused": 1,
+        "speed": 1
+      },
+      "ground": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+        "sourceAreas": 26,
+        "sourceClasses": [
+          "commercial",
+          "hospital",
+          "residential",
+          "retail"
+        ],
+        "ignoredFeatures": 7,
+        "duplicates": 23,
+        "sourceVertices": 11940,
+        "projectedVertices": 46,
+        "maskPieces": 59,
+        "indexEntries": 112,
+        "operations": 93055,
+        "vertices": 2091,
+        "triangles": 697,
+        "truncated": false,
+        "estimatedPeakBytes": 516564,
+        "geometryBytes": 50184,
+        "retainedBytes": 100368,
+        "geometryUpdates": 1,
+        "draws": 1,
+        "lastError": null
+      },
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "buildingIdsUnchangedBetweenPair": true
+    },
+    {
+      "pose": "courtyard",
+      "mode": "desktop",
+      "camera": {
+        "lon": 61.39086657500001,
+        "lat": 55.170028625,
+        "zoom": 19,
+        "pitch": 55.00000000000001,
+        "bearing": -70,
+        "minutes": 707.7335833333341,
+        "paused": 1,
+        "speed": 1
+      },
+      "ground": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+        "sourceAreas": 8,
+        "sourceClasses": [
+          "commercial",
+          "industrial"
+        ],
+        "ignoredFeatures": 11,
+        "duplicates": 12,
+        "sourceVertices": 7664,
+        "projectedVertices": 116,
+        "maskPieces": 96,
+        "indexEntries": 170,
+        "operations": 213707,
+        "vertices": 3093,
+        "triangles": 1031,
+        "truncated": false,
+        "estimatedPeakBytes": 762684,
+        "geometryBytes": 74232,
+        "retainedBytes": 148464,
+        "geometryUpdates": 1,
+        "draws": 1,
+        "lastError": null
+      },
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "buildingIdsUnchangedBetweenPair": true
+    },
+    {
+      "pose": "courtyard",
+      "mode": "mobile",
+      "camera": {
+        "lon": 61.39086657500001,
+        "lat": 55.170028625,
+        "zoom": 19,
+        "pitch": 55.00000000000001,
+        "bearing": -70,
+        "minutes": 707.7335833333341,
+        "paused": 1,
+        "speed": 1
+      },
+      "ground": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+        "sourceAreas": 5,
+        "sourceClasses": [
+          "commercial",
+          "industrial"
+        ],
+        "ignoredFeatures": 10,
+        "duplicates": 2,
+        "sourceVertices": 7095,
+        "projectedVertices": 99,
+        "maskPieces": 41,
+        "indexEntries": 61,
+        "operations": 18918,
+        "vertices": 375,
+        "triangles": 125,
+        "truncated": false,
+        "estimatedPeakBytes": 125024,
+        "geometryBytes": 9000,
+        "retainedBytes": 18000,
+        "geometryUpdates": 1,
+        "draws": 1,
+        "lastError": null
+      },
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "buildingIdsUnchangedBetweenPair": true
+    },
+    {
+      "pose": "waterfront",
+      "mode": "desktop",
+      "camera": {
+        "lon": 61.40175104141235,
+        "lat": 55.16893869067019,
+        "zoom": 17.9,
+        "pitch": 55.00000000000001,
+        "bearing": 0,
+        "minutes": 707.7335833333341,
+        "paused": 1,
+        "speed": 1
+      },
+      "ground": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+        "sourceAreas": 14,
+        "sourceClasses": [
+          "commercial",
+          "education",
+          "residential",
+          "retail"
+        ],
+        "ignoredFeatures": 4,
+        "duplicates": 88,
+        "sourceVertices": 14784,
+        "projectedVertices": 468,
+        "maskPieces": 408,
+        "indexEntries": 778,
+        "operations": 661225,
+        "vertices": 7557,
+        "triangles": 2519,
+        "truncated": false,
+        "estimatedPeakBytes": 2188258,
+        "geometryBytes": 181368,
+        "retainedBytes": 362736,
+        "geometryUpdates": 1,
+        "draws": 1,
+        "lastError": null
+      },
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "buildingIdsUnchangedBetweenPair": true
+    },
+    {
+      "pose": "waterfront",
+      "mode": "mobile",
+      "camera": {
+        "lon": 61.40175104141235,
+        "lat": 55.16893869067019,
+        "zoom": 17.9,
+        "pitch": 55.00000000000001,
+        "bearing": 0,
+        "minutes": 707.7335833333341,
+        "paused": 1,
+        "speed": 1
+      },
+      "ground": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+        "sourceAreas": 8,
+        "sourceClasses": [
+          "commercial",
+          "education",
+          "retail"
+        ],
+        "ignoredFeatures": 0,
+        "duplicates": 30,
+        "sourceVertices": 13811,
+        "projectedVertices": 143,
+        "maskPieces": 69,
+        "indexEntries": 166,
+        "operations": 65388,
+        "vertices": 957,
+        "triangles": 319,
+        "truncated": false,
+        "estimatedPeakBytes": 306360,
+        "geometryBytes": 22968,
+        "retainedBytes": 45936,
+        "geometryUpdates": 1,
+        "draws": 1,
+        "lastError": null
+      },
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "buildingIdsUnchangedBetweenPair": true
+    },
+    {
+      "pose": "RU-CHE-SET-KAL",
+      "mode": "desktop",
+      "camera": {
+        "lon": 61.39759185,
+        "lat": 55.1881126,
+        "zoom": 18.25,
+        "pitch": 55.00000000000001,
+        "bearing": -35,
+        "minutes": 707.7335833333341,
+        "paused": 1,
+        "speed": 1
+      },
+      "ground": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+        "sourceAreas": 35,
+        "sourceClasses": [
+          "commercial",
+          "education",
+          "garages",
+          "industrial",
+          "residential",
+          "university"
+        ],
+        "ignoredFeatures": 18,
+        "duplicates": 66,
+        "sourceVertices": 13594,
+        "projectedVertices": 362,
+        "maskPieces": 270,
+        "indexEntries": 460,
+        "operations": 875071,
+        "vertices": 20325,
+        "triangles": 6775,
+        "truncated": false,
+        "estimatedPeakBytes": 3536736,
+        "geometryBytes": 487800,
+        "retainedBytes": 975600,
+        "geometryUpdates": 1,
+        "draws": 1,
+        "lastError": null
+      },
+      "errors": [],
+      "serviceFramesIn2200ms": 1,
+      "buildingIdsUnchangedBetweenPair": true
+    },
+    {
+      "pose": "RU-CHE-SET-KAL",
+      "mode": "mobile",
+      "camera": {
+        "lon": 61.39759185,
+        "lat": 55.1881126,
+        "zoom": 18.25,
+        "pitch": 55.00000000000001,
+        "bearing": -35,
+        "minutes": 707.7335833333341,
+        "paused": 1,
+        "speed": 1
+      },
+      "ground": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+        "sourceAreas": 35,
+        "sourceClasses": [
+          "commercial",
+          "education",
+          "garages",
+          "industrial",
+          "residential",
+          "university"
+        ],
+        "ignoredFeatures": 18,
+        "duplicates": 11,
+        "sourceVertices": 9465,
+        "projectedVertices": 185,
+        "maskPieces": 72,
+        "indexEntries": 117,
+        "operations": 195948,
+        "vertices": 6582,
+        "triangles": 2194,
+        "truncated": false,
+        "estimatedPeakBytes": 1139598,
+        "geometryBytes": 157968,
+        "retainedBytes": 315936,
+        "geometryUpdates": 1,
+        "draws": 1,
+        "lastError": null
+      },
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "buildingIdsUnchangedBetweenPair": true
+    },
+    {
+      "pose": "RU-CHE-SET-SOV",
+      "mode": "desktop",
+      "camera": {
+        "lon": 61.3753681,
+        "lat": 55.1069753,
+        "zoom": 18.25,
+        "pitch": 55.00000000000001,
+        "bearing": -35,
+        "minutes": 707.7335833333341,
+        "paused": 1,
+        "speed": 1
+      },
+      "ground": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+        "sourceAreas": 21,
+        "sourceClasses": [
+          "industrial",
+          "residential",
+          "retail"
+        ],
+        "ignoredFeatures": 3,
+        "duplicates": 67,
+        "sourceVertices": 8149,
+        "projectedVertices": 275,
+        "maskPieces": 249,
+        "indexEntries": 542,
+        "operations": 1486309,
+        "vertices": 24888,
+        "triangles": 8296,
+        "truncated": false,
+        "estimatedPeakBytes": 4180624,
+        "geometryBytes": 597312,
+        "retainedBytes": 1194624,
+        "geometryUpdates": 1,
+        "draws": 1,
+        "lastError": null
+      },
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "buildingIdsUnchangedBetweenPair": true
+    },
+    {
+      "pose": "RU-CHE-SET-SOV",
+      "mode": "mobile",
+      "camera": {
+        "lon": 61.3753681,
+        "lat": 55.1069753,
+        "zoom": 18.25,
+        "pitch": 55.00000000000001,
+        "bearing": -35,
+        "minutes": 707.7335833333341,
+        "paused": 1,
+        "speed": 1
+      },
+      "ground": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+        "sourceAreas": 14,
+        "sourceClasses": [
+          "industrial",
+          "residential",
+          "retail"
+        ],
+        "ignoredFeatures": 2,
+        "duplicates": 28,
+        "sourceVertices": 7903,
+        "projectedVertices": 170,
+        "maskPieces": 91,
+        "indexEntries": 161,
+        "operations": 426169,
+        "vertices": 9186,
+        "triangles": 3062,
+        "truncated": false,
+        "estimatedPeakBytes": 1549412,
+        "geometryBytes": 220464,
+        "retainedBytes": 440928,
+        "geometryUpdates": 1,
+        "draws": 1,
+        "lastError": null
+      },
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "buildingIdsUnchangedBetweenPair": true
+    },
+    {
+      "pose": "RU-CHE-SET-LEN",
+      "mode": "desktop",
+      "camera": {
+        "lon": 61.46263365,
+        "lat": 55.119409950000005,
+        "zoom": 18.25,
+        "pitch": 55.00000000000001,
+        "bearing": -35,
+        "minutes": 707.7335833333341,
+        "paused": 1,
+        "speed": 1
+      },
+      "ground": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+        "sourceAreas": 22,
+        "sourceClasses": [
+          "commercial",
+          "education",
+          "garages",
+          "hospital",
+          "industrial",
+          "residential"
+        ],
+        "ignoredFeatures": 36,
+        "duplicates": 82,
+        "sourceVertices": 14662,
+        "projectedVertices": 314,
+        "maskPieces": 317,
+        "indexEntries": 627,
+        "operations": 2699060,
+        "vertices": 37848,
+        "triangles": 12616,
+        "truncated": false,
+        "estimatedPeakBytes": 7915036,
+        "geometryBytes": 908352,
+        "retainedBytes": 1816704,
+        "geometryUpdates": 1,
+        "draws": 1,
+        "lastError": null
+      },
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "buildingIdsUnchangedBetweenPair": false
+    },
+    {
+      "pose": "RU-CHE-SET-LEN",
+      "mode": "mobile",
+      "camera": {
+        "lon": 61.46263365,
+        "lat": 55.119409950000005,
+        "zoom": 18.25,
+        "pitch": 55.00000000000001,
+        "bearing": -35,
+        "minutes": 707.7335833333341,
+        "paused": 1,
+        "speed": 1
+      },
+      "ground": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+        "sourceAreas": 22,
+        "sourceClasses": [
+          "commercial",
+          "education",
+          "garages",
+          "hospital",
+          "industrial",
+          "residential"
+        ],
+        "ignoredFeatures": 36,
+        "duplicates": 19,
+        "sourceVertices": 14662,
+        "projectedVertices": 176,
+        "maskPieces": 108,
+        "indexEntries": 262,
+        "operations": 730744,
+        "vertices": 13233,
+        "triangles": 4411,
+        "truncated": false,
+        "estimatedPeakBytes": 2773274,
+        "geometryBytes": 317592,
+        "retainedBytes": 635184,
+        "geometryUpdates": 1,
+        "draws": 1,
+        "lastError": null
+      },
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "buildingIdsUnchangedBetweenPair": true
+    },
+    {
+      "pose": "RU-CHE-SET-MET",
+      "mode": "desktop",
+      "camera": {
+        "lon": 61.40850385,
+        "lat": 55.2572062,
+        "zoom": 18.25,
+        "pitch": 55.00000000000001,
+        "bearing": -35,
+        "minutes": 707.7335833333341,
+        "paused": 1,
+        "speed": 1
+      },
+      "ground": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+        "sourceAreas": 10,
+        "sourceClasses": [
+          "garages",
+          "industrial",
+          "residential"
+        ],
+        "ignoredFeatures": 0,
+        "duplicates": 59,
+        "sourceVertices": 8132,
+        "projectedVertices": 190,
+        "maskPieces": 224,
+        "indexEntries": 458,
+        "operations": 387872,
+        "vertices": 6831,
+        "triangles": 2277,
+        "truncated": false,
+        "estimatedPeakBytes": 1741438,
+        "geometryBytes": 163944,
+        "retainedBytes": 327888,
+        "geometryUpdates": 1,
+        "draws": 1,
+        "lastError": null
+      },
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "buildingIdsUnchangedBetweenPair": true
+    },
+    {
+      "pose": "RU-CHE-SET-MET",
+      "mode": "mobile",
+      "camera": {
+        "lon": 61.40850385,
+        "lat": 55.2572062,
+        "zoom": 18.25,
+        "pitch": 55.00000000000001,
+        "bearing": -35,
+        "minutes": 707.7335833333341,
+        "paused": 1,
+        "speed": 1
+      },
+      "ground": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+        "sourceAreas": 10,
+        "sourceClasses": [
+          "garages",
+          "industrial",
+          "residential"
+        ],
+        "ignoredFeatures": 0,
+        "duplicates": 16,
+        "sourceVertices": 8132,
+        "projectedVertices": 152,
+        "maskPieces": 87,
+        "indexEntries": 148,
+        "operations": 362587,
+        "vertices": 6135,
+        "triangles": 2045,
+        "truncated": false,
+        "estimatedPeakBytes": 1347768,
+        "geometryBytes": 147240,
+        "retainedBytes": 294480,
+        "geometryUpdates": 1,
+        "draws": 1,
+        "lastError": null
+      },
+      "errors": [],
+      "serviceFramesIn2200ms": 0,
+      "buildingIdsUnchangedBetweenPair": true
+    }
+  ],
+  "artifacts": [
+    {
+      "filename": "user-desktop-before.png",
+      "sha256": "6860f96cabc0a1314fa725ba576a6fb4add9c77e814e3b40c51abcb8d5c43e70",
+      "bytes": 577561,
+      "pose": "user",
+      "mode": "desktop",
+      "phase": "before",
+      "visuallyOpened": true
+    },
+    {
+      "filename": "user-desktop-after.png",
+      "sha256": "6eee2c8ed0e4fa2ceb43363f045b139ebcf4ca6a13e2c60a5ee1cc760b52f774",
+      "bytes": 635780,
+      "pose": "user",
+      "mode": "desktop",
+      "phase": "after",
+      "visuallyOpened": true
+    },
+    {
+      "filename": "user-mobile-before.png",
+      "sha256": "19ff3b8faa6e81ae210eba700e22f9f51df80046a483df43e6763270c371782a",
+      "bytes": 142992,
+      "pose": "user",
+      "mode": "mobile",
+      "phase": "before",
+      "visuallyOpened": false
+    },
+    {
+      "filename": "user-mobile-after.png",
+      "sha256": "9acc72d76d37955c350e553f0ec7870819568afcaf01b1a70a5c0968f863bf14",
+      "bytes": 151259,
+      "pose": "user",
+      "mode": "mobile",
+      "phase": "after",
+      "visuallyOpened": true
+    },
+    {
+      "filename": "courtyard-desktop-before.png",
+      "sha256": "3541aa52eab57e2cb843f0bee7a97cab413e2d02611ff1da18fb1bc0f2148710",
+      "bytes": 413318,
+      "pose": "courtyard",
+      "mode": "desktop",
+      "phase": "before",
+      "visuallyOpened": false
+    },
+    {
+      "filename": "courtyard-desktop-after.png",
+      "sha256": "98a346c4524242289adc85304c756b08f625aba94a405c28852e6b85993ab993",
+      "bytes": 434939,
+      "pose": "courtyard",
+      "mode": "desktop",
+      "phase": "after",
+      "visuallyOpened": true
+    },
+    {
+      "filename": "courtyard-mobile-before.png",
+      "sha256": "1313604ee52f08c8b2fefa2acf2f7e7250e7f1d142b386f987bdff9dd8c904fe",
+      "bytes": 136743,
+      "pose": "courtyard",
+      "mode": "mobile",
+      "phase": "before",
+      "visuallyOpened": false
+    },
+    {
+      "filename": "courtyard-mobile-after.png",
+      "sha256": "1313604ee52f08c8b2fefa2acf2f7e7250e7f1d142b386f987bdff9dd8c904fe",
+      "bytes": 136743,
+      "pose": "courtyard",
+      "mode": "mobile",
+      "phase": "after",
+      "visuallyOpened": true
+    },
+    {
+      "filename": "waterfront-desktop-before.png",
+      "sha256": "f674dcaf06858738be5f6233a1712ea52a69d4b9fb2576f1dccb49f1e1fd5c58",
+      "bytes": 390762,
+      "pose": "waterfront",
+      "mode": "desktop",
+      "phase": "before",
+      "visuallyOpened": false
+    },
+    {
+      "filename": "waterfront-desktop-after.png",
+      "sha256": "740157978cc7a099c6de19a5a8c2e318ce37789b1307cd1818795d878c9386a9",
+      "bytes": 398105,
+      "pose": "waterfront",
+      "mode": "desktop",
+      "phase": "after",
+      "visuallyOpened": true
+    },
+    {
+      "filename": "waterfront-mobile-before.png",
+      "sha256": "accf8025a3528babcdbda4f00d4fd78eb6f349a947151d26f122e14b94c0dd82",
+      "bytes": 117444,
+      "pose": "waterfront",
+      "mode": "mobile",
+      "phase": "before",
+      "visuallyOpened": false
+    },
+    {
+      "filename": "waterfront-mobile-after.png",
+      "sha256": "f941952186a1979c55f4d70fc140ccf5811d70194a7da09ccb39003623c007cd",
+      "bytes": 118877,
+      "pose": "waterfront",
+      "mode": "mobile",
+      "phase": "after",
+      "visuallyOpened": true
+    },
+    {
+      "filename": "RU-CHE-SET-KAL-desktop-before.png",
+      "sha256": "a33ab514f59fd1ddb680e56194d13dd8ba8a1025b111d5a6731af80ad8e86de3",
+      "bytes": 506911,
+      "pose": "RU-CHE-SET-KAL",
+      "mode": "desktop",
+      "phase": "before",
+      "visuallyOpened": true
+    },
+    {
+      "filename": "RU-CHE-SET-KAL-desktop-after.png",
+      "sha256": "b296ebf928fd4c1bb2d3e0bb58916bdc3351a8ece7f7d50ccfdd2ad007aea473",
+      "bytes": 567232,
+      "pose": "RU-CHE-SET-KAL",
+      "mode": "desktop",
+      "phase": "after",
+      "visuallyOpened": true
+    },
+    {
+      "filename": "RU-CHE-SET-KAL-mobile-before.png",
+      "sha256": "329beb95438f5ce6efbf6766840d19e72ac2d606a7ce39b1673c2fd7332d71eb",
+      "bytes": 148300,
+      "pose": "RU-CHE-SET-KAL",
+      "mode": "mobile",
+      "phase": "before",
+      "visuallyOpened": false
+    },
+    {
+      "filename": "RU-CHE-SET-KAL-mobile-after.png",
+      "sha256": "ef72261daf9cbc86cc25d56c74b764aec05fa2b979b4e569828a68d685ed64f9",
+      "bytes": 168190,
+      "pose": "RU-CHE-SET-KAL",
+      "mode": "mobile",
+      "phase": "after",
+      "visuallyOpened": true
+    },
+    {
+      "filename": "RU-CHE-SET-SOV-desktop-before.png",
+      "sha256": "13034077b082e96ed1ab0c23caf03f482ac49dd2fd9dfa573ec83f24bebb05c1",
+      "bytes": 211948,
+      "pose": "RU-CHE-SET-SOV",
+      "mode": "desktop",
+      "phase": "before",
+      "visuallyOpened": false
+    },
+    {
+      "filename": "RU-CHE-SET-SOV-desktop-after.png",
+      "sha256": "c37d9f4464be21b6448fa88b1acc3c3b164fae4965464603d5d7a455d7d56438",
+      "bytes": 321081,
+      "pose": "RU-CHE-SET-SOV",
+      "mode": "desktop",
+      "phase": "after",
+      "visuallyOpened": true
+    },
+    {
+      "filename": "RU-CHE-SET-SOV-mobile-before.png",
+      "sha256": "1da4062716d1ebb61f3e9b2095043ac5b960c26b449b61601facb7245319dc5f",
+      "bytes": 72601,
+      "pose": "RU-CHE-SET-SOV",
+      "mode": "mobile",
+      "phase": "before",
+      "visuallyOpened": false
+    },
+    {
+      "filename": "RU-CHE-SET-SOV-mobile-after.png",
+      "sha256": "6699bc6bf40914ee80fbffe8878bd6cb136c21b7299ccd938efc927bba8db53d",
+      "bytes": 102804,
+      "pose": "RU-CHE-SET-SOV",
+      "mode": "mobile",
+      "phase": "after",
+      "visuallyOpened": true
+    },
+    {
+      "filename": "RU-CHE-SET-LEN-desktop-before.png",
+      "sha256": "b64ee2f8d6668daf1d2404ed1485ddb5f8405301f2859c60b41114131f31bfe7",
+      "bytes": 686762,
+      "pose": "RU-CHE-SET-LEN",
+      "mode": "desktop",
+      "phase": "before",
+      "visuallyOpened": true
+    },
+    {
+      "filename": "RU-CHE-SET-LEN-desktop-after.png",
+      "sha256": "67f50d619ec23b5b1923ad81e4e613ef74f591d31d761479f98cf6a2c0dd9b5b",
+      "bytes": 637848,
+      "pose": "RU-CHE-SET-LEN",
+      "mode": "desktop",
+      "phase": "after",
+      "visuallyOpened": true
+    },
+    {
+      "filename": "RU-CHE-SET-LEN-mobile-before.png",
+      "sha256": "f181ce84abb35288b69648a4c882b314bc446eae7370811081d876a39b15a984",
+      "bytes": 182293,
+      "pose": "RU-CHE-SET-LEN",
+      "mode": "mobile",
+      "phase": "before",
+      "visuallyOpened": false
+    },
+    {
+      "filename": "RU-CHE-SET-LEN-mobile-after.png",
+      "sha256": "9b820ea2a6190143c0f7e19c5efa8a3c2dd2aec77b25cecb573f069ecf1c00f3",
+      "bytes": 171637,
+      "pose": "RU-CHE-SET-LEN",
+      "mode": "mobile",
+      "phase": "after",
+      "visuallyOpened": true
+    },
+    {
+      "filename": "RU-CHE-SET-MET-desktop-before.png",
+      "sha256": "36832bd2534c2bee7849e07dc53be685badde05e6876fdd56495af6a6284cef8",
+      "bytes": 406191,
+      "pose": "RU-CHE-SET-MET",
+      "mode": "desktop",
+      "phase": "before",
+      "visuallyOpened": false
+    },
+    {
+      "filename": "RU-CHE-SET-MET-desktop-after.png",
+      "sha256": "05e4a55e1e2192abc276eeb0cb50d7070f5030ad35991de344f840912a8e8660",
+      "bytes": 423807,
+      "pose": "RU-CHE-SET-MET",
+      "mode": "desktop",
+      "phase": "after",
+      "visuallyOpened": true
+    },
+    {
+      "filename": "RU-CHE-SET-MET-mobile-before.png",
+      "sha256": "4abadf7b51a6fb98a0ac61888cf4136a869a185c1f476d7aafd208075499ca7a",
+      "bytes": 109631,
+      "pose": "RU-CHE-SET-MET",
+      "mode": "mobile",
+      "phase": "before",
+      "visuallyOpened": false
+    },
+    {
+      "filename": "RU-CHE-SET-MET-mobile-after.png",
+      "sha256": "404aed340b3696960d0a30dc9627d0b953a430f988cfab04feac9b733d2d77b9",
+      "bytes": 116170,
+      "pose": "RU-CHE-SET-MET",
+      "mode": "mobile",
+      "phase": "after",
+      "visuallyOpened": true
+    }
+  ],
+  "shadowVerification": {
+    "pose": "KAL, same source building camera with bearing 145 degrees",
+    "method": "Waited for no pending geometry or tile loads and six unchanged diagnostic snapshots spaced 800ms before the three object-visibility/depth ablations.",
+    "receiverOnOffByteIdentical": true,
+    "findings": "Actual directional building shadows remain clearly visible on the new PBR ground beyond the old quarter. Disabling the legacy receiver makes no pixel change at this settled pose. Raising ground to 0.017m produced no useful improvement, so production remains at 0.006m.",
+    "artifacts": [
+      {
+        "filename": "KAL-receiver-on.png",
+        "sha256": "c5924ea81ed32b59ae1d1bf1689e87aecd950813771cf090ab0d03e359bd3746",
+        "bytes": 578990,
+        "visuallyOpened": true,
+        "diagnostics": {
+          "ground": {
+            "state": "ready",
+            "representation": "visual_synthesis",
+            "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+            "sourceAreas": 35,
+            "sourceClasses": [
+              "commercial",
+              "education",
+              "garages",
+              "industrial",
+              "residential",
+              "university"
+            ],
+            "ignoredFeatures": 18,
+            "duplicates": 62,
+            "sourceVertices": 9465,
+            "projectedVertices": 323,
+            "maskPieces": 268,
+            "indexEntries": 457,
+            "operations": 634929,
+            "vertices": 17904,
+            "triangles": 5968,
+            "truncated": false,
+            "estimatedPeakBytes": 3195060,
+            "geometryBytes": 429696,
+            "retainedBytes": 859392,
+            "geometryUpdates": 1,
+            "draws": 1,
+            "lastError": null
+          },
+          "receiverY": 0.015,
+          "shadowOpacity": 0.42,
+          "sun": [
+            596.2989254835603,
+            1413.6619623232555,
+            -1672.5007015214721
+          ],
+          "target": [
+            180,
+            0,
+            -2520
+          ]
+        }
+      },
+      {
+        "filename": "KAL-receiver-off.png",
+        "sha256": "c5924ea81ed32b59ae1d1bf1689e87aecd950813771cf090ab0d03e359bd3746",
+        "bytes": 578990,
+        "visuallyOpened": true,
+        "diagnostics": {
+          "ground": {
+            "state": "ready",
+            "representation": "visual_synthesis",
+            "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+            "sourceAreas": 35,
+            "sourceClasses": [
+              "commercial",
+              "education",
+              "garages",
+              "industrial",
+              "residential",
+              "university"
+            ],
+            "ignoredFeatures": 18,
+            "duplicates": 62,
+            "sourceVertices": 9465,
+            "projectedVertices": 323,
+            "maskPieces": 268,
+            "indexEntries": 457,
+            "operations": 634929,
+            "vertices": 17904,
+            "triangles": 5968,
+            "truncated": false,
+            "estimatedPeakBytes": 3195060,
+            "geometryBytes": 429696,
+            "retainedBytes": 859392,
+            "geometryUpdates": 1,
+            "draws": 1,
+            "lastError": null
+          },
+          "receiverY": 0.015,
+          "shadowOpacity": 0.42,
+          "sun": [
+            596.2989254835603,
+            1413.6619623232555,
+            -1672.5007015214721
+          ],
+          "target": [
+            180,
+            0,
+            -2520
+          ]
+        }
+      },
+      {
+        "filename": "KAL-ground-top-017.png",
+        "sha256": "29d083fcb82e644ff4ec52c6b72e1d1be6617fb889b5e69fc71833b75fa704b7",
+        "bytes": 579221,
+        "visuallyOpened": true,
+        "diagnostics": {
+          "ground": {
+            "state": "ready",
+            "representation": "visual_synthesis",
+            "surfaceClassification": "unsurveyed_neutral_landuse_ground",
+            "sourceAreas": 35,
+            "sourceClasses": [
+              "commercial",
+              "education",
+              "garages",
+              "industrial",
+              "residential",
+              "university"
+            ],
+            "ignoredFeatures": 18,
+            "duplicates": 62,
+            "sourceVertices": 9465,
+            "projectedVertices": 323,
+            "maskPieces": 268,
+            "indexEntries": 457,
+            "operations": 634929,
+            "vertices": 17904,
+            "triangles": 5968,
+            "truncated": false,
+            "estimatedPeakBytes": 3195060,
+            "geometryBytes": 429696,
+            "retainedBytes": 859392,
+            "geometryUpdates": 1,
+            "draws": 1,
+            "lastError": null
+          },
+          "receiverY": 0.015,
+          "shadowOpacity": 0.42,
+          "sun": [
+            596.2989254835603,
+            1413.6619623232555,
+            -1672.5007015214721
+          ],
+          "target": [
+            180,
+            0,
+            -2520
+          ]
+        }
+      }
+    ],
+    "limitation": "Shadow ablation did not capture its own whole-source fingerprint; it is supplemental lighting evidence, not a frozen release benchmark."
+  },
+  "findings": [
+    "KAL education and surrounding verified residential areas gain restrained metric tonal variation instead of a completely flat fill. Real access paths remain uncut.",
+    "LEN now publishes the complete source-ground generation without the earlier diagonal cap cut; the largest observed estimated peak is below the fixed 8 MiB limit.",
+    "SOV and MET unknown strips remain visibly unchanged, preserving the distinction between available landuse polygons and missing source classification.",
+    "The user camera retains native black courtyard paths absent from the movement-road subset. The three control scenes preserve shorelines, building footprints, courtyard paving and road surfaces.",
+    "MET roofs no longer show the prior repeated diagonal metallic stamp. Organic trees are visible, and source woodland remains outside the neutral material.",
+    "Long KAL/LEN facades still repeat similar blue windows and pale shell treatments. Stable family palette variation can improve reading but cannot replace architectural window rhythm or depth."
+  ],
+  "limitations": [
+    "Overall SimCity 2013 artistic acceptance remains open; this scoped ground improvement is not a whole-city art pass.",
+    "TiledGameLayer.ts, opposingLaneReservations.ts and the newly added gameFacadeAppearance.ts changed during the capture suite. Ground helper, material and Scene integration were unchanged. The captures therefore are not a single frozen full-runtime baseline and should not be used to accept the later facade or traffic changes.",
+    "KAL before/after captured a late motion-data refresh; the ground comparison remains visible but this pair is not motion evidence.",
+    "The mobile courtyard crop exposes almost no new landuse surface: the before/after PNGs are identical there, consistent with courtyard exclusion.",
+    "Motion correctness, real-device mobile performance and 30 FPS acceptance require separate evidence.",
+    "Low-detail or unusually complex source input can exceed a cap and retain a previous viable generation or the base map; diagnostics report the explicit retained/error state.",
+    "Earlier intermediate captures that showed missing native footpaths or partial polygon caps are superseded by this run and are not acceptance evidence.",
+    "PNGs remain local; this document stores portable filenames and content hashes only."
+  ]
+}

@@ -3,8 +3,8 @@
   "reviewedAt": "2026-09-07",
   "scope": "frontend_lockfile_production_dependency_closure_and_retained_assets",
   "lockfile": "package-lock.json",
-  "lockfileSha256": "dc429f26f9502083a8caa7e3b72e8ccc1efec8dcdebffa1c66bd8caa18d8a4c7",
-  "packageCount": 92,
+  "lockfileSha256": "7cc904a0833cceefe6cab6293eb185972fd7fcd26f9def9d226ff54e5987dce4",
+  "packageCount": 95,
   "packages": [
     {
       "name": "@deck.gl/core",
@@ -497,6 +497,45 @@
           "path": "node_modules/@vis.gl/react-maplibre/node_modules/json-stringify-pretty-compact/LICENSE",
           "kind": "installed_license_file",
           "sha256": "d0800a7c9b5f723f7fe029f75d3a9ae44173178b9729d1521e18371ab24ae97a"
+        }
+      ]
+    },
+    {
+      "name": "3d-tiles-renderer",
+      "version": "0.5.2",
+      "declaredLicense": "Apache-2.0",
+      "packagePath": "node_modules/3d-tiles-renderer",
+      "notices": [
+        {
+          "path": "node_modules/3d-tiles-renderer/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "12ab00e5637ce70e16be1f6693dfa5f9b7a4fe0f5f976a0329477d0c32d53e86"
+        }
+      ]
+    },
+    {
+      "name": "@mapbox/vector-tile",
+      "version": "2.0.5",
+      "declaredLicense": "BSD-3-Clause",
+      "packagePath": "node_modules/3d-tiles-renderer/node_modules/@mapbox/vector-tile",
+      "notices": [
+        {
+          "path": "node_modules/3d-tiles-renderer/node_modules/@mapbox/vector-tile/LICENSE.txt",
+          "kind": "installed_license_file",
+          "sha256": "5b09a507df6f21d6c2112c46dcaf2927b9dbd8b580a08b542d8ec2f9191d783d"
+        }
+      ]
+    },
+    {
+      "name": "pbf",
+      "version": "4.0.2",
+      "declaredLicense": "BSD-3-Clause",
+      "packagePath": "node_modules/3d-tiles-renderer/node_modules/pbf",
+      "notices": [
+        {
+          "path": "node_modules/3d-tiles-renderer/node_modules/pbf/LICENSE",
+          "kind": "installed_license_file",
+          "sha256": "85a46bda3ddc8bb2fe2a6c361ed8ab75898c81b5d054a57a0722f1fa364c0136"
         }
       ]
     },
@@ -1239,6 +1278,6 @@
     }
   ],
   "noticeFile": "THIRD_PARTY_LICENSES.txt",
-  "noticeSha256": "1c1a9da7cdeb0ce991f519a817deb4270f3658c6328417cc5fd44a3808edbda8",
+  "noticeSha256": "5ea80b06f9fb3ee5d49a23af5658b5ee9c1761099cb4f672c904e07c4e8f1b20",
   "missingLicenses": []
 }

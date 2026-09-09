@@ -60,6 +60,7 @@ function sampleRoad(road: Road, progress: number): [number, number] {
 
 /** One read-only fixture instance shared by every tab and every presence inspector. */
 export class StaticDemoProvider {
+  get movementPreviewOverlay():{scope:'local_preview';delivery?:'local_preview'|'public_pinned';chatCompatibility:'pending'|'base_profiles_unchanged';bounds:readonly number[];version:string}|null{return null;}
   readonly territories;
   readonly scenarios;
   observedCity: ObservedCityReferenceV1 | null = null;

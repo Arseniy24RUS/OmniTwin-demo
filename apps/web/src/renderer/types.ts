@@ -46,7 +46,7 @@ export type RendererMode = 'universal_lowpoly' | 'legacy_scene_debug';
 export const DEFAULT_RENDERER_MODE: RendererMode = 'universal_lowpoly';
 
 export type MapSourceRole = 'basemap' | 'buildings' | 'terrain';
-export type MapSourceTransport = 'tilejson_mvt' | 'xyz_mvt' | 'pmtiles' | 'raster_dem';
+export type MapSourceTransport = 'tilejson_mvt' | 'xyz_mvt' | 'pmtiles' | 'raster_dem' | 'retained_geojson';
 export type MapSourceAuth = 'none' | 'runtime_token';
 export type StaticSourceAvailability = 'checking' | 'ready' | 'degraded' | 'unavailable';
 
@@ -189,6 +189,16 @@ export interface RendererPresentationClock {
 }
 
 export interface WorldSceneProps {
+  /** Verified active-cell geometry for both drawing and native building selection. */
+  verifiedCityBuildings?: import('./verifiedCityBuildingTypes').VerifiedCityBuildingSnapshot | null;
+  /** Exact bounds used to establish that snapshot's coverage, not a later camera bbox. */
+  verifiedCityBuildingBounds?: readonly [number,number,number,number];
+  /** Bounded verified source roads for preview-only lane/sidewalk presentation widths. */
+  gameSourceRoads?: readonly import('../demo/data/CityPackV2').CityRoadV2[];
+  /** Exact provider corridor-to-source-road provenance, independent of renderer edge IDs. */
+  gameSourceCorridors?: import('../demo/types').DemoLayout['roads'];
+  /** Semantic slice changes re-anchor presentation queues, independently of camera motion. */
+  trafficContextKey?: string;
   aggregateRoadFlows?: import('./aggregateRoadFlow').AggregateRoadFlowSnapshot | null;
   /** Display-only routes extracted from the active public basemap. */
   presentationMovement?: WorldSceneMovementPayload | null;
@@ -416,6 +426,7 @@ export interface RendererLivingSnapshot {
 }
 
 export interface RendererSceneSnapshot {
+  verifiedCityBuildings?: import('./verifiedCityBuildingTypes').VerifiedCityBuildingSnapshot | null;
   aggregateRoadFlows?: import('./aggregateRoadFlow').AggregateRoadFlowSnapshot | null;
   presentationMovement?: WorldSceneMovementPayload | null;
   camera: WorldCamera;

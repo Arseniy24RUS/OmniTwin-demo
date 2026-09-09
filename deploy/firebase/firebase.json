@@ -4,7 +4,7 @@
       "source": "functions",
       "codebase": "demo-chat",
       "runtime": "nodejs22",
-      "predeploy": ["npm --prefix \"$PROJECT_DIR\" run stage"],
+      "predeploy": ["npm --prefix \"$PROJECT_DIR\" run stage -- --firebase-predeploy"],
       "ignore": ["node_modules", ".git", "firebase-debug.log", "firebase-debug.*.log", "*.local", ".env", ".env.*"]
     }
   ],

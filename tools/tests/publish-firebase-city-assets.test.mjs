@@ -5,7 +5,7 @@ import { mkdtemp, mkdir, readFile, writeFile, rm, symlink } from 'node:fs/promis
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { gzipSync } from 'node:zlib';
-import { planFirebaseCityAssets, publishFirebaseCityAssets, summarizeFirebaseCityPlan, PROJECT_NUMBER } from '../publish-firebase-city-assets.mjs';
+import { planFirebaseCityAssets, publishFirebaseCityAssets, summarizeFirebaseCityPlan, PROJECT_NUMBER, PUBLICATION_LIMITS } from '../publish-firebase-city-assets.mjs';
 
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 async function fixture(t, mutate = () => {}) {
@@ -38,7 +38,30 @@ async function fixture(t, mutate = () => {}) {
   spatial.sourceHashes={populationManifest:hash(populationBytes),geographyManifest:hash(cityBytes),buildingIndex:city.buildingIndex.sha256,roadIndex:city.roadIndex.sha256,...spatial.sourceHashes};
   await put('demo-v2/spatial/manifest.json',JSON.stringify(spatial));
   await put('demo-v2/obsolete.bin','never-upload');await put('demo-v2/.env','never-read');await put('science/raw.bin','never-read');
-  return {root,put,city,population,spatial};
+  return {root,put,asset,city,population,spatial};
+}
+
+async function movementFixture(t, mutate = () => {}) {
+  const f = await fixture(t, ({population,spatial}) => {
+    population.recordCount=1; population.householdCount=1;
+    spatial.recordCount=1; spatial.householdCount=1; spatial.buildingCount=1;
+    Object.assign(spatial.sourceHashes,{populationCodec:'b'.repeat(64),spatialCodec:'c'.repeat(64),routeCorridorCodec:'d'.repeat(64)});
+  });
+  const base='demo-v2/spatial/movement';
+  const context=await f.asset(base,'cells/16/43945/20668/context.json',JSON.stringify({contract:'DemoMovementCellContextV2',key:'16/43945/20668',bindings:[],roads:[]}));
+  const page=await f.asset(base,'cells/16/43945/20668/page-0.json',JSON.stringify({contract:'DemoMovementPageV2',key:'16/43945/20668',count:1,contextsBase64:'',households:[],buildings:[]}));
+  const {populationManifest,geographyManifest,buildingIndex,populationCodec,spatialCodec,routeCorridorCodec}=f.spatial.sourceHashes;
+  const movement={contract:'DemoMovementIndexManifestV2',datasetId:f.population.datasetId,representation:'visual_synthesis',scientificClaim:false,
+    recordCount:1,householdCount:1,buildingCount:1,cellZoom:16,pageSize:2048,maxPageSize:8192,maxPageBytes:8*1024*1024,
+    sourceHashes:{populationManifest,geographyManifest,buildingIndex,populationCodec,spatialCodec,routeCorridorCodec,baseSpatialManifest:hash(`${JSON.stringify(f.spatial)}\n`),codec:'e'.repeat(64),compiler:'f'.repeat(64)},
+    cells:[{key:'16/43945/20668',bbox:[61.4,55.16,61.41,55.17],count:1,context,pages:[{...page,count:1,firstPersonIndex:0,lastPersonIndex:0}]}]};
+  const saveMovement=async()=>{
+    const descriptor=await f.asset(base,'manifest-current.json',JSON.stringify(movement));
+    f.spatial.movementIndex={...descriptor,url:`movement/${descriptor.url}`,gzip:{...descriptor.gzip,url:`movement/${descriptor.gzip.url}`}};
+    await f.put('demo-v2/spatial/manifest.json',JSON.stringify(f.spatial));
+  };
+  await mutate({ ...f, movement, base }); await saveMovement();
+  return {...f,movement,base,saveMovement};
 }
 function transport(plan, {projectNumber=PROJECT_NUMBER, mismatch=false, race=false, gate} = {}) {
   const calls=[];const remote=new Map();let active=0;let peak=0;let posts=0;
@@ -60,6 +83,13 @@ function transport(plan, {projectNumber=PROJECT_NUMBER, mismatch=false, race=fal
 }
 const options=fetchImpl=>({projectId:'omnitwin-demo',bucket:'omnitwin-demo-city-assets',getAccessToken:async()=> 'unit-test-not-a-credential',fetchImpl});
 
+test('expanded current closure has an explicit 8GiB ceiling without changing object, body or concurrency caps',()=>{
+  assert.equal(PUBLICATION_LIMITS.totalBytes,8*1024**3);
+  assert.equal(PUBLICATION_LIMITS.objects,40000);
+  assert.equal(PUBLICATION_LIMITS.assetBytes,64*1024*1024);
+  assert.equal(PUBLICATION_LIMITS.concurrency,2);
+});
+
 test('offline plan includes only declared current families, deduplicates links and preserves gzip semantics', async t=>{
   const f=await fixture(t);const plan=await planFirebaseCityAssets({publicRoot:f.root});
   const summary=summarizeFirebaseCityPlan(plan);
@@ -72,6 +102,64 @@ test('offline plan includes only declared current families, deduplicates links a
   assert.equal(gzip.contentEncoding,undefined);assert.equal(gzip.contentType,'application/gzip');assert.equal(gzip.metadata.sha256,f.city.buildingIndex.gzip.sha256);
   assert.equal((await planFirebaseCityAssets({publicRoot:f.root})).releaseId,plan.releaseId);
   await assert.rejects(planFirebaseCityAssets({publicRoot:f.root,gzipAliases:false}),/aliases/);
+});
+
+test('optional movement manifest closes over every relative context/page and both gzip representations',async t=>{
+  const f=await movementFixture(t);const plan=await planFirebaseCityAssets({publicRoot:f.root});
+  assert.equal(plan.objects.length,24);
+  for(const leaf of ['manifest-current.json','cells/16/43945/20668/context.json','cells/16/43945/20668/page-0.json']){
+    const raw=plan.objects.find(o=>o.path===`${f.base}/${leaf}`);const gzip=plan.objects.find(o=>o.path===`${f.base}/${leaf}.gz`);
+    assert.ok(raw);assert.ok(gzip);assert.equal(raw.contentEncoding,'gzip');assert.equal(raw.contentType,'application/json; charset=utf-8');
+    assert.equal(gzip.contentEncoding,undefined);assert.equal(gzip.contentType,'application/gzip');
+  }
+  assert.equal(summarizeFirebaseCityPlan(plan).dependentManifestHashes[`${f.base}/manifest-current.json`],f.spatial.movementIndex.sha256);
+  const before=plan.releaseId;f.movement.semantics={note:'public fictional metadata changed'};await f.saveMovement();
+  assert.notEqual((await planFirebaseCityAssets({publicRoot:f.root})).releaseId,before,'nested descriptor is pinned by the spatial root and changes the pack hash');
+});
+
+test('movement manifest and leaf integrity failures prevent any usable publication plan',async t=>{
+  for(const leaf of ['manifest-current.json','cells/16/43945/20668/context.json','cells/16/43945/20668/page-0.json.gz']){
+    const f=await movementFixture(t);await f.put(`${f.base}/${leaf}`,'bad');
+    await assert.rejects(planFirebaseCityAssets({publicRoot:f.root}),/size|digest/i);
+  }
+  const missing=await movementFixture(t);await rm(join(missing.root,missing.base,'cells/16/43945/20668/page-0.json'));
+  await assert.rejects(planFirebaseCityAssets({publicRoot:missing.root}),/ENOENT/);
+});
+
+test('movement lineage, required contexts, child scopes and unknown nested families fail closed',async t=>{
+  for(const mutate of [
+    ({movement})=>{movement.contract='unapproved';},
+    ({movement})=>{movement.sourceHashes.populationManifest='0'.repeat(64);},
+    ({movement})=>{movement.sourceHashes.spatialCodec='0'.repeat(64);},
+    ({movement})=>{movement.sourceHashes.baseSpatialManifest='0'.repeat(64);},
+    ({movement})=>{delete movement.cells[0].context;},
+    ({movement})=>{movement.cells[0].context.url='../roles/r.bin';},
+    ({movement})=>{movement.cells[0].pages[0].count=2;},
+    async({movement,asset,base})=>{movement.newRuntimeIndex=await asset(base,'unapproved.json','{}');},
+  ]){
+    const f=await movementFixture(t,mutate);
+    await assert.rejects(planFirebaseCityAssets({publicRoot:f.root}),/movement|manifest|descriptor|family|context|scope|asset/i);
+  }
+});
+
+test('movement manifests publish only after their leaves, with spatial root last and safe resume',async t=>{
+  const f=await movementFixture(t);const plan=await planFirebaseCityAssets({publicRoot:f.root});const mock=transport(plan,{gate:()=>new Promise(resolve=>setTimeout(resolve,3))});
+  const nested=new Set([`${f.base}/manifest-current.json`,`${f.base}/manifest-current.json.gz`]);
+  const roots=new Set(['city-v2/manifest.json','demo-v2/manifest.json','demo-v2/spatial/manifest.json']);
+  const fetchImpl=async(url,init)=>{
+    if(init.method==='POST'){
+      const path=new URL(url).searchParams.get('name').slice(plan.prefix.length);
+      if(nested.has(path))for(const o of plan.objects.filter(o=>!nested.has(o.path)&&!roots.has(o.path)))assert.ok(mock.remote.has(o.name),'nested manifest must not precede any leaf');
+      if(roots.has(path))for(const o of plan.objects.filter(o=>!roots.has(o.path)))assert.ok(mock.remote.has(o.name),'root must not precede nested manifests');
+    }
+    return mock.fetchImpl(url,init);
+  };
+  await publishFirebaseCityAssets(plan,options(fetchImpl));
+  assert.equal((await publishFirebaseCityAssets(plan,options(fetchImpl))).skipped,plan.objects.length);assert.ok(mock.peak<=2);
+  const posted=mock.calls.filter(c=>c.method==='POST').map(c=>new URL(c.url).searchParams.get('name').slice(plan.prefix.length));
+  assert.equal(posted.at(-1),'demo-v2/spatial/manifest.json');
+  await f.put(`${f.base}/cells/16/43945/20668/context.json`,'changed');let auth=0;
+  await assert.rejects(publishFirebaseCityAssets(plan,{...options(fetchImpl),getAccessToken:async()=>{auth++;return 'unit-test-not-a-credential';}}),/size|digest/i);assert.equal(auth,0);
 });
 test('bad local SHA or gzip equivalent fails before any auth or network work', async t=>{
   const f=await fixture(t);await f.put('demo-v2/people/p.bin','corrupted');

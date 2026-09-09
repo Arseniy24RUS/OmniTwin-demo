@@ -7,7 +7,31 @@
 содержит `deployed: false` и `liveInferenceVerified: false`; отдельное live-evidence
 создаётся только после фактической проверки владельцем.
 
-## Состояние на 7 сентября 2026 года
+## Обновление на 9 сентября 2026 года
+
+V2 backend активирован: `chatapi-00002-zup`, `ACTIVE/GEN_2`, весь traffic на
+новой ревизии, activation SHA
+`35319bb7b4068e6b7e8c281f6eb45ec70ca2be80c83c516460160f226938cbf9`.
+Read-back до/после подтвердил сохранение Node 22, 256 MiB, CPU `0.1666`, timeout
+30 секунд, min/max 0/2, concurrency 1, service identity, ingress и обеих secret
+version references 1. Значения секретов не читались и не менялись.
+
+Две live проверки `/chat` — legacy и V2 — прошли: HTTP 200, `source:llm`,
+модель `qwen/qwen3-235b-a22b-2507`, канонические имя/занятие и контекст
+`baseline/2026/10:00` совпали с pinned offline resolver. Запросов было ровно
+два, без повторов; чужой Origin отклонён. Это серверный smoke, не полноценная
+проверка новой Pages-версии. [Evidence](../../docs/evidence/firebase-live-activation-20260909.json)
+сохраняет исходные SHA и границы утверждений; [процедура активации](CITY_ACTIVATION_RU.md)
+описывает отдельные deployment/read-back/browser gates.
+
+CLI после успешного обновления функции завершился с кодом 1. Вероятная причина
+— отсутствующая cleanup policy `gcf-artifacts`: metadata показала 0 policies
+без opt-out, а точная noninteractive-ветка CLI воспроизведена офлайн. Сырой текст
+ошибки не сохранялся, поэтому причина остаётся выводом из этих свидетельств.
+Read-back новой ревизии и обе проверки API прошли независимо; повторного deploy,
+изменения cleanup policy, секретов или IAM для исправления exit code не было.
+
+## Историческое состояние на 7 сентября 2026 года
 
 В отдельном проекте `omnitwin-demo` (номер `679501553916`) активен сохранённый
 владельцем платёжный аккаунт **My Billing Account**, необходимые API включены.
@@ -91,8 +115,9 @@ Fractional CPU здесь намеренно отключает обработк
 к посторонней базе с действующими клиентами. Браузерных Firebase SDK, Analytics,
 App Check или пользовательского Firebase Authentication этот пакет не добавляет.
 
-Размещение двух секретов, завершение deploy и серверный LLM smoke подтверждены;
-браузерный Pages→API acceptance пока не завершён.
+Размещение двух секретов, завершение deploy и серверный LLM smoke подтверждены.
+Исторический Pages→API acceptance 7 сентября описан ниже; для новой версии
+9 сентября публичная браузерная проверка фиксируется отдельно от серверного smoke.
 Секреты имеют только имена `OPENROUTER_API_KEY` и `SESSION_SIGNING_SECRET`.
 Повторно добавлять версии при продолжении этой миграции не нужно. Для будущих
 согласованных операций требуется проверенная процедура REST, удерживающая auth
@@ -102,6 +127,10 @@ App Check или пользовательского Firebase Authentication эт
 Не использовать необследованные CLI-команды для переноса секретов: у проверенной
 Firebase CLI 15.29.0 JSON-вывод списка login включает credentials, а путь
 добавления версии секрета может отправлять request body в debug logger.
+Даже обычный deploy без `--debug` открывает debug-файл; при OAuth fetch error
+туда может попасть тело refresh-запроса. Обновление 9 сентября выполнено через
+проверенную обёртку штатного CLI: файловый/debug logger отключён до импорта,
+вывод ограничен фиксированными статусами, auth/permission gates не заменены.
 Этот README намеренно не предлагает команды `functions:secrets:set` или
 `functions:secrets:access`; факт интерактивного ввода сам по себе не доказывает
 отсутствие записи значения в лог. Не выводить полный auth/API response.
@@ -234,7 +263,7 @@ requestId уже проверены. API `https://chatapi-avypjak2xq-ew.a.run.ap
 Персонажи остаются вымышленными; ответы
 LLM не являются наблюдениями или научной валидацией модели.
 
-## Канонические V2-профили — исходники, до отдельного live gate
+## Канонические V2-профили — контракт и подтверждённый серверный smoke
 
 Allowlist теперь также включает `src/population-resolver.mjs` и точные копии
 `shared/demo-population/index.mjs`, `spatial.mjs` в `data/demo-population/`.
@@ -242,14 +271,21 @@ Allowlist теперь также включает `src/population-resolver.mjs`
 Данные миллиона жителей **не** загружаются целиком в память и **не** создаются
 как документы Firestore: база по-прежнему хранит только квоты/idempotency.
 
-Для V2 оператор после проверки frontend и публикации неизменяемых assets задаёт
-четыре **несекретные** переменные окружения одной согласованной ревизии:
-`V2_POPULATION_MANIFEST_URL`, `V2_POPULATION_MANIFEST_SHA256`,
-`V2_SPATIAL_MANIFEST_URL`, `V2_SPATIAL_MANIFEST_SHA256`.
-Ожидаемые пути Pages — `demo-v2/manifest.json` и
-`demo-v2/spatial/manifest.json`; SHA вычисляются из точных опубликованных байтов,
-не из повторно сериализованного JSON. Штатная загрузка `/session` ничего из V2
-не скачивает. Включение не происходит автоматически при staging.
+V2 теперь включается только через проверяемый **несекретный** файл
+`city-activation.json`. По умолчанию `v2:null` сохраняет legacy. После проверки
+frontend и immutable Storage assets оператор явно записывает сразу четыре pins;
+staging помещает их в `approved-city-assets.mjs` внутри той же Functions-ревизии.
+Локальные или оставшиеся облачные `V2_*` env не активируют и не переопределяют
+пакет. Частичный tuple, чужой проект/bucket, смешанные pack-prefix и некорректные
+SHA отклоняются до staging. Predeploy проверяет выбранный `GCLOUD_PROJECT`;
+runtime также отказывает в постороннем проекте до чтения secret bindings.
+
+Разрешены только пути `demo-v2/manifest.json` и `demo-v2/spatial/manifest.json`
+в `https://storage.googleapis.com/omnitwin-demo-city-assets/packs/<bundleSHA>/`,
+**не Pages**. SHA — от точных опубликованных JSON-байтов. `/session` ничего из V2
+не скачивает. Конфигурация, команды preview/write/deploy, проверка ревизии и
+rollback описаны в [CITY_ACTIVATION_RU.md](CITY_ACTIVATION_RU.md). Source-ready
+механизм и успешный read-back labels не заменяют live V2 chat gate.
 
 Сервер после проверки сессии и структуры `/chat` принимает только datasetId,
 personId (`demo2-p-` и семь цифр), сценарий, год и визуальное время. Он проверяет
@@ -276,8 +312,11 @@ requestId или сбой Firestore не вызывают загрузку пр�
 6/30/100 остаются прежними. Это одобренная смена порядка admission для V2,
 а не новая квота или изменение старого локального legacy validation.
 
-Проверки исходников не доказывают текущую live V2-работу: перед активацией нужны
-финальные SHA и отдельный frontend→Firebase gate. Данная правка не меняет
-секреты, их версии, существующий OpenRouter-ключ, его `limit: null`, модели,
-Firestore-квоты, concurrency функции или её endpoint. Никаких cloud writes
-этими проверками не выполняется.
+Проверки исходников сами по себе не доказывают live V2-работу. Для ревизии
+`chatapi-00002-zup` отдельные read-back и два серверных live запроса подтверждены
+evidence от 9 сентября выше; это не заменяет frontend→Firebase gate новой Pages
+версии. Обновление сохранило secret version references, существующий
+OpenRouter-ключ, модели, Firestore-квоты, concurrency и endpoint. Настройки
+OpenRouter-аккаунта, включая ранее согласованный `limit: null`, в ходе обновления
+не менялись и заново не запрашивались. Исторические receipts остаются историческими;
+локальный `stage-evidence.json` по-прежнему не является live receipt.

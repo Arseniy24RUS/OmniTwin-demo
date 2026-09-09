@@ -10,12 +10,14 @@
     "test": "vitest run --maxWorkers=1"
   },
   "dependencies": {
+    "3d-tiles-renderer": "0.5.2",
     "@deck.gl/core": "9.3.10", "@deck.gl/layers": "9.3.10", "@deck.gl/mapbox": "9.3.10",
     "@omnitwin/contracts": "0.1.0", "lucide-react": "1.33.0", "maplibre-gl": "6.4.1",
     "pmtiles": "4.5.0", "react": "19.2.8", "react-dom": "19.2.8", "react-map-gl": "8.1.2",
     "react-router-dom": "7.18.2", "three": "0.185.1", "zod": "4.4.3", "zustand": "5.0.15"
   },
   "devDependencies": {
+    "@testing-library/dom": "10.4.1",
     "@testing-library/jest-dom": "7.0.1", "@testing-library/react": "16.3.2",
     "@types/react": "19.2.14", "@types/react-dom": "19.2.3", "@types/three": "0.185.0",
     "@vitejs/plugin-react": "6.0.5", "jsdom": "29.0.1", "typescript": "7.0.2", "vite": "8.2.1", "vitest": "4.1.11"

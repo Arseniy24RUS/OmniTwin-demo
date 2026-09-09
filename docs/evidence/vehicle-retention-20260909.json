@@ -1,0 +1,68 @@
+{
+  "contract": "VehicleRetentionEvidenceV1",
+  "version": 1,
+  "date": "2026-09-09",
+  "scope": "local_tiled_game_membership_regression",
+  "status": "overlap_membership_fix_verified_locally",
+  "published": false,
+  "fullGraphicsAccepted": false,
+  "datasetId": "omnitwin-fictional-city-v2",
+  "camera": {"longitude":61.40324326242887,"latitude":55.166511972647186,"zoom":16.543982104833812,"pitch":46.4966,"bearing":-172.977},
+  "initialPresentationMinutes": 750.27,
+  "speed": 1,
+  "viewportCss": [1920,1080],
+  "committedBounds": [61.393458747024766,55.161444524793495,61.411109954231506,55.16894485728184],
+  "cause": "Every five-second presence anchor reran instantaneous glyph overlap suppression. Active canonical cars disappeared and later returned farther along their unchanged source routes.",
+  "fix": "Commit the previous canonical vehicle ID preference in DemoCity. In tiled_game only, preserve still-active previous members through later overlaps; suppress overlapping new entrants. Selected newcomers retain priority, explicit seeks and semantic/provider changes reset preference, absent source rows are never synthesized.",
+  "method": {
+    "browser": "real headed Chromium via existing Playwright",
+    "requestMocking": false,
+    "recording": "900 samples at 100 ms over 90 seconds, tracking every discovered canonical vehicle ID through the actual retained shader attributes",
+    "position": "Float32 shader interpolation reconstructed from actual instance buffers and shader clock; no GPU readback or optical-flow claim",
+    "sameIdJumpRule": "While opacity >= 0.5 at both adjacent samples, flag displacement > max(2 metres, 25 metres/second * shader-clock delta)",
+    "opaqueRemovalRule": "Canonical ID absent in next sample after prior opacity >= 0.99",
+    "opaqueReappearanceRule": "Previously seen canonical ID returns after absence, with prior and new opacity > 0.9",
+    "sourceClassification": "Replay getPresence for each removed canonical driver at the captured five-second anchor and compare its current position with committed viewport bounds; replay and recorded bounds match exactly",
+    "performanceClassification": "contaminated_diagnostic",
+    "openedPngs": ["before","after"],
+    "pixelMotionVideoAfterFix": false
+  },
+  "before": {"samples":900,"uniqueVehicleIds":357,"initialActors":191,"finalActors":188,"added":998,"removed":1001,"opaqueAdded":892,"opaqueRemoved":691,"opaqueReappearances":527,"shortOpaqueReappearancesUnder10_1Seconds":293,"sameIdJumps":0,"pageErrors":0,"failedRequests":0},
+  "after": {
+    "samples":900,"uniqueVehicleIds":351,"initialActors":219,"finalActors":245,
+    "added":489,"removed":463,"opaqueAdded":424,"opaqueRemoved":67,
+    "opaqueReappearances":31,"shortOpaqueReappearancesUnder10_1Seconds":3,"sameIdJumps":0,
+    "maximumVisibleAdjacentStepMeters":1.2617810114422068,
+    "opaqueRemovalClassification":{"activeOutsideCommittedBounds":63,"tripEndedWork":3,"tripEndedHome":1,"activeInsideCommittedBounds":0,"unclassified":0},
+    "finalDeclutter":{"candidateCount":306,"retainedCount":245,"suppressedOverlap":61,"suppressedBudget":0,"suppressedComparisonBudget":0,"comparisons":290,"previousRetainedCount":220,"retainedOverlap":61,"partial":false},
+    "requestAnimationFrameIntervalMs":{"p50":8.3,"p95":8.4,"maximum":24.9},
+    "longTasksOver50Ms":0,"pageErrors":0,"failedRequests":0
+  },
+  "existingUserTabBeforeFix": {"runtimeWasOlder":true,"durationSeconds":14.5,"canonicalVehicleId":"demo2-v-0658254","bridgeUpdates":3,"sameIdJumpsOver1_5Meters":0,"interpretation":"Confirms continuous motion for this one existing-tab car; does not exclude membership churn or verify the refreshed user tab."},
+  "validation": {
+    "failFirst": ["DemoCity replaced the existing fixture car at +5 seconds when an overlapping lower-hash newcomer arrived","Two already displayed crossing cars became one at the next anchor"],
+    "focusedPresenceViewportAndDeclutterTestsPassed":38,
+    "actorAndBridgeTestsPassed":31,
+    "typecheck":"passed",
+    "diffCheck":"passed"
+  },
+  "sourceSha256": {
+    "apps/web/src/demo/DemoCity.tsx":"ccce70001a632f104b35b8c627644e3c14dd4196ddc8aa08bc5f9a855957e8fc",
+    "apps/web/src/demo/cityPresence.ts":"792fb425e4d4cbd5c32ed5a38de786167275d96562c2d02f1353832ac8812911",
+    "apps/web/src/demo/vehicleDeclutter.ts":"41588fa6f11d33aba0a282dc31e9ca7e422a5333a83cdbce10e10751c42c0863",
+    "apps/web/src/demo/vehicleDeclutter.test.ts":"27745f1f6c97abb489d079b6257427f837ddd2d24718ec2ee546dbb347468c7b",
+    "apps/web/src/demo/DemoCityVehicleRetention.test.tsx":"7736fef5fd796d3a9c4836dc43c9acd6779f92166060ceec3fecae40d4e77c7e"
+  },
+  "externalCaptureDigests": [
+    {"label":"before-samples","bytes":147366423,"sha256":"6562553c0ecc4c2f888712826b06297faa83d9f65337bf9e7364e144348fd5ce"},
+    {"label":"after-samples","bytes":183075023,"sha256":"acb8301877aa510c99ecf3467593bad7c498e3f83d7e034bd6b7591c35a55b7b"},
+    {"label":"after-source-classification","bytes":75591,"sha256":"1c7a28fe092203468f96e6dbb411c011962a595c4365150188192e52ee53d37e"}
+  ],
+  "limitations": [
+    "This is a bounded 90-second local camera run; no citywide, mobile, 16x or public acceptance is inferred.",
+    "RequestAnimationFrame intervals are not a measurement of completed map render frames or GPU throughput.",
+    "Existing cars may visually overlap; this patch does not implement traffic collision simulation or change source speeds/routes.",
+    "Viewport exits and provider trip completion intentionally remove cars; fresh entries and completed once-route cycles remain source-driven.",
+    "The long-lived user IAB still needs its separate post-refresh acceptance; no claim of full graphics acceptance or cloud publication."
+  ]
+}

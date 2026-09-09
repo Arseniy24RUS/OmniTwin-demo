@@ -1,0 +1,20 @@
+{
+  "contract": "CityMaterialLibraryV1",
+  "version": "game-materials-v1-preview",
+  "representation": "visual_synthesis",
+  "source": "OpenAI image generation; task-authored original material sheet, 2026-09-08",
+  "asset": "city-surfaces.png",
+  "sha256": "17cad08c6c9c903606ac1654c8c58a10ff67912d03a592cc9f308e79e85c4f7e",
+  "bytes": 2856512,
+  "width": 1254,
+  "height": 1254,
+  "grid": [4, 4],
+  "rows": [
+    ["panel", "brick", "plaster", "glazing"],
+    ["industrial_metal", "civic_stone", "timber", "neutral_concrete"],
+    ["bitumen", "standing_seam", "terracotta", "concrete_roof"],
+    ["asphalt", "paving", "grass", "trim"]
+  ],
+  "colorSpace": "sRGB",
+  "limitations": ["Albedo only; not measured PBR material", "Preview PNG fallback; KTX2 and desktop/low variants not yet built", "Low-contrast material color, architectural windows and trim are mesh geometry"]
+}

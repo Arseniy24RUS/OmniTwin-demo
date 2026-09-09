@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-09",
+  "status": "passed_bounded_original_camera_only",
+  "classification": "independent_actual_interpolated_shader_body_validation",
+  "scope": "Original user courtyard camera after bend-envelope and joint following-convergence fixes. Other cameras, source histories and the whole city remain outside this pass; the separate wide-view review remains open.",
+  "camera": {
+    "longitude": 61.40335931261333,
+    "latitude": 55.166641128116765,
+    "zoom": 18.2,
+    "pitch": 46.49661799282392,
+    "bearing": -172.97699800600026
+  },
+  "browser": {
+    "version": "152.0.7977.83",
+    "channel": "chrome",
+    "headless": true,
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.16.1656)",
+    "viewport": [
+      1280,
+      800
+    ],
+    "deviceScaleFactor": 1,
+    "separateFreshContext": true,
+    "noVideo": true
+  },
+  "clock": {
+    "initialMinute": 707.7335833333341,
+    "speed": 1,
+    "elapsedSimulationSeconds": 57.49689999999828,
+    "sourceRefreshes": [
+      2,
+      13
+    ],
+    "sourceReanchors": [
+      0,
+      0
+    ]
+  },
+  "method": {
+    "samples": 503,
+    "uniqueActors": 142,
+    "sampling": "Four10s in-browser blocks with requested50ms timer and intervening serialization gaps; actual observed clock range57.497s. Reads actual GPU instance attributes and shader-time yaw, including membership refreshes, stops and smooth turns.",
+    "carCar": "SAT of real4.5m asset length and asset-specific width, centered at actual interpolated shader position and yaw.",
+    "carPedestrian": "Actual vehicle OBB against controller.35m pedestrian disc. Independently tests the conservative oriented AABB containing every baked animation frame of each near-person model, with its real local-center offset.",
+    "poseBoundsMeaning": "A positive all-pose gap proves separation of the body envelopes for every baked pose and their interpolations at each sampled time; it is not a continuous-between-samples proof or an exact triangle-collision solver.",
+    "queue": "Same directed supporting line and overlapping source intervals; center station gap8m, tolerance only numerical roundoff.",
+    "coverage": "Up to64managedcars and64managedpedestrians per sample; all three car models observed. Person sprites lack baked geometry and are excluded from the additional all-pose check, but included in the nominal controller-disc check."
+  },
+  "checks": {
+    "carCar": 242137,
+    "carPed": 690698,
+    "queue": 32440,
+    "signals": 34766
+  },
+  "minimums": {
+    "carCar": 3.0217057879616704,
+    "carPed": 0.5093761540181914,
+    "queueStation": 7.999999999999979
+  },
+  "allPosePedestrians": {
+    "checks": 662830,
+    "minimumGapMeters": 0.41386875702105114,
+    "potentialOverlapSamples": 0,
+    "excludedMeshes": [
+      "game-actor-person-sprite"
+    ]
+  },
+  "results": {
+    "bodyOverlapSamples": 0,
+    "queueViolationSamples": 0,
+    "signalViolations": 0,
+    "phases": [
+      "vehicle",
+      "clearance",
+      "pedestrian"
+    ],
+    "waitingVehicleSamples": 487,
+    "waitingPedestrianSamples": 370,
+    "junctionOverflows": 0,
+    "admissionOverflows": 0,
+    "followingOverflows": 0,
+    "pageErrors": [],
+    "pauseBefore": {
+      "clock": true,
+      "actors": true,
+      "signals": true,
+      "additionalFrames": 37
+    },
+    "pauseAfter": {
+      "clock": true,
+      "actors": true,
+      "signals": true,
+      "additionalFrames": 0
+    },
+    "pauseFrameCaveat": "Initial pause had37 additional asset-driven frames while shader clock, actors and signals stayed exactly unchanged. Final pause had0additionalframes; this does not report a paused-idle pass for the initial unsettled asset interval."
+  },
+  "regressions": [
+    "apps/web/src/renderer/game/junctionTraffic.heading.review.test.ts",
+    "apps/web/src/renderer/game/junctionTraffic.capacity.review.test.ts",
+    "apps/web/src/renderer/game/laneTraffic.spacing.review.test.ts"
+  ],
+  "sourceIntegrity": {
+    "sha256Before": {
+      "apps/web/src/renderer/game/TiledGameScene.tsx": "3f968cbb3a42baefe883792e4b676d4ff8867e152b5819f94713071becd3b69d",
+      "apps/web/src/renderer/game/TiledGameLayer.ts": "ea5f02a4d9e38c9146d615f4af91c52f4333ff78dac95c2912e8feafe65a6bde",
+      "apps/web/src/renderer/game/GameActors.ts": "edb76f4577ae3817ffb6475d0df0a80a26cc0626e32c48f0903d32bb94225c3a",
+      "apps/web/src/renderer/game/gameActorHeading.ts": "5c8578fc50e6cd95d019a163b321d92564656eea71cffb5f7bcf9b053cbc3690",
+      "apps/web/src/renderer/game/actorColumnsBridge.ts": "32bf21181e9082827e885bb98b61b993a8bb1174c54d1fcb4bc97c13073b68fa",
+      "apps/web/src/renderer/game/laneTraffic.ts": "1b8c0666052a485132f278c0a52fa29433485bcb9c534f5d6ebc11e5c2ec95c4",
+      "apps/web/src/renderer/game/junctionTraffic.ts": "2e4db0a7f92c4ed102ef1846bdfcfad7aa74e787b1c95c5026a9b8a791f09d1b",
+      "apps/web/src/renderer/game/actorFootprintClearance.ts": "3c396e0d2ab10152b6f2061406781855378ab50e6081a8846a875bd2ae21ed38",
+      "apps/web/public/city-visual-v1/manifest.json": "d1f25e4328caf10ddf7e3e6f8e2734b7cfc63b0ac7a28b0eb410af3fc53cf9cc",
+      "apps/web/public/assets/game-actors-v1/manifest.json": "3733817ee56c32fac81efa3f20605c94526a157f98f2d09c4667f74a959c0a2e"
+    },
+    "changedDuringCapture": [],
+    "rawCaptureSha256": "7e04bec2a4d36f9b4e3985c7966cd35e27ea09fd268d56428c00ee14a8b6759e"
+  }
+}

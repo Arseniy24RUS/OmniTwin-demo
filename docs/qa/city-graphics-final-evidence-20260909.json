@@ -1,0 +1,638 @@
+{
+  "contract": "CityGraphicsFinalEvidenceV1",
+  "captureDate": "2026-09-09",
+  "startedAt": "2026-09-09T12:57:06.311Z",
+  "status": "passed_bounded_graphics_suite_with_signal_prop_coverage_gap",
+  "classification": "functional_visual_diagnostic",
+  "performanceClaim": false,
+  "command": "node tools/qa-city-graphics.mjs",
+  "browserChannel": "chrome",
+  "separateFreshContexts": [
+    "warm-camera-sweeps",
+    "missing-top-manifest",
+    "corrupted-top-manifest",
+    "delayed-glb",
+    "corrupted-glb",
+    "native-source-failure"
+  ],
+  "catalogSha256": "bca4ff81f5a4c1a8c3517f0b1faeceddd6042cf20d811c70661993ecec72a819",
+  "sourceSha256Before": "330e8b611fbba1f44a6643676796718e23b70b9b24ced893c5eae71f64fd743e",
+  "sourceSha256After": "330e8b611fbba1f44a6643676796718e23b70b9b24ced893c5eae71f64fd743e",
+  "sourceFingerprintMethod": "Sorted production TS/TSX/CSS/JSON under apps/web/src; test and fixture paths excluded; relative file name then bytes are hashed.",
+  "elapsedMs": 188011,
+  "samples": 336,
+  "assertions": 2081,
+  "failedAssertions": 0,
+  "errors": [],
+  "coverage": {
+    "plannedZoomSamples": 300,
+    "completedZoomSamples": 300,
+    "plannedDistricts": 7,
+    "completedDistricts": [
+      "KUR",
+      "KAL",
+      "CEN",
+      "MET",
+      "SOV",
+      "TRA",
+      "LEN"
+    ],
+    "plannedFaults": 5,
+    "completedFaults": [
+      "missing-top-manifest",
+      "corrupted-top-manifest",
+      "delayed-glb",
+      "corrupted-glb",
+      "native-source-failure"
+    ]
+  },
+  "scope": {
+    "zooms": [
+      14,
+      20
+    ],
+    "zoomIncrement": 0.25,
+    "sweepDirections": [
+      "up",
+      "down"
+    ],
+    "cameraPoses": [
+      "user",
+      "center",
+      "old-west",
+      "old-east",
+      "old-south",
+      "old-north"
+    ],
+    "continuousWheelRotationPan": true,
+    "webglLossAndRestore": true,
+    "cacheReturn": true,
+    "viewport": [
+      1280,
+      800
+    ]
+  },
+  "maxima": {
+    "committedGeometryBytes": 33380928,
+    "stagingBuffers": 2,
+    "residentGeometryBytesIncludingStaging": 33380928,
+    "textureBytes": 44040204,
+    "canonicalSourceIds": 1345,
+    "duplicateSignalIds": 0,
+    "trafficTopologyOverflow": 0
+  },
+  "districts": [
+    {
+      "label": "district-KUR",
+      "camera": {
+        "longitude": 61.3421630859375,
+        "latitude": 55.21335616000933,
+        "zoom": 17.5,
+        "pitch": 55.00000000000001,
+        "bearing": -70
+      },
+      "source": 293,
+      "native": 291,
+      "mesh": 2,
+      "state": "rendering",
+      "mapMode": "canonical_city",
+      "actorsState": "ready",
+      "actorsVisible": true,
+      "people": 22,
+      "vehicles": 7,
+      "committedGeometryBytes": 1053504,
+      "staging": 2,
+      "renderedVisibleTiles": 2,
+      "error": null,
+      "controllerOverflow": 0,
+      "duplicateSignalIds": 0
+    },
+    {
+      "label": "district-KAL",
+      "camera": {
+        "longitude": 61.3970947265625,
+        "latitude": 55.18827648913107,
+        "zoom": 17.5,
+        "pitch": 55.00000000000001,
+        "bearing": -70
+      },
+      "source": 526,
+      "native": 521,
+      "mesh": 5,
+      "state": "rendering",
+      "mapMode": "canonical_city",
+      "actorsState": "ready",
+      "actorsVisible": true,
+      "people": 253,
+      "vehicles": 53,
+      "committedGeometryBytes": 14153184,
+      "staging": 2,
+      "renderedVisibleTiles": 2,
+      "error": null,
+      "controllerOverflow": 0,
+      "duplicateSignalIds": 0
+    },
+    {
+      "label": "district-CEN",
+      "camera": {
+        "longitude": 61.3311767578125,
+        "latitude": 55.15062735950328,
+        "zoom": 17.5,
+        "pitch": 55.00000000000001,
+        "bearing": -70
+      },
+      "source": 112,
+      "native": 104,
+      "mesh": 8,
+      "state": "rendering",
+      "mapMode": "canonical_city",
+      "actorsState": "ready",
+      "actorsVisible": true,
+      "people": 0,
+      "vehicles": 0,
+      "committedGeometryBytes": 1793664,
+      "staging": 1,
+      "renderedVisibleTiles": 2,
+      "error": null,
+      "controllerOverflow": 0,
+      "duplicateSignalIds": 0
+    },
+    {
+      "label": "district-MET",
+      "camera": {
+        "longitude": 61.4080810546875,
+        "latitude": 55.25720758499866,
+        "zoom": 17.5,
+        "pitch": 55.00000000000001,
+        "bearing": -70
+      },
+      "source": 431,
+      "native": 419,
+      "mesh": 12,
+      "state": "rendering",
+      "mapMode": "canonical_city",
+      "actorsState": "ready",
+      "actorsVisible": true,
+      "people": 188,
+      "vehicles": 30,
+      "committedGeometryBytes": 11848896,
+      "staging": 2,
+      "renderedVisibleTiles": 2,
+      "error": null,
+      "controllerOverflow": 0,
+      "duplicateSignalIds": 0
+    },
+    {
+      "label": "district-SOV",
+      "camera": {
+        "longitude": 61.3751220703125,
+        "latitude": 55.106658425581735,
+        "zoom": 17.5,
+        "pitch": 55.00000000000001,
+        "bearing": -70
+      },
+      "source": 677,
+      "native": 668,
+      "mesh": 9,
+      "state": "rendering",
+      "mapMode": "canonical_city",
+      "actorsState": "ready",
+      "actorsVisible": true,
+      "people": 2,
+      "vehicles": 0,
+      "committedGeometryBytes": 5298336,
+      "staging": 0,
+      "renderedVisibleTiles": 2,
+      "error": null,
+      "controllerOverflow": 0,
+      "duplicateSignalIds": 0
+    },
+    {
+      "label": "district-TRA",
+      "camera": {
+        "longitude": 61.5179443359375,
+        "latitude": 55.17573072967191,
+        "zoom": 17.5,
+        "pitch": 55.00000000000001,
+        "bearing": -70
+      },
+      "source": 221,
+      "native": 214,
+      "mesh": 7,
+      "state": "rendering",
+      "mapMode": "canonical_city",
+      "actorsState": "ready",
+      "actorsVisible": true,
+      "people": 5,
+      "vehicles": 0,
+      "committedGeometryBytes": 7310592,
+      "staging": 2,
+      "renderedVisibleTiles": 2,
+      "error": null,
+      "controllerOverflow": 0,
+      "duplicateSignalIds": 0
+    },
+    {
+      "label": "district-LEN",
+      "camera": {
+        "longitude": 61.4630126953125,
+        "latitude": 55.11922591908764,
+        "zoom": 17.5,
+        "pitch": 55.00000000000001,
+        "bearing": -70
+      },
+      "source": 755,
+      "native": 744,
+      "mesh": 11,
+      "state": "rendering",
+      "mapMode": "canonical_city",
+      "actorsState": "ready",
+      "actorsVisible": true,
+      "people": 125,
+      "vehicles": 51,
+      "committedGeometryBytes": 20682144,
+      "staging": 2,
+      "renderedVisibleTiles": 2,
+      "error": null,
+      "controllerOverflow": 0,
+      "duplicateSignalIds": 0
+    }
+  ],
+  "recovery": [
+    {
+      "label": "cache-return",
+      "camera": {
+        "longitude": 61.40335931261333,
+        "latitude": 55.166641128116765,
+        "zoom": 18.2,
+        "pitch": 46.49661799282392,
+        "bearing": -172.97699800600026
+      },
+      "source": 595,
+      "native": 576,
+      "mesh": 19,
+      "state": "rendering",
+      "mapMode": "canonical_city",
+      "actorsState": "ready",
+      "actorsVisible": true,
+      "people": 45,
+      "vehicles": 34,
+      "committedGeometryBytes": 9957312,
+      "staging": 2,
+      "renderedVisibleTiles": 2,
+      "error": null,
+      "controllerOverflow": 0,
+      "duplicateSignalIds": 0
+    },
+    {
+      "label": "webgl-restored",
+      "camera": {
+        "longitude": 61.40335931261333,
+        "latitude": 55.166641128116765,
+        "zoom": 18.2,
+        "pitch": 46.49661799282392,
+        "bearing": -172.97699800600026
+      },
+      "source": 595,
+      "native": 550,
+      "mesh": 45,
+      "state": "rendering",
+      "mapMode": "canonical_city",
+      "actorsState": "ready",
+      "actorsVisible": true,
+      "people": 45,
+      "vehicles": 34,
+      "committedGeometryBytes": 23465088,
+      "staging": 2,
+      "renderedVisibleTiles": 6,
+      "error": null,
+      "controllerOverflow": 0,
+      "duplicateSignalIds": 0
+    }
+  ],
+  "faults": [
+    {
+      "label": "missing-top-manifest-after",
+      "camera": {
+        "longitude": 61.40335931261333,
+        "latitude": 55.166641128116765,
+        "zoom": 18.2,
+        "pitch": 46.49661799282392,
+        "bearing": -172.97699800600026
+      },
+      "source": 595,
+      "native": 595,
+      "mesh": 0,
+      "state": "error",
+      "mapMode": "canonical_city",
+      "actorsState": "ready",
+      "actorsVisible": true,
+      "people": 45,
+      "vehicles": 34,
+      "committedGeometryBytes": 0,
+      "staging": 0,
+      "renderedVisibleTiles": 0,
+      "error": "Verified visual metadata unavailable; native geometry and prepared actors retained.",
+      "controllerOverflow": 0,
+      "duplicateSignalIds": 0
+    },
+    {
+      "label": "corrupted-top-manifest-after",
+      "camera": {
+        "longitude": 61.40335931261333,
+        "latitude": 55.166641128116765,
+        "zoom": 18.2,
+        "pitch": 46.49661799282392,
+        "bearing": -172.97699800600026
+      },
+      "source": 595,
+      "native": 595,
+      "mesh": 0,
+      "state": "error",
+      "mapMode": "canonical_city",
+      "actorsState": "ready",
+      "actorsVisible": true,
+      "people": 45,
+      "vehicles": 34,
+      "committedGeometryBytes": 0,
+      "staging": 0,
+      "renderedVisibleTiles": 0,
+      "error": "Verified visual metadata unavailable; native geometry and prepared actors retained.",
+      "controllerOverflow": 0,
+      "duplicateSignalIds": 0
+    },
+    {
+      "label": "delayed-glb-after",
+      "camera": {
+        "longitude": 61.40335931261333,
+        "latitude": 55.166641128116765,
+        "zoom": 18.2,
+        "pitch": 46.49661799282392,
+        "bearing": -172.97699800600026
+      },
+      "source": 595,
+      "native": 550,
+      "mesh": 45,
+      "state": "rendering",
+      "mapMode": "canonical_city",
+      "actorsState": "ready",
+      "actorsVisible": true,
+      "people": 45,
+      "vehicles": 34,
+      "committedGeometryBytes": 33380928,
+      "staging": 0,
+      "renderedVisibleTiles": 6,
+      "error": null,
+      "controllerOverflow": 0,
+      "duplicateSignalIds": 0
+    },
+    {
+      "label": "corrupted-glb-after",
+      "camera": {
+        "longitude": 61.40335931261333,
+        "latitude": 55.166641128116765,
+        "zoom": 18.2,
+        "pitch": 46.49661799282392,
+        "bearing": -172.97699800600026
+      },
+      "source": 595,
+      "native": 558,
+      "mesh": 37,
+      "state": "rendering",
+      "mapMode": "canonical_city",
+      "actorsState": "ready",
+      "actorsVisible": true,
+      "people": 45,
+      "vehicles": 34,
+      "committedGeometryBytes": 29423232,
+      "staging": 0,
+      "renderedVisibleTiles": 5,
+      "error": "A detail cell failed; coarse coverage retained.",
+      "controllerOverflow": 0,
+      "duplicateSignalIds": 0
+    },
+    {
+      "label": "native-source-failure-after",
+      "camera": {
+        "longitude": 61.40335931261333,
+        "latitude": 55.166641128116765,
+        "zoom": 18.2,
+        "pitch": 46.49661799282392,
+        "bearing": -172.97699800600026
+      },
+      "source": 0,
+      "native": 0,
+      "mesh": 0,
+      "state": "rendering",
+      "mapMode": "native_basemap",
+      "actorsState": "ready",
+      "actorsVisible": true,
+      "people": 0,
+      "vehicles": 0,
+      "committedGeometryBytes": 0,
+      "staging": 2,
+      "renderedVisibleTiles": 0,
+      "error": null,
+      "controllerOverflow": 0,
+      "duplicateSignalIds": 0
+    }
+  ],
+  "exercisedFaultChecks": [
+    {
+      "name": "WebGL restoration",
+      "pass": true,
+      "restoration": {
+        "available": true
+      },
+      "state": "rendering",
+      "mesh": 45,
+      "actorsVisible": true
+    },
+    {
+      "name": "missing-top-manifest: route exercised",
+      "pass": true,
+      "injected": 1
+    },
+    {
+      "name": "missing-top-manifest: explicit degraded package",
+      "pass": true,
+      "state": "error",
+      "error": "Verified visual metadata unavailable; native geometry and prepared actors retained."
+    },
+    {
+      "name": "missing-top-manifest: independent actors survive",
+      "pass": true,
+      "people": 45,
+      "vehicles": 34,
+      "actorsVisible": true,
+      "actorsState": "ready"
+    },
+    {
+      "name": "corrupted-top-manifest: route exercised",
+      "pass": true,
+      "injected": 1
+    },
+    {
+      "name": "corrupted-top-manifest: explicit degraded package",
+      "pass": true,
+      "state": "error",
+      "error": "Verified visual metadata unavailable; native geometry and prepared actors retained."
+    },
+    {
+      "name": "corrupted-top-manifest: independent actors survive",
+      "pass": true,
+      "people": 45,
+      "vehicles": 34,
+      "actorsVisible": true,
+      "actorsState": "ready"
+    },
+    {
+      "name": "delayed-glb: route exercised",
+      "pass": true,
+      "injected": 1
+    },
+    {
+      "name": "corrupted-glb: route exercised",
+      "pass": true,
+      "injected": 1
+    },
+    {
+      "name": "native-source-failure: route exercised",
+      "pass": true,
+      "injected": 6
+    }
+  ],
+  "screenshotInspection": {
+    "files": [
+      "10-user-close-return.png",
+      "11-webgl-restored.png",
+      "native-source-failure-during.png",
+      "corrupted-glb-during.png"
+    ],
+    "findings": [
+      "Close return and restored frames contain building volumes, source roads, trees and actor representations.",
+      "Native-source failure frame retains visible 3D basemap buildings with an explicit source-unavailable message.",
+      "Corrupted GLB frame retains surrounding detailed buildings and coarse coverage, with an explicit detail-error message."
+    ],
+    "scope": "Visual inspection confirms these recorded frames; no claim that every extrusion pixel was continuously read back."
+  },
+  "signalPropCoverage": {
+    "captured": false,
+    "reason": "The added optional collector used data-game-traffic-signals instead of data-game-signals; null values skipped prop-health assertions. Controller identities and overflow used the correct probe and were checked.",
+    "correctiveAction": "Both QA scripts now read data-game-signals; graphics QA requires diagnostic presence instead of skipping null. The exact used harness is retained as a hashed artifact.",
+    "separateParentObservation": {
+      "localTime": "2026-09-09 15:46",
+      "source": "Parent inspection of preserved user in-app browser; separate from this recorded suite",
+      "state": "ready",
+      "heads": 46,
+      "draws": 3,
+      "lastError": null
+    }
+  },
+  "limitations": [
+    "Ownership probe nativeIds are the declared exact-source complement; they are not a direct readback of MapLibre native geometry buckets.",
+    "Native fallback requires screenshot inspection; render telemetry alone cannot prove every native extrusion pixel.",
+    "Concurrent app/browser/compiler activity and recording contaminate performance measurements.",
+    "District probes wait for a nonempty detailed frontier with canonical coverage, not for every detailed tile or actor-source request to finish.",
+    "Some source-empty or still-loading district actor samples are zero; no synthetic presence is fabricated.",
+    "Native-source fault aborts source cells and yielded zero actor counts; independent actor survival is asserted only for missing/corrupt top visual metadata.",
+    "The signal-prop telemetry coverage gap is explicit above; it does not affect the canonical partition, geometry, rendered-flow, identity or fault assertions."
+  ],
+  "artifacts": [
+    {
+      "name": "01-cold-user.png",
+      "bytes": 540316,
+      "sha256": "d46e86b4b4e69292d1f9d7359d62f1ece89885fb809dc229e6b0ea19a52e411a"
+    },
+    {
+      "name": "02-warm-user.png",
+      "bytes": 549381,
+      "sha256": "545036db277dbd5c816fad9e8aa6db22ba11a9cb67fd53a80fff5ccaa003525d"
+    },
+    {
+      "name": "09-after-continuous-motion.png",
+      "bytes": 637139,
+      "sha256": "c3e93f2a93d2fac97a8fdb3ff596a1e69b7c0fab073ccba9b5ab4b1129765d16"
+    },
+    {
+      "name": "10-user-close-return.png",
+      "bytes": 598169,
+      "sha256": "adc30fe73a7aaf68e94f2778a55b31810d9a60268ce20bc8820c1ad7784bea95"
+    },
+    {
+      "name": "11-webgl-restored.png",
+      "bytes": 621014,
+      "sha256": "3aa9642ba3d5b6e94722854568a5a305b8636458bc1ab8e14ff37819a6774c50"
+    },
+    {
+      "name": "corrupted-glb-during.png",
+      "bytes": 568908,
+      "sha256": "59ce017d6252bf9c4384697585e77892c52117e7253200c3988e2edc2446cac0"
+    },
+    {
+      "name": "corrupted-top-manifest-during.png",
+      "bytes": 466135,
+      "sha256": "edd103fef248f3618cf349486edadd22d727afadc033dc3093b014333bdb1bc5"
+    },
+    {
+      "name": "delayed-glb-during.png",
+      "bytes": 568107,
+      "sha256": "48cf2534cfa8f7948bda27af4d79bf94474aeaf040de86b3afb44b2ba47830f5"
+    },
+    {
+      "name": "missing-top-manifest-during.png",
+      "bytes": 466135,
+      "sha256": "edd103fef248f3618cf349486edadd22d727afadc033dc3093b014333bdb1bc5"
+    },
+    {
+      "name": "native-source-failure-during.png",
+      "bytes": 493096,
+      "sha256": "ac25d2d3d7116425a1072b58b23b8bbd75b4bf32b13938825e06231fdd264473"
+    },
+    {
+      "name": "page@5fabd860f80ffb9c6cfcc762195a45ed.webm",
+      "bytes": 17169536,
+      "sha256": "59da5ec30a7a4204475f7e5fab9af63d37ba32231c4a99b0dc36522a1f4f94ad"
+    },
+    {
+      "name": "qa-city-graphics-used.mjs",
+      "bytes": 18598,
+      "sha256": "f57b8c9a257461dc429f3c44d2a909c773c49e8e8da4bfda3ac6388fbe972410"
+    },
+    {
+      "name": "results.json",
+      "bytes": 772814,
+      "sha256": "45559d1e87675a3b14df15d5a327ce8f97e50911591993fea882b4d675f36fb9"
+    },
+    {
+      "name": "sweep-center.png",
+      "bytes": 546459,
+      "sha256": "2ba8d89e223ab22bcb1a85b8b7faecbfa294996e8f07398be2892e394d665ec3"
+    },
+    {
+      "name": "sweep-old-east.png",
+      "bytes": 605329,
+      "sha256": "e5d1b64161cbc698433725ab9404ea71a90f9df849d2ae69c4708deef8b05aba"
+    },
+    {
+      "name": "sweep-old-north.png",
+      "bytes": 507951,
+      "sha256": "a7116aacde7fc162ec2e52b706f14a73407cf0bb841de507922c3f22d7a3baae"
+    },
+    {
+      "name": "sweep-old-south.png",
+      "bytes": 621738,
+      "sha256": "eda79b83226e349c847b2753f16aa57ac13c34704808bc780c606b7653e2d65e"
+    },
+    {
+      "name": "sweep-old-west.png",
+      "bytes": 651973,
+      "sha256": "86ba1298316fa4be788030c188254d74af9ce1b0ca8538af50e07fb4ac1c4060"
+    },
+    {
+      "name": "sweep-user.png",
+      "bytes": 561329,
+      "sha256": "9cfd7ac4440110da15c6bac46186236cd4a3b26645dde4ef19331acd82606277"
+    }
+  ]
+}

@@ -36,41 +36,13 @@ function contiguous(shards, total, maximum) {
   check(next === total, 'Source shard count mismatch.');
 }
 
-/** Stable exact-polyline nearest bindings; no inferred road-to-road connectors. */
-export function nearestRoadBindings(buildings, roads, needed, maxDistanceMeters = 750) {
-  const scaleX = 111_320 * Math.cos(55.1644 * Math.PI / 180); const scaleY = 110_540; const size = 500;
-  const point = (p) => [(p[0] - 61.4026) * scaleX, (p[1] - 55.1644) * scaleY];
-  const grid = new Map();
-  roads.forEach((road, index) => {
-    check(typeof road.id === 'string' && Array.isArray(road.coordinates) && road.coordinates.length >= 2, 'Invalid source road.');
-    const cells = new Set();
-    for (let i = 1; i < road.coordinates.length; i++) {
-      const a = point(road.coordinates[i - 1]); const b = point(road.coordinates[i]);
-      check([...a, ...b].every(Number.isFinite), 'Invalid source road coordinates.');
-      const minX = Math.floor(Math.min(a[0], b[0]) / size); const maxX = Math.floor(Math.max(a[0], b[0]) / size);
-      const minY = Math.floor(Math.min(a[1], b[1]) / size); const maxY = Math.floor(Math.max(a[1], b[1]) / size);
-      check((maxX - minX + 1) * (maxY - minY + 1) <= 4096, 'Unbounded source road segment.');
-      for (let x = minX; x <= maxX; x++) for (let y = minY; y <= maxY; y++) cells.add(`${x}:${y}`);
-    }
-    for (const key of cells) { let bucket = grid.get(key); if (!bucket) { bucket = []; grid.set(key, bucket); } bucket.push(index); }
-  });
+/** Bounded mode-specific source seeds weighted by synthetic connectivity/class preference, not traffic observations. */
+export function nearestRoadBindings(buildings, roads, needed, maxDistanceMeters = 750, graph = null) {
+  const builder=graph??createRouteCorridorBuilder(roads,{maxCachedRoutes:128}),byId=new Map(roads.map((r,i)=>[r.id,i]));
   const bindings = new Uint32Array(buildings.length * 2); bindings.fill(NONE); const distances = new Float32Array(buildings.length * 2);
   for (let building = 0; building < buildings.length; building++) {
-    if (!needed[building]) continue; const p = point([buildings[building][1], buildings[building][2]]); const cx = Math.floor(p[0] / size); const cy = Math.floor(p[1] / size);
-    const candidates = new Set(); const radius = Math.ceil(maxDistanceMeters / size);
-    for (let x = cx - radius; x <= cx + radius; x++) for (let y = cy - radius; y <= cy + radius; y++) for (const index of grid.get(`${x}:${y}`) ?? []) candidates.add(index);
-    const best = [maxDistanceMeters, maxDistanceMeters];
-    for (const index of candidates) {
-      const road = roads[index]; if (!road.walkable && !road.drivable) continue; let distance = Infinity;
-      for (let i = 1; i < road.coordinates.length; i++) {
-        const a = point(road.coordinates[i - 1]); const b = point(road.coordinates[i]); const dx = b[0] - a[0]; const dy = b[1] - a[1];
-        const t = dx || dy ? Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / (dx * dx + dy * dy))) : 0;
-        distance = Math.min(distance, Math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy));
-      }
-      for (let mode = 0; mode < 2; mode++) if ((mode ? road.drivable : road.walkable) && (distance < best[mode] || distance === best[mode] && (bindings[building * 2 + mode] === NONE || road.id < roads[bindings[building * 2 + mode]].id))) {
-        best[mode] = distance; bindings[building * 2 + mode] = index; distances[building * 2 + mode] = distance;
-      }
-    }
+    if(!needed[building])continue;
+    for(let mode=0;mode<2;mode++){const seed=builder.selectSeed([buildings[building][1],buildings[building][2]],{mode:mode?'car':'walk',maxDistanceMeters});if(seed){bindings[building*2+mode]=byId.get(seed.sourceRoadId);distances[building*2+mode]=seed.distanceMeters;}}
   }
   return { bindings, distances };
 }
@@ -184,13 +156,14 @@ export async function compileSpatial({ root = ROOT, populationManifest = join(ro
   }
   roleCounts = null; offsets = null; members = null; cursors = null; householdTripMasks = null;
   let roads = []; let roadBinding = { bindings: new Uint32Array(buildingCount * 2).fill(NONE), distances: new Float32Array(buildingCount * 2) };
-  if (includeRoadBindings) { const index = JSON.parse(await verified(geoBase, geo.roadIndex)); check(index.contract === 'DemoRoadIndexV2' && index.roads.length === geo.roadIndex.count, 'Invalid road index.'); roads = index.roads; roadBinding = nearestRoadBindings(buildings, roads, needed); }
+  if (includeRoadBindings) { const index = JSON.parse(await verified(geoBase, geo.roadIndex)); check(index.contract === 'DemoRoadIndexV2' && index.roads.length === geo.roadIndex.count, 'Invalid road index.'); roads = index.roads; }
   const corridorBuilder = createRouteCorridorBuilder(roads, { maxCachedRoutes: 128 });
+  if(includeRoadBindings)roadBinding=nearestRoadBindings(buildings,roads,needed,750,corridorBuilder);
   for (let i = 0; i < roadBinding.bindings.length; i++) if (roadBinding.bindings[i] !== NONE) {
     const source = roadBinding.bindings[i]; const mode = i % 2 ? 'car' : 'walk';
-    roadBinding.bindings[i] = corridorBuilder.build(roads[source].id, { mode }) ? source * 2 + i % 2 : NONE;
+    roadBinding.bindings[i] = corridorBuilder.buildBest(roads[source].id, { mode }) ? source * 2 + i % 2 : NONE;
   }
-  const roadSummary = (index) => { const sourceRoadIndex = index >>> 1; const mode = index % 2 ? 'car' : 'walk'; return { index, sourceRoadIndex, mode, ...corridorBuilder.build(roads[sourceRoadIndex].id, { mode }) }; };
+  const roadSummary = (index) => { const sourceRoadIndex = index >>> 1; const mode = index % 2 ? 'car' : 'walk'; return { index, sourceRoadIndex, mode, ...corridorBuilder.buildBest(roads[sourceRoadIndex].id, { mode }) }; };
   const bindingShards = []; let buildingsWithoutWalk = 0; let buildingsWithoutCar = 0;
   for (let first = 0; first < buildingCount; first += BUILDING_ROLE_SHARD_SIZE) {
     const count = Math.min(BUILDING_ROLE_SHARD_SIZE, buildingCount - first); const bindings = []; const roadIds = new Set();
@@ -217,7 +190,8 @@ export async function compileSpatial({ root = ROOT, populationManifest = join(ro
   const sourceHashes = { populationManifest: sha(populationBytes), geographyManifest: sha(geoBytes), buildingIndex: geo.buildingIndex.sha256, roadIndex: geo.roadIndex?.sha256 ?? null, populationCodec: sha(await readFile(join(root, 'shared/demo-population/index.mjs'))), spatialCodec: sha(await readFile(join(root, 'shared/demo-population/spatial.mjs'))), routeCorridorCodec: sha(await readFile(join(root, 'shared/demo-population/route-corridors.mjs'))), compiler: sha(await readFile(fileURLToPath(import.meta.url))) };
   const manifest = { contract: 'DemoSpatialManifestV2', datasetId: DATASET_ID, representation: 'visual_synthesis', scientificClaim: false, recordCount: personCount, householdCount, buildingCount, targetShardSize: PERSON_SHARD_SIZE, targetRecordBytes: 12, roleShardSize: BUILDING_ROLE_SHARD_SIZE, sourceHashes, targetShards, roleShards, bindingShards, candidateCells, candidateCellZoom: 16, maxCellCandidates: MAX_CELL_CANDIDATES, stats: { ...stats, buildingsWithoutWalk, buildingsWithoutCar }, semantics: { targets: 'Lifetime potential candidates; filter with shared isActive/employmentFor/presenceFor. Counts are not simultaneous occupancy.', destinations: 'Same-district source-classified work/study buildings weighted by area*levels capped100000. Synthetic weights, no observed capacity or occupation compatibility.', unplaced: 'Missing home/district/eligible destination remains explicit null; no residential/unknown-use destination fallback.', visitors: 'One potential destination for each lifetime adult; source retail/shop/public-amenity eligibility; uncapped area*levels weighting, not measured footfall. Runtime age18+, same work/study priority, visits spread09:00-21:00 with conflicts moved after work/study.', candidates: `Deterministic ${MAX_CELL_CANDIDATES} smallest-hash candidates per potential home/destination z16 cell. Complete membership remains in role CSR. Not a full population download or census of visible people.`, candidateColumns: ['personIndex', 'personRecordBase64', 'householdIndex', 'homeBuildingIndex', 'workBuildingIndex', 'studyBuildingIndex', 'visitorBuildingIndex', 'walkRoadIndex', 'carRoadIndex'], rosterContexts: '36-byte rows aligned with role CSR member ordinal: uint32 personIndex,16 raw person bytes,uint32 home,uint32 work,uint32 study,uint32 visitor. NONE=4294967295. Little-endian.', routes: includeRoadBindings ? 'Nearest eligible source polyline within750m of each assigned building, walk/car separately, stable ID tie-break. Not a connected commute corridor; no invented building-to-road connector. Long-route movement criterion remains open.' : 'Road binding explicitly disabled; all route indices are null.' }, licenses: ['OpenStreetMap-derived geometry/indexes: ODbL-1.0; retain city-v2 source ledger and attribution.', 'Residents, work/study assignments and visits are fictional visual synthesis, not observations.'] };
   manifest.semantics.householdTrips = 'Shared fictional evening car outing, first active adult driver, at most7 active members; presenceFor uses full HH records. Roster companion5-byte rows encode participation in33 scenario-major/year2026-2036 contexts, reserved high7 bits zero.';
-  manifest.semantics.routes = includeRoadBindings ? 'Nearest eligible source road within750m of each assigned building, extended along exact shared OSM node IDs into mode-eligible connected local presentation corridors. Target1km, maximum1.5km/12 split segments; dead ends and short paths explicit. Corridor ordinal=sourceRoadIndex*2+mode. No manufactured connector and not a calculated building-to-building commute.' : 'Road binding explicitly disabled; all route indices are null.';
+  manifest.sourceHashes.roadModePolicyCodec=sha(await readFile(join(root,'shared/demo-population/movement-road-policy.mjs')));
+  manifest.semantics.routes = includeRoadBindings ? 'Mode-specific source road within750m of each assigned building, weighted by illustrative connectivity/road-class preference; walking uses source pedestrian/shared-space lines, never a manufactured sidewalk. Best legal orientation and connected continuation; exact shared OSM node IDs only. Target1km, maximum1.5km/12 split segments; dead ends and short paths explicit. Corridor ordinal=sourceRoadIndex*2+mode. Not measured traffic demand or a calculated building-to-building commute.' : 'Road binding explicitly disabled; all route indices are null.';
   await mkdir(output, { recursive: true }); const bytes = `${JSON.stringify(manifest)}\n`; await writeFile(join(output, 'manifest.json.next'), bytes); await rename(join(output, 'manifest.json.next'), join(output, 'manifest.json'));
   return { manifestSha256: sha(bytes), recordCount: personCount, buildingCount, targets: targetShards.length, rosters: roleShards.length, candidateCells: candidateCells.length, stats: manifest.stats, maxRssMiB: Math.round(process.resourceUsage().maxRSS / 1024) };
 }

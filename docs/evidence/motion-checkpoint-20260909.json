@@ -1,0 +1,21 @@
+{
+  "date": "2026-09-09",
+  "scope": "local_motion_checkpoint",
+  "published": false,
+  "citywideAccepted": false,
+  "classification": "contaminated_diagnostic",
+  "browser": "headed Chromium, Playwright, one worker, real network",
+  "viewports": [[1920, 1080], [390, 844]],
+  "fixes": ["delayed tick rewind after pause/resume/speed", "explicit small backward seek", "provider identity across native-to-game navigation", "status text overlap"],
+  "tests": {"frontendFiles": 64, "frontendPassed": 479, "nodePassed": 18, "realBrowserPassed": 3, "typecheck": "pass", "build": "pass", "dependencyCheck": "pass", "publicBuildAudit": "pass", "diffCheck": "pass"},
+  "warmProfile16x": {"seconds": 24.354163, "longTasksOver50ms": 0, "decodeMovementPageSampledInclusiveSeconds": 0, "validateHouseholdsSampledInclusiveSeconds": 0},
+  "motion": [
+    {"speed": 1, "seconds": 24, "renderEvents": 2692, "p95IntervalMs": 15.7, "longTasks": 0, "pausedFramesIn2100ms": 0},
+    {"speed": 16, "seconds": 24, "renderEvents": 2666, "p95IntervalMs": 16.2, "longTasks": 0, "pausedFramesIn2100ms": 0}
+  ],
+  "controls": {"samples": 792, "rewinds": 0, "smallBackwardSeekApplied": true},
+  "screenshots": {"finalBrowserPngOpened": 20, "pickingPngOpened": 6, "rejectedRun": "checkpoint-after", "finalRun": "checkpoint-corrected"},
+  "videoReview": {"kind": "contact sheet from actual WebM", "frames": 12, "seconds": [7, 13], "continuousPlaybackReviewed": false},
+  "picking": {"person": "demo2-p-0579815", "vehicle": "demo2-v-0120442", "passenger": "demo2-p-0120442", "seatsOccupied": 1, "capacity": 4, "building": "openmaptiles_buildings:904154540", "presentNow": 241, "assignedWorkers": 244, "visitors": 31, "secondPage": "51-100 of 241"},
+  "limits": ["not a controlled performance or real-phone benchmark", "car probe gaps excluded from continuity measurement", "zero replacement seam not proven", "scripted local chat only", "quarter art and citywide mesh coverage incomplete", "cloud activation and public release pending"]
+}

@@ -15,11 +15,16 @@
 - Город: `boundaries`, `buildingIndex`, `roadIndex`, `buildingPages`, `cells`.
 - Население: `personShards`, `householdShards`, `summaries`, `queryIndex`, ссылка `spatial.buildingIndex`.
 - Присутствие: `targetShards`, `roleShards`, вложенные `contexts` и `householdTripMasks`, `bindingShards`, `candidateCells`.
+- Опциональный `spatial.movementIndex`: точный raw/gzip-дескриптор вложенного `DemoMovementIndexManifestV2`, затем обязательные `cells[].context` и `cells[].pages[]` относительно каталога этого manifest. Внутри page/context находятся данные, а не новые ссылки на assets; произвольный рекурсивный импорт JSON не разрешён.
 - Для каждого дескриптора сохраняются канонический URL и явный `.gz`-псевдоним, если он указан.
 
 Дерево каталогов НЕ обходится. Старые поколения, неупомянутые файлы, научные/raw-данные, `.env` и файлы вне `city-v2/` / `demo-v2/` не читаются и не загружаются. `sourceLedger`, внешние лицензии и provenance/compiler/source-hash ссылки остаются текстовой атрибуцией внутри manifest; исходные URL по ним не скачиваются. Эти исключения явно перечислены в dry-run. Новый неизвестный локальный asset-дескриптор вызывает ошибку, а не молча неполную публикацию.
 
 Проверяются SHA-256 и размер каждого локального объекта, соответствие gzip исходному содержимому, взаимные ссылки трёх manifest и building/road индексов. Пустые `.bin`-компаньоны допустимы только с точным SHA/размером; отсутствие не трактуется как пустой файл. Переходы через symlink/junction и за границы разрешённых каталогов запрещены.
+
+Если `movementIndex` указан, его bytes/SHA проверяются **до** разбора JSON и открытия дочерних путей. Проверяются contract/dataset/representation, counts, canonical population/geography/building/codec lineage, уникальные cell keys, страницы в возрастающих непересекающихся person ranges и равенство суммы page counts числу членов ячейки. `sourceHashes.baseSpatialManifest` вычисляется ровно как SHA компактного parent spatial JSON с удалённым `movementIndex` плюс newline: это исключает циклическую ссылку на финальный parent hash. `codec`/`compiler` остаются provenance hashes, не разрешением читать или публиковать исходники. Совпадение с реально исполняемым codec дополнительно проверяется runtime/offline verifier.
+
+Отсутствующий optional pointer сохраняет старую closure. Pointer `null`, отсутствующий context/page, битый hash/gzip, другая lineage, выход дочернего URL из каталога movement manifest или неизвестное семейство дескрипторов останавливают plan до auth/network. Старые `candidateCells` продолжают включаться, пока parent manifest на них ссылается; утилита не удаляет их ради уменьшения размера.
 
 ## Dry-run до любых облачных действий
 
@@ -35,7 +40,7 @@ node tools/publish-firebase-city-assets.mjs
 node tools/publish-firebase-city-assets.mjs --public-root "PATH_TO_REVIEWED_PUBLIC_DIRECTORY"
 ```
 
-Вывод содержит число объектов, сумму реально сохраняемых байтов, число gzip-псевдонимов, проверенный локальный объём и SHA всех трёх manifest. В нём нет токена или локальных абсолютных путей.
+Вывод содержит число объектов, сумму реально сохраняемых байтов, число gzip-псевдонимов, проверенный локальный объём, SHA всех трёх корней и `dependentManifestHashes` вложенных manifests. В нём нет токена или локальных абсолютных путей.
 
 `releaseId` / `bundleSHA` — SHA-256 от фиксированного контракта доставки и SHA трёх корневых manifest. Префикс всегда `packs/<bundleSHA>/`; под ним сохраняются исходные `city-v2/` и `demo-v2/` пути, без переписывания JSON. База для интеграции:
 
@@ -44,6 +49,22 @@ https://storage.googleapis.com/omnitwin-demo-city-assets/packs/<bundleSHA>/
 ```
 
 Любое изменение manifest меняет bundleSHA. После нового source freeze нужно заново выполнить dry-run; предыдущие диагностические размеры и SHA не являются разрешением на публикацию новой версии. Утилита не обновляет frontend/runtime-конфигурацию и не объявляет какую-либо версию активной.
+
+Movement manifest и все его leaf hashes транзитивно закреплены дескриптором в spatial root. Изменение nested bytes без обновления pointer — ошибка SHA; согласованное обновление pointer меняет spatial hash и bundleSHA. Порядок вложенности не требует четвёртого независимого root pin. Во время активной компиляции dry-run не запускается: atomic pointer заменяется компилятором только после завершения пакета.
+
+### Проверенный локальный snapshot 2026-09-08
+
+После сообщения компилятора о финальном freeze выполнен **один** полный offline dry-run, exit 0. Проверены 38 920 файлов / 6 671 881 534 локальных байта, включая raw и gzip; сохраняемый объём — 1 926 910 051 байт. План содержит 19 224 canonical gzip objects и 19 224 opaque gzip aliases. Пределы 40 000 объектов / 8 GiB не превышены.
+
+```text
+bundleSHA: ce6d7497828079f55a2c74f45d95f3bdcffffdae5d24163e31e7051ce7199abe
+city-v2/manifest.json: e8e1627801eb79ac353e9a1bf37419519980ad48d071d9c1f9b67318c2f3f62a
+demo-v2/manifest.json: 646bef9ee30c2f061f80b1ce26cd9d7ca2c7da170c6d55c086dea24d2d95bca1
+demo-v2/spatial/manifest.json: ec886d770baa1bbb83afab4973b857a6d50d9a1eac0135c1f90508a88557567d
+movement/manifest-ca147b34c2a644ff.json: ca147b34c2a644ff769c1eba90d00f5e5c707500a9986a591613ad9edd0138c7
+```
+
+Это проверка локальной closure, **не** upload receipt, подтверждение публичного CORS/IAM или разрешение активировать V2. Новое изменение любого manifest/asset требует нового согласованного freeze и dry-run; существующие облачные объекты этой проверкой не читались и не изменялись.
 
 ## Два представления gzip
 
@@ -98,9 +119,9 @@ Resume пропускает объект только при совпадени�
 
 Максимум две параллельные загрузки; ошибка прекращает постановку новых и отменяет текущие запросы. Уже успешно созданные неизменяемые объекты остаются. Неопределённый исход запроса требует нового запуска с GET-проверкой; автоматического повтора POST нет. Receipt после полного завершения содержит `uploaded`, `skipped`, bucket/prefix, URL manifest и `publicReady:false`.
 
-Три корневых manifest публикуются последовательно и только после успешной загрузки либо точной remote-проверки всех остальных объектов. При неполном первом запуске manifest не опережают свои зависимости.
+Сначала загружаются/проверяются все leaf assets (максимум две параллельно), затем movement manifest и его opaque gzip alias (последовательно), затем три корня (последовательно, spatial последним). Manifest не опережает зависимости даже когда другая загрузка ещё выполняется. При ошибке leaf ни movement manifest, ни корни не создаются.
 
-Локальные пределы: manifest 32 MiB, один asset 64 MiB, максимум 40 000 файлов и 4 GiB manifest-достижимых локальных байтов, metadata-ответ 64 KiB. Проверка файлов потоковая; multipart удерживает не более двух ограниченных отправляемых тел и их конвертов. Это ограничения ресурсов, не обещание скорости.
+Локальные пределы: корневой manifest 32 MiB, movement manifest 12 MiB, movement page/context 8 MiB, один прочий asset 64 MiB, максимум 40 000 файлов и **8 GiB** manifest-достижимых локальных байтов (raw и gzip считаются отдельно), metadata-ответ 64 KiB. Повышение только суммарного cap с 4 до 8 GiB явно разрешено владельцем для новой конечной closure: опубликованные compiler stats — 8 528 pages и 2 312 contexts, 3 458 074 071 raw bytes и 605 712 602 gzip bytes плюс nested manifest. Вместе с прежними 17 238 объектами это ожидаемые 38 920 объектов, не разрешение на рекурсивную публикацию или непроверенный размер. Финальные объём и bundleSHA устанавливает отдельный свежий dry-run. Per-object, memory, 40 000 objects и concurrency=2 не увеличивались. Проверка файлов потоковая; multipart удерживает не более двух ограниченных отправляемых тел и их конвертов. Это ограничения ресурсов, не обещание скорости.
 
 ## Отдельный план публичного чтения и CORS — НЕ выполняется утилитой
 
@@ -114,7 +135,7 @@ Resume пропускает объект только при совпадени�
 
 Это только план для отдельного подтверждения, не команда изменения bucket. Нет `*`, browser-write методов или разрешений на прочие origins. `storage.cloud.google.com` для браузерного CORS не подходит; [официальная документация CORS](https://docs.cloud.google.com/storage/docs/cross-origin).
 
-После загрузки владелец отдельно проверяет публичные GET/HEAD с нужным Origin, фактические заголовки, оба gzip-представления, SHA/bytes клиента/сервера, исходные manifest pins и отсутствие поломанной относительной ссылки. Только после этого можно менять `cityAssets.baseUrl`, `populationManifestSha256`, `spatialManifestSha256`. Этот инструмент не выполняет такой rollout.
+После загрузки владелец отдельно проверяет публичные GET/HEAD с нужным Origin, фактические заголовки, оба gzip-представления, SHA/bytes клиента/сервера, исходные manifest pins и отсутствие поломанной относительной ссылки. При наличии movement index включить в эту проверку сам nested manifest, один context и одну page в обоих представлениях. Тот же exact origin/GET/HEAD CORS применяется к ним без новых разрешений; `.json.gz` остаётся opaque `application/gzip` без Content-Encoding. Только после этого можно менять `cityAssets.baseUrl`, `populationManifestSha256`, `spatialManifestSha256`. Этот инструмент не выполняет такой rollout.
 
 ## Offline-тесты
 
@@ -122,4 +143,4 @@ Resume пропускает объект только при совпадени�
 node --test --test-concurrency=1 tools/tests/publish-firebase-city-assets.test.mjs
 ```
 
-Тесты используют маленький вымышленный пакет во временном каталоге и поддельный транспорт. Проверяются scope, неизвестные семейства, SHA/размеры/gzip, нулевые binary-компаньоны, реальный symlink/junction escape, целевой проект/bucket, условное создание, конкурентное создание/resume, native MD5 и заголовки, предел параллелизма, публикация manifest последними, отмена зависшей авторизации и отсутствие секрета в ошибках чтения/отмены потока. Они не подтверждают реальное IAM/CORS, размещение данных или работоспособность облачной доставки.
+Тесты используют маленький вымышленный пакет во временном каталоге и поддельный транспорт. Проверяются scope, неизвестные семейства, SHA/размеры/gzip, нулевые binary-компаньоны, реальный symlink/junction escape, целевой проект/bucket, условное создание, конкурентное создание/resume, native MD5 и заголовки, предел параллелизма, публикация manifest последними, отмена зависшей авторизации и отсутствие секрета в ошибках чтения/отмены потока. Movement-тесты проверяют полную nested closure, относительные paths, baseSpatial lineage, обязательные context/pages, изменение pack hash, corruption/missing leaf, topological publication/resume и отказ до auth при смене файла после plan. Они не подтверждают реальное IAM/CORS, размещение данных или работоспособность облачной доставки.

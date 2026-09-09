@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-09",
+  "status": "failed_transient_merge_budget",
+  "classification": "independent_actual_interpolated_shader_body_validation",
+  "camera": {
+    "longitude": 61.36655003525502,
+    "latitude": 55.15701676371921,
+    "zoom": 16.284,
+    "pitch": 35.00168684811705,
+    "bearing": 95.88051943032724
+  },
+  "browser": {
+    "version": "152.0.7977.83",
+    "channel": "chrome",
+    "headless": true,
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.16.1656)",
+    "separateFreshContext": true,
+    "noVideo": true
+  },
+  "method": {
+    "coldPlaying": true,
+    "initialPause": false,
+    "initialGate": "First actors, junctions and mapTilesLoaded; this waits until simulation55513.665 and does not cover the first actor frames.",
+    "scope": "All retained renderer IDs through isolated read-only ID diagnostic; existing GPU/traffic probes read in bounded chunks.",
+    "samples": 160,
+    "simulationRange": [
+      55513.66520000004,
+      55575.158499999976
+    ],
+    "elapsedSimulationSeconds": 61.493299999936426,
+    "body": "Actual shader position/yaw; vehicle asset dimensions when available, otherwise nominal5x2m sprite body; pedestrian.35m controller disc. Sampled envelopes only, not exact triangle or continuous-time collision proof.",
+    "timing": "Three requested10s blocks at100ms with serialization gaps; no FPS claim."
+  },
+  "checks": {
+    "carCar": 273755,
+    "carPed": 2613329,
+    "queue": 6780,
+    "signals": 114498
+  },
+  "minimums": {
+    "carCar": 2.248219241553696,
+    "carPed": 1.3999097807479242,
+    "queueStation": 8
+  },
+  "results": {
+    "bodyOverlapSamples": 0,
+    "queueViolationSamples": 0,
+    "signalViolations": 0,
+    "visibleUniqueActors": 512,
+    "phases": [
+      "vehicle",
+      "clearance",
+      "pedestrian"
+    ],
+    "sourceRefreshes": [
+      4,
+      15
+    ],
+    "sourceReanchors": [
+      0,
+      0
+    ],
+    "admissionOverflows": 0,
+    "followingOverflows": 0,
+    "junctionOverflow": 1,
+    "overflowSamples": 43,
+    "overflowSimulationRange": [
+      55569.252700000034,
+      55573.958899999954
+    ],
+    "overflowReasons": [
+      "merge_checks"
+    ],
+    "maximumMergeRefChecks": 250000,
+    "pauseAfter": {
+      "clock": true,
+      "actors": true,
+      "signals": true,
+      "additionalFrames": 0
+    },
+    "pageErrors": []
+  },
+  "sourceIntegrity": {
+    "sha256Before": {
+      "apps/web/src/renderer/game/TiledGameScene.tsx": "b1d2289316d8ad286d710da36c8badb635c8f06720f81e89a5e31813c1614f45",
+      "apps/web/src/renderer/game/TiledGameLayer.ts": "ea5f02a4d9e38c9146d615f4af91c52f4333ff78dac95c2912e8feafe65a6bde",
+      "apps/web/src/renderer/game/GameActors.ts": "edb76f4577ae3817ffb6475d0df0a80a26cc0626e32c48f0903d32bb94225c3a",
+      "apps/web/src/renderer/game/gameActorHeading.ts": "5c8578fc50e6cd95d019a163b321d92564656eea71cffb5f7bcf9b053cbc3690",
+      "apps/web/src/renderer/game/actorColumnsBridge.ts": "cfc9e3a052e241c34a0be6bb2646ecfa4c776707dda7841076d27bd8742add43",
+      "apps/web/src/renderer/game/laneTraffic.ts": "eb9b4be99dedc742792f807351e21346b609e8bc31ab7c4aa8614472656ea7a0",
+      "apps/web/src/renderer/game/junctionTraffic.ts": "177341bd7b690c48bb863f4f4e63efd14f2609e7755555f463f3021b6579308e",
+      "apps/web/src/renderer/game/actorFootprintClearance.ts": "3c396e0d2ab10152b6f2061406781855378ab50e6081a8846a875bd2ae21ed38",
+      "apps/web/public/city-visual-v1/manifest.json": "d1f25e4328caf10ddf7e3e6f8e2734b7cfc63b0ac7a28b0eb410af3fc53cf9cc",
+      "apps/web/public/assets/game-actors-v1/manifest.json": "3733817ee56c32fac81efa3f20605c94526a157f98f2d09c4667f74a959c0a2e"
+    },
+    "changedDuringCapture": [],
+    "rawCaptureSha256": "311cb0a96d17da708ab5bed7f34376f6c8d641ed27bd3eeb7bf4b20c5f485fce"
+  },
+  "limits": "The sampled body/spacing fixes passed this interval, but transient merge_checks overflow kept wide cold-history acceptance open. A later controller optimization and a new first-frame capture are required; this historical failure must not be interpreted as a current release pass."
+}

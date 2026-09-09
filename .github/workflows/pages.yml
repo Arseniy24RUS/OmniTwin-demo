@@ -25,7 +25,7 @@ jobs:
       - run: node tools/build-license-notices.mjs
       - run: npm test
       - name: Verify city contracts and publication isolation
-        run: node --test --test-concurrency=1 shared/demo-population/test/*.test.mjs shared/demo-population/route-corridors.test.mjs tools/geo/*.test.mjs tools/tests/*.test.mjs
+        run: node --test --test-concurrency=1 shared/demo-population/test/*.test.mjs shared/demo-population/route-corridors.test.mjs shared/demo-population/movement-road-policy.test.mjs tools/geo/*.test.mjs tools/tests/*.test.mjs tools/visual/*.test.mjs tools/visual-actors/*.test.mjs
       - run: npm run build
         env:
           DEMO_BASE: /OmniTwin-demo/

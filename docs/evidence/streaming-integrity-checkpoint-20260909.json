@@ -1,0 +1,27 @@
+{
+  "date": "2026-09-09",
+  "scope": "local_visual_pack_stream_integrity",
+  "published": false,
+  "tests": {"newFailingCasesBeforeFix": 6, "frontendFiles": 65, "frontendPassed": 485, "frontendFailed": 0},
+  "typecheck": "pass",
+  "productionBuild": "pass",
+  "publicBuildAudit": {"files": 134, "bytes": 44044222, "recognizedEmbeddedKeys": 0},
+  "dependencyAudit": "coherent_singletons",
+  "browser": {
+    "headed": true,
+    "requestMocking": false,
+    "openedPngs": ["quarter", "courtyard", "rotation", "mobile"],
+    "pageErrors": 0,
+    "failedRequests": 0,
+    "classification": "contaminated_diagnostic",
+    "frameIntervalP95Ms": 15.4,
+    "renderEvents": 583,
+    "pausedFramesOver2100Ms": 0
+  },
+  "limitations": [
+    "The manifest itself still needs an independent immutable publication pin.",
+    "Bundled actor assets are outside this CityVisualPack integrity gate.",
+    "This short desktop run with a mobile viewport is not a physical mobile performance benchmark.",
+    "Citywide art, cloud assets, compatible V2 chat and public activation remain open."
+  ]
+}

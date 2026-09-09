@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-09",
+  "status": "failed_same_bridge_and_endpoint_separation",
+  "classification": "independent_actual_shader_positions_at_sprite_lod",
+  "scope": "Wide user camera at925min in a separate fresh hardware Chrome context. All retained renderer IDs read through existing two-ID GPU probe, using only a read-only diagnostic ID copy in the isolated served module.",
+  "camera": {
+    "longitude": 61.36655003525502,
+    "latitude": 55.15701676371921,
+    "zoom": 16.284,
+    "pitch": 35.00168684811705,
+    "bearing": 95.88051943032724
+  },
+  "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.16.1656)",
+  "browserVersion": "152.0.7977.83",
+  "samples": 103,
+  "elapsedSimulationSeconds": 51.21390000000247,
+  "visibleUniqueActors": 614,
+  "currentRenderedActorCounts": [
+    618,
+    642
+  ],
+  "clockSpeed": 1,
+  "sourceRefreshes": [
+    2,
+    10
+  ],
+  "sourceReanchors": [
+    0,
+    0
+  ],
+  "sourceIntegrity": {
+    "sha256Before": {
+      "apps/web/src/renderer/game/TiledGameScene.tsx": "3f968cbb3a42baefe883792e4b676d4ff8867e152b5819f94713071becd3b69d",
+      "apps/web/src/renderer/game/TiledGameLayer.ts": "ea5f02a4d9e38c9146d615f4af91c52f4333ff78dac95c2912e8feafe65a6bde",
+      "apps/web/src/renderer/game/GameActors.ts": "edb76f4577ae3817ffb6475d0df0a80a26cc0626e32c48f0903d32bb94225c3a",
+      "apps/web/src/renderer/game/gameActorHeading.ts": "5c8578fc50e6cd95d019a163b321d92564656eea71cffb5f7bcf9b053cbc3690",
+      "apps/web/src/renderer/game/actorColumnsBridge.ts": "32bf21181e9082827e885bb98b61b993a8bb1174c54d1fcb4bc97c13073b68fa",
+      "apps/web/src/renderer/game/laneTraffic.ts": "1b8c0666052a485132f278c0a52fa29433485bcb9c534f5d6ebc11e5c2ec95c4",
+      "apps/web/src/renderer/game/junctionTraffic.ts": "2e4db0a7f92c4ed102ef1846bdfcfad7aa74e787b1c95c5026a9b8a791f09d1b",
+      "apps/web/src/renderer/game/actorFootprintClearance.ts": "3c396e0d2ab10152b6f2061406781855378ab50e6081a8846a875bd2ae21ed38",
+      "apps/web/public/city-visual-v1/manifest.json": "d1f25e4328caf10ddf7e3e6f8e2734b7cfc63b0ac7a28b0eb410af3fc53cf9cc",
+      "apps/web/public/assets/game-actors-v1/manifest.json": "3733817ee56c32fac81efa3f20605c94526a157f98f2d09c4667f74a959c0a2e"
+    },
+    "changedDuringCapture": [],
+    "rawCaptureSha256": "06506161763adbe61f38843c5091410bf8bbc1b19ad7da9d9ec8e8e5fea8f4c6"
+  },
+  "separation": {
+    "minimumCarPedestrianCenterDistanceMeters": 0.0033281856388135953,
+    "centerDistanceBelow0_7PairSamples": 312,
+    "distinctPairs": 244,
+    "carSourceRoadCounts": {
+      "osm-road:781811257": 276,
+      "osm-road:999819356": 36
+    },
+    "minimumExample": {
+      "timeSeconds": 55502.62210000003,
+      "carId": "demo2-v-0362367",
+      "pedestrianId": "demo2-p-0171671",
+      "carPositionMeters": [
+        -1508.7474899291992,
+        0.12999999523162842,
+        672.9875221252441
+      ],
+      "pedestrianPositionMeters": [
+        -1508.7473335266113,
+        0.12999999523162842,
+        672.9908466339111
+      ],
+      "carOpacity": 1,
+      "pedestrianOpacity": 1,
+      "carSourceRoute": "presence:osm-connected-corridor-v1:osm-road:781811257:car:forward:c409c77e:car:speed-10:once:route:presence:osm-connected-corridor-v1:osm-road:781811257:car:forward:c409c77e:car:speed-10:once:edge:forward",
+      "pedestrianSourceRoute": "presence:osm-connected-corridor-v1:osm-road:781811257:walk:forward:c409c77e:pedestrian:speed-1.2:once:route:presence:osm-connected-corridor-v1:osm-road:781811257:walk:forward:c409c77e:pedestrian:speed-1.2:once:edge:forward"
+    },
+    "geometryLimit": "At this camera all cars and people are sprites. This is exact shader-position evidence plus nominal actor-body semantics, not an exact near-GLB triangle test or a sprite-pixel collision test."
+  },
+  "otherResults": {
+    "carCarNominalEnvelopeViolations": 0,
+    "queueViolations": 0,
+    "minimumQueueStationGapMeters": 8,
+    "signalViolations": 0,
+    "junctionOverflow": 0,
+    "admissionOverflow": 0,
+    "followingOverflow": 0,
+    "managedActorsMovedMoreThan0_5Meters": 597,
+    "managedVisibleUniqueActors": 614,
+    "phases": [
+      "vehicle",
+      "clearance",
+      "pedestrian"
+    ],
+    "errors": [],
+    "pauseBefore": {
+      "clock": true,
+      "actors": true,
+      "signals": true,
+      "additionalFrames": 81
+    },
+    "pauseAfter": {
+      "clock": true,
+      "actors": true,
+      "signals": true,
+      "additionalFrames": 0
+    }
+  },
+  "interpretation": "The exact same source bridge corridor is shared by car and pedestrian paths. atGrade:false currently excludes it from all junction constraints, also excluding longitudinal mixed-body reservations on that one bridge. Root/controller owner independently identified the same omission. This view did not reproduce overflow during this source history, but another independent history did; do not close the capacity gate from this snapshot. A separate at-grade ping-pong endpoint handoff on osm-road:999819356 also overlaps during previous/next opacity interpolation; it is not explained by the grade filter.",
+  "limits": "103timer samples over51.214simseconds, with serialization gaps and substantial all-actor diagnostic overhead. No frame-rate/performance claim, no continuous-between-samples guarantee, no whole-city acceptance.",
+  "endpointFailure": {
+    "simulationSeconds": 55524.07150000001,
+    "carId": "demo2-v-0235350",
+    "pedestrianId": "demo2-p-0297739",
+    "sourceRoad": "osm-road:999819356",
+    "sourceAtGrade": true,
+    "centerDistanceMeters": 0.1477652767119358,
+    "carOpacity": 0.578125,
+    "pedestrianOpacity": 0.421875,
+    "carPreviousVisible": true,
+    "carNextVisible": false,
+    "pedestrianPreviousVisible": false,
+    "pedestrianNextVisible": true,
+    "interpretation": "Predicted source endpoint handoff is discrete-safe but the renderer crossfades both bodies into the same endpoint during one interpolation window.",
+    "regressionTest": "apps/web/src/renderer/game/laneTraffic.visibility.review.test.ts",
+    "regressionResult": "Fail-first: exact interpolated opacity/body-overlap assertion fails. Eventual new pedestrian admission is separately required."
+  }
+}

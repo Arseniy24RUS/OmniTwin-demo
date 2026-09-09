@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "projectId": "omnitwin-demo",
+  "v2": {
+    "V2_POPULATION_MANIFEST_URL": "https://storage.googleapis.com/omnitwin-demo-city-assets/packs/ce6d7497828079f55a2c74f45d95f3bdcffffdae5d24163e31e7051ce7199abe/demo-v2/manifest.json",
+    "V2_POPULATION_MANIFEST_SHA256": "646bef9ee30c2f061f80b1ce26cd9d7ca2c7da170c6d55c086dea24d2d95bca1",
+    "V2_SPATIAL_MANIFEST_URL": "https://storage.googleapis.com/omnitwin-demo-city-assets/packs/ce6d7497828079f55a2c74f45d95f3bdcffffdae5d24163e31e7051ce7199abe/demo-v2/spatial/manifest.json",
+    "V2_SPATIAL_MANIFEST_SHA256": "ec886d770baa1bbb83afab4973b857a6d50d9a1eac0135c1f90508a88557567d"
+  }
+}

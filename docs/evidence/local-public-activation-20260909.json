@@ -1,0 +1,207 @@
+{
+  "date": "2026-09-09",
+  "classification": "local_development_activation_boundary_regression",
+  "status": "passed",
+  "reproduction": {
+    "failedBefore": 4,
+    "method": "Three loader selection assertions and one clean-default movement opt-in assertion failed before production fix."
+  },
+  "policy": {
+    "development": "DEV plus same-origin HTTP(S) loopback application uses local city assets with published population/spatial pins and local_preview/pending movement provenance.",
+    "public": "Public origins and production builds on localhost use exact public activation; no network fallback.",
+    "cleanDefault": "Only loader-resolved V2 deployment default can supply omitted tiled/V2 selection; explicit native/legacy links remain isolated."
+  },
+  "validation": {
+    "focusedTestsPassed": 78,
+    "typecheck": "passed",
+    "browser": "Separate installed hardware Chrome context with proposed runtime-config response intercepted; no deployment/config file writes.",
+    "candidateSha256": "b692b764d2525ebaa5297dd8367429fc7ea065c08e6c4e1272b8ddaa3847d89a",
+    "sourceStable": true,
+    "profilesAndHomeAnchorsIdentical": true,
+    "runs": [
+      {
+        "name": "baseline-explicit",
+        "pass": true,
+        "forbiddenGcsRequests": 0,
+        "errors": [],
+        "localRequestsPresent": [
+          {
+            "prefix": "demo-v2/manifest.json",
+            "present": true
+          },
+          {
+            "prefix": "city-v2/",
+            "present": true
+          },
+          {
+            "prefix": "movement-preview-v2/activation.json",
+            "present": true
+          },
+          {
+            "prefix": "movement-preview-v2/manifest-",
+            "present": true
+          }
+        ],
+        "sourceState": "online",
+        "populationState": "ready",
+        "movementUpdating": "false",
+        "visiblePeople": 11,
+        "visibleVehicles": 16,
+        "preview": {
+          "scope": "local_preview",
+          "delivery": "local_preview",
+          "chatCompatibility": "pending",
+          "bounds": [
+            61.385245372130555,
+            55.16001045118695,
+            61.40407462786945,
+            55.17078954881305
+          ],
+          "version": "source-mode-v2"
+        },
+        "profiles": [
+          {
+            "id": "demo2-p-0080426",
+            "householdId": "demo2-h-0021680",
+            "homeBuildingId": "openmaptiles_buildings:159218923"
+          },
+          {
+            "id": "demo2-p-0634840",
+            "householdId": "demo2-h-0222698",
+            "homeBuildingId": "openmaptiles_buildings:14581638740"
+          }
+        ],
+        "screenshot": "baseline-explicit.png"
+      },
+      {
+        "name": "candidate-explicit",
+        "pass": true,
+        "forbiddenGcsRequests": 0,
+        "errors": [],
+        "localRequestsPresent": [
+          {
+            "prefix": "demo-v2/manifest.json",
+            "present": true
+          },
+          {
+            "prefix": "city-v2/",
+            "present": true
+          },
+          {
+            "prefix": "movement-preview-v2/activation.json",
+            "present": true
+          },
+          {
+            "prefix": "movement-preview-v2/manifest-",
+            "present": true
+          }
+        ],
+        "sourceState": "online",
+        "populationState": "ready",
+        "movementUpdating": "false",
+        "visiblePeople": 11,
+        "visibleVehicles": 16,
+        "preview": {
+          "scope": "local_preview",
+          "delivery": "local_preview",
+          "chatCompatibility": "pending",
+          "bounds": [
+            61.385245372130555,
+            55.16001045118695,
+            61.40407462786945,
+            55.17078954881305
+          ],
+          "version": "source-mode-v2"
+        },
+        "profiles": [
+          {
+            "id": "demo2-p-0080426",
+            "householdId": "demo2-h-0021680",
+            "homeBuildingId": "openmaptiles_buildings:159218923"
+          },
+          {
+            "id": "demo2-p-0634840",
+            "householdId": "demo2-h-0222698",
+            "homeBuildingId": "openmaptiles_buildings:14581638740"
+          }
+        ],
+        "screenshot": "candidate-explicit.png"
+      },
+      {
+        "name": "candidate-clean",
+        "pass": true,
+        "forbiddenGcsRequests": 0,
+        "errors": [],
+        "localRequestsPresent": [
+          {
+            "prefix": "demo-v2/manifest.json",
+            "present": true
+          },
+          {
+            "prefix": "city-v2/",
+            "present": true
+          },
+          {
+            "prefix": "movement-preview-v2/activation.json",
+            "present": true
+          },
+          {
+            "prefix": "movement-preview-v2/manifest-",
+            "present": true
+          }
+        ],
+        "sourceState": "online",
+        "populationState": "ready",
+        "movementUpdating": "false",
+        "visiblePeople": 355,
+        "visibleVehicles": 136,
+        "preview": {
+          "scope": "local_preview",
+          "delivery": "local_preview",
+          "chatCompatibility": "pending",
+          "bounds": [
+            61.385245372130555,
+            55.16001045118695,
+            61.40407462786945,
+            55.17078954881305
+          ],
+          "version": "source-mode-v2"
+        },
+        "profiles": [
+          {
+            "id": "demo2-p-0080426",
+            "householdId": "demo2-h-0021680",
+            "homeBuildingId": "openmaptiles_buildings:159218923"
+          },
+          {
+            "id": "demo2-p-0634840",
+            "householdId": "demo2-h-0222698",
+            "homeBuildingId": "openmaptiles_buildings:14581638740"
+          }
+        ],
+        "screenshot": "candidate-clean.png"
+      }
+    ]
+  },
+  "sourceBefore": {
+    "apps/web/src/demo/data/loadDemoProvider.ts": "2936033320090b7641cd27efe59855a1eca2912fa4a86daa88a6c035bcd82df5",
+    "apps/web/src/demo/data/localCityApplication.ts": "1a00c0ccea8f58dce49bc3ca3f89dc602163598af3b456282983a90e73eabdd9",
+    "apps/web/src/demo/data/localMovementPreview.ts": "8082bc93d4cc0039f15d3f538e2ecb40cb2690dbd97c856f716731253c9c634d",
+    "apps/web/public/runtime-config.json": "cb5bb4a60fd65561fcafb56931fc6a082f1d9544a025983526a9a41011af8e9f"
+  },
+  "sourceAfter": {
+    "apps/web/src/demo/data/loadDemoProvider.ts": "2936033320090b7641cd27efe59855a1eca2912fa4a86daa88a6c035bcd82df5",
+    "apps/web/src/demo/data/localCityApplication.ts": "1a00c0ccea8f58dce49bc3ca3f89dc602163598af3b456282983a90e73eabdd9",
+    "apps/web/src/demo/data/localMovementPreview.ts": "8082bc93d4cc0039f15d3f538e2ecb40cb2690dbd97c856f716731253c9c634d",
+    "apps/web/public/runtime-config.json": "cb5bb4a60fd65561fcafb56931fc6a082f1d9544a025983526a9a41011af8e9f"
+  },
+  "rawEvidence": {
+    "file": "results.json",
+    "sha256": "bbfbfaa1349be944eaf0cb1df754877bde1bb7cea0ec248cf19c73881b02a57b"
+  },
+  "limits": [
+    "Production localhost-preview behavior is validated by focused tests with DEV=false; browser cases exercise actual Vite development.",
+    "Provider inspection exposes its loaded instance in isolated served JS only; no source population, routes, records or render state are changed.",
+    "Transport choice and two canonical profiles are checked here; full semantic-profile equivalence and graphics/traffic acceptance have separate evidence."
+  ]
+}

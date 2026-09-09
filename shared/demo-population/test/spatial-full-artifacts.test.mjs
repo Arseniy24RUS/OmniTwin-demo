@@ -11,12 +11,23 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
 const directory = resolve(root, 'apps/web/public/demo-v2/spatial');
 const hash = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const asset = async (descriptor) => { const bytes = await readFile(resolve(directory, descriptor.url)); assert.equal(bytes.length, descriptor.bytes); assert.equal(hash(bytes), descriptor.sha256); return bytes; };
+const publishedSpatialSha256 = 'ec886d770baa1bbb83afab4973b857a6d50d9a1eac0135c1f90508a88557567d';
+const publishedProducers = 'shared/demo-population/test/fixtures/published-spatial-v1-producers/';
 
-test('full spatial artifacts pin final inputs and preserve large source-mall visitors', async (t) => {
+test('full spatial artifacts pin their exact producer generation and preserve large source-mall visitors', async (t) => {
   let bytes; try { bytes = await readFile(resolve(directory, 'manifest.json')); } catch (error) { if (error.code === 'ENOENT') return t.skip('Run the offline spatial compiler first.'); throw error; }
   const manifest = JSON.parse(bytes);
   assert.ok(bytes.length <= 2 * 1024 * 1024);
-  for (const [field, path] of [['populationManifest', 'apps/web/public/demo-v2/manifest.json'], ['geographyManifest', 'apps/web/public/city-v2/manifest.json'], ['populationCodec', 'shared/demo-population/index.mjs'], ['spatialCodec', 'shared/demo-population/spatial.mjs'], ['routeCorridorCodec', 'shared/demo-population/route-corridors.mjs'], ['compiler', 'tools/build-city-spatial-v2.mjs']]) assert.equal(manifest.sourceHashes[field], hash(await readFile(resolve(root, path))), field);
+  // The existing public base remains immutable when an additive movement
+  // overlay changes its producers. Only this exact already-published manifest
+  // may resolve producer hashes to the archived, byte-identical release code.
+  // Runtime decoders and source manifests must still match today's active bytes.
+  const historical = hash(bytes) === publishedSpatialSha256;
+  for (const [field, path] of [['populationManifest', 'apps/web/public/demo-v2/manifest.json'], ['geographyManifest', 'apps/web/public/city-v2/manifest.json'], ['populationCodec', 'shared/demo-population/index.mjs'], ['spatialCodec', 'shared/demo-population/spatial.mjs'],
+    ['routeCorridorCodec', historical ? publishedProducers + 'route-corridors.mjs.txt' : 'shared/demo-population/route-corridors.mjs'],
+    ['compiler', historical ? publishedProducers + 'build-city-spatial-v2.mjs.txt' : 'tools/build-city-spatial-v2.mjs']]) {
+    assert.equal(manifest.sourceHashes[field], hash(await readFile(resolve(root, path))), field);
+  }
   assert.equal(manifest.recordCount, 2119871); assert.equal(manifest.stats.unplacedHome, 0); assert.ok(manifest.stats.visitor > 1_000_000);
   const report = [];
   for (const buildingIndex of [38850, 47927, 49874, 50866, 64661]) {

@@ -1,0 +1,40 @@
+{
+  "date": "2026-09-09",
+  "scope": "local_bounded_quarter",
+  "published": false,
+  "citywideAccepted": false,
+  "appearanceRepresentation": "visual_synthesis",
+  "manifestSha256": "144eed2cbdf59e7afbbf44589d8f9c83e719b1fa343d96a976718aab60713215",
+  "independentRebuildManifestEqual": true,
+  "buildings": 382,
+  "roads": 808,
+  "trees": 1000,
+  "facadeTints": 6,
+  "roofFixtures": 487,
+  "trianglesBefore": 969266,
+  "trianglesAfter": 988746,
+  "drawGroupsBefore": 89,
+  "drawGroupsAfter": 89,
+  "inventoryBytes": 56319238,
+  "tests": {"compilerAndActors": 47, "failed": 0},
+  "browser": {
+    "headed": true,
+    "workers": 1,
+    "requestMocking": false,
+    "openedPngs": ["quarter", "courtyard", "rotation", "mobile"],
+    "desktopViewport": [1920, 1080],
+    "mobileEmulatedViewport": [390, 844],
+    "pageErrors": 0,
+    "failedRequests": 0,
+    "classification": "contaminated_diagnostic",
+    "frameIntervalP95Ms": 16.1,
+    "renderEvents": 572,
+    "pausedFramesOver2100Ms": 0
+  },
+  "limitations": [
+    "Courtyards remain empty and architecture repetitive; visual release gate remains open.",
+    "No citywide mesh coverage, public activation, or live V2 chat acceptance.",
+    "Only the manifest replacement is atomic; preview inventory copy is not a transaction.",
+    "The first browser run during a failed Windows manifest replacement is rejected."
+  ]
+}

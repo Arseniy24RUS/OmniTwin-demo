@@ -1,0 +1,577 @@
+{
+  "date": "2026-09-09",
+  "classification": "derived_hardware_rendering_and_recorded_visual_QA",
+  "status": "passed_bounded_three_scene_controls",
+  "sourceBefore": {
+    "source": "330e8b611fbba1f44a6643676796718e23b70b9b24ced893c5eae71f64fd743e",
+    "visualManifest": "d1f25e4328caf10ddf7e3e6f8e2734b7cfc63b0ac7a28b0eb410af3fc53cf9cc",
+    "catalog": "bca4ff81f5a4c1a8c3517f0b1faeceddd6042cf20d811c70661993ecec72a819"
+  },
+  "sourceAfter": {
+    "source": "330e8b611fbba1f44a6643676796718e23b70b9b24ced893c5eae71f64fd743e",
+    "visualManifest": "d1f25e4328caf10ddf7e3e6f8e2734b7cfc63b0ac7a28b0eb410af3fc53cf9cc",
+    "catalog": "bca4ff81f5a4c1a8c3517f0b1faeceddd6042cf20d811c70661993ecec72a819"
+  },
+  "sourceStable": true,
+  "hardware": {
+    "browser": "Installed Google Chrome",
+    "version": "152.0.7977.83",
+    "channel": "chrome",
+    "headless": true,
+    "viewport": [
+      1280,
+      800
+    ],
+    "deviceScaleFactor": 1,
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+  },
+  "background": {
+    "otherAgentQAContexts": "closed before performance run",
+    "rootCleanTestsBuild": "finished before performance run",
+    "sharedPW": "paused",
+    "userInAppBrowser": "playing; preserved unchanged",
+    "recordedVideos": "Concurrent isolated roof prototype browser approximately 16:04–16:06; no overlap with unrecorded performance windows."
+  },
+  "performance": {
+    "recording": false,
+    "requestedGate": {
+      "minimumMapRenderEventsPerSecond": 30,
+      "maximumPausedMapRendersInAtLeast2000ms": 2
+    },
+    "pass": true,
+    "scenes": [
+      {
+        "scene": {
+          "name": "01-user-close",
+          "lon": 61.40324326242887,
+          "lat": 55.166511972647186,
+          "zoom": 18.5,
+          "pitch": 46.49661799282392,
+          "bearing": -172.97699800600026,
+          "minutes": 750.27
+        },
+        "pass": true,
+        "settleMs": 10021,
+        "measurements": [
+          {
+            "name": "paused-settled",
+            "elapsedMs": 2209.399999976158,
+            "mapRenderFrames": 0,
+            "mapRenderEventsPerSecond": 0,
+            "customLayerFrames": 0,
+            "last300Intervals": null,
+            "drawCalls": 83,
+            "triangles": 156870,
+            "people": 11,
+            "vehicles": 16
+          },
+          {
+            "name": "playing-clean",
+            "elapsedMs": 20004.5,
+            "mapRenderFrames": 2140,
+            "mapRenderEventsPerSecond": 106.97593041565648,
+            "customLayerFrames": 2157,
+            "last300Intervals": {
+              "count": 300,
+              "p50": 8.399999976158142,
+              "p95": 24.399999976158142,
+              "p99": 33.10000002384186,
+              "max": 33.5
+            },
+            "drawCalls": 83,
+            "triangles": 162336,
+            "people": 12,
+            "vehicles": 20
+          },
+          {
+            "name": "paused-after-play",
+            "elapsedMs": 2204.2000000476837,
+            "mapRenderFrames": 0,
+            "mapRenderEventsPerSecond": 0,
+            "customLayerFrames": 0,
+            "last300Intervals": null,
+            "drawCalls": 83,
+            "triangles": 162336,
+            "people": 12,
+            "vehicles": 20
+          }
+        ],
+        "signals": {
+          "representation": "visual_synthesis",
+          "state": "ready",
+          "heads": 7,
+          "draws": 3,
+          "red": 7,
+          "amber": 0,
+          "green": 0,
+          "omittedPlacements": 63,
+          "truncated": false,
+          "geometryUpdates": 5,
+          "aspectUpdates": 12,
+          "retainedBytes": 187688,
+          "lastError": null
+        },
+        "errors": []
+      },
+      {
+        "scene": {
+          "name": "02-source-courtyard",
+          "lon": 61.39086657500001,
+          "lat": 55.170028625,
+          "zoom": 19,
+          "pitch": 52,
+          "bearing": -50,
+          "minutes": 707.7335833333341,
+          "source": "openmaptiles_buildings:27724113 exact source courtyard centroid"
+        },
+        "pass": true,
+        "settleMs": 6037,
+        "measurements": [
+          {
+            "name": "paused-settled",
+            "elapsedMs": 2202.899999976158,
+            "mapRenderFrames": 0,
+            "mapRenderEventsPerSecond": 0,
+            "customLayerFrames": 0,
+            "last300Intervals": null,
+            "drawCalls": 34,
+            "triangles": 158916,
+            "people": 66,
+            "vehicles": 0
+          },
+          {
+            "name": "playing-clean",
+            "elapsedMs": 20012.099999904633,
+            "mapRenderFrames": 2133,
+            "mapRenderEventsPerSecond": 106.58551576347134,
+            "customLayerFrames": 2134,
+            "last300Intervals": {
+              "count": 300,
+              "p50": 8.399999976158142,
+              "p95": 25,
+              "p99": 32.39999997615814,
+              "max": 33.59999990463257
+            },
+            "drawCalls": 34,
+            "triangles": 149096,
+            "people": 59,
+            "vehicles": 0
+          },
+          {
+            "name": "paused-after-play",
+            "elapsedMs": 2211.399999976158,
+            "mapRenderFrames": 0,
+            "mapRenderEventsPerSecond": 0,
+            "customLayerFrames": 0,
+            "last300Intervals": null,
+            "drawCalls": 34,
+            "triangles": 149096,
+            "people": 59,
+            "vehicles": 0
+          }
+        ],
+        "signals": {
+          "representation": "visual_synthesis",
+          "state": "empty",
+          "heads": 0,
+          "draws": 0,
+          "red": 0,
+          "amber": 0,
+          "green": 0,
+          "omittedPlacements": 0,
+          "truncated": false,
+          "geometryUpdates": 1,
+          "aspectUpdates": 1,
+          "retainedBytes": 187688,
+          "lastError": null
+        },
+        "errors": []
+      },
+      {
+        "scene": {
+          "name": "03-miass-waterfront",
+          "lon": 61.40175104141235,
+          "lat": 55.16893869067019,
+          "zoom": 17.9,
+          "pitch": 55,
+          "bearing": 0,
+          "minutes": 707.7335833333341,
+          "source": "Exact Miass source-line vertex; water polygon 25606292"
+        },
+        "pass": true,
+        "settleMs": 6556,
+        "measurements": [
+          {
+            "name": "paused-settled",
+            "elapsedMs": 2208.2000000476837,
+            "mapRenderFrames": 0,
+            "mapRenderEventsPerSecond": 0,
+            "customLayerFrames": 0,
+            "last300Intervals": null,
+            "drawCalls": 50,
+            "triangles": 44580,
+            "people": 12,
+            "vehicles": 0
+          },
+          {
+            "name": "playing-clean",
+            "elapsedMs": 20010,
+            "mapRenderFrames": 2126,
+            "mapRenderEventsPerSecond": 106.24687656171913,
+            "customLayerFrames": 2128,
+            "last300Intervals": {
+              "count": 300,
+              "p50": 8.300000071525574,
+              "p95": 21.40000009536743,
+              "p99": 33.199999928474426,
+              "max": 43.89999997615814
+            },
+            "drawCalls": 49,
+            "triangles": 44580,
+            "people": 12,
+            "vehicles": 0
+          },
+          {
+            "name": "paused-after-play",
+            "elapsedMs": 2203.100000023842,
+            "mapRenderFrames": 0,
+            "mapRenderEventsPerSecond": 0,
+            "customLayerFrames": 0,
+            "last300Intervals": null,
+            "drawCalls": 49,
+            "triangles": 44580,
+            "people": 12,
+            "vehicles": 0
+          }
+        ],
+        "signals": {
+          "representation": "visual_synthesis",
+          "state": "empty",
+          "heads": 0,
+          "draws": 0,
+          "red": 0,
+          "amber": 0,
+          "green": 0,
+          "omittedPlacements": 0,
+          "truncated": false,
+          "geometryUpdates": 1,
+          "aspectUpdates": 1,
+          "retainedBytes": 187688,
+          "lastError": null
+        },
+        "errors": []
+      }
+    ]
+  },
+  "recordedControls": {
+    "performanceClaim": false,
+    "scenes": [
+      {
+        "scene": {
+          "name": "01-user-close",
+          "lon": 61.40324326242887,
+          "lat": 55.166511972647186,
+          "zoom": 18.5,
+          "pitch": 46.49661799282392,
+          "bearing": -172.97699800600026,
+          "minutes": 750.27
+        },
+        "pass": true,
+        "video": "01-user-close.webm",
+        "sha256": "216b3dfd068ceb467ff7b96ff1a346202052dc9c5dcd7e1a8477da1b72d84afd",
+        "samples": 93,
+        "clockRange": [
+          45016.21679999995,
+          45040.05839999996
+        ],
+        "motionWallSeconds": 24.299,
+        "pause": {
+          "name": "paused-after-recording",
+          "elapsedMs": 2206.5,
+          "mapRenderFrames": 0,
+          "mapRenderEventsPerSecond": 0,
+          "customLayerFrames": 0,
+          "last300Intervals": null,
+          "drawCalls": 83,
+          "triangles": 159932,
+          "people": 11,
+          "vehicles": 19
+        },
+        "signals": {
+          "representation": "visual_synthesis",
+          "state": "ready",
+          "heads": 7,
+          "draws": 3,
+          "red": 5,
+          "amber": 0,
+          "green": 2,
+          "omittedPlacements": 63,
+          "truncated": false,
+          "geometryUpdates": 5,
+          "aspectUpdates": 12,
+          "retainedBytes": 187688,
+          "lastError": null
+        },
+        "errors": [],
+        "sampledActorNetDisplacementMeters": [
+          {
+            "id": "demo2-v-0966468",
+            "kind": "vehicle",
+            "meters": 16.79852653641544
+          },
+          {
+            "id": "demo2-p-0142972",
+            "kind": "person",
+            "meters": 16.507951998615003
+          },
+          {
+            "id": "demo2-v-0742227",
+            "kind": "vehicle",
+            "meters": 14.605774353865343
+          },
+          {
+            "id": "demo2-p-0000522",
+            "kind": "person",
+            "meters": 0
+          }
+        ],
+        "container": {
+          "codec": "VP8",
+          "width": 1280,
+          "height": 800,
+          "encodedFramesPerSecond": 25,
+          "durationSeconds": 71.84,
+          "bytes": 5768361
+        },
+        "decodedFrameInspectionSeconds": [
+          12,
+          28
+        ],
+        "decodedFramesHealthy": true,
+        "signalRendererStates": [
+          "ready"
+        ],
+        "signalAspects": [
+          "4/0/2",
+          "4/2/0",
+          "5/1/0",
+          "4/0/3",
+          "7/0/0",
+          "7/0/2",
+          "5/0/2"
+        ]
+      },
+      {
+        "scene": {
+          "name": "02-source-courtyard",
+          "lon": 61.39086657500001,
+          "lat": 55.170028625,
+          "zoom": 19,
+          "pitch": 52,
+          "bearing": -50,
+          "minutes": 707.7335833333341,
+          "source": "openmaptiles_buildings:27724113 exact source courtyard centroid"
+        },
+        "pass": true,
+        "video": "02-source-courtyard.webm",
+        "sha256": "f1d2d81f01bf12289736bc4ae12008435359dbb4dbe0485db18fafb4cc6e7db0",
+        "samples": 93,
+        "clockRange": [
+          42464.02960000007,
+          42488.01560000005
+        ],
+        "motionWallSeconds": 24.404,
+        "pause": {
+          "name": "paused-after-recording",
+          "elapsedMs": 2212.399999976158,
+          "mapRenderFrames": 0,
+          "mapRenderEventsPerSecond": 0,
+          "customLayerFrames": 0,
+          "last300Intervals": null,
+          "drawCalls": 34,
+          "triangles": 149096,
+          "people": 59,
+          "vehicles": 0
+        },
+        "signals": {
+          "representation": "visual_synthesis",
+          "state": "empty",
+          "heads": 0,
+          "draws": 0,
+          "red": 0,
+          "amber": 0,
+          "green": 0,
+          "omittedPlacements": 0,
+          "truncated": false,
+          "geometryUpdates": 1,
+          "aspectUpdates": 1,
+          "retainedBytes": 187688,
+          "lastError": null
+        },
+        "errors": [],
+        "sampledActorNetDisplacementMeters": [
+          {
+            "id": "demo2-p-0255005",
+            "kind": "person",
+            "meters": 28.688934708718353
+          }
+        ],
+        "container": {
+          "codec": "VP8",
+          "width": 1280,
+          "height": 800,
+          "encodedFramesPerSecond": 25,
+          "durationSeconds": 35.6,
+          "bytes": 3135026
+        },
+        "decodedFrameInspectionSeconds": [
+          12,
+          28
+        ],
+        "decodedFramesHealthy": true,
+        "signalRendererStates": [
+          "empty"
+        ],
+        "signalAspects": [
+          "0/0/0"
+        ]
+      },
+      {
+        "scene": {
+          "name": "03-miass-waterfront",
+          "lon": 61.40175104141235,
+          "lat": 55.16893869067019,
+          "zoom": 17.9,
+          "pitch": 55,
+          "bearing": 0,
+          "minutes": 707.7335833333341,
+          "source": "Exact Miass source-line vertex; water polygon 25606292"
+        },
+        "pass": true,
+        "video": "03-miass-waterfront.webm",
+        "sha256": "f0ace7d9433070e8309f62500b482074000cfaae0c8f15787415aae650f7a096",
+        "samples": 93,
+        "clockRange": [
+          42464.037400000016,
+          42487.80490000003
+        ],
+        "motionWallSeconds": 24.259,
+        "pause": {
+          "name": "paused-after-recording",
+          "elapsedMs": 2214.1999999284744,
+          "mapRenderFrames": 0,
+          "mapRenderEventsPerSecond": 0,
+          "customLayerFrames": 0,
+          "last300Intervals": null,
+          "drawCalls": 49,
+          "triangles": 44580,
+          "people": 12,
+          "vehicles": 0
+        },
+        "signals": {
+          "representation": "visual_synthesis",
+          "state": "empty",
+          "heads": 0,
+          "draws": 0,
+          "red": 0,
+          "amber": 0,
+          "green": 0,
+          "omittedPlacements": 0,
+          "truncated": false,
+          "geometryUpdates": 1,
+          "aspectUpdates": 1,
+          "retainedBytes": 187688,
+          "lastError": null
+        },
+        "errors": [],
+        "sampledActorNetDisplacementMeters": [
+          {
+            "id": "demo2-p-1088443",
+            "kind": "person",
+            "meters": 25.90485374557642
+          }
+        ],
+        "container": {
+          "codec": "VP8",
+          "width": 1280,
+          "height": 800,
+          "encodedFramesPerSecond": 25,
+          "durationSeconds": 34.52,
+          "bytes": 2402212
+        },
+        "decodedFrameInspectionSeconds": [
+          12,
+          28
+        ],
+        "decodedFramesHealthy": true,
+        "signalRendererStates": [
+          "empty"
+        ],
+        "signalAspects": [
+          "0/0/0"
+        ]
+      }
+    ],
+    "clicks": {
+      "person": {
+        "pass": true,
+        "canonicalId": "demo2-p-0080426",
+        "point": [
+          383.5278211067929,
+          404.0240459812668
+        ],
+        "kind": "person",
+        "near": true,
+        "attempts": 1,
+        "text": "Профиль жителя\n\nВымышленный житель\n\nИрина Волкова\n\n44 лет · повар\n\nПешком · вымышленная локальная прогулка по исходному дорожному коридору\nТерритория\nЦентральный район\nЗанятость\nРаботает\nДомохозяйство\n2 чел.\nСрез\n01.01.2026\n\nВымышленный житель демонстрационного Челябинска. Повар. Интересы: театр, садоводство. Биография и размещение созданы для интерфейса и не описывают реального человека.\n\nтеатр\nсадоводство\nПоказать на карте\nРазговор с жителем\n\nИИ-диалог с демонстрационным персонажем\n\nПроверка маршрутов: пока доступны демореплики, согласованные с этой сценой.\n\nСпросите, кто я, куда направляюсь и как проходит мой день.\n\nРасскажи о себе\nКуда ты направляешься?\n\nНе отправляйте персональные данные. Ответы не являются результатами научного расчёта."
+      },
+      "vehicle": {
+        "pass": true,
+        "canonicalId": "demo2-v-0634840",
+        "point": [
+          351.670071859386,
+          549.8557140722365
+        ],
+        "kind": "vehicle",
+        "near": true,
+        "attempts": 1,
+        "text": "Пассажиры автомобиля\nГородской автомобиль\n\nАвтомобиль и маршрут — визуальный синтез\n\n1/4\nмест занято\nПассажиры\nДмитрий Волков\nповар"
+      },
+      "passenger": {
+        "pass": true,
+        "canonicalId": "demo2-p-0634840",
+        "rosterLabel": "Дмитрий Волков\nповар",
+        "personName": "Дмитрий Волков"
+      },
+      "building": {
+        "pass": true,
+        "attempts": 2,
+        "text": "Жизнь здания\nЗдание Челябинска\n\nНазначения и присутствие — визуальный синтез, не адресный реестр.\n\n0\nсейчас внутри\nНазначено жителей\n0\nРаботников\n0\nУчащихся\n0\nПосетителей сейчас\n0\n\nНазначенные жители и сотрудники могут находиться вне здания. Посетители включены в число находящихся внутри.\n\nНаходятся внутри\n\nВ выбранный момент здесь нет присутствующих демонстрационных жителей.\n\nНазад\n0–0 из 0\nДалее"
+      }
+    }
+  },
+  "artifacts": {
+    "performance": {
+      "file": "performance.json",
+      "sha256": "77f782248bc3dbb8f367de239bc88814feaf1a52c2e6f0558422fd457d6b748a"
+    },
+    "videos": {
+      "file": "videos.json",
+      "sha256": "eb22685965dee8223d71b5c4d74cc2ceb1d3757282eb88c7c16258c3e3b40774"
+    }
+  },
+  "limitations": [
+    "Counts actual MapLibre render events, not RAF or monitor-presented FPS.",
+    "Other agents closed QA browser contexts before run. Existing user in-app browser may remain playing; no shared browser or GPU settings changed.",
+    "No source instrumentation, video, screenshots, CPU profile, or browser reads during each timed window.",
+    "Recording and sampling add overhead; FPS acceptance belongs to separate unrecorded performance.json.",
+    "Isolated served GameActors constructor exposes a read-only instance for target projection; no positions/routes/picks are overridden and no source file changes.",
+    "Interaction uses actual Playwright mouse events followed by inspector UI and canonical selected ID assertions.",
+    "Three selected control poses on this RTX 4090 machine do not establish a whole-city or other-device minimum.",
+    "Video playback and selected frame inspection are separate from exhaustive collision geometry evidence.",
+    "No public deployment, user in-app browser mutation, chat send or source-population modification occurs in this QA.",
+    "Playwright video files encode at 25 FPS; this recording cap is not the application rendering rate.",
+    "Decoded frames at 12s and 28s were inspected for each video: stable geometry, moving actors, continuous water. This is a bounded visual inspection, not every-frame or every-pixel certification.",
+    "Building interaction checks successful canvas click, visible highlight, building inspector and occupancy load; unlike actor clicks, it does not independently assert the selected building canonical ID."
+  ]
+}

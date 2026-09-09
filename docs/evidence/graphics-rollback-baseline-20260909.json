@@ -1,0 +1,13 @@
+{
+  "contract": "OmniTwinPagesRollbackBaselineV1",
+  "checkedAt": "2026-09-09T13:35:43.790Z",
+  "repository": "Arseniy24RUS/OmniTwin-demo",
+  "commit": "21ee9a4543f7ee1acc4004fe5c11aea043490724",
+  "runId": 34192668761,
+  "url": "https://github.com/Arseniy24RUS/OmniTwin-demo/actions/runs/34192668761",
+  "status": "completed",
+  "conclusion": "success",
+  "chatRevision": "chatapi-00001-sup",
+  "rollbackPolicy": "Restore the frontend default/runtime tuple or prior Pages commit; retain compatible V2 backend and immutable packs for existing links.",
+  "publicUpdateStarted": false
+}

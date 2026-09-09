@@ -1,9 +1,10 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import type { DemoContextV1, DemoPage, DemoPeopleQuery, DemoScenarioId, PublicFictionalPersonV1 } from './types';
-const api = vi.hoisted(() => ({load:vi.fn(),city:vi.fn()}));
+import type { DemoBuildingOccupancy, DemoContextV1, DemoPage, DemoPeopleQuery, DemoScenarioId, PublicFictionalPersonV1 } from './types';
+const api = vi.hoisted(() => ({load:vi.fn(),city:vi.fn(),activation:vi.fn()}));
 vi.mock('./data/loadDemoProvider', () => ({loadDemoProvider:api.load}));
+vi.mock('./data/cityAssetActivation', () => ({readCityActivation:api.activation}));
 vi.mock('./DemoCity', () => ({DemoCity:(props:unknown) => {api.city(props);return <div>Test city</div>}}));
 vi.mock('./analytics', () => ({DemoAnalytics:() => <div>Test analytics</div>, DemoScenarios:() => <div>Test scenarios</div>}));
 vi.mock('./ResidentChat', () => ({ResidentChat:() => <div>Test chat</div>}));
@@ -24,15 +25,143 @@ function fixture() {
     prepareBuilding:vi.fn(async (_id:string,_minutes:number,_scenario:DemoScenarioId,_year:number,_signal?:AbortSignal) => {}),
     prepareVehicle:vi.fn(async (_id:string,_minutes:number,_scenario:DemoScenarioId,_year:number,_signal?:AbortSignal) => {}),
     getPerson:vi.fn(() => person), getPresence:vi.fn(() => null),
-    getBuildingOccupancy:vi.fn(() => ({...page(),buildingId:'b-1',assignedResidents:17,assignedWorkers:4,presentNow:1})),
+    getLayout:vi.fn(()=>({buildings:[],roads:[]})),
+    getBuildingOccupancy:vi.fn((_id?:string,_minutes?:number,_scenario?:DemoScenarioId,_year?:number,_offset=0,_limit=50):DemoBuildingOccupancy => ({...page(),buildingId:'b-1',assignedResidents:17,assignedWorkers:4,presentNow:1,representation:'visual_synthesis'})),
     getVehicle:vi.fn(() => ({id:'v-1',label:'Семейный автомобиль',occupants:[person],occupancy:1,capacity:4})),
   };
 }
 let provider:ReturnType<typeof fixture>;
-beforeEach(() => {provider=fixture();api.city.mockClear();api.load.mockReset().mockResolvedValue(provider);history.replaceState(null,'','#/agents?dataset=city-v2&scenario=inflow&year=2032&stats=fictional&paused=1');});
+beforeEach(() => {provider=fixture();api.city.mockClear();api.load.mockReset().mockResolvedValue(provider);api.activation.mockReset().mockResolvedValue({});history.replaceState(null,'','#/agents?dataset=city-v2&scenario=inflow&year=2032&stats=fictional&paused=1');});
 afterEach(() => {cleanup();vi.restoreAllMocks();});
 
 describe('asynchronous city shell', () => {
+  it('opens the newly activated city with detailed graphics on a clean link while preserving explicit native links',async()=>{
+    provider.manifest.datasetId='omnitwin-fictional-city-v2';
+    history.replaceState(null,'','#/world?paused=1');
+    const view=render(<App/>);await waitFor(()=>expect(api.city.mock.lastCall?.[0].context.datasetId).toBe(provider.manifest.datasetId));
+    expect(api.city.mock.lastCall?.[0].context.cityGraphicsBackend).toBe('tiled_game');
+    view.unmount();api.city.mockClear();history.replaceState(null,'','#/world?paused=1&graphics=native_map');
+    render(<App/>);await waitFor(()=>expect(api.city.mock.lastCall?.[0].context.datasetId).toBe(provider.manifest.datasetId));
+    expect(api.city.mock.lastCall?.[0].context.cityGraphicsBackend).toBe('native_map');
+  });
+  it('reloads the movement provider when same-document navigation changes the graphics context',async()=>{
+    history.replaceState(null,'','#/world?dataset=city-v2&graphics=native_map&paused=1');
+    render(<App/>);await waitFor(()=>expect(api.city).toHaveBeenCalled());
+    expect(api.load).toHaveBeenCalledTimes(1);
+    act(()=>{location.hash='#/world?dataset=city-v2&graphics=tiled_game&paused=1';});
+    await waitFor(()=>expect(api.load).toHaveBeenCalledTimes(2));
+    await waitFor(()=>expect(api.city.mock.lastCall?.[0].context.cityGraphicsBackend).toBe('tiled_game'));
+  });
+  it('marks even a small playing slider seek explicitly, without marking speed or pause as a seek',async()=>{
+    history.replaceState(null,'','#/world?dataset=city-v2&minutes=690&paused=0');
+    render(<App/>);
+    await waitFor(()=>expect(api.city).toHaveBeenCalled());
+    const revision=api.city.mock.lastCall?.[0].context.presentationSeekRevision??0;
+    fireEvent.change(screen.getByRole('slider',{name:'Время визуализации'}),{target:{value:'689'}});
+    expect(api.city.mock.lastCall?.[0].context.presentationSeekRevision).toBe(revision+1);
+    fireEvent.change(screen.getByRole('combobox',{name:'Скорость движения'}),{target:{value:'16'}});
+    fireEvent.click(screen.getByTestId('play-toggle'));
+    expect(api.city.mock.lastCall?.[0].context.presentationSeekRevision).toBe(revision+1);
+  });
+  const legacyId='omnitwin-public-fictional-chelyabinsk-v1';
+  const cityId='omnitwin-fictional-city-v2';
+  const eligibleActivation={defaultDatasetId:cityId,cityAssets:{baseUrl:`https://storage.googleapis.com/omnitwin-demo-city-assets/packs/${'a'.repeat(64)}/`,populationManifestSha256:'b'.repeat(64),spatialManifestSha256:'c'.repeat(64)}};
+  const useLegacy=()=>{provider.manifest.datasetId=legacyId;provider.manifest.initialPopulation=8246;history.replaceState(null,'',`#/world?dataset=${legacyId}&paused=1&stats=fictional&selected=building:b-1`);};
+  it.each([{}, {cityAssets:eligibleActivation.cityAssets}, {defaultDatasetId:legacyId,cityAssets:eligibleActivation.cityAssets}])('labels the legacy world and occupancy without an upgrade offer for inactive activation %j', async activation=>{
+    useLegacy();api.activation.mockResolvedValue(activation);render(<App/>);
+    const notice=await screen.findByTestId('legacy-dataset-notice');
+    expect(notice.textContent?.replace(/\s/g,'')).toContain('8246');
+    expect(notice.textContent).toContain('вымышленных');
+    expect(notice.textContent).toContain('не заселённость всего Челябинска');
+    await waitFor(()=>expect(screen.getByTestId('building-present-now')).toBeTruthy());
+    expect(screen.getByTestId('selection-inspector').textContent).toContain('персонажей старого демонабора сейчас внутри');
+    expect(screen.queryByRole('button',{name:'Открыть обновлённый город'})).toBeNull();
+    expect(location.hash).toContain(`dataset=${legacyId}`);
+    expect(api.activation).toHaveBeenCalledOnce();
+  });
+  it('offers an explicit activated upgrade, preserves the scene slice, and restores the complete legacy URL with Back',async()=>{
+    useLegacy();api.activation.mockResolvedValue(eligibleActivation);
+    const next={...fixture(),manifest:{datasetId:cityId,initialPopulation:1177058}};
+    api.load.mockImplementation((_base,dataset)=>Promise.resolve(dataset===cityId?next:provider));
+    history.replaceState(null,'',`#/world?dataset=${legacyId}&paused=1&scenario=inflow&compare=ageing&year=2032&stats=fictional&observedYear=2023&minutes=690&speed=4&weather=rain&lon=61.43&lat=55.19&zoom=17.3&pitch=35&bearing=42&age=70%2B&sex=female&q=old-name&offset=100&selected=building:b-1`);
+    render(<App/>);
+    const upgrade=await screen.findByRole('button',{name:'Открыть обновлённый город'});
+    const before={...api.city.mock.lastCall?.[0].context} as DemoContextV1;const beforeHash=location.hash;
+    const push=vi.spyOn(history,'pushState');fireEvent.click(upgrade);
+    await waitFor(()=>expect(api.city.mock.lastCall?.[0].context.datasetId).toBe(cityId));
+    expect(push).toHaveBeenCalledOnce();
+    expect(api.city.mock.lastCall?.[0].context).toMatchObject({...before,datasetId:cityId,cohort:null,agentQuery:undefined,agentOffset:undefined});
+    expect(api.city.mock.lastCall?.[0].selectedId).toBeNull();
+    const upgraded=new URLSearchParams(location.hash.split('?')[1]);
+    for(const key of ['selected','age','sex','q','offset'])expect(upgraded.has(key)).toBe(false);
+    expect(screen.queryByTestId('legacy-dataset-notice')).toBeNull();
+    act(()=>history.back());
+    await waitFor(()=>expect(api.city.mock.lastCall?.[0].context.datasetId).toBe(legacyId));
+    expect(location.hash).toBe(beforeHash);
+    expect(api.city.mock.lastCall?.[0].context).toEqual(before);
+    expect(api.city.mock.lastCall?.[0].selectedId).toBe('b-1');
+  });
+  it('checks legacy activation once across clock rerenders, aborts on unmount, and fails closed on read errors',async()=>{
+    useLegacy();const pending=deferred<typeof eligibleActivation>();api.activation.mockReturnValueOnce(pending.promise);
+    const view=render(<App/>);await waitFor(()=>expect(api.activation).toHaveBeenCalledOnce());
+    const signal=api.activation.mock.calls[0]?.[1] as AbortSignal;
+    fireEvent.change(screen.getByRole('slider',{name:'Время визуализации'}),{target:{value:'800'}});
+    fireEvent.change(screen.getByRole('slider',{name:'Время визуализации'}),{target:{value:'810'}});
+    expect(api.activation).toHaveBeenCalledOnce();
+    expect(screen.queryByRole('button',{name:'Открыть обновлённый город'})).toBeNull();
+    view.unmount();expect(signal.aborted).toBe(true);await act(async()=>pending.resolve(eligibleActivation));
+    api.activation.mockRejectedValueOnce(new Error('Unapproved city asset namespace'));render(<App/>);
+    await waitFor(()=>expect(api.activation).toHaveBeenCalledTimes(2));
+    expect(screen.queryByRole('button',{name:'Открыть обновлённый город'})).toBeNull();
+    expect(screen.getByTestId('legacy-dataset-notice')).toBeTruthy();
+  });
+  it('does not turn an unmatched rendered building into a zero-population building', async () => {
+    provider.getBuildingOccupancy.mockReturnValue({...page([]),buildingId:'b-unknown',assignedResidents:0,assignedWorkers:0,presentNow:0,coverageStatus:'no_index',representation:'visual_synthesis'});
+    history.replaceState(null,'','#/world?dataset=city-v2&paused=1&selected=building:b-unknown');
+    render(<App/>);
+    await waitFor(()=>expect(screen.getByText('Для этого контура пока нет индекса заселённости')).toBeTruthy());
+    expect(screen.queryByTestId('building-present-now')).toBeNull();
+    expect(screen.queryByTestId('building-roster-page')).toBeNull();
+    expect(screen.getByTestId('selection-inspector').textContent).toContain('Это не означает, что здание пустует');
+  });
+  it('separates building assignments, current visitors and complete paginated presence', async () => {
+    provider.getBuildingOccupancy.mockImplementation((_id,_minutes,_scenario,_year,offset=0,limit=50) => ({
+      buildingId:'b-1',assignedResidents:375,assignedWorkers:122,assignedStudents:31,visitorsNow:1800,
+      presentNow:2137,total:2137,offset,limit,nextOffset:offset+limit<2137?offset+limit:null,
+      items:Array.from({length:limit},(_,i)=>({...person,id:`roster-${offset+i}`,name:`Житель ${offset+i+1}`})),representation:'visual_synthesis',
+    }));
+    history.replaceState(null,'','#/world?dataset=city-v2&paused=1&minutes=690&selected=building:b-1');
+    render(<App/>);
+    const inspector=await screen.findByTestId('selection-inspector');
+    await waitFor(()=>expect(within(inspector).getByTestId('building-present-now').textContent?.replace(/\s/g,'')).toBe('2137'));
+    expect(within(inspector).getByText('Назначено жителей', {selector:'dt'}).nextElementSibling?.textContent).toBe('375');
+    expect(within(inspector).getByText('Работников', {selector:'dt'}).nextElementSibling?.textContent).toBe('122');
+    expect(within(inspector).getByText('Учащихся', {selector:'dt'}).nextElementSibling?.textContent).toBe('31');
+    expect(within(inspector).getByText('Посетителей сейчас', {selector:'dt'}).nextElementSibling?.textContent?.replace(/\s/g,'')).toBe('1800');
+      expect(within(inspector).getByTestId('building-roster-page').textContent?.replace(/\s/g,'')).toBe('1–50из2137');
+      const panel=inspector.closest('aside')!;panel.scrollTop=1200;
+      fireEvent.click(within(inspector).getByRole('button', {name:'Следующая страница жителей здания'}));
+      expect(panel.scrollTop).toBe(0);
+    expect(within(inspector).getByTestId('building-roster-page').textContent?.replace(/\s/g,'')).toBe('51–100из2137');
+    expect(within(inspector).getByText('Житель 51')).toBeTruthy();
+    expect(provider.prepareBuilding).toHaveBeenCalledOnce();
+    act(()=>{history.pushState(null,'','#/world?dataset=city-v2&paused=1&minutes=1100&selected=building:b-1');dispatchEvent(new PopStateEvent('popstate'));});
+    await waitFor(()=>expect(within(inspector).getByTestId('building-roster-page').textContent?.replace(/\s/g,'')).toBe('1–50из2137'));
+      expect(provider.prepareBuilding).toHaveBeenLastCalledWith('b-1',1100,'baseline',2026,expect.any(AbortSignal));
+    });
+  it('distinguishes a verified empty building from missing coverage across selection changes',async()=>{
+    provider.getBuildingOccupancy.mockImplementation(id=>({...page([]),buildingId:id??'b-missing',assignedResidents:0,assignedWorkers:0,presentNow:0,
+      coverageStatus:id==='b-unknown'?'no_index':'covered',representation:'visual_synthesis'}));
+    history.replaceState(null,'','#/world?dataset=city-v2&paused=1&selected=building:b-empty');
+    render(<App/>);
+    await waitFor(()=>expect(screen.getByTestId('building-present-now').textContent).toBe('0'));
+    act(()=>api.city.mock.lastCall?.[0].onSelect({kind:'building',id:'b-unknown'}));
+    await waitFor(()=>expect(screen.getByText('Для этого контура пока нет индекса заселённости')).toBeTruthy());
+    expect(screen.queryByTestId('building-present-now')).toBeNull();
+    act(()=>api.city.mock.lastCall?.[0].onSelect({kind:'building',id:'b-empty'}));
+    await waitFor(()=>expect(screen.getByTestId('building-present-now').textContent).toBe('0'));
+    expect(screen.queryByText('Для этого контура пока нет индекса заселённости')).toBeNull();
+  });
   it.each(['map', 'handle'] as const)('resets the scrolled profile when collapsing through %s', async action => {
     history.replaceState(null,'','#/world?dataset=city-v2&scenario=inflow&year=2032&stats=fictional&paused=1');
     render(<App/>);

@@ -1,0 +1,125 @@
+{
+  "description": "Actual source transportation features at Miass bridge, 2026-09-09; OpenStreetMap/OpenFreeMap ODbL-1.0. Exact deck polygon and parallel bridge centerlines.",
+  "origin": {
+    "latitude": 55.16872,
+    "longitude": 61.40025
+  },
+  "deck": {
+    "id": 6636266412,
+    "properties": {
+      "class": "bridge",
+      "layer": 1,
+      "brunnel": "bridge"
+    },
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            61.39984667301178,
+            55.16911946235123
+          ],
+          [
+            61.40058696269989,
+            55.16914090978443
+          ],
+          [
+            61.40066206455231,
+            55.168316707268474
+          ],
+          [
+            61.39992713928223,
+            55.1682952593919
+          ],
+          [
+            61.39984667301178,
+            55.16911946235123
+          ]
+        ]
+      ]
+    }
+  },
+  "roads": [
+    {
+      "id": 2171146800,
+      "properties": {
+        "subclass": "footway",
+        "brunnel": "bridge",
+        "surface": "paved",
+        "class": "path",
+        "layer": 1
+      },
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              61.399975419044495,
+              55.1682952593919
+            ],
+            [
+              61.39990031719208,
+              55.16911946235123
+            ]
+          ],
+          [
+            [
+              61.40052795410156,
+              55.16914090978443
+            ],
+            [
+              61.40060842037201,
+              55.16831364328684
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "id": 313053972,
+      "properties": {
+        "brunnel": "bridge",
+        "surface": "paved",
+        "class": "secondary",
+        "layer": 1,
+        "oneway": 1
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            61.400066614151,
+            55.16912559019045
+          ],
+          [
+            61.40014708042145,
+            55.168301387357815
+          ]
+        ]
+      }
+    },
+    {
+      "id": 328557062,
+      "properties": {
+        "brunnel": "bridge",
+        "surface": "paved",
+        "class": "secondary",
+        "layer": 1,
+        "oneway": 1
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            61.400463581085205,
+            55.168310579304915
+          ],
+          [
+            61.40039384365082,
+            55.16913478194755
+          ]
+        ]
+      }
+    }
+  ]
+}

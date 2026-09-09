@@ -3,6 +3,7 @@ import type { DemoContextV1, DemoLayout, DemoPresence, PublicFictionalPersonV1 }
 import type { VisualEntity, WorldSceneMovementPayload } from '../renderer/types';
 import type { LivingSceneMovementEntitySource } from '../renderer/living/sceneMovement';
 import { hashSeed } from '../renderer/rng';
+import { declutterVehicleGlyphs, type VehicleDeclutterDiagnostics } from './vehicleDeclutter';
 
 export const CITY_PRESENTATION_EPOCH_SECONDS = Date.UTC(2026, 0, 1) / 1_000;
 export const CITY_PRESENCE_RECONCILE_SECONDS = 5;
@@ -16,6 +17,10 @@ export interface CityPresenceOptions {
   maxPeople?: number;
   maxVehicles?: number;
   selectedId?: string | null;
+  /** Optional caller-owned last-frame IDs; never shared globally or persisted. */
+  previousVehicleIds?: ReadonlySet<string>;
+  /** Continuous game instances; no change to provider routes, speeds or presence. */
+  preserveActiveVehicleMembership?: boolean;
 }
 export interface CityPresenceFrame {
   entities: readonly VisualEntity[];
@@ -23,6 +28,8 @@ export interface CityPresenceFrame {
   movementEntities: readonly LivingSceneMovementEntitySource[];
   peopleCount: number;
   vehicleCount: number;
+  /** Display-pool counts only; never a count of all cars or residents in the city. */
+  vehicleDeclutter: VehicleDeclutterDiagnostics;
   sourceLabel: string;
   /** Exact shared five-second anchor; callers interpolate the clock from this frame. */
   presentationTimeSeconds: number;
@@ -179,10 +186,16 @@ export function buildCityPresenceFrame(
   }
   const ordered = [...candidates.values()].sort((a, b) => Number(b.selected) - Number(a.selected)
     || a.distance - b.distance || a.id.localeCompare(b.id));
+  const vehicleDisplay = declutterVehicleGlyphs(ordered.filter(candidate => candidate.vehicle).map(candidate => {
+    const point = localPoint(candidate.position, origin);
+    return { id: candidate.id, x: point[0], y: point[1], heading: candidate.heading, selected: candidate.selected };
+  }), { maxVehicles, previousVehicleIds: options.previousVehicleIds, preserveActiveMembership: options.preserveActiveVehicleMembership });
+  const retainedVehicles = new Set(vehicleDisplay.retained.map(candidate => candidate.id));
   const retained: Candidate[] = [];
   let peopleCount = 0;
   let vehicleCount = 0;
   for (const candidate of ordered) {
+    if (candidate.vehicle && !retainedVehicles.has(candidate.id)) continue;
     if (candidate.vehicle ? vehicleCount >= maxVehicles : peopleCount >= maxPeople) continue;
     retained.push(candidate);
     if (candidate.vehicle) vehicleCount += 1;
@@ -223,7 +236,7 @@ export function buildCityPresenceFrame(
   }
   entities.sort((a, b) => a.id.localeCompare(b.id));
   movementEntities.sort((a, b) => a.id.localeCompare(b.id));
-  return { entities, movementEntities, peopleCount, vehicleCount, presentationTimeSeconds,
+  return { entities, movementEntities, peopleCount, vehicleCount, presentationTimeSeconds, vehicleDeclutter: vehicleDisplay.diagnostics,
     movement: { nodes: [...nodes.values()].sort((a, b) => a.nodeId.localeCompare(b.nodeId)),
       edges: [...edges.values()].sort((a, b) => a.edgeId.localeCompare(b.edgeId)),
       routes: [...routes.values()].sort((a, b) => a.routeId.localeCompare(b.routeId)) },

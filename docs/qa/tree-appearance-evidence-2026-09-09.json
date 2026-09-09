@@ -1,0 +1,323 @@
+{
+  "contract": "GameTreeAppearanceEvidenceV1",
+  "classification": "functional_visual_evidence",
+  "performanceClaim": false,
+  "provenance": {
+    "runtime": "GameVegetation reads OMT landuse/landcover/park/poi source geometry",
+    "compiled": "Active city catalog compiler calls buildGreenSpace with no land features and maxTrees:0; catalog tree count remains0",
+    "placement": "Exact source point anchors remain unchanged; only area-derived visual synthesis uses new density/scatter",
+    "shape": "Illustrative canopy family/tint, not observed species"
+  },
+  "changes": [
+    "One continuous broad or upright canopy per tree instead of repeated overlapping lobes",
+    "Deterministic per-ID canopy aspect and muted tint",
+    "Full-cell jitter and smoothly varying density for area-derived trees only",
+    "Existing polygon union, crown radius, building/road/route clearance, tier cap and work budgets remain"
+  ],
+  "sourceFiles": [
+    {
+      "name": "GameVegetation.ts",
+      "sha256": "1c0a36a8ce0f69d3a576dd78bf6c11970c096221c60b6981d378a3cf82448108"
+    },
+    {
+      "name": "gameVegetationPlacement.ts",
+      "sha256": "576b8f2fa49264a8acbf9efeb710576ce0cf8d5a87740111fd29c57739230289"
+    },
+    {
+      "name": "gameTreeAppearance.ts",
+      "sha256": "f4853f687c9363f8b9c4a464c86ec9d2a76e63581cb2546ed39fc840755c8d04"
+    }
+  ],
+  "captures": {
+    "before": {
+      "scenes": [
+        {
+          "pose": {
+            "name": "MET",
+            "lon": 61.40850385,
+            "lat": 55.2572062,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35
+          },
+          "telemetry": {
+            "representation": "visual_synthesis",
+            "state": "ready",
+            "instances": 118,
+            "draws": 3,
+            "geometryBytes": 15464,
+            "bufferBytes": 205200,
+            "retainedBytes": 512102,
+            "bufferUpdates": 1,
+            "sourceAreas": 13,
+            "sourceTrees": 0,
+            "sourceWidthRoads": 0,
+            "laneWidthRoads": 6,
+            "classWidthRoads": 476,
+            "rejectedCandidates": 40,
+            "lastError": null,
+            "roadWidthPolicy": "source_width_else_visual_lanes_3m_plus_0_6m_else_visual_class_width",
+            "collisionPolicy": "crown_radius_plus_2_5m",
+            "truncated": false,
+            "operations": 18688,
+            "gridCandidates": 289
+          },
+          "meshes": [
+            {
+              "name": "source-tree-trunks",
+              "count": 118,
+              "vertices": 46
+            },
+            {
+              "name": "source-tree-crowns-1",
+              "count": 118,
+              "vertices": 288
+            },
+            {
+              "name": "source-tree-crowns-2",
+              "count": 118,
+              "vertices": 288
+            }
+          ],
+          "exactPoints": 0,
+          "areaDerived": 118
+        },
+        {
+          "pose": {
+            "name": "CEN",
+            "lon": 61.40335931261333,
+            "lat": 55.166641128116765,
+            "zoom": 18.2,
+            "pitch": 46.49661799282392,
+            "bearing": -172.97699800600026
+          },
+          "telemetry": {
+            "representation": "visual_synthesis",
+            "state": "ready",
+            "instances": 2,
+            "draws": 3,
+            "geometryBytes": 15464,
+            "bufferBytes": 205200,
+            "retainedBytes": 442530,
+            "bufferUpdates": 1,
+            "sourceAreas": 20,
+            "sourceTrees": 0,
+            "sourceWidthRoads": 0,
+            "laneWidthRoads": 144,
+            "classWidthRoads": 1401,
+            "rejectedCandidates": 10,
+            "lastError": null,
+            "roadWidthPolicy": "source_width_else_visual_lanes_3m_plus_0_6m_else_visual_class_width",
+            "collisionPolicy": "crown_radius_plus_2_5m",
+            "truncated": false,
+            "operations": 165,
+            "gridCandidates": 156
+          },
+          "meshes": [
+            {
+              "name": "source-tree-trunks",
+              "count": 2,
+              "vertices": 46
+            },
+            {
+              "name": "source-tree-crowns-1",
+              "count": 2,
+              "vertices": 288
+            },
+            {
+              "name": "source-tree-crowns-2",
+              "count": 2,
+              "vertices": 288
+            }
+          ],
+          "exactPoints": 0,
+          "areaDerived": 2
+        }
+      ],
+      "errors": [],
+      "artifacts": [
+        {
+          "name": "CEN-runtime-hidden.png",
+          "bytes": 552503,
+          "sha256": "efe0133b2dff5db7ba4a7eed749358f647dd056728cc1b3a120de3e10118a437"
+        },
+        {
+          "name": "CEN-visible.png",
+          "bytes": 553530,
+          "sha256": "ccd5388b4baffd565e92de97741adee3c52a8af70bb47086c2e1149bdb76211c"
+        },
+        {
+          "name": "MET-runtime-hidden.png",
+          "bytes": 397694,
+          "sha256": "03c9821111ec66419759e3779efa451cdbe771febe1aa933f4f835a78a850986"
+        },
+        {
+          "name": "MET-visible.png",
+          "bytes": 428210,
+          "sha256": "de69c3ac9c195dc5b1b3a192f4a2c1dd9defc88bef65b2e5768593b584c03677"
+        },
+        {
+          "name": "results.json",
+          "bytes": 62279,
+          "sha256": "0eb420c236a0bc776cff8cc535bf353b931a40a4a4e64140019533c556a00851"
+        }
+      ]
+    },
+    "after": {
+      "scenes": [
+        {
+          "pose": {
+            "name": "MET",
+            "lon": 61.40850385,
+            "lat": 55.2572062,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35
+          },
+          "telemetry": {
+            "representation": "visual_synthesis",
+            "state": "ready",
+            "instances": 84,
+            "draws": 3,
+            "geometryBytes": 12080,
+            "bufferBytes": 205200,
+            "retainedBytes": 485926,
+            "bufferUpdates": 1,
+            "sourceAreas": 13,
+            "sourceTrees": 0,
+            "sourceWidthRoads": 0,
+            "laneWidthRoads": 19,
+            "classWidthRoads": 720,
+            "rejectedCandidates": 33,
+            "lastError": null,
+            "roadWidthPolicy": "source_width_else_visual_lanes_3m_plus_0_6m_else_visual_class_width",
+            "collisionPolicy": "crown_radius_plus_2_5m",
+            "truncated": false,
+            "operations": 13666,
+            "appearancePolicy": "continuous_broad_or_upright_canopy_v2",
+            "placementPolicy": "world_cell_scatter_with_density_v2",
+            "gridCandidates": 289,
+            "densitySkippedCandidates": 79
+          },
+          "meshes": [
+            {
+              "name": "source-tree-trunks",
+              "count": 84,
+              "vertices": 46
+            },
+            {
+              "name": "source-tree-crowns-1",
+              "count": 61,
+              "vertices": 117
+            },
+            {
+              "name": "source-tree-crowns-2",
+              "count": 23,
+              "vertices": 117
+            }
+          ],
+          "exactPoints": 0,
+          "areaDerived": 84
+        },
+        {
+          "pose": {
+            "name": "CEN",
+            "lon": 61.40335931261333,
+            "lat": 55.166641128116765,
+            "zoom": 18.2,
+            "pitch": 46.49661799282392,
+            "bearing": -172.97699800600026
+          },
+          "telemetry": {
+            "representation": "visual_synthesis",
+            "state": "ready",
+            "instances": 2,
+            "draws": 2,
+            "geometryBytes": 12080,
+            "bufferBytes": 205200,
+            "retainedBytes": 435788,
+            "bufferUpdates": 1,
+            "sourceAreas": 20,
+            "sourceTrees": 0,
+            "sourceWidthRoads": 0,
+            "laneWidthRoads": 144,
+            "classWidthRoads": 1401,
+            "rejectedCandidates": 9,
+            "lastError": null,
+            "roadWidthPolicy": "source_width_else_visual_lanes_3m_plus_0_6m_else_visual_class_width",
+            "collisionPolicy": "crown_radius_plus_2_5m",
+            "truncated": false,
+            "operations": 287,
+            "appearancePolicy": "continuous_broad_or_upright_canopy_v2",
+            "placementPolicy": "world_cell_scatter_with_density_v2",
+            "gridCandidates": 156,
+            "densitySkippedCandidates": 43
+          },
+          "meshes": [
+            {
+              "name": "source-tree-trunks",
+              "count": 2,
+              "vertices": 46
+            },
+            {
+              "name": "source-tree-crowns-1",
+              "count": 2,
+              "vertices": 117
+            },
+            {
+              "name": "source-tree-crowns-2",
+              "count": 0,
+              "vertices": 117
+            }
+          ],
+          "exactPoints": 0,
+          "areaDerived": 2
+        }
+      ],
+      "errors": [],
+      "artifacts": [
+        {
+          "name": "CEN-runtime-hidden.png",
+          "bytes": 607279,
+          "sha256": "7ea18967d032a7d24db3389ede104c354b1f25d0623cce3f125c8bb7ae7e4be6"
+        },
+        {
+          "name": "CEN-visible.png",
+          "bytes": 608170,
+          "sha256": "a3cad0ba4033e615b18d003526c2f8991cec242e514f49ae8f6409666a4d5079"
+        },
+        {
+          "name": "MET-runtime-hidden.png",
+          "bytes": 378789,
+          "sha256": "c754748d3206a91accbbdf271dc0b695fe6d2b2f572f2f96c4ff2c6c0689af38"
+        },
+        {
+          "name": "MET-visible.png",
+          "bytes": 419882,
+          "sha256": "9f4be518ff3805335bea1cd4681a76ca62b609bd457d9086e9b41c07d7f24be7"
+        },
+        {
+          "name": "results.json",
+          "bytes": 45976,
+          "sha256": "2a1bacbfa453fd7849e74f1d72a768bc5a1b775707ee597d1a8ce1b5449b169c"
+        }
+      ]
+    }
+  },
+  "validation": {
+    "failedBefore": 2,
+    "focusedFiles": 4,
+    "passed": 29,
+    "typecheck": "pass",
+    "maximumInstancedDraws": 3,
+    "highTierRetainedBytesUnder": 1048576,
+    "unchangedExactPoints": "tested",
+    "fullCanopyEnvelope": "tested across100 deterministic variants"
+  },
+  "reproduce": "node tools/qa-city-vegetation.mjs",
+  "limitations": [
+    "Attribution hides runtime vegetation in an isolated context; compiled catalog is unchanged.",
+    "Concurrent roof/ground/asset loading means whole-frame differences are not a controlled performance comparison.",
+    "Actual MET/CEN views have no exact source tree points; preservation of such points is verified by focused tests."
+  ]
+}

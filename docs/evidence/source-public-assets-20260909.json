@@ -1,0 +1,72 @@
+{
+  "checkedAt": "2026-09-09T09:43:10.454Z",
+  "releaseId": "ce6d7497828079f55a2c74f45d95f3bdcffffdae5d24163e31e7051ce7199abe",
+  "objects": 38920,
+  "storedBytes": 1926910051,
+  "pages": 779,
+  "inventoryMetadataVerified": true,
+  "publicByteSamples": [
+    {
+      "path": "city-v2/manifest.json",
+      "bytes": 3315717,
+      "sha256": "e8e1627801eb79ac353e9a1bf37419519980ad48d071d9c1f9b67318c2f3f62a",
+      "cors": true
+    },
+    {
+      "path": "demo-v2/manifest.json",
+      "bytes": 109971,
+      "sha256": "646bef9ee30c2f061f80b1ce26cd9d7ca2c7da170c6d55c086dea24d2d95bca1",
+      "cors": true
+    },
+    {
+      "path": "demo-v2/spatial/manifest.json",
+      "bytes": 1073535,
+      "sha256": "ec886d770baa1bbb83afab4973b857a6d50d9a1eac0135c1f90508a88557567d",
+      "cors": true
+    },
+    {
+      "path": "city-v2/chelyabinsk-osm-138afac3f0d74f25/cells/16/43904/20666-0b81cc3e1754f544.json",
+      "bytes": 4043,
+      "sha256": "0b81cc3e1754f5449c70516e9e6c4917ac202592a5ccfdbfc570c71a4ddcfa6c",
+      "cors": true
+    },
+    {
+      "path": "city-v2/chelyabinsk-osm-138afac3f0d74f25/cells/16/43924/20704-064a5fb54ff4c67d.json",
+      "bytes": 7655,
+      "sha256": "064a5fb54ff4c67d5d7ac886f25de6007879993d355280e46c1255f3f7a23be6",
+      "cors": true
+    },
+    {
+      "path": "city-v2/chelyabinsk-osm-138afac3f0d74f25/cells/16/43935/20702-3f5f891cefa405a6.json",
+      "bytes": 35214,
+      "sha256": "3f5f891cefa405a64bbbf2ed25224c796d3b9b99ede5141212eb1d7b739d961e",
+      "cors": true
+    },
+    {
+      "path": "city-v2/chelyabinsk-osm-138afac3f0d74f25/cells/16/43944/20730-7b73338b975842e0.json",
+      "bytes": 2924,
+      "sha256": "7b73338b975842e09fc7289d530264643e7984f0df9b969d5819070c452fb69b",
+      "cors": true
+    },
+    {
+      "path": "city-v2/chelyabinsk-osm-138afac3f0d74f25/cells/16/43955/20709-01f33e87a8850f22.json",
+      "bytes": 2130,
+      "sha256": "01f33e87a8850f229671d33028789d791e075cdc67b23b0d8a74402223c18a0a",
+      "cors": true
+    },
+    {
+      "path": "city-v2/chelyabinsk-osm-138afac3f0d74f25/cells/16/43964/20685-8bc0525b53c96029.json",
+      "bytes": 62384,
+      "sha256": "8bc0525b53c960292c0ac7a68f5c86e1ec7072d95ffe56497fe88c2c0c7b5629",
+      "cors": true
+    },
+    {
+      "path": "city-v2/chelyabinsk-osm-138afac3f0d74f25/cells/16/43981/20671-594769434cbd416a.json",
+      "bytes": 1433,
+      "sha256": "594769434cbd416ab1d0c11cf1f5145c674bfd36599849fc1926c09518d98ea2",
+      "cors": true
+    }
+  ],
+  "cloudWrites": 0,
+  "inferenceCalls": 0
+}

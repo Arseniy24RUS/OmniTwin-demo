@@ -3,7 +3,7 @@ import type { DemoContextV1, DemoAgeBand, DemoScenarioId, DemoCohort } from './t
 export type DemoRoute='world'|'agents'|'scenarios'|'analytics'|'about';
 export const LEGACY_DATASET_ID='omnitwin-public-fictional-chelyabinsk-v1';
 // An omitted dataset delegates the default-version decision to the dataset loader.
-export const DEFAULT_CONTEXT:DemoContextV1={datasetId:'',analyticsSource:'observed',observedYear:2024,territoryId:'RU-CHE-SET',scenario:'baseline',year:2026,cohort:null,presentationMinutes:1100,weather:'clear',playing:true,speed:1,camera:{longitude:61.4026,latitude:55.1684,zoom:16.7,pitch:58,bearing:-24}};
+export const DEFAULT_CONTEXT:DemoContextV1={datasetId:'',cityGraphicsBackend:'native_map',analyticsSource:'observed',observedYear:2024,territoryId:'RU-CHE-SET',scenario:'baseline',year:2026,cohort:null,presentationMinutes:1100,weather:'clear',playing:true,speed:1,camera:{longitude:61.4026,latitude:55.1684,zoom:16.7,pitch:58,bearing:-24}};
 export const ROUTES:Record<DemoRoute,string>={world:'Живой мир',agents:'Агенты',scenarios:'Сценарии',analytics:'Аналитика',about:'О проекте'};
 const bounded=(s:string|null,fallback:number,min:number,max:number)=>s!==null&&s.trim()!==''&&Number.isFinite(Number(s))?Math.min(max,Math.max(min,Number(s))):fallback;
 export function decodeLocation(hash:string):{route:DemoRoute;context:DemoContextV1;selection:string|null}{
@@ -12,6 +12,7 @@ export function decodeLocation(hash:string):{route:DemoRoute;context:DemoContext
   const cohort:DemoCohort={...(['0-17','18-34','35-54','55-69','70+'].includes(age||'')?{ageBand:age as DemoAgeBand}:{}),...(sex==='male'||sex==='female'?{sex:sex as 'male'|'female'}:{}),...(['child','student','employed','retired','not_employed'].includes(employment||'')?{employment:employment as DemoCohort['employment']}:{})};
   return {route:path in ROUTES?path as DemoRoute:'world',selection:p.get('selected'),context:{...DEFAULT_CONTEXT,
     datasetId:p.has('dataset')?p.get('dataset')!:p.get('selected')?.startsWith('person:demo-p-')?LEGACY_DATASET_ID:'',
+    cityGraphicsBackend:p.get('graphics')==='tiled_game'?'tiled_game':'native_map',
     analyticsSource:p.get('stats')==='fictional'?'fictional':'observed',
     observedYear:Math.round(bounded(p.get('observedYear'),2024,2012,2024)),
     scenario:['baseline','inflow','ageing'].includes(scenario||'')?scenario as DemoScenarioId:'baseline',
@@ -29,6 +30,7 @@ export function encodeLocation(route:DemoRoute,c:DemoContextV1,selection:string|
   const p=new URLSearchParams({scenario:c.scenario,year:String(c.year),territory:c.territoryId,minutes:String(c.presentationMinutes),paused:c.playing?'0':'1',speed:String(c.speed),weather:c.weather,lon:String(c.camera.longitude),lat:String(c.camera.latitude),zoom:String(c.camera.zoom),pitch:String(c.camera.pitch),bearing:String(c.camera.bearing)});
   p.set('stats',c.analyticsSource??'observed');p.set('observedYear',String(c.observedYear??2024));
   if(c.datasetId)p.set('dataset',c.datasetId);
+  if(c.cityGraphicsBackend==='tiled_game')p.set('graphics','tiled_game');
   if(c.cohort?.ageBand)p.set('age',c.cohort.ageBand); if(c.cohort?.sex)p.set('sex',c.cohort.sex); if(selection)p.set('selected',selection);
   if(c.cohort?.employment)p.set('employment',c.cohort.employment);
   if(c.comparisonScenario)p.set('compare',c.comparisonScenario);if(c.agentQuery!==undefined)p.set('q',c.agentQuery);if(c.agentOffset!==undefined)p.set('offset',String(c.agentOffset));

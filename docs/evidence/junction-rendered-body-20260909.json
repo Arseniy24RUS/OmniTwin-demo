@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-09",
+  "classification": "diagnostic_actual_interpolated_rendered_bodies",
+  "status": "failed_rotating_vehicle_pedestrian_clearance",
+  "scope": "Bounded local preview, original user courtyard camera, fresh installed Chrome headless context, real source corridors and actors, no video; not whole-city safety acceptance.",
+  "camera": {
+    "longitude": 61.40335931261333,
+    "latitude": 55.166641128116765,
+    "zoom": 18.2,
+    "pitch": 46.49661799282392,
+    "bearing": -172.97699800600026
+  },
+  "browser": {
+    "version": "152.0.7977.83",
+    "channel": "chrome",
+    "headless": true,
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.16.1656)",
+    "viewport": [
+      1280,
+      800
+    ],
+    "deviceScaleFactor": 1
+  },
+  "clock": {
+    "initialMinute": 707.7335833333341,
+    "speed": 1,
+    "elapsedSimulationSeconds": 56.03799999999319,
+    "sourceRefreshes": [
+      2,
+      13
+    ],
+    "sourceReanchors": [
+      0,
+      0
+    ]
+  },
+  "method": {
+    "samples": 602,
+    "uniqueActors": 138,
+    "sampling": "Four 10s in-browser timer blocks at requested50ms with serialization gaps;56.038simseconds total. Reads production GPU instance attributes and shader-time orientation; does not substitute source tangent for rendered yaw.",
+    "carCar": "Separating-axis test of actual model length/width rectangles, real interpolated GPU centers/yaws; negative separating gap means body overlap; .03m diagnostic tolerance.",
+    "carPedestrian": "Actual car rectangle vs controller .35m pedestrian disc; additionally corroborated using both actual model rectangles.",
+    "scopeLimit": "Probe bounded to64cars and64pedestrians per sample; no claim over uncaptured actors, times or other cameras.",
+    "queue": "Same supporting-line key and overlapping source segment intervals; checks directed station headway, separately from body collision.",
+    "pause": "Exact shader time, GPU actor rows and signal snapshots unchanged, zero additional custom-layer frames."
+  },
+  "checks": {
+    "carCar": 256510,
+    "carPed": 775662,
+    "queue": 32357,
+    "signals": 16805
+  },
+  "minimums": {
+    "carCar": 2.6000662629574474,
+    "carPed": -0.35,
+    "queueStation": 7.857122402777605
+  },
+  "results": {
+    "carCarOverlaps": 0,
+    "carPedestrianPairSamples": 40,
+    "carPedestrianDistinctSampleTimes": 8,
+    "carPedestrianDistinctPairs": 10,
+    "actualModelRectangleOverlaps": 38,
+    "minimumActualModelRectangleGapMeters": -0.45245660115784,
+    "queueHeadwayBelow7_95PairSamples": 4,
+    "signalViolations": 0,
+    "phases": [
+      "vehicle",
+      "clearance",
+      "pedestrian"
+    ],
+    "overflow": 0,
+    "waitingVehicleSamples": 496,
+    "waitingPedestrianSamples": 273,
+    "pageErrors": [],
+    "pauseBefore": {
+      "clock": true,
+      "actors": true,
+      "signals": true,
+      "additionalFrames": 0
+    },
+    "pauseAfter": {
+      "clock": true,
+      "actors": true,
+      "signals": true,
+      "additionalFrames": 0
+    }
+  },
+  "failureExample": {
+    "simulationSeconds": 42497.82910000007,
+    "car": {
+      "id": "demo2-v-0879763",
+      "kind": "vehicle",
+      "asset": "game-actor-car-van",
+      "positionMeters": [
+        432.0906820297241,
+        0.12999999523162842,
+        -177.10742092132568
+      ],
+      "opacity": 1,
+      "headingRadians": -3.567080910906214,
+      "targetHeadingRadians": 1.6144914627075195,
+      "headingStartRadians": -3.1000733375549316,
+      "headingDeltaRadians": -1.5686204433441162,
+      "headingStartTimeSeconds": 42497.421875,
+      "headingDurationSeconds": 1.1234415769577026
+    },
+    "pedestrian": {
+      "id": "demo2-p-0835606",
+      "kind": "person",
+      "asset": "game-actor-casual-man",
+      "positionMeters": [
+        432.2999572753906,
+        0.12999999523162842,
+        -179.4217071533203
+      ],
+      "opacity": 1,
+      "headingRadians": -1.522801399230957,
+      "targetHeadingRadians": -1.522801399230957,
+      "headingStartRadians": -1.522801399230957,
+      "headingDeltaRadians": 0,
+      "headingStartTimeSeconds": 0,
+      "headingDurationSeconds": 0
+    },
+    "actualModelRectangleGapMeters": -0.45245660115784,
+    "controllerDiscGapMeters": -0.35
+  },
+  "interpretation": "The joint lane/junction fresh-admission fix removed prior car/car overlap in this run. A new confirmed rotating-body defect remains: route-tangent conflict envelopes allow waiting walkers within the swept body of a smoothly turning vehicle. The source position, ID and route are unchanged. This record does not approve collision safety.",
+  "regressionTest": "apps/web/src/renderer/game/junctionTraffic.heading.review.test.ts",
+  "regressionTestResult": "Fail-first: minimum body-disc gap−.35m, expected>=−.0001m on exact source vertices with explicitly synthetic initial arclengths.",
+  "sourceIntegrity": {
+    "sha256Before": {
+      "apps/web/src/renderer/game/TiledGameScene.tsx": "3f968cbb3a42baefe883792e4b676d4ff8867e152b5819f94713071becd3b69d",
+      "apps/web/src/renderer/game/TiledGameLayer.ts": "6aeed668d69928660ce2c9eb6d518f8ed29f9c3bb26a4d2ef368e076b7513068",
+      "apps/web/src/renderer/game/GameActors.ts": "10eaf47e2d35b3b465eb1e31cf695d006252ebcc19ed050535dc0e41fa6f2807",
+      "apps/web/src/renderer/game/gameActorHeading.ts": "5c8578fc50e6cd95d019a163b321d92564656eea71cffb5f7bcf9b053cbc3690",
+      "apps/web/src/renderer/game/actorColumnsBridge.ts": "32bf21181e9082827e885bb98b61b993a8bb1174c54d1fcb4bc97c13073b68fa",
+      "apps/web/src/renderer/game/laneTraffic.ts": "c39be0d03b9c57fde895ade8069633afa13db5de3ec616c6a2ed8cf8ce2ecece",
+      "apps/web/src/renderer/game/junctionTraffic.ts": "fdb5fa0d1ee801324976397e798d96117fd1431d8af835dbfb063d2be728b96b",
+      "apps/web/src/renderer/game/actorFootprintClearance.ts": "3c396e0d2ab10152b6f2061406781855378ab50e6081a8846a875bd2ae21ed38",
+      "apps/web/public/city-visual-v1/manifest.json": "d1f25e4328caf10ddf7e3e6f8e2734b7cfc63b0ac7a28b0eb410af3fc53cf9cc",
+      "apps/web/public/assets/game-actors-v1/manifest.json": "3733817ee56c32fac81efa3f20605c94526a157f98f2d09c4667f74a959c0a2e"
+    },
+    "changedDuringCapture": [
+      "apps/web/src/renderer/game/TiledGameLayer.ts"
+    ],
+    "changeScopeAttestation": "Root confirmed TiledGameLayer changes only cache rebaseCandidate/pending-frontier announcement; no actor/heading/traffic/signal changes. Relevant motion source files were byte-stable. Capture is not an all-source-frozen release proof.",
+    "rawCaptureSha256": "f54a9a811561b974f1ea0e01c65e516419aa1f84055c3f35e36d461b889bc169"
+  }
+}

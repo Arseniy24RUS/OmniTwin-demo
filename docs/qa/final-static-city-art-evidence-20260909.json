@@ -1,0 +1,2159 @@
+{
+  "contract": "OmniTwinFinalStaticArtEvidenceV1",
+  "createdAt": "2026-09-09T12:05:36.022Z",
+  "verdict": "art_gate_fail",
+  "target": "realistically_stylized_SimCity_2013_courtyard_quality",
+  "artifactFolder": "final-static-art-review",
+  "startedAt": "2026-09-09T11:57:58.042Z",
+  "completedAt": "2026-09-09T12:03:29.255Z",
+  "sourceBefore": "17b8561b9d2dec9b9d97b23ffb999adcd3108a5c88c24e2b6d193f374995a454",
+  "sourceAfter": "075da1fc4ac4ab567bae2ae118b5cde725dcb0e4c1c1d85ba46b13b4023e613f",
+  "sourceChangedFiles": [
+    "renderer/game/junctionTraffic.ts"
+  ],
+  "catalogBefore": {
+    "uri": "catalog/build-2bed04fea8092a93/catalog-bca4ff81f5a4c1a8.json",
+    "bytes": 4490946,
+    "sha256": "bca4ff81f5a4c1a8c3517f0b1faeceddd6042cf20d811c70661993ecec72a819"
+  },
+  "catalogAfter": {
+    "uri": "catalog/build-2bed04fea8092a93/catalog-bca4ff81f5a4c1a8.json",
+    "bytes": 4490946,
+    "sha256": "bca4ff81f5a4c1a8c3517f0b1faeceddd6042cf20d811c70661993ecec72a819"
+  },
+  "viewportModes": {
+    "desktop": [
+      1280,
+      800
+    ],
+    "mobile": [
+      390,
+      844
+    ]
+  },
+  "realScreenshotsOpened": 20,
+  "method": "Independent headless Chromium, actual locally served application without response overrides. Each pose awaited no tile loading, no staging/pending geometry, no native bank transaction and no dirty source surfaces, then four consecutive identical graphics/frontier/source/surface/frame snapshots. A subsequent 2200ms paused interval preceded the raw PNG.",
+  "summary": {
+    "frames": 20,
+    "settled": 20,
+    "zeroFramePauseWindows": 20,
+    "framesWithErrors": 0,
+    "districtTargetsDetailed": 14,
+    "motionGate": "separate_not_claimed"
+  },
+  "findings": [
+    {
+      "kind": "improvement",
+      "detail": "All seven district source targets are detailed on desktop and mobile after settling, including MET 6939524390 and 6939524400. No visible foreground building holes or doubled buildings were found in these twenty static images."
+    },
+    {
+      "kind": "improvement",
+      "detail": "Building bases have restrained contact darkening. Contacts are a single source-contour lighting batch and do not replace source geometry. Courtyard 27724113 has quiet paving on desktop and mobile."
+    },
+    {
+      "kind": "improvement",
+      "detail": "Visible Miass water is continuous at its bank and has small ripples without the earlier coherent stripes or flat source-fragment patch. This framing does not include the entire bridge."
+    },
+    {
+      "kind": "art_blocker",
+      "detail": "MET detailed metal roofs still contain recognizable, repeated diagonal diffuse marks. Their repetition remains visible on both viewport sizes."
+    },
+    {
+      "kind": "art_blocker",
+      "detail": "Broad untextured gray-beige land between KAL, SOV and LEN buildings, and hard polygon transitions elsewhere, leave large portions of the city looking like a diagram. Contact shading improves anchoring but does not supply convincing ground surfaces."
+    },
+    {
+      "kind": "art_blocker",
+      "detail": "Facade color, window rhythm and roof-equipment spacing remain overly uniform across otherwise distinct architecture. The close courtyard roof occupies much of the view as a large repetitive plane."
+    },
+    {
+      "kind": "art_blocker",
+      "detail": "CEN and MET source vegetation has recognizably regular spacing and very similar crown silhouettes. Coordinate placement uses a fixed 30 Mercator-metre grid with jitter confined to the middle half of each cell."
+    },
+    {
+      "kind": "limitation",
+      "detail": "On mobile, the existing header, movement status, time controls and statistics drawer leave limited visible map area. Screenshots preserve the actual UI; no UI redesign is included in this art assessment."
+    },
+    {
+      "kind": "pending_verification",
+      "detail": "CEN foreground tree crown appears near the road edge. No source-coordinate overlap of trunk or clearance zone is asserted from the screenshot."
+    }
+  ],
+  "recommendedNextBoundedChanges": [
+    "Verify the exact source classes under the large flat ground regions before extending metric materials. Preserve those actual polygon boundaries, holes and water/road ordering; do not invent vegetation or paved land classifications.",
+    "Reduce remaining recognizable corrugated_iron diffuse stamp contrast while preserving pinned CC0 asset URLs, physical UV scale and physically filtered normal/roughness. Recheck MET desktop/mobile before accepting.",
+    "Replace the middle-half grid jitter for area-derived trees with a deterministic source-contained placement scheme that avoids regular rows while retaining exact source tree points, road/building clearance and caps."
+  ],
+  "limitations": [
+    "junctionTraffic.ts changed during capture. All other captured runtime sources and the catalogue remained unchanged; traffic motion is a separate gate.",
+    "SwiftShader and background development activity; no FPS, physical mobile-device performance or hardware renderer claim.",
+    "Twenty settled static screenshots do not prove continuous zoom, cache eviction, WebGL recovery, picking or traffic safety.",
+    "Seven district samples are actual source-building poses, not exhaustive visual validation of every city block.",
+    "The complete bridge is outside the waterfront framing. No bridge traversal acceptance is claimed.",
+    "Raw PNGs and telemetry remain local QA artifacts; portable filenames and SHA-256 hashes are recorded without absolute local paths."
+  ],
+  "frames": [
+    {
+      "filename": "user-desktop.png",
+      "sha256": "62c12da0c597de656e6ff53107cffd8729ecb48b68d92a304f2841227b225f59",
+      "bytes": 616313,
+      "telemetryFilename": "user-desktop.json",
+      "telemetrySha256": "b0b6ddaa4f4b90a2dbf74d84c71262f1594419458a8921a81b4af32deeff00e3",
+      "pose": {
+        "name": "user",
+        "lon": 61.40335931261333,
+        "lat": 55.166641128116765,
+        "zoom": 16.86436467681756,
+        "pitch": 46.49661799282392,
+        "bearing": -172.97699800600026,
+        "provenance": "Exact original user URL camera"
+      },
+      "mode": "desktop",
+      "settling": {
+        "settled": true,
+        "waitMs": 28915,
+        "polls": 29
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 175310784,
+        "stagingBytes": 0,
+        "residentBytes": 175310784,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 595,
+      "meshCount": 149,
+      "targetIsMesh": null,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 148,
+        "raisedBuildings": 0,
+        "cells": 3072,
+        "sourceEdges": 1115,
+        "duplicates": 35,
+        "subdivisions": 0,
+        "truncated": true,
+        "geometryUpdates": 1,
+        "geometryBytes": 442428,
+        "retainedBytes": 1327224,
+        "estimatedPeakBytes": 5594332,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 4976,
+        "gridEntries": 16454,
+        "gridCells": 12370,
+        "operations": 20553
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 2,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 4976,
+        "projectedVertices": 98,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 108884,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "user-mobile.png",
+      "sha256": "bfa14e980adc1c10161cbf1dc02f0840adeb8f394f39a068e6fdb5ef14c6719b",
+      "bytes": 185001,
+      "telemetryFilename": "user-mobile.json",
+      "telemetrySha256": "576d29383fb7e2044df61f2edf40f8cc37a1372fa789d0c5fb85890d39fe565f",
+      "pose": {
+        "name": "user",
+        "lon": 61.40335931261333,
+        "lat": 55.166641128116765,
+        "zoom": 16.86436467681756,
+        "pitch": 46.49661799282392,
+        "bearing": -172.97699800600026,
+        "provenance": "Exact original user URL camera"
+      },
+      "mode": "mobile",
+      "settling": {
+        "settled": true,
+        "waitMs": 10212,
+        "polls": 11
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 74194848,
+        "stagingBytes": 0,
+        "residentBytes": 74194848,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 595,
+      "meshCount": 60,
+      "targetIsMesh": null,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 45,
+        "raisedBuildings": 0,
+        "cells": 3072,
+        "sourceEdges": 427,
+        "duplicates": 10,
+        "subdivisions": 0,
+        "truncated": true,
+        "geometryUpdates": 1,
+        "geometryBytes": 442428,
+        "retainedBytes": 1327224,
+        "estimatedPeakBytes": 3770998,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 4976,
+        "gridEntries": 4264,
+        "gridCells": 3218,
+        "operations": 5194
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 2,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 4976,
+        "projectedVertices": 98,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 108884,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "courtyard-desktop.png",
+      "sha256": "fa7ea7226bb471c5a1e412baf36709448cbda800d456c1f7a7a3127df8a389bc",
+      "bytes": 522439,
+      "telemetryFilename": "courtyard-desktop.json",
+      "telemetrySha256": "9e656f7d1f766f9fcf7c3608c3d9db380d6ce4987060260032d2905490957fc1",
+      "pose": {
+        "name": "courtyard",
+        "lon": 61.39086657500001,
+        "lat": 55.170028625,
+        "zoom": 19,
+        "pitch": 55,
+        "bearing": -70,
+        "canonicalId": "openmaptiles_buildings:27724113",
+        "provenance": "Actual source courtyard hole, Megapolis building"
+      },
+      "mode": "desktop",
+      "settling": {
+        "settled": true,
+        "waitMs": 4476,
+        "polls": 5
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 8298720,
+        "stagingBytes": 0,
+        "residentBytes": 8298720,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 250,
+      "meshCount": 1,
+      "targetIsMesh": true,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 1,
+        "raisedBuildings": 0,
+        "cells": 399,
+        "sourceEdges": 77,
+        "duplicates": 0,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 57516,
+        "retainedBytes": 172488,
+        "estimatedPeakBytes": 616190,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 2041,
+        "gridEntries": 569,
+        "gridCells": 399,
+        "operations": 922
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 1,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 2,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 2041,
+        "projectedVertices": 116,
+        "vertices": 120,
+        "triangles": 40,
+        "borderTriangles": 34,
+        "operations": 576,
+        "geometryUpdates": 1,
+        "geometryBytes": 3840,
+        "retainedBytes": 7680,
+        "estimatedPeakBytes": 79122,
+        "draws": 1,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "courtyard-mobile.png",
+      "sha256": "22d3ca090f8c59f37d40913b699a73e6325eff10f53554940e9b94b370277cd1",
+      "bytes": 162586,
+      "telemetryFilename": "courtyard-mobile.json",
+      "telemetrySha256": "84eaa4c3efa3b092d87223dc3d435e6db9f8fc8aa484d85f0e5766cc71ffc406",
+      "pose": {
+        "name": "courtyard",
+        "lon": 61.39086657500001,
+        "lat": 55.170028625,
+        "zoom": 19,
+        "pitch": 55,
+        "bearing": -70,
+        "canonicalId": "openmaptiles_buildings:27724113",
+        "provenance": "Actual source courtyard hole, Megapolis building"
+      },
+      "mode": "mobile",
+      "settling": {
+        "settled": true,
+        "waitMs": 4412,
+        "polls": 5
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 8298720,
+        "stagingBytes": 0,
+        "residentBytes": 8298720,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 250,
+      "meshCount": 1,
+      "targetIsMesh": true,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 1,
+        "raisedBuildings": 0,
+        "cells": 339,
+        "sourceEdges": 77,
+        "duplicates": 0,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 48876,
+        "retainedBytes": 146568,
+        "estimatedPeakBytes": 553118,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 2041,
+        "gridEntries": 485,
+        "gridCells": 339,
+        "operations": 796
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 1,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 2,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 2041,
+        "projectedVertices": 116,
+        "vertices": 120,
+        "triangles": 40,
+        "borderTriangles": 34,
+        "operations": 576,
+        "geometryUpdates": 1,
+        "geometryBytes": 3840,
+        "retainedBytes": 7680,
+        "estimatedPeakBytes": 79122,
+        "draws": 1,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "waterfront-desktop.png",
+      "sha256": "afe647b89b8d57998e250b8ce69215cd73d5533166c26d6d4078b7c312942ef9",
+      "bytes": 400202,
+      "telemetryFilename": "waterfront-desktop.json",
+      "telemetrySha256": "aad21f607933b41e25b9d9be7ff964d8b83720e020bc1ee43698a8a599d3bc19",
+      "pose": {
+        "name": "waterfront",
+        "lon": 61.40175104141235,
+        "lat": 55.16893869067019,
+        "zoom": 17.9,
+        "pitch": 55,
+        "bearing": 0,
+        "provenance": "Actual Miass source waterway vertex, source tile 14/10986/5168; source bridge deck 6636266412"
+      },
+      "mode": "desktop",
+      "settling": {
+        "settled": true,
+        "waitMs": 7715,
+        "polls": 10
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 8771328,
+        "stagingBytes": 0,
+        "residentBytes": 8771328,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 583,
+      "meshCount": 19,
+      "targetIsMesh": null,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 19,
+        "raisedBuildings": 0,
+        "cells": 493,
+        "sourceEdges": 114,
+        "duplicates": 6,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 71052,
+        "retainedBytes": 213096,
+        "estimatedPeakBytes": 1181260,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 4789,
+        "gridEntries": 788,
+        "gridCells": 493,
+        "operations": 1025
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 2,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 4789,
+        "projectedVertices": 98,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 106964,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "waterfront-mobile.png",
+      "sha256": "d95e7959af605f3d1adebd738baa364125102bdc3fb3f874f6aa9b48d9303330",
+      "bytes": 117444,
+      "telemetryFilename": "waterfront-mobile.json",
+      "telemetrySha256": "23403afccc8adae182634d162227469652ecdc9c6df89230814a08977db01977",
+      "pose": {
+        "name": "waterfront",
+        "lon": 61.40175104141235,
+        "lat": 55.16893869067019,
+        "zoom": 17.9,
+        "pitch": 55,
+        "bearing": 0,
+        "provenance": "Actual Miass source waterway vertex, source tile 14/10986/5168; source bridge deck 6636266412"
+      },
+      "mode": "mobile",
+      "settling": {
+        "settled": true,
+        "waitMs": 4059,
+        "polls": 5
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 4783104,
+        "stagingBytes": 0,
+        "residentBytes": 4783104,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 583,
+      "meshCount": 5,
+      "targetIsMesh": null,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 5,
+        "raisedBuildings": 0,
+        "cells": 40,
+        "sourceEdges": 23,
+        "duplicates": 1,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 5820,
+        "retainedBytes": 17400,
+        "estimatedPeakBytes": 475974,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 4789,
+        "gridEntries": 88,
+        "gridCells": 40,
+        "operations": 117
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 2,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 4789,
+        "projectedVertices": 98,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 106964,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "RU-CHE-SET-KUR-desktop.png",
+      "sha256": "9da5b45923c6445f89991dd2ccfee50b3ea1171246b6bd36edfcc5a8b30d2f24",
+      "bytes": 453018,
+      "telemetryFilename": "RU-CHE-SET-KUR-desktop.json",
+      "telemetrySha256": "f583293e34ba2ee76fc0aab9873de87a62dd639b3b23a8fbbfea41f6c4fda327",
+      "pose": {
+        "name": "RU-CHE-SET-KUR",
+        "lon": 61.3430025,
+        "lat": 55.21414235,
+        "zoom": 18.25,
+        "pitch": 55,
+        "bearing": -35,
+        "canonicalId": "openmaptiles_buildings:4739277320",
+        "sourceName": null,
+        "sourceUse": "unknown",
+        "sourceClass": "yes",
+        "heightM": 5,
+        "areaM2": 77.92,
+        "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+        "sourceCells": [
+          {
+            "key": "16/43934/20660",
+            "sha256": "34305d9b9ae18a01ca50981ea49c2394696f9269f2eef20a9f21333533ad0c37"
+          },
+          {
+            "key": "16/43934/20661",
+            "sha256": "898923c461950d5880b319465b8681aa4d57955518c4c94344e8fabcc08e62b7"
+          },
+          {
+            "key": "16/43935/20660",
+            "sha256": "42fe83211ac8f4773e5ddb5323a538454aa801a6d458e6929336dc0ce73ac094"
+          },
+          {
+            "key": "16/43935/20661",
+            "sha256": "ab217bd423d835e019111adb4b4a02ad13c6e1134adcf98d340dabfa213fb9da"
+          }
+        ]
+      },
+      "mode": "desktop",
+      "settling": {
+        "settled": true,
+        "waitMs": 6005,
+        "polls": 8
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 10132992,
+        "stagingBytes": 0,
+        "residentBytes": 10132992,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 268,
+      "meshCount": 39,
+      "targetIsMesh": true,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 38,
+        "raisedBuildings": 0,
+        "cells": 1257,
+        "sourceEdges": 152,
+        "duplicates": 0,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 181068,
+        "retainedBytes": 543144,
+        "estimatedPeakBytes": 1480384,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 1366,
+        "gridEntries": 1840,
+        "gridCells": 1257,
+        "operations": 3111
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 0,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 1366,
+        "projectedVertices": 0,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 42880,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "RU-CHE-SET-KUR-mobile.png",
+      "sha256": "18549f9304cb8b383f00b14f4d63c2334ef6ccdcab3d0580a97e52dc876a00e8",
+      "bytes": 117843,
+      "telemetryFilename": "RU-CHE-SET-KUR-mobile.json",
+      "telemetrySha256": "64fa149ddec3e859f8e6fd684ee9940b5ee7f4e4113b2d6626ca12d02c199eb3",
+      "pose": {
+        "name": "RU-CHE-SET-KUR",
+        "lon": 61.3430025,
+        "lat": 55.21414235,
+        "zoom": 18.25,
+        "pitch": 55,
+        "bearing": -35,
+        "canonicalId": "openmaptiles_buildings:4739277320",
+        "sourceName": null,
+        "sourceUse": "unknown",
+        "sourceClass": "yes",
+        "heightM": 5,
+        "areaM2": 77.92,
+        "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+        "sourceCells": [
+          {
+            "key": "16/43934/20660",
+            "sha256": "34305d9b9ae18a01ca50981ea49c2394696f9269f2eef20a9f21333533ad0c37"
+          },
+          {
+            "key": "16/43934/20661",
+            "sha256": "898923c461950d5880b319465b8681aa4d57955518c4c94344e8fabcc08e62b7"
+          },
+          {
+            "key": "16/43935/20660",
+            "sha256": "42fe83211ac8f4773e5ddb5323a538454aa801a6d458e6929336dc0ce73ac094"
+          },
+          {
+            "key": "16/43935/20661",
+            "sha256": "ab217bd423d835e019111adb4b4a02ad13c6e1134adcf98d340dabfa213fb9da"
+          }
+        ]
+      },
+      "mode": "mobile",
+      "settling": {
+        "settled": true,
+        "waitMs": 4291,
+        "polls": 6
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 3920256,
+        "stagingBytes": 0,
+        "residentBytes": 3920256,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 268,
+      "meshCount": 22,
+      "targetIsMesh": true,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 18,
+        "raisedBuildings": 0,
+        "cells": 502,
+        "sourceEdges": 72,
+        "duplicates": 0,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 72348,
+        "retainedBytes": 216984,
+        "estimatedPeakBytes": 671992,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 1366,
+        "gridEntries": 761,
+        "gridCells": 502,
+        "operations": 1202
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 0,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 1366,
+        "projectedVertices": 0,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 42880,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "RU-CHE-SET-KAL-desktop.png",
+      "sha256": "1a92d78633dacefd2c0df8bae71e80b168dec464cba947707d69ab7820e81b41",
+      "bytes": 520228,
+      "telemetryFilename": "RU-CHE-SET-KAL-desktop.json",
+      "telemetrySha256": "18bd1e46231ad5172f7d384dc7098b837c78358a5217b33c67d06b6a40fc22a7",
+      "pose": {
+        "name": "RU-CHE-SET-KAL",
+        "lon": 61.39759185,
+        "lat": 55.1881126,
+        "zoom": 18.25,
+        "pitch": 55,
+        "bearing": -35,
+        "canonicalId": "openmaptiles_buildings:852422590",
+        "sourceName": null,
+        "sourceUse": "study",
+        "sourceClass": "kindergarten",
+        "heightM": 6,
+        "areaM2": 1147.72,
+        "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+        "sourceCells": [
+          {
+            "key": "16/43944/20668",
+            "sha256": "1331916782d13707669105461033d2caeb7f4ce2091b461f38d42a8392e3ddf8"
+          },
+          {
+            "key": "16/43944/20669",
+            "sha256": "9c4a2806255118b7190f6e18391062bce9393ea976990db772c1442dca22b88f"
+          },
+          {
+            "key": "16/43945/20668",
+            "sha256": "ea94c4cad6dfd4f4f9a007e0a744fd14d78fc4b7ea9426904811702d614e1486"
+          },
+          {
+            "key": "16/43945/20669",
+            "sha256": "d2bbabb308c0680986fcc3df7db9a4431600650d74d00f91f371a9f06fda3e1e"
+          }
+        ]
+      },
+      "mode": "desktop",
+      "settling": {
+        "settled": true,
+        "waitMs": 11901,
+        "polls": 13
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 59753088,
+        "stagingBytes": 0,
+        "residentBytes": 59753088,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 526,
+      "meshCount": 43,
+      "targetIsMesh": true,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 29,
+        "raisedBuildings": 0,
+        "cells": 2502,
+        "sourceEdges": 203,
+        "duplicates": 0,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 360348,
+        "retainedBytes": 1080984,
+        "estimatedPeakBytes": 3011570,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 3844,
+        "gridEntries": 3103,
+        "gridCells": 2502,
+        "operations": 4851
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 1,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 3844,
+        "projectedVertices": 16,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 86690,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "RU-CHE-SET-KAL-mobile.png",
+      "sha256": "e614d975bf024e2e116683e39f4bb8879c23105feacda19eedfca7d191899b8e",
+      "bytes": 153054,
+      "telemetryFilename": "RU-CHE-SET-KAL-mobile.json",
+      "telemetrySha256": "e8ad51ff196abf31b5e0236498fe9f8d97b22c9386b4d6be27bbbda45b468e21",
+      "pose": {
+        "name": "RU-CHE-SET-KAL",
+        "lon": 61.39759185,
+        "lat": 55.1881126,
+        "zoom": 18.25,
+        "pitch": 55,
+        "bearing": -35,
+        "canonicalId": "openmaptiles_buildings:852422590",
+        "sourceName": null,
+        "sourceUse": "study",
+        "sourceClass": "kindergarten",
+        "heightM": 6,
+        "areaM2": 1147.72,
+        "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+        "sourceCells": [
+          {
+            "key": "16/43944/20668",
+            "sha256": "1331916782d13707669105461033d2caeb7f4ce2091b461f38d42a8392e3ddf8"
+          },
+          {
+            "key": "16/43944/20669",
+            "sha256": "9c4a2806255118b7190f6e18391062bce9393ea976990db772c1442dca22b88f"
+          },
+          {
+            "key": "16/43945/20668",
+            "sha256": "ea94c4cad6dfd4f4f9a007e0a744fd14d78fc4b7ea9426904811702d614e1486"
+          },
+          {
+            "key": "16/43945/20669",
+            "sha256": "d2bbabb308c0680986fcc3df7db9a4431600650d74d00f91f371a9f06fda3e1e"
+          }
+        ]
+      },
+      "mode": "mobile",
+      "settling": {
+        "settled": true,
+        "waitMs": 5844,
+        "polls": 7
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 30743712,
+        "stagingBytes": 0,
+        "residentBytes": 30743712,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 526,
+      "meshCount": 21,
+      "targetIsMesh": true,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 12,
+        "raisedBuildings": 0,
+        "cells": 860,
+        "sourceEdges": 69,
+        "duplicates": 0,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 123900,
+        "retainedBytes": 371640,
+        "estimatedPeakBytes": 1264966,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 3844,
+        "gridEntries": 1124,
+        "gridCells": 860,
+        "operations": 1536
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 1,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 3844,
+        "projectedVertices": 16,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 86690,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "RU-CHE-SET-CEN-desktop.png",
+      "sha256": "4f7b23db8e645fef1792e10c5cc53066d7052f2bfb3fc33eef9ad3cd6d04b084",
+      "bytes": 500599,
+      "telemetryFilename": "RU-CHE-SET-CEN-desktop.json",
+      "telemetrySha256": "0379d3ce2e22b0e1ad7999353519a7404a4b98b426faaf61a7ba5459b45dd284",
+      "pose": {
+        "name": "RU-CHE-SET-CEN",
+        "lon": 61.330793299999996,
+        "lat": 55.15084365,
+        "zoom": 18.25,
+        "pitch": 55,
+        "bearing": -35,
+        "canonicalId": "openmaptiles_buildings:4343468270",
+        "sourceName": null,
+        "sourceUse": "residential",
+        "sourceClass": "detached",
+        "heightM": 5,
+        "areaM2": 80.95,
+        "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+        "sourceCells": [
+          {
+            "key": "16/43932/20680",
+            "sha256": "4a67bf300833de0d25906eb04025f35f359fb049ea0aa17cb8c583783e36111e"
+          },
+          {
+            "key": "16/43932/20681",
+            "sha256": "c12e1fb83745596a9c603d62d16e77f2bf84d5df8ecb5ff0b3cf12bf2ea05775"
+          },
+          {
+            "key": "16/43933/20680",
+            "sha256": "110df73634ee7facfccf0065d0ed5894bba5f160e9c82a847314b92e27b54e0d"
+          },
+          {
+            "key": "16/43933/20681",
+            "sha256": "a0f59d23938624f0461c1a5a770e1d2c4117a374d949128c74ab4f01d33ca42c"
+          }
+        ]
+      },
+      "mode": "desktop",
+      "settling": {
+        "settled": true,
+        "waitMs": 4442,
+        "polls": 6
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 5071680,
+        "stagingBytes": 0,
+        "residentBytes": 5071680,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 112,
+      "meshCount": 24,
+      "targetIsMesh": true,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 17,
+        "raisedBuildings": 0,
+        "cells": 631,
+        "sourceEdges": 68,
+        "duplicates": 0,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 90924,
+        "retainedBytes": 272712,
+        "estimatedPeakBytes": 729968,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 568,
+        "gridEntries": 903,
+        "gridCells": 631,
+        "operations": 1602
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 0,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 568,
+        "projectedVertices": 0,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 17920,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "RU-CHE-SET-CEN-mobile.png",
+      "sha256": "b86f6c9d76f5660567a1497e680199c1a8d85ec3714d3d301261b74232438d5a",
+      "bytes": 131864,
+      "telemetryFilename": "RU-CHE-SET-CEN-mobile.json",
+      "telemetrySha256": "9f4ddc66214e2637f925e9921304e2dea993fc13f0513b41a66f6cb05fc1ebb9",
+      "pose": {
+        "name": "RU-CHE-SET-CEN",
+        "lon": 61.330793299999996,
+        "lat": 55.15084365,
+        "zoom": 18.25,
+        "pitch": 55,
+        "bearing": -35,
+        "canonicalId": "openmaptiles_buildings:4343468270",
+        "sourceName": null,
+        "sourceUse": "residential",
+        "sourceClass": "detached",
+        "heightM": 5,
+        "areaM2": 80.95,
+        "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+        "sourceCells": [
+          {
+            "key": "16/43932/20680",
+            "sha256": "4a67bf300833de0d25906eb04025f35f359fb049ea0aa17cb8c583783e36111e"
+          },
+          {
+            "key": "16/43932/20681",
+            "sha256": "c12e1fb83745596a9c603d62d16e77f2bf84d5df8ecb5ff0b3cf12bf2ea05775"
+          },
+          {
+            "key": "16/43933/20680",
+            "sha256": "110df73634ee7facfccf0065d0ed5894bba5f160e9c82a847314b92e27b54e0d"
+          },
+          {
+            "key": "16/43933/20681",
+            "sha256": "a0f59d23938624f0461c1a5a770e1d2c4117a374d949128c74ab4f01d33ca42c"
+          }
+        ]
+      },
+      "mode": "mobile",
+      "settling": {
+        "settled": true,
+        "waitMs": 3451,
+        "polls": 5
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 1620288,
+        "stagingBytes": 0,
+        "residentBytes": 1620288,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 112,
+      "meshCount": 7,
+      "targetIsMesh": true,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 8,
+        "raisedBuildings": 0,
+        "cells": 350,
+        "sourceEdges": 32,
+        "duplicates": 0,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 50460,
+        "retainedBytes": 151320,
+        "estimatedPeakBytes": 428000,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 568,
+        "gridEntries": 488,
+        "gridCells": 350,
+        "operations": 931
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 0,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 568,
+        "projectedVertices": 0,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 17920,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "RU-CHE-SET-MET-desktop.png",
+      "sha256": "d02087fadf9eaf81fb93d8a54720e8bd676e7a138abeda1c150479818b771a53",
+      "bytes": 498693,
+      "telemetryFilename": "RU-CHE-SET-MET-desktop.json",
+      "telemetrySha256": "b952546bda0ffed97df1c6faab54f7bd0993fc851a4736dac20135752bd7d588",
+      "pose": {
+        "name": "RU-CHE-SET-MET",
+        "lon": 61.40850385,
+        "lat": 55.2572062,
+        "zoom": 18.25,
+        "pitch": 55,
+        "bearing": -35,
+        "canonicalId": "openmaptiles_buildings:6939524400",
+        "sourceName": null,
+        "sourceUse": "unknown",
+        "sourceClass": "garages",
+        "heightM": 3,
+        "areaM2": 854.72,
+        "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+        "sourceCells": [
+          {
+            "key": "16/43946/20646",
+            "sha256": "0ab4a7292d38b82612f32aec4b8942071bae65a61c28802e3f88bf888cd44e67"
+          },
+          {
+            "key": "16/43946/20647",
+            "sha256": "6370dcd4baf40859ce4473eb7350493a7605549108fd2fbd512f8bb92be1daf2"
+          },
+          {
+            "key": "16/43947/20646",
+            "sha256": "da2dcdfdf3629e9a8d10b61849182bb1c5ba514fb0cfe33fd7fd75a990a65fcc"
+          },
+          {
+            "key": "16/43947/20647",
+            "sha256": "6e46fa314645311ceefb9134be9cccb124e0c77e616491e761e4ff733fa9ed22"
+          }
+        ]
+      },
+      "mode": "desktop",
+      "settling": {
+        "settled": true,
+        "waitMs": 8971,
+        "polls": 11
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 11816928,
+        "stagingBytes": 0,
+        "residentBytes": 11816928,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 431,
+      "meshCount": 14,
+      "targetIsMesh": true,
+      "metRegressionIds": [
+        {
+          "id": "openmaptiles_buildings:6939524390",
+          "inSource": true,
+          "isMesh": true
+        },
+        {
+          "id": "openmaptiles_buildings:6939524400",
+          "inSource": true,
+          "isMesh": true
+        }
+      ],
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 10,
+        "raisedBuildings": 0,
+        "cells": 1172,
+        "sourceEdges": 69,
+        "duplicates": 0,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 168828,
+        "retainedBytes": 506424,
+        "estimatedPeakBytes": 2003394,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 2754,
+        "gridEntries": 1376,
+        "gridCells": 1172,
+        "operations": 5395
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 0,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 2754,
+        "projectedVertices": 0,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 68960,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "RU-CHE-SET-MET-mobile.png",
+      "sha256": "70e33a30680393463fdcb496bedb0e9878788a90fcde453cf6cd49c2ee506b36",
+      "bytes": 145723,
+      "telemetryFilename": "RU-CHE-SET-MET-mobile.json",
+      "telemetrySha256": "c4a4b0560ea6f1bd14f9772083d2c28d3f747323fad70a42429d1b50045e766e",
+      "pose": {
+        "name": "RU-CHE-SET-MET",
+        "lon": 61.40850385,
+        "lat": 55.2572062,
+        "zoom": 18.25,
+        "pitch": 55,
+        "bearing": -35,
+        "canonicalId": "openmaptiles_buildings:6939524400",
+        "sourceName": null,
+        "sourceUse": "unknown",
+        "sourceClass": "garages",
+        "heightM": 3,
+        "areaM2": 854.72,
+        "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+        "sourceCells": [
+          {
+            "key": "16/43946/20646",
+            "sha256": "0ab4a7292d38b82612f32aec4b8942071bae65a61c28802e3f88bf888cd44e67"
+          },
+          {
+            "key": "16/43946/20647",
+            "sha256": "6370dcd4baf40859ce4473eb7350493a7605549108fd2fbd512f8bb92be1daf2"
+          },
+          {
+            "key": "16/43947/20646",
+            "sha256": "da2dcdfdf3629e9a8d10b61849182bb1c5ba514fb0cfe33fd7fd75a990a65fcc"
+          },
+          {
+            "key": "16/43947/20647",
+            "sha256": "6e46fa314645311ceefb9134be9cccb124e0c77e616491e761e4ff733fa9ed22"
+          }
+        ]
+      },
+      "mode": "mobile",
+      "settling": {
+        "settled": true,
+        "waitMs": 6004,
+        "polls": 8
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 2051424,
+        "stagingBytes": 0,
+        "residentBytes": 2051424,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 431,
+      "meshCount": 3,
+      "targetIsMesh": true,
+      "metRegressionIds": [
+        {
+          "id": "openmaptiles_buildings:6939524390",
+          "inSource": true,
+          "isMesh": true
+        },
+        {
+          "id": "openmaptiles_buildings:6939524400",
+          "inSource": true,
+          "isMesh": true
+        }
+      ],
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 4,
+        "raisedBuildings": 0,
+        "cells": 499,
+        "sourceEdges": 27,
+        "duplicates": 0,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 71916,
+        "retainedBytes": 215688,
+        "estimatedPeakBytes": 998718,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 2754,
+        "gridEntries": 558,
+        "gridCells": 499,
+        "operations": 2953
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 0,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 2754,
+        "projectedVertices": 0,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 68960,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "RU-CHE-SET-SOV-desktop.png",
+      "sha256": "f58b8dc3193dbd14ec2ba9ba9bcceed1da233a91a0632af57ad0367e5e12173e",
+      "bytes": 219783,
+      "telemetryFilename": "RU-CHE-SET-SOV-desktop.json",
+      "telemetrySha256": "b24fd1c68a8bf254024ad51b97fc5f0efb7a292f26b91a4a2b6fc72e1968d5fd",
+      "pose": {
+        "name": "RU-CHE-SET-SOV",
+        "lon": 61.3753681,
+        "lat": 55.1069753,
+        "zoom": 18.25,
+        "pitch": 55,
+        "bearing": -35,
+        "canonicalId": "openmaptiles_buildings:8844497020",
+        "sourceName": null,
+        "sourceUse": "unknown",
+        "sourceClass": "yes",
+        "heightM": 5,
+        "areaM2": 107.54,
+        "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+        "sourceCells": [
+          {
+            "key": "16/43940/20694",
+            "sha256": "9d01b07da846f516b07d2bdf4f48dcadab83db5925f721d596305b1180bae52f"
+          },
+          {
+            "key": "16/43940/20695",
+            "sha256": "121f332bceb14183a187308a0a2a064c8eac5fe44a1c1de31d3a878bb407d751"
+          },
+          {
+            "key": "16/43941/20694",
+            "sha256": "c23adbc006e9be6fdc10e796e1092fb2ff775df95f10ad343efa734f66cefa39"
+          },
+          {
+            "key": "16/43941/20695",
+            "sha256": "fbcaa9e8e122ab280de525b863a652a7c116f0f4f6561f366c81a8752517d81a"
+          }
+        ]
+      },
+      "mode": "desktop",
+      "settling": {
+        "settled": true,
+        "waitMs": 4335,
+        "polls": 6
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 7439616,
+        "stagingBytes": 0,
+        "residentBytes": 7439616,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 677,
+      "meshCount": 14,
+      "targetIsMesh": true,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 18,
+        "raisedBuildings": 0,
+        "cells": 944,
+        "sourceEdges": 90,
+        "duplicates": 0,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 135996,
+        "retainedBytes": 407928,
+        "estimatedPeakBytes": 1374276,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 3905,
+        "gridEntries": 1242,
+        "gridCells": 944,
+        "operations": 4131
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 0,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 3905,
+        "projectedVertices": 0,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 108320,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "RU-CHE-SET-SOV-mobile.png",
+      "sha256": "ce73b8afb53da464042acbedfd7432ed66d0e08a4ec6a78ac055c8cd71e8abd4",
+      "bytes": 73741,
+      "telemetryFilename": "RU-CHE-SET-SOV-mobile.json",
+      "telemetrySha256": "87d6edc541aa68c1be757e2ff29476bc1c5cd997b5f106c03ec8cac46453eed6",
+      "pose": {
+        "name": "RU-CHE-SET-SOV",
+        "lon": 61.3753681,
+        "lat": 55.1069753,
+        "zoom": 18.25,
+        "pitch": 55,
+        "bearing": -35,
+        "canonicalId": "openmaptiles_buildings:8844497020",
+        "sourceName": null,
+        "sourceUse": "unknown",
+        "sourceClass": "yes",
+        "heightM": 5,
+        "areaM2": 107.54,
+        "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+        "sourceCells": [
+          {
+            "key": "16/43940/20694",
+            "sha256": "9d01b07da846f516b07d2bdf4f48dcadab83db5925f721d596305b1180bae52f"
+          },
+          {
+            "key": "16/43940/20695",
+            "sha256": "121f332bceb14183a187308a0a2a064c8eac5fe44a1c1de31d3a878bb407d751"
+          },
+          {
+            "key": "16/43941/20694",
+            "sha256": "c23adbc006e9be6fdc10e796e1092fb2ff775df95f10ad343efa734f66cefa39"
+          },
+          {
+            "key": "16/43941/20695",
+            "sha256": "fbcaa9e8e122ab280de525b863a652a7c116f0f4f6561f366c81a8752517d81a"
+          }
+        ]
+      },
+      "mode": "mobile",
+      "settling": {
+        "settled": true,
+        "waitMs": 4256,
+        "polls": 6
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 5725440,
+        "stagingBytes": 0,
+        "residentBytes": 5725440,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 677,
+      "meshCount": 11,
+      "targetIsMesh": true,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 7,
+        "raisedBuildings": 0,
+        "cells": 465,
+        "sourceEdges": 40,
+        "duplicates": 0,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 67020,
+        "retainedBytes": 201000,
+        "estimatedPeakBytes": 862272,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 3905,
+        "gridEntries": 624,
+        "gridCells": 465,
+        "operations": 1942
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 0,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 3905,
+        "projectedVertices": 0,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 108320,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "RU-CHE-SET-TRA-desktop.png",
+      "sha256": "83966c8e5b78ea8fbdab03a9353f44e65465c8c396432e4f538403bb5621f0dc",
+      "bytes": 644408,
+      "telemetryFilename": "RU-CHE-SET-TRA-desktop.json",
+      "telemetrySha256": "dd7a39e8ff17f30e06d680ee88962737675f0137726ca531756cca69eeccee13",
+      "pose": {
+        "name": "RU-CHE-SET-TRA",
+        "lon": 61.51795905,
+        "lat": 55.1752876,
+        "zoom": 18.25,
+        "pitch": 55,
+        "bearing": -35,
+        "canonicalId": "openmaptiles_buildings:8007498440",
+        "sourceName": null,
+        "sourceUse": "residential",
+        "sourceClass": "apartments",
+        "heightM": 30,
+        "areaM2": 1071.47,
+        "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+        "sourceCells": [
+          {
+            "key": "16/43966/20672",
+            "sha256": "36d8e000483ad7d49fbea148df72e5a403f8363e965b2c96f67d74088cf21522"
+          },
+          {
+            "key": "16/43966/20673",
+            "sha256": "36bdf9717c17ff5b02b8b86af32a7a671fbc030a5557d6d20e7148649bd7eaf9"
+          },
+          {
+            "key": "16/43967/20672",
+            "sha256": "707dea988fb1992616bd301d15569beae18101a102fe797fb5a7ea3a25bbfa81"
+          },
+          {
+            "key": "16/43967/20673",
+            "sha256": "ddacee9c8e39cf371e35e704377081fe2317f856e98f175dc5181d2f795aa996"
+          }
+        ]
+      },
+      "mode": "desktop",
+      "settling": {
+        "settled": true,
+        "waitMs": 7946,
+        "polls": 9
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 22453632,
+        "stagingBytes": 0,
+        "residentBytes": 22453632,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 221,
+      "meshCount": 42,
+      "targetIsMesh": true,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 39,
+        "raisedBuildings": 0,
+        "cells": 1654,
+        "sourceEdges": 156,
+        "duplicates": 10,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 238236,
+        "retainedBytes": 714648,
+        "estimatedPeakBytes": 1901672,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 1482,
+        "gridEntries": 2188,
+        "gridCells": 1654,
+        "operations": 3186
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 0,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 1482,
+        "projectedVertices": 0,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 35360,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "RU-CHE-SET-TRA-mobile.png",
+      "sha256": "476510e15e1feb7deb38e58251954b6961eaed3943e7af1005932d60448108a7",
+      "bytes": 181961,
+      "telemetryFilename": "RU-CHE-SET-TRA-mobile.json",
+      "telemetrySha256": "f218c57fdbdce40e1b2cca155065a72979fae21f53804f1e4d3d152a65d19077",
+      "pose": {
+        "name": "RU-CHE-SET-TRA",
+        "lon": 61.51795905,
+        "lat": 55.1752876,
+        "zoom": 18.25,
+        "pitch": 55,
+        "bearing": -35,
+        "canonicalId": "openmaptiles_buildings:8007498440",
+        "sourceName": null,
+        "sourceUse": "residential",
+        "sourceClass": "apartments",
+        "heightM": 30,
+        "areaM2": 1071.47,
+        "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+        "sourceCells": [
+          {
+            "key": "16/43966/20672",
+            "sha256": "36d8e000483ad7d49fbea148df72e5a403f8363e965b2c96f67d74088cf21522"
+          },
+          {
+            "key": "16/43966/20673",
+            "sha256": "36bdf9717c17ff5b02b8b86af32a7a671fbc030a5557d6d20e7148649bd7eaf9"
+          },
+          {
+            "key": "16/43967/20672",
+            "sha256": "707dea988fb1992616bd301d15569beae18101a102fe797fb5a7ea3a25bbfa81"
+          },
+          {
+            "key": "16/43967/20673",
+            "sha256": "ddacee9c8e39cf371e35e704377081fe2317f856e98f175dc5181d2f795aa996"
+          }
+        ]
+      },
+      "mode": "mobile",
+      "settling": {
+        "settled": true,
+        "waitMs": 4885,
+        "polls": 6
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 14346432,
+        "stagingBytes": 0,
+        "residentBytes": 14346432,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 221,
+      "meshCount": 8,
+      "targetIsMesh": true,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 9,
+        "raisedBuildings": 0,
+        "cells": 390,
+        "sourceEdges": 42,
+        "duplicates": 0,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 56220,
+        "retainedBytes": 168600,
+        "estimatedPeakBytes": 553212,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 1482,
+        "gridEntries": 487,
+        "gridCells": 390,
+        "operations": 838
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 0,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 1482,
+        "projectedVertices": 0,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 35360,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "RU-CHE-SET-LEN-desktop.png",
+      "sha256": "cac3ca9b2220a04ab29a78555907a5f7b2344401f6569e64a46b2fa3945c2d8a",
+      "bytes": 709070,
+      "telemetryFilename": "RU-CHE-SET-LEN-desktop.json",
+      "telemetrySha256": "4c49733770686ef53620e95542b9f165491b3663e94bdbefb6fe7056e82ca728",
+      "pose": {
+        "name": "RU-CHE-SET-LEN",
+        "lon": 61.46263365,
+        "lat": 55.119409950000005,
+        "zoom": 18.25,
+        "pitch": 55,
+        "bearing": -35,
+        "canonicalId": "openmaptiles_buildings:535505340",
+        "sourceName": null,
+        "sourceUse": "residential",
+        "sourceClass": "apartments",
+        "heightM": 15,
+        "areaM2": 2163.7,
+        "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+        "sourceCells": [
+          {
+            "key": "16/43956/20690",
+            "sha256": "23c4b4963dcbac3ccd4e9c9fab5fa59d707ff219d94d89efced27261bbca1dd3"
+          },
+          {
+            "key": "16/43956/20691",
+            "sha256": "2b40e36527cfee0a018a7e01e9560a9b6860b870f1f445b02c21497b243d2cda"
+          },
+          {
+            "key": "16/43957/20690",
+            "sha256": "e861af71ba9409cf56837a2f56d0928a48ad6bf98f00c77ec08ca840543f1113"
+          },
+          {
+            "key": "16/43957/20691",
+            "sha256": "e0a3df645d9b451c6dc944cf50ec13180c6eb426a4896dd9a9121f0c4c8ca1ad"
+          }
+        ]
+      },
+      "mode": "desktop",
+      "settling": {
+        "settled": true,
+        "waitMs": 13115,
+        "polls": 15
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 75118176,
+        "stagingBytes": 0,
+        "residentBytes": 75118176,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 755,
+      "meshCount": 34,
+      "targetIsMesh": true,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 21,
+        "raisedBuildings": 0,
+        "cells": 2786,
+        "sourceEdges": 219,
+        "duplicates": 1,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 401244,
+        "retainedBytes": 1203672,
+        "estimatedPeakBytes": 4655450,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 5367,
+        "gridEntries": 3309,
+        "gridCells": 2786,
+        "operations": 14117
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 4,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 5367,
+        "projectedVertices": 85,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 133290,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "filename": "RU-CHE-SET-LEN-mobile.png",
+      "sha256": "b5ecab2a5d330130adbaf5141225f41dfec465355b0762a7a8f52a2b64cabf7a",
+      "bytes": 187724,
+      "telemetryFilename": "RU-CHE-SET-LEN-mobile.json",
+      "telemetrySha256": "17f107e7c75e614946c5240a3cdc4e2e2bbda6b94bbef7d1f5a17ea71df54ebb",
+      "pose": {
+        "name": "RU-CHE-SET-LEN",
+        "lon": 61.46263365,
+        "lat": 55.119409950000005,
+        "zoom": 18.25,
+        "pitch": 55,
+        "bearing": -35,
+        "canonicalId": "openmaptiles_buildings:535505340",
+        "sourceName": null,
+        "sourceUse": "residential",
+        "sourceClass": "apartments",
+        "heightM": 15,
+        "areaM2": 2163.7,
+        "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+        "sourceCells": [
+          {
+            "key": "16/43956/20690",
+            "sha256": "23c4b4963dcbac3ccd4e9c9fab5fa59d707ff219d94d89efced27261bbca1dd3"
+          },
+          {
+            "key": "16/43956/20691",
+            "sha256": "2b40e36527cfee0a018a7e01e9560a9b6860b870f1f445b02c21497b243d2cda"
+          },
+          {
+            "key": "16/43957/20690",
+            "sha256": "e861af71ba9409cf56837a2f56d0928a48ad6bf98f00c77ec08ca840543f1113"
+          },
+          {
+            "key": "16/43957/20691",
+            "sha256": "e0a3df645d9b451c6dc944cf50ec13180c6eb426a4896dd9a9121f0c4c8ca1ad"
+          }
+        ]
+      },
+      "mode": "mobile",
+      "settling": {
+        "settled": true,
+        "waitMs": 5092,
+        "polls": 6
+      },
+      "framesIn2200ms": 0,
+      "errors": [],
+      "network": [],
+      "readinessError": null,
+      "geometry": {
+        "committedBytes": 39702240,
+        "stagingBytes": 0,
+        "residentBytes": 39702240,
+        "staging": 0,
+        "pending": 0,
+        "denied": 0,
+        "saturated": false
+      },
+      "sourceCount": 755,
+      "meshCount": 12,
+      "targetIsMesh": true,
+      "contacts": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "lightingOnly": true,
+        "buildings": 6,
+        "raisedBuildings": 0,
+        "cells": 932,
+        "sourceEdges": 105,
+        "duplicates": 0,
+        "subdivisions": 0,
+        "truncated": false,
+        "geometryUpdates": 1,
+        "geometryBytes": 134268,
+        "retainedBytes": 402744,
+        "estimatedPeakBytes": 1485990,
+        "draws": 1,
+        "lastError": null,
+        "sourceVertices": 5367,
+        "gridEntries": 1085,
+        "gridCells": 932,
+        "operations": 5539
+      },
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 0,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 4,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 5367,
+        "projectedVertices": 85,
+        "vertices": 0,
+        "triangles": 0,
+        "borderTriangles": 0,
+        "operations": 0,
+        "geometryUpdates": 1,
+        "geometryBytes": 0,
+        "retainedBytes": 0,
+        "estimatedPeakBytes": 133290,
+        "draws": 0,
+        "lastError": null
+      },
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    }
+  ]
+}

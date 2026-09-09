@@ -4,8 +4,27 @@ import { createRouteCorridorBuilder } from './route-corridors.mjs';
 import { dailyMovement } from './spatial.mjs';
 
 const point = (x, y = 0) => [61 + x / 64_000, 55 + y / 111_195];
-const road = (id, nodes, points, extra = {}) => ({ id, nodeIds: nodes, coordinates: points.map(([x, y]) => point(x, y)), walkable: true, drivable: true, oneway: false, ...extra });
+const road = (id, nodes, points, extra = {}) => ({ id, nodeIds: nodes, coordinates: points.map(([x, y]) => point(x, y)), className:'living_street',walkable: true, drivable: true, oneway: false, ...extra });
 const policy = { targetMeters: 450, maxMeters: 600, maxSegments: 12, seed: 92 };
+
+test('a straight short service dead end loses to a connected arterial continuation',()=>{
+ const r=[road('start',['a','b'],[[0,0],[100,0]],{className:'primary'}),road('blind',['b','x'],[[100,0],[120,0]],{className:'service'}),road('main',['b','c'],[[100,0],[160,160]],{className:'primary'}),road('exit',['c','d'],[[160,160],[300,400]],{className:'primary'})];
+ const route=createRouteCorridorBuilder(r,policy).build('start',{mode:'car'});
+ assert.ok(route.sourceRoadIds.includes('main'));assert.ok(!route.sourceRoadIds.includes('blind'));
+});
+test('best legal orientation escapes a source driveway pointing into a dead end',()=>{
+ const r=[road('drive',['a','b'],[[100,0],[120,0]],{className:'service'}),road('main',['a','c'],[[100,0],[100,400]],{className:'primary'})];
+ const builder=createRouteCorridorBuilder(r,policy),route=builder.buildBest('drive',{mode:'car'});
+ assert.equal(route.segments[0].direction,'reverse');assert.ok(route.sourceRoadIds.includes('main'));
+});
+test('mode-aware seeds prefer actual footways and connected arterial over nearest cul-de-sac',()=>{
+ const r=[road('dead',['a','b'],[[0,0],[10,0]],{className:'service'}),road('main',['c','d'],[[-200,55],[200,55]],{className:'primary'}),road('in',['e','c'],[[-400,55],[-200,55]],{className:'primary'}),road('out',['d','f'],[[200,55],[400,55]],{className:'primary'}),road('foot',['w','x'],[[-100,12],[100,12]],{className:'footway',drivable:false})];
+ const b=createRouteCorridorBuilder(r,policy);
+ assert.equal(b.selectSeed(point(0,0),{mode:'walk'}).sourceRoadId,'foot');
+ assert.equal(b.selectSeed(point(0,0),{mode:'car'}).sourceRoadId,'main');
+ assert.deepEqual(b.selectSeed(point(0,0),{mode:'car'}),createRouteCorridorBuilder([...r].reverse(),policy).selectSeed(point(0,0),{mode:'car'}));
+ assert.equal(b.selectSeed(point(5000,0),{mode:'car'}),null);
+});
 
 test('splits at shared internal nodes and follows only real connected geometry', () => {
   const roads = [road('main', ['a', 'b', 'c'], [[0, 0], [100, 0], [200, 0]]), road('branch', ['b', 'd', 'e'], [[100, 0], [100, 200], [100, 400]], { oneway: true }), road('exit', ['c', 'f'], [[200, 0], [400, 0]])];
@@ -28,7 +47,7 @@ test('coordinate crossings without shared node IDs never create a junction', () 
 });
 
 test('oneway and mode eligibility are respected without fabricated return edges', () => {
-  const roads = [road('start', ['a', 'b'], [[0, 0], [100, 0]], { oneway: true }), road('wrong-way', ['c', 'b'], [[200, 0], [100, 0]], { oneway: true }), road('foot', ['b', 'd'], [[100, 0], [100, 300]], { drivable: false })];
+  const roads = [road('start', ['a', 'b'], [[0, 0], [100, 0]], { oneway: true,walkDirection:'forward' }), road('wrong-way', ['c', 'b'], [[200, 0], [100, 0]], { oneway: true,walkDirection:'forward' }), road('foot', ['b', 'd'], [[100, 0], [100, 300]], { className:'footway',drivable: false })];
   const builder = createRouteCorridorBuilder(roads, policy);
   assert.equal(builder.build('start', { direction: 'reverse' }), null);
   assert.equal(builder.build('foot', { mode: 'car' }), null);

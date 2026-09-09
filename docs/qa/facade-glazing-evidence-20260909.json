@@ -1,0 +1,31 @@
+{
+  "contract": "CanonicalFacadeAndGlazingEvidenceV1",
+  "date": "2026-09-09",
+  "classification": "targeted_material_and_actual_frame_acceptance",
+  "facadeSourceSha256": "38fe3e4bc6f4f437bc167c47d758404882a10fa1342a4a5b8fd62d7987e63c3b",
+  "glazingSourceSha256": "b83c21f4f3e32b581c9217762273a68bdfb6cdb2180e9d617a80eb3618c9188c",
+  "catalogSha256": "bca4ff81f5a4c1a8c3517f0b1faeceddd6042cf20d811c70661993ecec72a819",
+  "camera": {"longitude":61.3970947265625,"latitude":55.18827648913107,"zoom":18.4,"pitch":55,"bearing":-35},
+  "viewport": [1600,1000],
+  "findings": [
+    "The original weak facade multipliers made neighbouring panel, plaster, civic and neutral buildings difficult to distinguish. Stable canonical mineral palettes give subdued value and temperature differences at every LOD.",
+    "The original windowLight factor was supplied as sRGB-like numbers in a linear glTF field and emitted continuously during daylight. Linearized muted room colour and the existing shared daylight bucket remove conspicuous bright daytime cards while preserving warm night windows.",
+    "Existing per-window UVs give a soft dark interior edge. Source positions, normals, texture scale, canonical triangle ranges, picking, source family and scientific data are unchanged.",
+    "The actual KAL facade comparison has identical nine GLBs, 59,753,088 geometry bytes, 113 draw calls and 396,705 triangles before and after. All four cited PNGs were opened.",
+    "Production daytime and settled nighttime frames compiled without browser errors. Settled pause measurements drew zero frames over 2.2 seconds."
+  ],
+  "validation": {"latestFocusedTests":23,"testsPassed":true,"typecheckPassed":true,"browserErrors":0,"extraRetainedGeometryBytes":0,"extraTextureSamples":0,"extraDraws":0,"independentCodeReview":"no blocking ownership, LOD or shader-uniform issue"},
+  "artifacts": [
+    {"filename":"kal-before-verified.png","role":"palette_disabled_after_full_reload","sha256":"27003bd45a254d66e13280c155b1b70baef1a5caf0afb969cd82258ef045aa18"},
+    {"filename":"kal-after-verified.png","role":"canonical_palette_daytime","sha256":"5a66d1b26d7ca260089a9767cdbfb0d01509db9b960cf856fd95ac8e373d3c78"},
+    {"filename":"kal-glazing-day.png","role":"palette_and_glazing_daytime","sha256":"1c033a7039b1c90756a6bc3735b53e263e296364237261365ad0589bf681a328"},
+    {"filename":"kal-glazing-night-settled.png","role":"palette_and_glazing_at_22h","sha256":"7e7936b9545dfbb2086b6eb17f3dd13b95a82edd0279f15912ef56043c565ec1"}
+  ],
+  "limitations": [
+    "Colours, room shading and light selection are visual synthesis, not surveyed building appearance or observed room occupancy.",
+    "The pinned compiler merges wall and some balcony parts by material. In its neutral white-tint bucket, indistinguishable gray balcony parts intentionally follow that material's new finish while keeping their original shade. Other nonmatching colours are preserved.",
+    "Preliminary image pairs without a confirmed full ablation reload, and a cold nighttime fallback screenshot, are excluded from this evidence.",
+    "This change does not alter window cadence, rooftop fixture density or architectural geometry. A material improvement alone does not certify SimCity-equivalent overall art.",
+    "No source, movement, Firebase or Pages publication is asserted by this local record."
+  ]
+}

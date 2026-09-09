@@ -1,0 +1,1645 @@
+{
+  "contract": "OmniTwinFullFineArtEvidenceV1",
+  "createdAt": "2026-09-09T11:21:39.465Z",
+  "verdict": "art_gate_fail",
+  "target": "realistically_stylized_SimCity_2013_courtyard_quality",
+  "series": [
+    {
+      "artifactFolder": "full-fine-review",
+      "startedAt": "2026-09-09T11:11:29.127Z",
+      "completedAt": "2026-09-09T11:14:55.390Z",
+      "sourceBefore": "8ee4caab9283bfc187c31126b66d84efa1745a0276ad0a0cb09b3c65d7283f3b",
+      "sourceAfter": "8ee4caab9283bfc187c31126b66d84efa1745a0276ad0a0cb09b3c65d7283f3b",
+      "sourceChangedFiles": [],
+      "catalog": {
+        "uri": "catalog/build-2bed04fea8092a93/catalog-bca4ff81f5a4c1a8.json",
+        "bytes": 4490946,
+        "sha256": "bca4ff81f5a4c1a8c3517f0b1faeceddd6042cf20d811c70661993ecec72a819"
+      },
+      "frames": [
+        {
+          "filename": "user-desktop.png",
+          "sha256": "b8fd141a66b6a512e1d3150ba4b63e3daf6b5db2bedab8cfb5e529968b77a3d5",
+          "bytes": 567295,
+          "pose": {
+            "name": "user",
+            "lon": 61.40335931261333,
+            "lat": 55.166641128116765,
+            "zoom": 16.86436467681756,
+            "pitch": 46.49661799282392,
+            "bearing": -172.97699800600026,
+            "provenance": "Exact original user URL camera"
+          },
+          "mode": "desktop",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 10,
+          "loading": true,
+          "geometry": {
+            "committedBytes": 39007296,
+            "stagingBytes": 0,
+            "residentBytes": 39007296,
+            "staging": 2,
+            "pending": 2,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 595,
+          "meshCount": 47,
+          "targetInSource": null,
+          "targetIsMesh": null,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "user-mobile.png",
+          "sha256": "1fdd571ba755dd422ba39c7ea47ca94bfc24a6a54b62664f1da5d2565702b781",
+          "bytes": 181763,
+          "pose": {
+            "name": "user",
+            "lon": 61.40335931261333,
+            "lat": 55.166641128116765,
+            "zoom": 16.86436467681756,
+            "pitch": 46.49661799282392,
+            "bearing": -172.97699800600026,
+            "provenance": "Exact original user URL camera"
+          },
+          "mode": "mobile",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 21,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 51965280,
+            "stagingBytes": 12313728,
+            "residentBytes": 64279008,
+            "staging": 2,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 595,
+          "meshCount": 45,
+          "targetInSource": null,
+          "targetIsMesh": null,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "courtyard-desktop.png",
+          "sha256": "1d36ba8d7b54208f1c3dfb6b8801557e19287f54ea0297bf60da97fe13df4a0d",
+          "bytes": 521472,
+          "pose": {
+            "name": "courtyard",
+            "lon": 61.39086657500001,
+            "lat": 55.170028625,
+            "zoom": 19,
+            "pitch": 55,
+            "bearing": -70,
+            "canonicalId": "openmaptiles_buildings:27724113",
+            "provenance": "Actual source courtyard hole, Megapolis building"
+          },
+          "mode": "desktop",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 8298720,
+            "stagingBytes": 0,
+            "residentBytes": 8298720,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 250,
+          "meshCount": 1,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "courtyard-mobile.png",
+          "sha256": "727ee0c784189607807d0203c7c9a3183b07255bf5f5f2f897bacd629a8009cd",
+          "bytes": 162061,
+          "pose": {
+            "name": "courtyard",
+            "lon": 61.39086657500001,
+            "lat": 55.170028625,
+            "zoom": 19,
+            "pitch": 55,
+            "bearing": -70,
+            "canonicalId": "openmaptiles_buildings:27724113",
+            "provenance": "Actual source courtyard hole, Megapolis building"
+          },
+          "mode": "mobile",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 8298720,
+            "stagingBytes": 0,
+            "residentBytes": 8298720,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 250,
+          "meshCount": 1,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "waterfront-desktop.png",
+          "sha256": "b426eeed458f45bebfb82683c2c62add1697ab0f8e3c224837e562238dcd6ea5",
+          "bytes": 399607,
+          "pose": {
+            "name": "waterfront",
+            "lon": 61.40175104141235,
+            "lat": 55.16893869067019,
+            "zoom": 17.9,
+            "pitch": 55,
+            "bearing": 0,
+            "provenance": "Actual Miass source waterway vertex, source tile 14/10986/5168; source bridge deck 6636266412"
+          },
+          "mode": "desktop",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 6,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 8771328,
+            "stagingBytes": 0,
+            "residentBytes": 8771328,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 583,
+          "meshCount": 19,
+          "targetInSource": null,
+          "targetIsMesh": null,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "waterfront-mobile.png",
+          "sha256": "accf8025a3528babcdbda4f00d4fd78eb6f349a947151d26f122e14b94c0dd82",
+          "bytes": 117444,
+          "pose": {
+            "name": "waterfront",
+            "lon": 61.40175104141235,
+            "lat": 55.16893869067019,
+            "zoom": 17.9,
+            "pitch": 55,
+            "bearing": 0,
+            "provenance": "Actual Miass source waterway vertex, source tile 14/10986/5168; source bridge deck 6636266412"
+          },
+          "mode": "mobile",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 25,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 4783104,
+            "stagingBytes": 0,
+            "residentBytes": 4783104,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 583,
+          "meshCount": 5,
+          "targetInSource": null,
+          "targetIsMesh": null,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-KUR-desktop.png",
+          "sha256": "a1015cce9eba71f6c9ff3834568773f0996badb307d9eabf2fb5966b32b55a59",
+          "bytes": 446844,
+          "pose": {
+            "name": "RU-CHE-SET-KUR",
+            "lon": 61.3430025,
+            "lat": 55.21414235,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:4739277320",
+            "sourceName": null,
+            "sourceUse": "unknown",
+            "sourceClass": "yes",
+            "heightM": 5,
+            "areaM2": 77.92,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43934/20660",
+                "sha256": "34305d9b9ae18a01ca50981ea49c2394696f9269f2eef20a9f21333533ad0c37"
+              },
+              {
+                "key": "16/43934/20661",
+                "sha256": "898923c461950d5880b319465b8681aa4d57955518c4c94344e8fabcc08e62b7"
+              },
+              {
+                "key": "16/43935/20660",
+                "sha256": "42fe83211ac8f4773e5ddb5323a538454aa801a6d458e6929336dc0ce73ac094"
+              },
+              {
+                "key": "16/43935/20661",
+                "sha256": "ab217bd423d835e019111adb4b4a02ad13c6e1134adcf98d340dabfa213fb9da"
+              }
+            ]
+          },
+          "mode": "desktop",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 9,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 10132992,
+            "stagingBytes": 0,
+            "residentBytes": 10132992,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 268,
+          "meshCount": 39,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-KUR-mobile.png",
+          "sha256": "56506701729c8e81a62d7188d64f0c351354a5fb8b36715c5439b669229aae81",
+          "bytes": 116294,
+          "pose": {
+            "name": "RU-CHE-SET-KUR",
+            "lon": 61.3430025,
+            "lat": 55.21414235,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:4739277320",
+            "sourceName": null,
+            "sourceUse": "unknown",
+            "sourceClass": "yes",
+            "heightM": 5,
+            "areaM2": 77.92,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43934/20660",
+                "sha256": "34305d9b9ae18a01ca50981ea49c2394696f9269f2eef20a9f21333533ad0c37"
+              },
+              {
+                "key": "16/43934/20661",
+                "sha256": "898923c461950d5880b319465b8681aa4d57955518c4c94344e8fabcc08e62b7"
+              },
+              {
+                "key": "16/43935/20660",
+                "sha256": "42fe83211ac8f4773e5ddb5323a538454aa801a6d458e6929336dc0ce73ac094"
+              },
+              {
+                "key": "16/43935/20661",
+                "sha256": "ab217bd423d835e019111adb4b4a02ad13c6e1134adcf98d340dabfa213fb9da"
+              }
+            ]
+          },
+          "mode": "mobile",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 3920256,
+            "stagingBytes": 0,
+            "residentBytes": 3920256,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 268,
+          "meshCount": 22,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-KAL-desktop.png",
+          "sha256": "1a54f8d096650921551711fd9f8bc3de88d94cb0787ae436d63821f8cd19d1ce",
+          "bytes": 510626,
+          "pose": {
+            "name": "RU-CHE-SET-KAL",
+            "lon": 61.39759185,
+            "lat": 55.1881126,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:852422590",
+            "sourceName": null,
+            "sourceUse": "study",
+            "sourceClass": "kindergarten",
+            "heightM": 6,
+            "areaM2": 1147.72,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43944/20668",
+                "sha256": "1331916782d13707669105461033d2caeb7f4ce2091b461f38d42a8392e3ddf8"
+              },
+              {
+                "key": "16/43944/20669",
+                "sha256": "9c4a2806255118b7190f6e18391062bce9393ea976990db772c1442dca22b88f"
+              },
+              {
+                "key": "16/43945/20668",
+                "sha256": "ea94c4cad6dfd4f4f9a007e0a744fd14d78fc4b7ea9426904811702d614e1486"
+              },
+              {
+                "key": "16/43945/20669",
+                "sha256": "d2bbabb308c0680986fcc3df7db9a4431600650d74d00f91f371a9f06fda3e1e"
+              }
+            ]
+          },
+          "mode": "desktop",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 12,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 46501920,
+            "stagingBytes": 4638528,
+            "residentBytes": 51140448,
+            "staging": 1,
+            "pending": 0,
+            "denied": 1,
+            "saturated": false
+          },
+          "sourceCount": 771,
+          "meshCount": 29,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-KAL-mobile.png",
+          "sha256": "f2f7066be7dc3a6192a56ed6ab120422266760e9488f89d9c42ba547d3e63892",
+          "bytes": 150514,
+          "pose": {
+            "name": "RU-CHE-SET-KAL",
+            "lon": 61.39759185,
+            "lat": 55.1881126,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:852422590",
+            "sourceName": null,
+            "sourceUse": "study",
+            "sourceClass": "kindergarten",
+            "heightM": 6,
+            "areaM2": 1147.72,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43944/20668",
+                "sha256": "1331916782d13707669105461033d2caeb7f4ce2091b461f38d42a8392e3ddf8"
+              },
+              {
+                "key": "16/43944/20669",
+                "sha256": "9c4a2806255118b7190f6e18391062bce9393ea976990db772c1442dca22b88f"
+              },
+              {
+                "key": "16/43945/20668",
+                "sha256": "ea94c4cad6dfd4f4f9a007e0a744fd14d78fc4b7ea9426904811702d614e1486"
+              },
+              {
+                "key": "16/43945/20669",
+                "sha256": "d2bbabb308c0680986fcc3df7db9a4431600650d74d00f91f371a9f06fda3e1e"
+              }
+            ]
+          },
+          "mode": "mobile",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 9,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 28617696,
+            "stagingBytes": 0,
+            "residentBytes": 28617696,
+            "staging": 0,
+            "pending": 0,
+            "denied": 1,
+            "saturated": false
+          },
+          "sourceCount": 526,
+          "meshCount": 20,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-CEN-desktop.png",
+          "sha256": "d1f652548d262b9468f919e173d907ace9ecc238a900826732633ff26b97e4c8",
+          "bytes": 498682,
+          "pose": {
+            "name": "RU-CHE-SET-CEN",
+            "lon": 61.330793299999996,
+            "lat": 55.15084365,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:4343468270",
+            "sourceName": null,
+            "sourceUse": "residential",
+            "sourceClass": "detached",
+            "heightM": 5,
+            "areaM2": 80.95,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43932/20680",
+                "sha256": "4a67bf300833de0d25906eb04025f35f359fb049ea0aa17cb8c583783e36111e"
+              },
+              {
+                "key": "16/43932/20681",
+                "sha256": "c12e1fb83745596a9c603d62d16e77f2bf84d5df8ecb5ff0b3cf12bf2ea05775"
+              },
+              {
+                "key": "16/43933/20680",
+                "sha256": "110df73634ee7facfccf0065d0ed5894bba5f160e9c82a847314b92e27b54e0d"
+              },
+              {
+                "key": "16/43933/20681",
+                "sha256": "a0f59d23938624f0461c1a5a770e1d2c4117a374d949128c74ab4f01d33ca42c"
+              }
+            ]
+          },
+          "mode": "desktop",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 5071680,
+            "stagingBytes": 0,
+            "residentBytes": 5071680,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 112,
+          "meshCount": 24,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-CEN-mobile.png",
+          "sha256": "27bcb0c26f9c7f923d7495596d6659e47e8df5fb07138ece6571ab83fd26b1d0",
+          "bytes": 131637,
+          "pose": {
+            "name": "RU-CHE-SET-CEN",
+            "lon": 61.330793299999996,
+            "lat": 55.15084365,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:4343468270",
+            "sourceName": null,
+            "sourceUse": "residential",
+            "sourceClass": "detached",
+            "heightM": 5,
+            "areaM2": 80.95,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43932/20680",
+                "sha256": "4a67bf300833de0d25906eb04025f35f359fb049ea0aa17cb8c583783e36111e"
+              },
+              {
+                "key": "16/43932/20681",
+                "sha256": "c12e1fb83745596a9c603d62d16e77f2bf84d5df8ecb5ff0b3cf12bf2ea05775"
+              },
+              {
+                "key": "16/43933/20680",
+                "sha256": "110df73634ee7facfccf0065d0ed5894bba5f160e9c82a847314b92e27b54e0d"
+              },
+              {
+                "key": "16/43933/20681",
+                "sha256": "a0f59d23938624f0461c1a5a770e1d2c4117a374d949128c74ab4f01d33ca42c"
+              }
+            ]
+          },
+          "mode": "mobile",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 1620288,
+            "stagingBytes": 0,
+            "residentBytes": 1620288,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 112,
+          "meshCount": 7,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-MET-desktop.png",
+          "sha256": "92f36e816c02c6b0722081b76b9268da161d3341ea6d64215325b5a058b563e2",
+          "bytes": 496133,
+          "pose": {
+            "name": "RU-CHE-SET-MET",
+            "lon": 61.40850385,
+            "lat": 55.2572062,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:6939524400",
+            "sourceName": null,
+            "sourceUse": "unknown",
+            "sourceClass": "garages",
+            "heightM": 3,
+            "areaM2": 854.72,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43946/20646",
+                "sha256": "0ab4a7292d38b82612f32aec4b8942071bae65a61c28802e3f88bf888cd44e67"
+              },
+              {
+                "key": "16/43946/20647",
+                "sha256": "6370dcd4baf40859ce4473eb7350493a7605549108fd2fbd512f8bb92be1daf2"
+              },
+              {
+                "key": "16/43947/20646",
+                "sha256": "da2dcdfdf3629e9a8d10b61849182bb1c5ba514fb0cfe33fd7fd75a990a65fcc"
+              },
+              {
+                "key": "16/43947/20647",
+                "sha256": "6e46fa314645311ceefb9134be9cccb124e0c77e616491e761e4ff733fa9ed22"
+              }
+            ]
+          },
+          "mode": "desktop",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 8,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 11816928,
+            "stagingBytes": 0,
+            "residentBytes": 11816928,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 846,
+          "meshCount": 14,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-MET-mobile.png",
+          "sha256": "3433b54999953f04cb34c7d43c254611895d3bcdd19c24562e171ee8232e9e3a",
+          "bytes": 145069,
+          "pose": {
+            "name": "RU-CHE-SET-MET",
+            "lon": 61.40850385,
+            "lat": 55.2572062,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:6939524400",
+            "sourceName": null,
+            "sourceUse": "unknown",
+            "sourceClass": "garages",
+            "heightM": 3,
+            "areaM2": 854.72,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43946/20646",
+                "sha256": "0ab4a7292d38b82612f32aec4b8942071bae65a61c28802e3f88bf888cd44e67"
+              },
+              {
+                "key": "16/43946/20647",
+                "sha256": "6370dcd4baf40859ce4473eb7350493a7605549108fd2fbd512f8bb92be1daf2"
+              },
+              {
+                "key": "16/43947/20646",
+                "sha256": "da2dcdfdf3629e9a8d10b61849182bb1c5ba514fb0cfe33fd7fd75a990a65fcc"
+              },
+              {
+                "key": "16/43947/20647",
+                "sha256": "6e46fa314645311ceefb9134be9cccb124e0c77e616491e761e4ff733fa9ed22"
+              }
+            ]
+          },
+          "mode": "mobile",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 5,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 2051424,
+            "stagingBytes": 0,
+            "residentBytes": 2051424,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 431,
+          "meshCount": 3,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-SOV-desktop.png",
+          "sha256": "c90c35d17bcbd2254a74c8c62d5b8259d31e3b3282354a0cf676a45e0abb4891",
+          "bytes": 217648,
+          "pose": {
+            "name": "RU-CHE-SET-SOV",
+            "lon": 61.3753681,
+            "lat": 55.1069753,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:8844497020",
+            "sourceName": null,
+            "sourceUse": "unknown",
+            "sourceClass": "yes",
+            "heightM": 5,
+            "areaM2": 107.54,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43940/20694",
+                "sha256": "9d01b07da846f516b07d2bdf4f48dcadab83db5925f721d596305b1180bae52f"
+              },
+              {
+                "key": "16/43940/20695",
+                "sha256": "121f332bceb14183a187308a0a2a064c8eac5fe44a1c1de31d3a878bb407d751"
+              },
+              {
+                "key": "16/43941/20694",
+                "sha256": "c23adbc006e9be6fdc10e796e1092fb2ff775df95f10ad343efa734f66cefa39"
+              },
+              {
+                "key": "16/43941/20695",
+                "sha256": "fbcaa9e8e122ab280de525b863a652a7c116f0f4f6561f366c81a8752517d81a"
+              }
+            ]
+          },
+          "mode": "desktop",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 7439616,
+            "stagingBytes": 0,
+            "residentBytes": 7439616,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 677,
+          "meshCount": 14,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-SOV-mobile.png",
+          "sha256": "7e2f214473dd156b7407b59aa1cf1f59ff8a300fe844ea30e55b9b55c400162a",
+          "bytes": 73044,
+          "pose": {
+            "name": "RU-CHE-SET-SOV",
+            "lon": 61.3753681,
+            "lat": 55.1069753,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:8844497020",
+            "sourceName": null,
+            "sourceUse": "unknown",
+            "sourceClass": "yes",
+            "heightM": 5,
+            "areaM2": 107.54,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43940/20694",
+                "sha256": "9d01b07da846f516b07d2bdf4f48dcadab83db5925f721d596305b1180bae52f"
+              },
+              {
+                "key": "16/43940/20695",
+                "sha256": "121f332bceb14183a187308a0a2a064c8eac5fe44a1c1de31d3a878bb407d751"
+              },
+              {
+                "key": "16/43941/20694",
+                "sha256": "c23adbc006e9be6fdc10e796e1092fb2ff775df95f10ad343efa734f66cefa39"
+              },
+              {
+                "key": "16/43941/20695",
+                "sha256": "fbcaa9e8e122ab280de525b863a652a7c116f0f4f6561f366c81a8752517d81a"
+              }
+            ]
+          },
+          "mode": "mobile",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 5725440,
+            "stagingBytes": 0,
+            "residentBytes": 5725440,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 677,
+          "meshCount": 11,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-TRA-desktop.png",
+          "sha256": "663aae59a1859ef367973e87d449faea0673513705890a5f959aaefc4b012cc7",
+          "bytes": 642470,
+          "pose": {
+            "name": "RU-CHE-SET-TRA",
+            "lon": 61.51795905,
+            "lat": 55.1752876,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:8007498440",
+            "sourceName": null,
+            "sourceUse": "residential",
+            "sourceClass": "apartments",
+            "heightM": 30,
+            "areaM2": 1071.47,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43966/20672",
+                "sha256": "36d8e000483ad7d49fbea148df72e5a403f8363e965b2c96f67d74088cf21522"
+              },
+              {
+                "key": "16/43966/20673",
+                "sha256": "36bdf9717c17ff5b02b8b86af32a7a671fbc030a5557d6d20e7148649bd7eaf9"
+              },
+              {
+                "key": "16/43967/20672",
+                "sha256": "707dea988fb1992616bd301d15569beae18101a102fe797fb5a7ea3a25bbfa81"
+              },
+              {
+                "key": "16/43967/20673",
+                "sha256": "ddacee9c8e39cf371e35e704377081fe2317f856e98f175dc5181d2f795aa996"
+              }
+            ]
+          },
+          "mode": "desktop",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 16,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 22453632,
+            "stagingBytes": 0,
+            "residentBytes": 22453632,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 221,
+          "meshCount": 42,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-TRA-mobile.png",
+          "sha256": "a7ff081243302dad9975e0c719508d794dd1916ba4bf33efe4ddc7376100808b",
+          "bytes": 181248,
+          "pose": {
+            "name": "RU-CHE-SET-TRA",
+            "lon": 61.51795905,
+            "lat": 55.1752876,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:8007498440",
+            "sourceName": null,
+            "sourceUse": "residential",
+            "sourceClass": "apartments",
+            "heightM": 30,
+            "areaM2": 1071.47,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43966/20672",
+                "sha256": "36d8e000483ad7d49fbea148df72e5a403f8363e965b2c96f67d74088cf21522"
+              },
+              {
+                "key": "16/43966/20673",
+                "sha256": "36bdf9717c17ff5b02b8b86af32a7a671fbc030a5557d6d20e7148649bd7eaf9"
+              },
+              {
+                "key": "16/43967/20672",
+                "sha256": "707dea988fb1992616bd301d15569beae18101a102fe797fb5a7ea3a25bbfa81"
+              },
+              {
+                "key": "16/43967/20673",
+                "sha256": "ddacee9c8e39cf371e35e704377081fe2317f856e98f175dc5181d2f795aa996"
+              }
+            ]
+          },
+          "mode": "mobile",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 14346432,
+            "stagingBytes": 0,
+            "residentBytes": 14346432,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 221,
+          "meshCount": 8,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-LEN-desktop.png",
+          "sha256": "e7be684119168383605395ff8069640f85475d8d33a2c9bdec25990b83f8ee84",
+          "bytes": 636479,
+          "pose": {
+            "name": "RU-CHE-SET-LEN",
+            "lon": 61.46263365,
+            "lat": 55.119409950000005,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:535505340",
+            "sourceName": null,
+            "sourceUse": "residential",
+            "sourceClass": "apartments",
+            "heightM": 15,
+            "areaM2": 2163.7,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43956/20690",
+                "sha256": "23c4b4963dcbac3ccd4e9c9fab5fa59d707ff219d94d89efced27261bbca1dd3"
+              },
+              {
+                "key": "16/43956/20691",
+                "sha256": "2b40e36527cfee0a018a7e01e9560a9b6860b870f1f445b02c21497b243d2cda"
+              },
+              {
+                "key": "16/43957/20690",
+                "sha256": "e861af71ba9409cf56837a2f56d0928a48ad6bf98f00c77ec08ca840543f1113"
+              },
+              {
+                "key": "16/43957/20691",
+                "sha256": "e0a3df645d9b451c6dc944cf50ec13180c6eb426a4896dd9a9121f0c4c8ca1ad"
+              }
+            ]
+          },
+          "mode": "desktop",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": true,
+          "geometry": {
+            "committedBytes": 14972544,
+            "stagingBytes": 0,
+            "residentBytes": 14972544,
+            "staging": 2,
+            "pending": 2,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 755,
+          "meshCount": 8,
+          "targetInSource": true,
+          "targetIsMesh": false,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-LEN-mobile.png",
+          "sha256": "2dc9da338d855e78d0625b304ab0445cd3081e46d0ed7f5cea9c815434fc70be",
+          "bytes": 186418,
+          "pose": {
+            "name": "RU-CHE-SET-LEN",
+            "lon": 61.46263365,
+            "lat": 55.119409950000005,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:535505340",
+            "sourceName": null,
+            "sourceUse": "residential",
+            "sourceClass": "apartments",
+            "heightM": 15,
+            "areaM2": 2163.7,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43956/20690",
+                "sha256": "23c4b4963dcbac3ccd4e9c9fab5fa59d707ff219d94d89efced27261bbca1dd3"
+              },
+              {
+                "key": "16/43956/20691",
+                "sha256": "2b40e36527cfee0a018a7e01e9560a9b6860b870f1f445b02c21497b243d2cda"
+              },
+              {
+                "key": "16/43957/20690",
+                "sha256": "e861af71ba9409cf56837a2f56d0928a48ad6bf98f00c77ec08ca840543f1113"
+              },
+              {
+                "key": "16/43957/20691",
+                "sha256": "e0a3df645d9b451c6dc944cf50ec13180c6eb426a4896dd9a9121f0c4c8ca1ad"
+              }
+            ]
+          },
+          "mode": "mobile",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 39702240,
+            "stagingBytes": 0,
+            "residentBytes": 39702240,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 755,
+          "meshCount": 12,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ]
+    },
+    {
+      "artifactFolder": "full-fine-settled",
+      "startedAt": "2026-09-09T11:15:53.450Z",
+      "completedAt": "2026-09-09T11:18:44.088Z",
+      "sourceBefore": "98982396f3edf77089be4a7ce3b4e173fda0da92c93b0a6bdb50ab16e73008a1",
+      "sourceAfter": "98982396f3edf77089be4a7ce3b4e173fda0da92c93b0a6bdb50ab16e73008a1",
+      "sourceChangedFiles": [],
+      "catalog": {
+        "uri": "catalog/build-2bed04fea8092a93/catalog-bca4ff81f5a4c1a8.json",
+        "bytes": 4490946,
+        "sha256": "bca4ff81f5a4c1a8c3517f0b1faeceddd6042cf20d811c70661993ecec72a819"
+      },
+      "frames": [
+        {
+          "filename": "user-desktop.png",
+          "sha256": "be56f9a8ba5e3a3767f003008fe676c16175d333b46e9652afe447c374207aac",
+          "bytes": 615264,
+          "pose": {
+            "name": "user",
+            "lon": 61.40335931261333,
+            "lat": 55.166641128116765,
+            "zoom": 16.86436467681756,
+            "pitch": 46.49661799282392,
+            "bearing": -172.97699800600026,
+            "provenance": "Exact original user URL camera"
+          },
+          "mode": "desktop",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 175310784,
+            "stagingBytes": 0,
+            "residentBytes": 175310784,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 595,
+          "meshCount": 149,
+          "targetInSource": null,
+          "targetIsMesh": null,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "user-mobile.png",
+          "sha256": "d4f4c65c808e8d129ad5981b50e988b032949ca0edc2a37a47fc6676afcc3a7b",
+          "bytes": 184040,
+          "pose": {
+            "name": "user",
+            "lon": 61.40335931261333,
+            "lat": 55.166641128116765,
+            "zoom": 16.86436467681756,
+            "pitch": 46.49661799282392,
+            "bearing": -172.97699800600026,
+            "provenance": "Exact original user URL camera"
+          },
+          "mode": "mobile",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 7,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 74194848,
+            "stagingBytes": 0,
+            "residentBytes": 74194848,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 595,
+          "meshCount": 60,
+          "targetInSource": null,
+          "targetIsMesh": null,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "waterfront-desktop.png",
+          "sha256": "b426eeed458f45bebfb82683c2c62add1697ab0f8e3c224837e562238dcd6ea5",
+          "bytes": 399607,
+          "pose": {
+            "name": "waterfront",
+            "lon": 61.40175104141235,
+            "lat": 55.16893869067019,
+            "zoom": 17.9,
+            "pitch": 55,
+            "bearing": 0,
+            "provenance": "Actual Miass source waterway vertex, source tile 14/10986/5168; source bridge deck 6636266412"
+          },
+          "mode": "desktop",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 5,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 8771328,
+            "stagingBytes": 0,
+            "residentBytes": 8771328,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 583,
+          "meshCount": 19,
+          "targetInSource": null,
+          "targetIsMesh": null,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "waterfront-mobile.png",
+          "sha256": "d95e7959af605f3d1adebd738baa364125102bdc3fb3f874f6aa9b48d9303330",
+          "bytes": 117444,
+          "pose": {
+            "name": "waterfront",
+            "lon": 61.40175104141235,
+            "lat": 55.16893869067019,
+            "zoom": 17.9,
+            "pitch": 55,
+            "bearing": 0,
+            "provenance": "Actual Miass source waterway vertex, source tile 14/10986/5168; source bridge deck 6636266412"
+          },
+          "mode": "mobile",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 4783104,
+            "stagingBytes": 0,
+            "residentBytes": 4783104,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 583,
+          "meshCount": 5,
+          "targetInSource": null,
+          "targetIsMesh": null,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-KUR-desktop.png",
+          "sha256": "a1015cce9eba71f6c9ff3834568773f0996badb307d9eabf2fb5966b32b55a59",
+          "bytes": 446844,
+          "pose": {
+            "name": "RU-CHE-SET-KUR",
+            "lon": 61.3430025,
+            "lat": 55.21414235,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:4739277320",
+            "sourceName": null,
+            "sourceUse": "unknown",
+            "sourceClass": "yes",
+            "heightM": 5,
+            "areaM2": 77.92,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43934/20660",
+                "sha256": "34305d9b9ae18a01ca50981ea49c2394696f9269f2eef20a9f21333533ad0c37"
+              },
+              {
+                "key": "16/43934/20661",
+                "sha256": "898923c461950d5880b319465b8681aa4d57955518c4c94344e8fabcc08e62b7"
+              },
+              {
+                "key": "16/43935/20660",
+                "sha256": "42fe83211ac8f4773e5ddb5323a538454aa801a6d458e6929336dc0ce73ac094"
+              },
+              {
+                "key": "16/43935/20661",
+                "sha256": "ab217bd423d835e019111adb4b4a02ad13c6e1134adcf98d340dabfa213fb9da"
+              }
+            ]
+          },
+          "mode": "desktop",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 10132992,
+            "stagingBytes": 0,
+            "residentBytes": 10132992,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 268,
+          "meshCount": 39,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-KAL-desktop.png",
+          "sha256": "a2f6a640aca35f9e7129513a72a70c6e9fc89441d4f4eedd5ac9d6fa72782b60",
+          "bytes": 510693,
+          "pose": {
+            "name": "RU-CHE-SET-KAL",
+            "lon": 61.39759185,
+            "lat": 55.1881126,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:852422590",
+            "sourceName": null,
+            "sourceUse": "study",
+            "sourceClass": "kindergarten",
+            "heightM": 6,
+            "areaM2": 1147.72,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43944/20668",
+                "sha256": "1331916782d13707669105461033d2caeb7f4ce2091b461f38d42a8392e3ddf8"
+              },
+              {
+                "key": "16/43944/20669",
+                "sha256": "9c4a2806255118b7190f6e18391062bce9393ea976990db772c1442dca22b88f"
+              },
+              {
+                "key": "16/43945/20668",
+                "sha256": "ea94c4cad6dfd4f4f9a007e0a744fd14d78fc4b7ea9426904811702d614e1486"
+              },
+              {
+                "key": "16/43945/20669",
+                "sha256": "d2bbabb308c0680986fcc3df7db9a4431600650d74d00f91f371a9f06fda3e1e"
+              }
+            ]
+          },
+          "mode": "desktop",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 59753088,
+            "stagingBytes": 0,
+            "residentBytes": 59753088,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 526,
+          "meshCount": 43,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-KAL-mobile.png",
+          "sha256": "f2f7066be7dc3a6192a56ed6ab120422266760e9488f89d9c42ba547d3e63892",
+          "bytes": 150514,
+          "pose": {
+            "name": "RU-CHE-SET-KAL",
+            "lon": 61.39759185,
+            "lat": 55.1881126,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:852422590",
+            "sourceName": null,
+            "sourceUse": "study",
+            "sourceClass": "kindergarten",
+            "heightM": 6,
+            "areaM2": 1147.72,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43944/20668",
+                "sha256": "1331916782d13707669105461033d2caeb7f4ce2091b461f38d42a8392e3ddf8"
+              },
+              {
+                "key": "16/43944/20669",
+                "sha256": "9c4a2806255118b7190f6e18391062bce9393ea976990db772c1442dca22b88f"
+              },
+              {
+                "key": "16/43945/20668",
+                "sha256": "ea94c4cad6dfd4f4f9a007e0a744fd14d78fc4b7ea9426904811702d614e1486"
+              },
+              {
+                "key": "16/43945/20669",
+                "sha256": "d2bbabb308c0680986fcc3df7db9a4431600650d74d00f91f371a9f06fda3e1e"
+              }
+            ]
+          },
+          "mode": "mobile",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 23715072,
+            "stagingBytes": 0,
+            "residentBytes": 23715072,
+            "staging": 0,
+            "pending": 0,
+            "denied": 1,
+            "saturated": false
+          },
+          "sourceCount": 526,
+          "meshCount": 15,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-MET-desktop.png",
+          "sha256": "01555b5849b7573b35f55d1ecd5813fe497ec6f8cec9202b4a19c9236a8cd1fd",
+          "bytes": 496080,
+          "pose": {
+            "name": "RU-CHE-SET-MET",
+            "lon": 61.40850385,
+            "lat": 55.2572062,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:6939524400",
+            "sourceName": null,
+            "sourceUse": "unknown",
+            "sourceClass": "garages",
+            "heightM": 3,
+            "areaM2": 854.72,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43946/20646",
+                "sha256": "0ab4a7292d38b82612f32aec4b8942071bae65a61c28802e3f88bf888cd44e67"
+              },
+              {
+                "key": "16/43946/20647",
+                "sha256": "6370dcd4baf40859ce4473eb7350493a7605549108fd2fbd512f8bb92be1daf2"
+              },
+              {
+                "key": "16/43947/20646",
+                "sha256": "da2dcdfdf3629e9a8d10b61849182bb1c5ba514fb0cfe33fd7fd75a990a65fcc"
+              },
+              {
+                "key": "16/43947/20647",
+                "sha256": "6e46fa314645311ceefb9134be9cccb124e0c77e616491e761e4ff733fa9ed22"
+              }
+            ]
+          },
+          "mode": "desktop",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 11132640,
+            "stagingBytes": 0,
+            "residentBytes": 11132640,
+            "staging": 0,
+            "pending": 0,
+            "denied": 1,
+            "saturated": false
+          },
+          "sourceCount": 431,
+          "meshCount": 12,
+          "targetInSource": true,
+          "targetIsMesh": false,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-MET-mobile.png",
+          "sha256": "299cb4a0d40697f343d7a33c22ac6baf74ea6c9f68eae4ebb0f129b8356ee264",
+          "bytes": 146461,
+          "pose": {
+            "name": "RU-CHE-SET-MET",
+            "lon": 61.40850385,
+            "lat": 55.2572062,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:6939524400",
+            "sourceName": null,
+            "sourceUse": "unknown",
+            "sourceClass": "garages",
+            "heightM": 3,
+            "areaM2": 854.72,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43946/20646",
+                "sha256": "0ab4a7292d38b82612f32aec4b8942071bae65a61c28802e3f88bf888cd44e67"
+              },
+              {
+                "key": "16/43946/20647",
+                "sha256": "6370dcd4baf40859ce4473eb7350493a7605549108fd2fbd512f8bb92be1daf2"
+              },
+              {
+                "key": "16/43947/20646",
+                "sha256": "da2dcdfdf3629e9a8d10b61849182bb1c5ba514fb0cfe33fd7fd75a990a65fcc"
+              },
+              {
+                "key": "16/43947/20647",
+                "sha256": "6e46fa314645311ceefb9134be9cccb124e0c77e616491e761e4ff733fa9ed22"
+              }
+            ]
+          },
+          "mode": "mobile",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 1367136,
+            "stagingBytes": 0,
+            "residentBytes": 1367136,
+            "staging": 0,
+            "pending": 0,
+            "denied": 1,
+            "saturated": false
+          },
+          "sourceCount": 431,
+          "meshCount": 1,
+          "targetInSource": true,
+          "targetIsMesh": false,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-TRA-desktop.png",
+          "sha256": "663aae59a1859ef367973e87d449faea0673513705890a5f959aaefc4b012cc7",
+          "bytes": 642470,
+          "pose": {
+            "name": "RU-CHE-SET-TRA",
+            "lon": 61.51795905,
+            "lat": 55.1752876,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:8007498440",
+            "sourceName": null,
+            "sourceUse": "residential",
+            "sourceClass": "apartments",
+            "heightM": 30,
+            "areaM2": 1071.47,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43966/20672",
+                "sha256": "36d8e000483ad7d49fbea148df72e5a403f8363e965b2c96f67d74088cf21522"
+              },
+              {
+                "key": "16/43966/20673",
+                "sha256": "36bdf9717c17ff5b02b8b86af32a7a671fbc030a5557d6d20e7148649bd7eaf9"
+              },
+              {
+                "key": "16/43967/20672",
+                "sha256": "707dea988fb1992616bd301d15569beae18101a102fe797fb5a7ea3a25bbfa81"
+              },
+              {
+                "key": "16/43967/20673",
+                "sha256": "ddacee9c8e39cf371e35e704377081fe2317f856e98f175dc5181d2f795aa996"
+              }
+            ]
+          },
+          "mode": "desktop",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 22453632,
+            "stagingBytes": 0,
+            "residentBytes": 22453632,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 221,
+          "meshCount": 42,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        },
+        {
+          "filename": "RU-CHE-SET-LEN-desktop.png",
+          "sha256": "80304238dab09064e1ae234792345c034d41a5bee721ac8758d73d238a037350",
+          "bytes": 702906,
+          "pose": {
+            "name": "RU-CHE-SET-LEN",
+            "lon": 61.46263365,
+            "lat": 55.119409950000005,
+            "zoom": 18.25,
+            "pitch": 55,
+            "bearing": -35,
+            "canonicalId": "openmaptiles_buildings:535505340",
+            "sourceName": null,
+            "sourceUse": "residential",
+            "sourceClass": "apartments",
+            "heightM": 15,
+            "areaM2": 2163.7,
+            "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+            "sourceCells": [
+              {
+                "key": "16/43956/20690",
+                "sha256": "23c4b4963dcbac3ccd4e9c9fab5fa59d707ff219d94d89efced27261bbca1dd3"
+              },
+              {
+                "key": "16/43956/20691",
+                "sha256": "2b40e36527cfee0a018a7e01e9560a9b6860b870f1f445b02c21497b243d2cda"
+              },
+              {
+                "key": "16/43957/20690",
+                "sha256": "e861af71ba9409cf56837a2f56d0928a48ad6bf98f00c77ec08ca840543f1113"
+              },
+              {
+                "key": "16/43957/20691",
+                "sha256": "e0a3df645d9b451c6dc944cf50ec13180c6eb426a4896dd9a9121f0c4c8ca1ad"
+              }
+            ]
+          },
+          "mode": "desktop",
+          "errors": [],
+          "network": [],
+          "readinessError": null,
+          "framesIn2200ms": 0,
+          "loading": false,
+          "geometry": {
+            "committedBytes": 75118176,
+            "stagingBytes": 0,
+            "residentBytes": 75118176,
+            "staging": 0,
+            "pending": 0,
+            "denied": 0,
+            "saturated": false
+          },
+          "sourceCount": 755,
+          "meshCount": 34,
+          "targetInSource": true,
+          "targetIsMesh": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ]
+    }
+  ],
+  "codeChangesBetweenSeries": [
+    "renderer/game/laneTraffic.ts"
+  ],
+  "realScreenshotsOpened": 31,
+  "findings": [
+    {
+      "kind": "improvement",
+      "detail": "TRA source building 8007498440 is detailed on desktop and mobile; LEN source building 535505340 becomes detailed after completion of child loading."
+    },
+    {
+      "kind": "improvement",
+      "detail": "Original user camera has all foreground detail after settling; no visible building holes in reviewed frames. Water shoreline and ripples are continuous in the reviewed visible bank."
+    },
+    {
+      "kind": "improvement",
+      "detail": "Actual enclosed courtyard 27724113 has restrained metric paving on both viewport sizes."
+    },
+    {
+      "kind": "blocker",
+      "detail": "MET buildings 6939524390 and 6939524400 are initially detailed but are native in the later settled series with denied=1 and only 11.13 MB desktop or 1.37 MB mobile geometry. Both remain in the verified source snapshot. Cell z15-x21973-y10323, near-3-2-ca729ba1f7e2472b.glb."
+    },
+    {
+      "kind": "art_blocker",
+      "detail": "Broad areas of pale untextured ground and weak building contact/directional shadows keep KAL, SOV, LEN and residential scenes diagram-like."
+    },
+    {
+      "kind": "art_blocker",
+      "detail": "Long MET metal roofs retain conspicuous repeated diagonal motifs when their detailed material is visible; old broad contrast was reduced, not fully solved."
+    },
+    {
+      "kind": "art_blocker",
+      "detail": "Repeated facade window arrangements, very regular roof equipment and simple tree crowns remain visibly procedural."
+    },
+    {
+      "kind": "pending_verification",
+      "detail": "A CEN foreground tree visually appears near a road edge. A source-coordinate intersection has not been established and is not claimed."
+    }
+  ],
+  "limitations": [
+    "Local Chromium SwiftShader with background development activity; no FPS or hardware-performance claim.",
+    "Initial 20 frames used an early readiness signal. Ten windows include loading frames and two final snapshots still had pending GLB work. Those frames are labelled transitional.",
+    "The 11-frame supplement awaited no GLB work, but user-mobile and waterfront-desktop had subsequent source/surface invalidations (7 and 5 frames over 2.2 seconds); final pause acceptance requires a separate settled scheduler check.",
+    "Each series has unchanged source hashes internally. laneTraffic.ts changed between the two series; visual catalogue is identical.",
+    "No screenshot proves continuous zoom, cache eviction, WebGL recovery, picking or bridge traversal. The waterfront camera does not frame the complete bridge.",
+    "Seven districts are sampled at actual source-building poses; this is not exhaustive whole-city visual validation.",
+    "PNGs are local QA artifacts; the repository retains portable names and hashes."
+  ]
+}

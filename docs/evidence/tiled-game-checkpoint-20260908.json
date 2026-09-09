@@ -1,0 +1,88 @@
+{
+  "contractVersion": 1,
+  "date": "2026-09-08",
+  "scope": "OmniTwin-demo source-backed quarter prototype",
+  "status": "local_technical_checkpoint_visual_gate_open",
+  "graphicsBackend": "tiled_game",
+  "datasetId": "omnitwin-fictional-city-v2",
+  "publicDeploymentChanged": false,
+  "scientificModelChanged": false,
+  "observedStatisticsChanged": false,
+  "openRouterConfigurationChanged": false,
+  "visualPack": {
+    "manifestSha256": "684d9014b7a38f3677c77408f3b620796558a488bef919bafa07066ff98d37e2",
+    "tilesetSha256": "967f0bdfac9e3ee1d777f338d70b6a432c6129276abad8986379b3a440dc182d",
+    "buildings": 382,
+    "roads": 808,
+    "areaDerivedTrees": 1000,
+    "glbCount": 5,
+    "inventoryBytes": 54995820,
+    "allCityCoverage": false,
+    "streamedPayloadHashVerification": false
+  },
+  "checks": {
+    "frontendRendererTestFiles": 59,
+    "frontendRendererTestsPassed": 421,
+    "compilerTestsPassed": 44,
+    "publicShellExclusionTestPassed": true,
+    "typecheckPassed": true,
+    "productionBuildPassed": true,
+    "diffWhitespacePassed": true,
+    "headedPlaywrightWorkers": 1,
+    "realNetwork": true,
+    "apiTileCanvasMocks": false,
+    "oneCanvas": true,
+    "playwrightCasesPassed": [
+      "streamed quarter, courtyard and motion remain real and depth-correct",
+      "real mobile layout preserves a single game canvas and analytics navigation",
+      "overview flows survive real wheel approach and 16x playback"
+    ],
+    "realPhoneTested": false,
+    "allRequiredPlanAcceptanceCasesPassed": false
+  },
+  "performance": {
+    "classification": "contaminated_diagnostic",
+    "measurement": "actual MapLibre render-event attribute timestamps; recording off",
+    "viewport": [1920, 1080],
+    "dpr": 1,
+    "warmupMs": 2000,
+    "windowMs": 5000,
+    "samples": 580,
+    "fps": 115.79768404576691,
+    "medianFps": 120.48192667258567,
+    "p95Ms": 16,
+    "p99Ms": 16.699999928474426,
+    "longestSlowRunMs": 0,
+    "slowFrameThresholdMs": 33.4,
+    "pausedFrames": 0,
+    "pausedWindowMs": 2100,
+    "controlledReleaseBenchmark": false,
+    "schedulerHardCapVerified": false
+  },
+  "visualReview": {
+    "artifactSet": "omnitwin-game-checkpoint-reviewed-20260908",
+    "pngFilesOpened": 20,
+    "contactSheetOpened": true,
+    "contactSheet": "contact-sheet.png",
+    "recording": "movement-overview-to-courtyard.webm",
+    "renderedImagesNotConcepts": true,
+    "rejectedIntermediate": "rejected-loading-reload/06-reload-viewport.png",
+    "stableReloadRecaptured": true,
+    "simCityLikeArtGatePassed": false,
+    "publicReleaseGatePassed": false,
+    "observedDefects": [
+      "Empty courtyards and repetitive architecture/materials",
+      "Pedestrians still share road corridors; verified sidewalk offsets are blocked",
+      "General-plan flow strokes remain visually subtle",
+      "Game geometry covers only the prototype quarter"
+    ]
+  },
+  "nextGates": [
+    "Street/courtyard environment and architectural material quality",
+    "Validated pedestrian/vehicle corridors, crossings and elevation",
+    "Selected-ID continuous LOD and occlusion acceptance across cameras",
+    "Bounded all-city streaming and compressed material pipeline",
+    "Verified public V2 storage/backend/chat activation",
+    "Seven-district visual acceptance and real-device performance"
+  ]
+}

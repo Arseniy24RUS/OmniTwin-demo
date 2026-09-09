@@ -1,0 +1,673 @@
+{
+  "contract": "OmniTwinVisualArtReviewV1",
+  "capturedAt": {
+    "start": "2026-09-09T10:34:42.005Z",
+    "end": "2026-09-09T10:37:18.335Z"
+  },
+  "scope": "Full v3 catalog; seven source-index district probes and three control scenes, each desktop and mobile",
+  "verdict": "FAIL",
+  "target": "Realistically stylized courtyard view comparable to SimCity 2013",
+  "targetMet": false,
+  "classification": "visual_diagnostic_under_concurrent_source_and_device_load",
+  "catalogSha256": "fac040ca18c22b0a8eb7d6b7f761eb3972aecbd5b40a71e7189ecbb4f116b59f",
+  "manifestSha256": "55f83e7f3286df594ca4ad1a4865779c067139ea53515e3281a0d03f8655e330",
+  "manifestUnchanged": true,
+  "source": {
+    "beforeSha256": "ec3faac3966b247044a9eb57ca95801ca137a19828cf1aeff3fca0ed774d07cf",
+    "afterSha256": "3dd64f8b0e82472628d76d317afa3cf04d41df8c52a9c57aeb467e85aa68c16c",
+    "changedFiles": [
+      {
+        "file": "renderer/game/GameTrafficSignals.ts",
+        "kind": "added",
+        "before": null,
+        "after": "eeb3c65de34e2eda1ce8ea8d9fd8b69522f6f1ce1728379f9214dc86cf4450d4"
+      }
+    ],
+    "preExistingFilesUnchanged": true,
+    "limitation": "GameTrafficSignals.ts was added during capture; Layer/Scene and every pre-existing source file were unchanged, so this new module was not integrated into these frames."
+  },
+  "browser": {
+    "kind": "separate headless Playwright Chromium",
+    "deviceScaleFactor": 1,
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "performanceClaim": false
+  },
+  "method": {
+    "allActualPNGsOpened": true,
+    "generatedOrSubstitutedImages": false,
+    "cameraPaused": true,
+    "minutes": 707.7335833333341,
+    "districtSelection": "Nearest actual building of at least50m2 to each previously source-verified district sample cell center; not statistically representative",
+    "sourceCityManifestSha256": "e8e1627801eb79ac353e9a1bf37419519980ad48d071d9c1f9b67318c2f3f62a"
+  },
+  "poses": [
+    {
+      "name": "user",
+      "lon": 61.40335931261333,
+      "lat": 55.166641128116765,
+      "zoom": 16.86436467681756,
+      "pitch": 46.49661799282392,
+      "bearing": -172.97699800600026,
+      "provenance": "Exact original user URL camera"
+    },
+    {
+      "name": "courtyard",
+      "lon": 61.39086657500001,
+      "lat": 55.170028625,
+      "zoom": 19,
+      "pitch": 55,
+      "bearing": -70,
+      "canonicalId": "openmaptiles_buildings:27724113",
+      "provenance": "Actual source courtyard hole, Megapolis building"
+    },
+    {
+      "name": "waterfront",
+      "lon": 61.40175104141235,
+      "lat": 55.16893869067019,
+      "zoom": 17.9,
+      "pitch": 55,
+      "bearing": 0,
+      "provenance": "Actual Miass source waterway vertex, source tile 14/10986/5168; source bridge deck 6636266412"
+    },
+    {
+      "name": "RU-CHE-SET-KUR",
+      "lon": 61.3430025,
+      "lat": 55.21414235,
+      "zoom": 18.25,
+      "pitch": 55,
+      "bearing": -35,
+      "canonicalId": "openmaptiles_buildings:4739277320",
+      "sourceName": null,
+      "sourceUse": "unknown",
+      "sourceClass": "yes",
+      "heightM": 5,
+      "areaM2": 77.92,
+      "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+      "sourceCells": [
+        {
+          "key": "16/43934/20660",
+          "sha256": "34305d9b9ae18a01ca50981ea49c2394696f9269f2eef20a9f21333533ad0c37"
+        },
+        {
+          "key": "16/43934/20661",
+          "sha256": "898923c461950d5880b319465b8681aa4d57955518c4c94344e8fabcc08e62b7"
+        },
+        {
+          "key": "16/43935/20660",
+          "sha256": "42fe83211ac8f4773e5ddb5323a538454aa801a6d458e6929336dc0ce73ac094"
+        },
+        {
+          "key": "16/43935/20661",
+          "sha256": "ab217bd423d835e019111adb4b4a02ad13c6e1134adcf98d340dabfa213fb9da"
+        }
+      ]
+    },
+    {
+      "name": "RU-CHE-SET-KAL",
+      "lon": 61.39759185,
+      "lat": 55.1881126,
+      "zoom": 18.25,
+      "pitch": 55,
+      "bearing": -35,
+      "canonicalId": "openmaptiles_buildings:852422590",
+      "sourceName": null,
+      "sourceUse": "study",
+      "sourceClass": "kindergarten",
+      "heightM": 6,
+      "areaM2": 1147.72,
+      "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+      "sourceCells": [
+        {
+          "key": "16/43944/20668",
+          "sha256": "1331916782d13707669105461033d2caeb7f4ce2091b461f38d42a8392e3ddf8"
+        },
+        {
+          "key": "16/43944/20669",
+          "sha256": "9c4a2806255118b7190f6e18391062bce9393ea976990db772c1442dca22b88f"
+        },
+        {
+          "key": "16/43945/20668",
+          "sha256": "ea94c4cad6dfd4f4f9a007e0a744fd14d78fc4b7ea9426904811702d614e1486"
+        },
+        {
+          "key": "16/43945/20669",
+          "sha256": "d2bbabb308c0680986fcc3df7db9a4431600650d74d00f91f371a9f06fda3e1e"
+        }
+      ]
+    },
+    {
+      "name": "RU-CHE-SET-CEN",
+      "lon": 61.330793299999996,
+      "lat": 55.15084365,
+      "zoom": 18.25,
+      "pitch": 55,
+      "bearing": -35,
+      "canonicalId": "openmaptiles_buildings:4343468270",
+      "sourceName": null,
+      "sourceUse": "residential",
+      "sourceClass": "detached",
+      "heightM": 5,
+      "areaM2": 80.95,
+      "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+      "sourceCells": [
+        {
+          "key": "16/43932/20680",
+          "sha256": "4a67bf300833de0d25906eb04025f35f359fb049ea0aa17cb8c583783e36111e"
+        },
+        {
+          "key": "16/43932/20681",
+          "sha256": "c12e1fb83745596a9c603d62d16e77f2bf84d5df8ecb5ff0b3cf12bf2ea05775"
+        },
+        {
+          "key": "16/43933/20680",
+          "sha256": "110df73634ee7facfccf0065d0ed5894bba5f160e9c82a847314b92e27b54e0d"
+        },
+        {
+          "key": "16/43933/20681",
+          "sha256": "a0f59d23938624f0461c1a5a770e1d2c4117a374d949128c74ab4f01d33ca42c"
+        }
+      ]
+    },
+    {
+      "name": "RU-CHE-SET-MET",
+      "lon": 61.40850385,
+      "lat": 55.2572062,
+      "zoom": 18.25,
+      "pitch": 55,
+      "bearing": -35,
+      "canonicalId": "openmaptiles_buildings:6939524400",
+      "sourceName": null,
+      "sourceUse": "unknown",
+      "sourceClass": "garages",
+      "heightM": 3,
+      "areaM2": 854.72,
+      "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+      "sourceCells": [
+        {
+          "key": "16/43946/20646",
+          "sha256": "0ab4a7292d38b82612f32aec4b8942071bae65a61c28802e3f88bf888cd44e67"
+        },
+        {
+          "key": "16/43946/20647",
+          "sha256": "6370dcd4baf40859ce4473eb7350493a7605549108fd2fbd512f8bb92be1daf2"
+        },
+        {
+          "key": "16/43947/20646",
+          "sha256": "da2dcdfdf3629e9a8d10b61849182bb1c5ba514fb0cfe33fd7fd75a990a65fcc"
+        },
+        {
+          "key": "16/43947/20647",
+          "sha256": "6e46fa314645311ceefb9134be9cccb124e0c77e616491e761e4ff733fa9ed22"
+        }
+      ]
+    },
+    {
+      "name": "RU-CHE-SET-SOV",
+      "lon": 61.3753681,
+      "lat": 55.1069753,
+      "zoom": 18.25,
+      "pitch": 55,
+      "bearing": -35,
+      "canonicalId": "openmaptiles_buildings:8844497020",
+      "sourceName": null,
+      "sourceUse": "unknown",
+      "sourceClass": "yes",
+      "heightM": 5,
+      "areaM2": 107.54,
+      "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+      "sourceCells": [
+        {
+          "key": "16/43940/20694",
+          "sha256": "9d01b07da846f516b07d2bdf4f48dcadab83db5925f721d596305b1180bae52f"
+        },
+        {
+          "key": "16/43940/20695",
+          "sha256": "121f332bceb14183a187308a0a2a064c8eac5fe44a1c1de31d3a878bb407d751"
+        },
+        {
+          "key": "16/43941/20694",
+          "sha256": "c23adbc006e9be6fdc10e796e1092fb2ff775df95f10ad343efa734f66cefa39"
+        },
+        {
+          "key": "16/43941/20695",
+          "sha256": "fbcaa9e8e122ab280de525b863a652a7c116f0f4f6561f366c81a8752517d81a"
+        }
+      ]
+    },
+    {
+      "name": "RU-CHE-SET-TRA",
+      "lon": 61.51795905,
+      "lat": 55.1752876,
+      "zoom": 18.25,
+      "pitch": 55,
+      "bearing": -35,
+      "canonicalId": "openmaptiles_buildings:8007498440",
+      "sourceName": null,
+      "sourceUse": "residential",
+      "sourceClass": "apartments",
+      "heightM": 30,
+      "areaM2": 1071.47,
+      "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+      "sourceCells": [
+        {
+          "key": "16/43966/20672",
+          "sha256": "36d8e000483ad7d49fbea148df72e5a403f8363e965b2c96f67d74088cf21522"
+        },
+        {
+          "key": "16/43966/20673",
+          "sha256": "36bdf9717c17ff5b02b8b86af32a7a671fbc030a5557d6d20e7148649bd7eaf9"
+        },
+        {
+          "key": "16/43967/20672",
+          "sha256": "707dea988fb1992616bd301d15569beae18101a102fe797fb5a7ea3a25bbfa81"
+        },
+        {
+          "key": "16/43967/20673",
+          "sha256": "ddacee9c8e39cf371e35e704377081fe2317f856e98f175dc5181d2f795aa996"
+        }
+      ]
+    },
+    {
+      "name": "RU-CHE-SET-LEN",
+      "lon": 61.46263365,
+      "lat": 55.119409950000005,
+      "zoom": 18.25,
+      "pitch": 55,
+      "bearing": -35,
+      "canonicalId": "openmaptiles_buildings:535505340",
+      "sourceName": null,
+      "sourceUse": "residential",
+      "sourceClass": "apartments",
+      "heightM": 15,
+      "areaM2": 2163.7,
+      "provenance": "Nearest actual source building >=50m2 to source-index district probe cell center",
+      "sourceCells": [
+        {
+          "key": "16/43956/20690",
+          "sha256": "23c4b4963dcbac3ccd4e9c9fab5fa59d707ff219d94d89efced27261bbca1dd3"
+        },
+        {
+          "key": "16/43956/20691",
+          "sha256": "2b40e36527cfee0a018a7e01e9560a9b6860b870f1f445b02c21497b243d2cda"
+        },
+        {
+          "key": "16/43957/20690",
+          "sha256": "e861af71ba9409cf56837a2f56d0928a48ad6bf98f00c77ec08ca840543f1113"
+        },
+        {
+          "key": "16/43957/20691",
+          "sha256": "e0a3df645d9b451c6dc944cf50ec13180c6eb426a4896dd9a9121f0c4c8ca1ad"
+        }
+      ]
+    }
+  ],
+  "artifactBundleName": "full-v3-review",
+  "artifacts": [
+    {
+      "scene": "user-desktop",
+      "filename": "user-desktop.png",
+      "bytes": 629573,
+      "sha256": "59598f42fadc10175036cd60d3c73c76fea1296500ac553059fe1c93b1f5e431",
+      "viewport": [
+        1280,
+        800
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 595,
+      "nativeCount": 412,
+      "meshCount": 183
+    },
+    {
+      "scene": "user-mobile",
+      "filename": "user-mobile.png",
+      "bytes": 188304,
+      "sha256": "cbe04f7e70421b99893c98e7d733d511ead4f6bfcaec2085a89dbceb50d9b817",
+      "viewport": [
+        390,
+        844
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 595,
+      "nativeCount": 438,
+      "meshCount": 157
+    },
+    {
+      "scene": "courtyard-desktop",
+      "filename": "courtyard-desktop.png",
+      "bytes": 707791,
+      "sha256": "d7107885bb4cbd7fcd8e1287bbcdf6674f23b830b093c4888592e6048fafd7b8",
+      "viewport": [
+        1280,
+        800
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 250,
+      "nativeCount": 246,
+      "meshCount": 4
+    },
+    {
+      "scene": "courtyard-mobile",
+      "filename": "courtyard-mobile.png",
+      "bytes": 210703,
+      "sha256": "3bde998dda97fff837d674f20ba320f26e64a8d897713c1724e61a7e1ea9dfd5",
+      "viewport": [
+        390,
+        844
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 250,
+      "nativeCount": 246,
+      "meshCount": 4
+    },
+    {
+      "scene": "waterfront-desktop",
+      "filename": "waterfront-desktop.png",
+      "bytes": 413496,
+      "sha256": "e2a4b29e2e33ac2e6b1d25f9dd09a56299c8a4cfdf2cf4e17ea693e5bef8ef5a",
+      "viewport": [
+        1280,
+        800
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 583,
+      "nativeCount": 466,
+      "meshCount": 117
+    },
+    {
+      "scene": "waterfront-mobile",
+      "filename": "waterfront-mobile.png",
+      "bytes": 117444,
+      "sha256": "d95e7959af605f3d1adebd738baa364125102bdc3fb3f874f6aa9b48d9303330",
+      "viewport": [
+        390,
+        844
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 583,
+      "nativeCount": 541,
+      "meshCount": 42
+    },
+    {
+      "scene": "RU-CHE-SET-KUR-desktop",
+      "filename": "RU-CHE-SET-KUR-desktop.png",
+      "bytes": 450676,
+      "sha256": "74297ca558318bf3411058c5d2709284922a3b81e5f11ef5dad335835fd027ca",
+      "viewport": [
+        1280,
+        800
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 268,
+      "nativeCount": 175,
+      "meshCount": 93
+    },
+    {
+      "scene": "RU-CHE-SET-KUR-mobile",
+      "filename": "RU-CHE-SET-KUR-mobile.png",
+      "bytes": 118500,
+      "sha256": "6563d370af23e676af72d58351538d8e136523284949ead3eb416f39c4ad2fc4",
+      "viewport": [
+        390,
+        844
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 268,
+      "nativeCount": 175,
+      "meshCount": 93
+    },
+    {
+      "scene": "RU-CHE-SET-KAL-desktop",
+      "filename": "RU-CHE-SET-KAL-desktop.png",
+      "bytes": 540159,
+      "sha256": "6440667696cbd26b3cccc403b84a9ec25babdef974d0d277d3fd4b6c4bfee202",
+      "viewport": [
+        1280,
+        800
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 526,
+      "nativeCount": 417,
+      "meshCount": 109
+    },
+    {
+      "scene": "RU-CHE-SET-KAL-mobile",
+      "filename": "RU-CHE-SET-KAL-mobile.png",
+      "bytes": 161209,
+      "sha256": "5a4a8ac7db5a19c079c4e85bcd39ec46129894b1b6500f8beaed025975067d9e",
+      "viewport": [
+        390,
+        844
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 526,
+      "nativeCount": 412,
+      "meshCount": 114
+    },
+    {
+      "scene": "RU-CHE-SET-CEN-desktop",
+      "filename": "RU-CHE-SET-CEN-desktop.png",
+      "bytes": 502071,
+      "sha256": "3921c058afd51c14dc42a006e44c501c95054ac22ecd90b52165b72899d9fa30",
+      "viewport": [
+        1280,
+        800
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 112,
+      "nativeCount": 55,
+      "meshCount": 57
+    },
+    {
+      "scene": "RU-CHE-SET-CEN-mobile",
+      "filename": "RU-CHE-SET-CEN-mobile.png",
+      "bytes": 131639,
+      "sha256": "30f96f79361148d32e090490bf6a02c9e82d1ef8a7646378b8328155bfa8bf19",
+      "viewport": [
+        390,
+        844
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 112,
+      "nativeCount": 104,
+      "meshCount": 8
+    },
+    {
+      "scene": "RU-CHE-SET-MET-desktop",
+      "filename": "RU-CHE-SET-MET-desktop.png",
+      "bytes": 514530,
+      "sha256": "71a9d39a109d0c509297a679a5d14d2d31fb1321a169004dd69fbb4abf78bb50",
+      "viewport": [
+        1280,
+        800
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 431,
+      "nativeCount": 398,
+      "meshCount": 33
+    },
+    {
+      "scene": "RU-CHE-SET-MET-mobile",
+      "filename": "RU-CHE-SET-MET-mobile.png",
+      "bytes": 165377,
+      "sha256": "7f09daa9c7e1b70cb5204da3cdde3137cb878cb539784a451e19d2bf880c74c3",
+      "viewport": [
+        390,
+        844
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 431,
+      "nativeCount": 410,
+      "meshCount": 21
+    },
+    {
+      "scene": "RU-CHE-SET-SOV-desktop",
+      "filename": "RU-CHE-SET-SOV-desktop.png",
+      "bytes": 232858,
+      "sha256": "5c44ca8e4394bf8136eaa1f6e2f843225a82336e349b7b1ad0b3445ec9ea542a",
+      "viewport": [
+        1280,
+        800
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 677,
+      "nativeCount": 582,
+      "meshCount": 95
+    },
+    {
+      "scene": "RU-CHE-SET-SOV-mobile",
+      "filename": "RU-CHE-SET-SOV-mobile.png",
+      "bytes": 75388,
+      "sha256": "b0c12c683bfd58aba4f169b52ecd673624644fcdfac9d1afdf6d9e14df33fbcb",
+      "viewport": [
+        390,
+        844
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 677,
+      "nativeCount": 582,
+      "meshCount": 95
+    },
+    {
+      "scene": "RU-CHE-SET-TRA-desktop",
+      "filename": "RU-CHE-SET-TRA-desktop.png",
+      "bytes": 588190,
+      "sha256": "e4ebfc91bc2089463c9f1a87b0dba899f0e25309248f8f8db7f98d1a0ef1770e",
+      "viewport": [
+        1280,
+        800
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 221,
+      "nativeCount": 130,
+      "meshCount": 91
+    },
+    {
+      "scene": "RU-CHE-SET-TRA-mobile",
+      "filename": "RU-CHE-SET-TRA-mobile.png",
+      "bytes": 167956,
+      "sha256": "7cf136d588fcdfa7027c24281856a6987b9acba3ffe6a260cf41e10f9010bc50",
+      "viewport": [
+        390,
+        844
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 221,
+      "nativeCount": 130,
+      "meshCount": 91
+    },
+    {
+      "scene": "RU-CHE-SET-LEN-desktop",
+      "filename": "RU-CHE-SET-LEN-desktop.png",
+      "bytes": 758135,
+      "sha256": "3731249c10a861615de708b0ad90b375649a4dcb1fb72240240308017a93e0b6",
+      "viewport": [
+        1280,
+        800
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 755,
+      "nativeCount": 646,
+      "meshCount": 109
+    },
+    {
+      "scene": "RU-CHE-SET-LEN-mobile",
+      "filename": "RU-CHE-SET-LEN-mobile.png",
+      "bytes": 199037,
+      "sha256": "13a7b62d74315253d4f21e2dac0e1cc4d921ffecc50a053d6dce5c41d3cb5460",
+      "viewport": [
+        390,
+        844
+      ],
+      "readinessPassed": true,
+      "pageAndConsoleErrors": 0,
+      "httpErrors": 0,
+      "canonicalSourceCount": 755,
+      "nativeCount": 651,
+      "meshCount": 104
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P1",
+      "kind": "detail_selection",
+      "scene": "RU-CHE-SET-TRA",
+      "description": "The foreground30m apartment canonical8007498440 remains native atzoom18.25 despite enough final settled geometry space; detailed and native material quality differ strongly."
+    },
+    {
+      "priority": "P1",
+      "kind": "roof_aliasing",
+      "scene": "RU-CHE-SET-MET",
+      "description": "Metal garage roofs show a repeated diagonal crosshatch/moire in both desktop and mobile. Root cause requires bounded material/geometry isolation."
+    },
+    {
+      "priority": "P1",
+      "kind": "ground_and_courtyard_art",
+      "scene": "all",
+      "description": "Large uniform beige or green ground and empty-looking yards remain. Sparse source-backed vegetation is correct but insufficient for the requested artistic result."
+    },
+    {
+      "priority": "P2",
+      "kind": "roof_repetition",
+      "scene": "courtyard",
+      "description": "Metric3m asphalt_02 roof texture repeats two long source cracks coherently. Rooftop equipment and real source hole are present."
+    },
+    {
+      "priority": "P2",
+      "kind": "mobile_framing",
+      "scene": "all",
+      "description": "Status panels, timeline and bottom statistics sheet occupy much of the390px view; several control views are dominated by roof or water."
+    },
+    {
+      "priority": "improved",
+      "kind": "water",
+      "scene": "waterfront",
+      "description": "Visible water and shore are continuous with softly irregular ripples; former flat patch and long bands are absent in these frames."
+    }
+  ],
+  "limitations": [
+    "Purposeful seven-district source probes are not representative statistical samples and do not certify every city cell.",
+    "Static frames do not validate continuous LOD transitions, gameplay collisions or all source polygons.",
+    "Standalone Chromium uses SwiftShader; concurrent activity contaminates timings. No FPS claim.",
+    "One new unintegrated GameTrafficSignals.ts appeared during capture. All pre-existing TS/TSX/CSS/JSON source paths hash-identical; full source hash therefore differs.",
+    "The 1280x800 waterfront framing does not include the entire bridge; this run verifies visible bank/water continuity only."
+  ],
+  "followUp": "Fix the detail selection and roof artifacts, improve source-backed courtyard/ground presentation, then repeat visual acceptance against a frozen build. This record is not a release-pass claim."
+}

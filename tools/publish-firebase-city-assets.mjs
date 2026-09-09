@@ -5,12 +5,15 @@ import { readFile, realpath, stat } from 'node:fs/promises';
 import { dirname, isAbsolute, posix, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createGunzip } from 'node:zlib';
+import { readVisualPublicationPlan } from './visual-release/verified-plan.mjs';
+import { readMovementPublicationPlan } from './movement-release/verified-plan.mjs';
 
 export const PROJECT_ID = 'omnitwin-demo';
 export const PROJECT_NUMBER = '679501553916';
 export const PUBLIC_ASSET_BUCKET = 'omnitwin-demo-city-assets';
-export const PUBLICATION_LIMITS = Object.freeze({manifestBytes:32*1024*1024,assetBytes:64*1024*1024,objects:40000,totalBytes:4*1024**3,concurrency:2,responseBytes:64*1024,requestTimeoutMs:30000});
+export const PUBLICATION_LIMITS = Object.freeze({manifestBytes:32*1024*1024,assetBytes:64*1024*1024,objects:40000,totalBytes:8*1024**3,concurrency:2,responseBytes:64*1024,requestTimeoutMs:30000});
 const ROOTS = Object.freeze(['city-v2/manifest.json','demo-v2/manifest.json','demo-v2/spatial/manifest.json']);
+const MOVEMENT_LIMITS = Object.freeze({manifestBytes:12*1024*1024,leafBytes:8*1024*1024,cells:10000,pageSize:8192});
 const CACHE_CONTROL = 'public, max-age=31536000, immutable, no-transform';
 const DELIVERY_POLICY = 'canonical-gzip-plus-opaque-gzip-alias-v1';
 const EXCLUDED = Object.freeze(['city-v2.sourceLedger (upstream raw URLs)','city-v2.licenses (external documentation URLs)','compiler/provenance/sourceHashes (code and observed-source references, not upload assets)','unreferenced files and superseded generations','everything outside city-v2/ and demo-v2/']);
@@ -78,6 +81,7 @@ export async function planFirebaseCityAssets({publicRoot=resolve(import.meta.dir
   if(gzipAliases!==true)fail('Both canonical and opaque gzip aliases are required.');
   publicRoot=await realpath(publicRoot);
   const manifests=new Map();const files=new Map();const deliveries=new Map();const gzipPairs=[];const rootManifestHashes={};
+  const dependentManifestHashes={};const dependentManifests=[];
   let referencedBytes=0;
   function registerFile(file) {
     const previous=files.get(file.path);
@@ -130,6 +134,47 @@ export async function planFirebaseCityAssets({publicRoot=resolve(import.meta.dir
     if(!role.contexts.householdTripMasks)fail('Missing household trip-mask descriptor.');
     asset(ROOTS[2],role.contexts.householdTripMasks);
   });
+  if(spatial.movementIndex!==undefined){
+    // Exactly one approved manifest level, not arbitrary recursive file discovery.
+    const reference=normalizedDescriptor(ROOTS[2],spatial.movementIndex);
+    if(!reference.path.startsWith('demo-v2/spatial/')||!reference.path.endsWith('.json')||reference.bytes>MOVEMENT_LIMITS.manifestBytes)fail('Invalid movement manifest scope or size.');
+    asset(ROOTS[2],spatial.movementIndex);
+    const file=await localFile(publicRoot,reference.path,MOVEMENT_LIMITS.manifestBytes);const bytes=await readFile(file.absolute);
+    if(bytes.length!==reference.bytes||sha256(bytes)!==reference.sha256)fail('Movement manifest digest or size mismatch.');
+    const movement=JSON.parse(bytes.toString('utf8'));
+    const positive=value=>Number.isSafeInteger(value)&&value>0;
+    const baseSpatial={...spatial};delete baseSpatial.movementIndex;
+    if(movement.contract!=='DemoMovementIndexManifestV2'||movement.datasetId!==population.datasetId||movement.representation!=='visual_synthesis'||movement.scientificClaim!==false||
+      !positive(movement.recordCount)||movement.recordCount!==population.recordCount||movement.recordCount!==spatial.recordCount||
+      !positive(movement.householdCount)||movement.householdCount!==population.householdCount||movement.householdCount!==spatial.householdCount||
+      !positive(movement.buildingCount)||movement.buildingCount!==spatial.buildingCount||movement.cellZoom!==16||
+      !positive(movement.pageSize)||movement.pageSize>MOVEMENT_LIMITS.pageSize||movement.maxPageSize!==MOVEMENT_LIMITS.pageSize||movement.maxPageBytes!==MOVEMENT_LIMITS.leafBytes||
+      !Array.isArray(movement.cells)||movement.cells.length>MOVEMENT_LIMITS.cells)fail('Invalid movement manifest contract.');
+    for(const key of ['populationManifest','geographyManifest','buildingIndex','populationCodec','spatialCodec','routeCorridorCodec']){
+      if(!validHash(movement.sourceHashes?.[key])||movement.sourceHashes[key]!==spatial.sourceHashes[key])fail('Movement manifest lineage mismatch.');
+    }
+    if(movement.sourceHashes.baseSpatialManifest!==sha256(`${JSON.stringify(baseSpatial)}\n`)||!validHash(movement.sourceHashes.codec)||!validHash(movement.sourceHashes.compiler))fail('Movement manifest base or compiler lineage mismatch.');
+    manifests.set(reference.path,movement);dependentManifestHashes[reference.path]=reference.sha256;dependentManifests.push(reference.path);
+    if(spatial.movementIndex.gzip!==undefined)dependentManifests.push(normalizedDescriptor(ROOTS[2],spatial.movementIndex.gzip).path);
+    const directory=`${posix.dirname(reference.path)}/`;const keys=new Set();
+    const movementAsset=value=>{
+      const descriptor=normalizedDescriptor(reference.path,value);
+      if(!descriptor.path.startsWith(directory)||!descriptor.path.endsWith('.json')||descriptor.bytes<1||descriptor.bytes>MOVEMENT_LIMITS.leafBytes)fail('Movement asset scope or size mismatch.');
+      if(value.gzip!==undefined&&value.gzip.bytes>MOVEMENT_LIMITS.leafBytes)fail('Movement gzip asset exceeds runtime size budget.');
+      asset(reference.path,value);
+    };
+    for(const cell of movement.cells){
+      if(!object(cell)||typeof cell.key!=='string'||!/^16\/\d+\/\d+$/.test(cell.key)||cell.key.split('/').slice(1).some(value=>Number(value)>65535)||keys.has(cell.key)||
+        !Array.isArray(cell.bbox)||cell.bbox.length!==4||!cell.bbox.every(Number.isFinite)||cell.bbox[0]<-180||cell.bbox[2]>180||cell.bbox[1]<-90||cell.bbox[3]>90||cell.bbox[0]>cell.bbox[2]||cell.bbox[1]>cell.bbox[3]||
+        !Number.isSafeInteger(cell.count)||cell.count<0||cell.count>movement.recordCount||!Array.isArray(cell.pages)||cell.pages.length>PUBLICATION_LIMITS.objects)fail('Invalid movement cell descriptor.');
+      keys.add(cell.key);movementAsset(cell.context);let count=0;let previous=-1;
+      for(const page of cell.pages){
+        if(!object(page)||!positive(page.count)||page.count>movement.pageSize||!Number.isSafeInteger(page.firstPersonIndex)||page.firstPersonIndex<=previous||!Number.isSafeInteger(page.lastPersonIndex)||page.lastPersonIndex<page.firstPersonIndex||page.lastPersonIndex>=movement.recordCount||page.count>page.lastPersonIndex-page.firstPersonIndex+1)fail('Invalid movement page range.');
+        movementAsset(page);count+=page.count;previous=page.lastPersonIndex;
+      }
+      if(count!==cell.count)fail('Movement cell membership count mismatch.');
+    }
+  }
   // Detect a new local runtime descriptor rather than silently omitting it.
   // This traversal discovers omissions only; it never authorizes more uploads.
   const excludedKeys=new Set(['sourceLedger','licenses','compilerSourceHashes','provenance','sourceHashes']);
@@ -155,8 +200,8 @@ export async function planFirebaseCityAssets({publicRoot=resolve(import.meta.dir
     ...(item.contentEncoding?{contentEncoding:item.contentEncoding}:{}),cacheControl:CACHE_CONTROL,
     metadata:Object.freeze({sha256:item.stored.sha256,storedBytes:String(item.stored.bytes),rawSha256:item.raw.sha256,rawBytes:String(item.raw.bytes),releaseId,projectId:PROJECT_ID,sourcePath:item.path}),
   }));
-  const plan=Object.freeze({contract:'FirebaseCityPublicationV1',projectId:PROJECT_ID,projectNumber:PROJECT_NUMBER,releaseId,prefix,rootManifestHashes:Object.freeze(rootManifestHashes),objects:Object.freeze(objects),excludedFamilies:EXCLUDED,totalStoredBytes:objects.reduce((sum,item)=>sum+item.storedBytes,0),totalRawBytes:objects.reduce((sum,item)=>sum+item.rawBytes,0),verifiedFileCount:files.size,verifiedFileBytes:referencedBytes});
-  privatePlans.set(plan,{publicRoot,files:[...files.values()],deliveries});return plan;
+  const plan=Object.freeze({contract:'FirebaseCityPublicationV1',projectId:PROJECT_ID,projectNumber:PROJECT_NUMBER,releaseId,prefix,rootManifestHashes:Object.freeze(rootManifestHashes),dependentManifestHashes:Object.freeze(dependentManifestHashes),objects:Object.freeze(objects),excludedFamilies:EXCLUDED,totalStoredBytes:objects.reduce((sum,item)=>sum+item.storedBytes,0),totalRawBytes:objects.reduce((sum,item)=>sum+item.rawBytes,0),verifiedFileCount:files.size,verifiedFileBytes:referencedBytes});
+  privatePlans.set(plan,{publicRoot,files:[...files.values()],deliveries,dependentManifests});return plan;
 }
 
 export function summarizeFirebaseCityPlan(plan) {
@@ -164,7 +209,7 @@ export function summarizeFirebaseCityPlan(plan) {
   return {contract:plan.contract,projectId:plan.projectId,projectNumber:plan.projectNumber,releaseId:plan.releaseId,prefix:plan.prefix,
     objectCount:plan.objects.length,canonicalGzipObjects:plan.objects.filter(o=>o.contentEncoding==='gzip').length,opaqueGzipAliases:plan.objects.filter(o=>o.path.endsWith('.gz')).length,
     totalStoredBytes:plan.totalStoredBytes,totalRawBytes:plan.totalRawBytes,verifiedFileCount:plan.verifiedFileCount,verifiedFileBytes:plan.verifiedFileBytes,
-    rootManifestHashes:plan.rootManifestHashes,excludedFamilies:plan.excludedFamilies,concurrency:PUBLICATION_LIMITS.concurrency,
+    rootManifestHashes:plan.rootManifestHashes,dependentManifestHashes:plan.dependentManifestHashes,excludedFamilies:plan.excludedFamilies,concurrency:PUBLICATION_LIMITS.concurrency,
     accessStatus:'Upload does not grant public access or configure CORS.'};
 }
 async function guarded(task,signal,message) {
@@ -193,12 +238,13 @@ function sameRemote(remote, expected) {
 
 /** Explicit upload entry point. No auth discovery, bucket mutation, ACL or overwrite operation exists. */
 export async function publishFirebaseCityAssets(plan,{projectId=PROJECT_ID,bucket,getAccessToken,fetchImpl=fetch,signal:outerSignal}={}) {
-  const local=privatePlans.get(plan);
+  const local=privatePlans.get(plan)??readVisualPublicationPlan(plan)??readMovementPublicationPlan(plan);
   if(!local)fail('Expected an in-process verified publication plan.');
   if(projectId!==PROJECT_ID||bucket!==PUBLIC_ASSET_BUCKET||typeof getAccessToken!=='function'||typeof fetchImpl!=='function')fail('Explicit approved project, dedicated bucket and trusted auth provider required.');
   if(outerSignal?.aborted)fail('Publication cancelled.');
   // A build may have changed after the printed dry-run; reject it before auth.
-  for(const file of local.files){if(outerSignal?.aborted)fail('Publication cancelled.');await verifyFile(local.publicRoot,file);}
+  if(local.revalidate)await local.revalidate(outerSignal);
+  else for(const file of local.files){if(outerSignal?.aborted)fail('Publication cancelled.');await verifyFile(local.publicRoot,file);}
   const abort=new AbortController();const baseSignal=outerSignal?AbortSignal.any([outerSignal,abort.signal]):abort.signal;
   async function request(url,options={}) {
     if(baseSignal.aborted)fail('Publication cancelled.');
@@ -224,8 +270,9 @@ export async function publishFirebaseCityAssets(plan,{projectId=PROJECT_ID,bucke
   }
   async function upload(expected) {
     if(await existing(expected))return 'skipped';
-    const delivery=local.deliveries.get(expected.path);const file=await localFile(local.publicRoot,delivery.stored.path,PUBLICATION_LIMITS.assetBytes);
-    const bytes=await readFile(file.absolute);
+    let bytes;
+    if(local.readStoredBody)bytes=await local.readStoredBody(expected);
+    else {const delivery=local.deliveries.get(expected.path);const file=await localFile(local.publicRoot,delivery.stored.path,PUBLICATION_LIMITS.assetBytes);bytes=await readFile(file.absolute);}
     if(bytes.length!==expected.storedBytes||sha256(bytes)!==expected.sha256)fail(`Asset changed before upload: ${expected.path}`);
     const boundary=`omnitwin-${randomUUID()}`;
     const metadata={name:expected.name,contentType:expected.contentType,cacheControl:expected.cacheControl,...(expected.contentEncoding?{contentEncoding:expected.contentEncoding}:{}),md5Hash:expected.md5Hash,metadata:expected.metadata};
@@ -246,12 +293,17 @@ export async function publishFirebaseCityAssets(plan,{projectId=PROJECT_ID,bucke
     await Promise.all(Array.from({length:concurrency},worker));
     if(firstError)throw firstError;
   };
-  await runBatch(plan.objects.filter(item=>!ROOTS.includes(item.path)),PUBLICATION_LIMITS.concurrency);
+  const rootPaths=local.rootPaths??ROOTS;
+  const manifestPaths=new Set([...rootPaths,...local.dependentManifests]);
+  await runBatch(plan.objects.filter(item=>!manifestPaths.has(item.path)),PUBLICATION_LIMITS.concurrency);
+  // The nested movement manifest and its opaque gzip alias cannot precede
+  // their leaf pages/contexts, even while a second upload is still in flight.
+  await runBatch(local.dependentManifests.map(path=>plan.objects.find(item=>item.path===path)),1);
   // New root manifests cannot advertise leaves that this invocation has not yet
   // verified remotely. This is publication ordering, not mutable activation.
-  await runBatch(ROOTS.map(path=>plan.objects.find(item=>item.path===path)),1);
+  await runBatch(rootPaths.map(path=>plan.objects.find(item=>item.path===path)),1);
   return {releaseId:plan.releaseId,prefix:plan.prefix,bucket,projectId:PROJECT_ID,uploaded,skipped,totalStoredBytes:plan.totalStoredBytes,
-    manifestUrls:Object.fromEntries(ROOTS.map(path=>[path,`https://storage.googleapis.com/${bucket}/${plan.prefix}${path}`])),publicReady:false};
+    manifestUrls:Object.fromEntries(rootPaths.map(path=>[path,`https://storage.googleapis.com/${bucket}/${plan.prefix}${path}`])),publicReady:false};
 }
 
 async function main(argv) {

@@ -1,0 +1,148 @@
+{
+  "contract": "OmniTwinCourtyardGroundEvidenceV1",
+  "createdAt": "2026-09-09T11:12:52.371Z",
+  "representation": "visual_synthesis",
+  "sourceClassification": "verified_building_interior_ring; paving is illustrative, not surveyed land use",
+  "canonicalId": "openmaptiles_buildings:27724113",
+  "camera": {
+    "longitude": 61.39086657500001,
+    "latitude": 55.170028625,
+    "zoom": 19,
+    "pitch": 55,
+    "bearing": -70
+  },
+  "catalog": {
+    "uri": "catalog/build-2bed04fea8092a93/catalog-bca4ff81f5a4c1a8.json",
+    "bytes": 4490946,
+    "sha256": "bca4ff81f5a4c1a8c3517f0b1faeceddd6042cf20d811c70661993ecec72a819"
+  },
+  "source": [
+    {
+      "path": "apps/web/src/renderer/game/GameCourtyardGround.ts",
+      "sha256": "9f65f204cc1de885ad88fbaef80d65282f4ba7a331d4ad6e76da23a5ad620a78"
+    },
+    {
+      "path": "apps/web/src/renderer/game/gameCourtyardGroundMaterial.ts",
+      "sha256": "b2a5ef17329b7a599eb2f590695e6686efb36dc3a572ecbefac971e9c85b458e"
+    },
+    {
+      "path": "apps/web/src/renderer/game/GameCourtyardGround.test.ts",
+      "sha256": "e5181f49e59fb39e02a263c72f34f8577a0645f5b901e70113d5ff4bb15634a5"
+    }
+  ],
+  "artifacts": [
+    {
+      "phase": "before",
+      "mode": "desktop",
+      "filename": "courtyard-desktop-before.png",
+      "sha256": "1220b4718fd49c74096db9fadcadaaa2a4863b4ba25789beb177f107967c3839",
+      "bytes": 516431,
+      "errors": [],
+      "framesIn2200ms": 0,
+      "courtyardGround": null
+    },
+    {
+      "phase": "before",
+      "mode": "mobile",
+      "filename": "courtyard-mobile-before.png",
+      "sha256": "b03c5a064e93ce8777e03ee2aa2ae32239e96e70039d418a91f6f0077d9506f3",
+      "bytes": 158155,
+      "errors": [],
+      "framesIn2200ms": 0,
+      "courtyardGround": null
+    },
+    {
+      "phase": "after",
+      "mode": "desktop",
+      "filename": "courtyard-desktop-after-mobile-fix.png",
+      "sha256": "bf0bab0367fb1e88b1f8bbd4bddb6cb1459ed85ebf863a301d2969bb7c81c438",
+      "bytes": 521471,
+      "errors": [],
+      "framesIn2200ms": 0,
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 1,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 2,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 2041,
+        "projectedVertices": 116,
+        "vertices": 120,
+        "triangles": 40,
+        "borderTriangles": 34,
+        "operations": 576,
+        "geometryUpdates": 1,
+        "geometryBytes": 3840,
+        "retainedBytes": 7680,
+        "estimatedPeakBytes": 79122,
+        "draws": 1,
+        "lastError": null
+      }
+    },
+    {
+      "phase": "after",
+      "mode": "mobile",
+      "filename": "courtyard-mobile-after-mobile-fix.png",
+      "sha256": "727ee0c784189607807d0203c7c9a3183b07255bf5f5f2f897bacd629a8009cd",
+      "bytes": 162061,
+      "errors": [],
+      "framesIn2200ms": 0,
+      "courtyardGround": {
+        "state": "ready",
+        "representation": "visual_synthesis",
+        "courtyardClassification": "source_enclosed_hole_not_surveyed_paving",
+        "roadsPolicy": "source_road_surfaces_above_unmodified_floor",
+        "courtyards": 1,
+        "islands": 0,
+        "duplicates": 0,
+        "omittedCoverage": 2,
+        "omittedObstructions": 0,
+        "omittedBudget": 0,
+        "sourceVertices": 2041,
+        "projectedVertices": 116,
+        "vertices": 120,
+        "triangles": 40,
+        "borderTriangles": 34,
+        "operations": 576,
+        "geometryUpdates": 1,
+        "geometryBytes": 3840,
+        "retainedBytes": 7680,
+        "estimatedPeakBytes": 79122,
+        "draws": 1,
+        "lastError": null
+      }
+    }
+  ],
+  "checks": {
+    "focusedTests": 27,
+    "typecheck": "pass",
+    "desktopViewport": [
+      1280,
+      800
+    ],
+    "mobileViewport": [
+      390,
+      844
+    ],
+    "realScreenshotsOpened": true
+  },
+  "findings": [
+    "The actual enclosed source courtyard has restrained half-metre paving and a half-metre edge course on desktop and mobile.",
+    "The full verified source hole remains selected when only part intersects the mobile viewport.",
+    "Existing source roads remain above the uninterrupted floor; islands are excluded by source footprints.",
+    "One draw, 40 triangles, 7680 retained bytes and 79122 estimated preparation peak bytes on this actual courtyard.",
+    "No additional furniture, trees or landscape classification was introduced."
+  ],
+  "limitations": [
+    "This bounded change does not meet the full SimCity 2013 artistic target by itself.",
+    "Only enclosed source building holes qualify; open U-shaped yards retain the existing base ground.",
+    "The actual camera is dominated by the surrounding roof and walls; much of the courtyard is naturally occluded.",
+    "Screenshots use local Chromium SwiftShader under concurrent background work; no FPS claim.",
+    "PNGs are retained as local QA artifacts rather than committed binary images."
+  ]
+}

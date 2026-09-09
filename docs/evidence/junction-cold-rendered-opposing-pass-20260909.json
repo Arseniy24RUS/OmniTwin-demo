@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-09",
+  "status": "passed_bounded_cold_history_with_explicit_exclusive_policy",
+  "classification": "independent_actual_interpolated_shader_positions_and_body_envelopes",
+  "scope": "Wide user camera from the first rendered actor probe in a fresh playing context through the earlier bridge-admission and later retained-route merge-overflow windows. This is sampled local evidence, not whole-city or continuous-time collision acceptance.",
+  "camera": {
+    "longitude": 61.36655003525502,
+    "latitude": 55.15701676371921,
+    "zoom": 16.284,
+    "pitch": 35.00168684811705,
+    "bearing": 95.88051943032724
+  },
+  "browser": {
+    "version": "152.0.7977.83",
+    "channel": "chrome",
+    "headless": true,
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.16.1656)",
+    "viewport": [
+      1280,
+      800
+    ],
+    "deviceScaleFactor": 1,
+    "separateFreshContext": true,
+    "noVideo": true
+  },
+  "method": {
+    "initialMinute": 925,
+    "speed": 1,
+    "coldPlaying": true,
+    "initialPause": false,
+    "initialAssetOrMetadataGate": false,
+    "samplerInstalledBeforeNavigation": true,
+    "initialPollsWithoutDrawableActors": 32,
+    "samples": 356,
+    "simulationRange": [
+      55506.37689999986,
+      55581.32599999988
+    ],
+    "elapsedSimulationSeconds": 74.94910000001983,
+    "sampling": "150ms requested in-page timer; retains all renderer IDs and reads existing two-ID GPU/64-ID traffic probes in chunks. Read-only ID copy is confined to this context served module; no production instrumentation or input changes.",
+    "samplingIntervalsMilliseconds": {
+      "median": 182.4999999953434,
+      "p95": 461.1999999251566,
+      "maximum": 3628.499999998894,
+      "gapsAbove500": 15
+    },
+    "body": "Actual shader interpolation positions and smooth yaw. Sprite vehicles are checked as nominal5x2m oriented rectangles against each other and.35m pedestrian controller discs. No near-mesh or exact triangle-collision claim is made from this wide-LOD run.",
+    "queue": "Same directed supporting line with overlapping source intervals; measured station headway8m.",
+    "signals": "All exposed junction approaches: no simultaneous conflicting greens and no green for an actor kind outside the current phase.",
+    "performance": "Instrumentation collects many actor and signal rows; sampling intervals are not map FPS or presentation frame-time measurements.",
+    "visibilityDefinition": "Counts mean shader opacity>0.05 across all retained renderer IDs. Per-instance viewport inclusion or occlusion is not measured.",
+    "signalScope": "Controller phase and identity consistency only; GameTrafficSignals visual prop telemetry is a separate root check."
+  },
+  "checks": {
+    "carCar": 650519,
+    "carPed": 7063008,
+    "queue": 19754,
+    "signals": 255142
+  },
+  "minimums": {
+    "carCar": 0.5141660755447033,
+    "carPed": 0.34995696931658327,
+    "queueStation": 8
+  },
+  "results": {
+    "visibleUniqueActors": 581,
+    "managedRendererSlots": [
+      619,
+      634
+    ],
+    "visibleActorsMovedOverHalfMeter": 564,
+    "movedVehicles": 144,
+    "movedPedestrians": 420,
+    "bodyOverlapSamples": 0,
+    "queueViolationSamples": 0,
+    "signalViolations": 0,
+    "sourceRefreshes": [
+      3,
+      17
+    ],
+    "sourceReanchors": [
+      0,
+      0
+    ],
+    "junctionOverflow": 0,
+    "admissionOverflows": 0,
+    "followingOverflows": 0,
+    "maximumMergeRefChecks": 71649,
+    "maximumPaths": 123,
+    "maximumJunctions": 173,
+    "maximumAssumedGradePaths": 2,
+    "phases": [
+      "vehicle",
+      "clearance",
+      "pedestrian"
+    ],
+    "waitingVehicleSamples": 356,
+    "waitingPedestrianSamples": 356,
+    "pauseAfter": {
+      "clock": true,
+      "actors": true,
+      "signals": true,
+      "additionalFrames": 0
+    },
+    "pageErrors": [],
+    "probeErrors": [],
+    "opposingLaneOverflows": 0,
+    "maximumOpposingSections": 14,
+    "signalIdentityValidation": {
+      "actualSignalSamples": 356,
+      "duplicateNodeOrApproachSamples": 0,
+      "failures": []
+    }
+  },
+  "sourceIntegrity": {
+    "sha256Before": {
+      "apps/web/src/renderer/game/TiledGameScene.tsx": "25f3290a123d5e70c8c01cddd1408b181e94f09b7b1527508ceb80b01ce5df9c",
+      "apps/web/src/renderer/game/TiledGameLayer.ts": "478d5e4d8694bfcf128f858c91791577ac63aa7d0c59d6024d947990abd229c9",
+      "apps/web/src/renderer/game/GameActors.ts": "edb76f4577ae3817ffb6475d0df0a80a26cc0626e32c48f0903d32bb94225c3a",
+      "apps/web/src/renderer/game/gameActorHeading.ts": "5c8578fc50e6cd95d019a163b321d92564656eea71cffb5f7bcf9b053cbc3690",
+      "apps/web/src/renderer/game/actorColumnsBridge.ts": "a59c750cbf355690148177a880764c995d45f2c60b67b3d0d460f451e775e913",
+      "apps/web/src/renderer/game/laneTraffic.ts": "149e96ed2dd055f63e2b955a3bb185a32044c6cb7f4e602b1115922e25580fb6",
+      "apps/web/src/renderer/game/opposingLaneReservations.ts": "9d0456a87350508df21716865d8ac6039d3bc71cb817c55602f45cd3ca6e43d4",
+      "apps/web/src/renderer/game/junctionTraffic.ts": "1a56af4461bae3ad56d761dce3d0179d54c62acc661c3bba467b00e37c2c2b2c",
+      "apps/web/src/renderer/game/actorFootprintClearance.ts": "3c396e0d2ab10152b6f2061406781855378ab50e6081a8846a875bd2ae21ed38",
+      "apps/web/public/city-visual-v1/manifest.json": "d1f25e4328caf10ddf7e3e6f8e2734b7cfc63b0ac7a28b0eb410af3fc53cf9cc",
+      "apps/web/public/assets/game-actors-v1/manifest.json": "3733817ee56c32fac81efa3f20605c94526a157f98f2d09c4667f74a959c0a2e"
+    },
+    "changedDuringCapture": [],
+    "rawCaptureSha256": "aed8eedbc248e9151d2092e8e6d81a0d5a78762d5368f11d9eb97065b1ed2022",
+    "analysisSha256": "df87a60ea777a7d3ef67a7a4f60b49bee2e1d5d54557175a9aaca5b0cbf3b9f6",
+    "sha256After": {
+      "apps/web/src/renderer/game/TiledGameScene.tsx": "25f3290a123d5e70c8c01cddd1408b181e94f09b7b1527508ceb80b01ce5df9c",
+      "apps/web/src/renderer/game/TiledGameLayer.ts": "478d5e4d8694bfcf128f858c91791577ac63aa7d0c59d6024d947990abd229c9",
+      "apps/web/src/renderer/game/GameActors.ts": "edb76f4577ae3817ffb6475d0df0a80a26cc0626e32c48f0903d32bb94225c3a",
+      "apps/web/src/renderer/game/gameActorHeading.ts": "5c8578fc50e6cd95d019a163b321d92564656eea71cffb5f7bcf9b053cbc3690",
+      "apps/web/src/renderer/game/actorColumnsBridge.ts": "a59c750cbf355690148177a880764c995d45f2c60b67b3d0d460f451e775e913",
+      "apps/web/src/renderer/game/laneTraffic.ts": "149e96ed2dd055f63e2b955a3bb185a32044c6cb7f4e602b1115922e25580fb6",
+      "apps/web/src/renderer/game/opposingLaneReservations.ts": "9d0456a87350508df21716865d8ac6039d3bc71cb817c55602f45cd3ca6e43d4",
+      "apps/web/src/renderer/game/junctionTraffic.ts": "1a56af4461bae3ad56d761dce3d0179d54c62acc661c3bba467b00e37c2c2b2c",
+      "apps/web/src/renderer/game/actorFootprintClearance.ts": "3c396e0d2ab10152b6f2061406781855378ab50e6081a8846a875bd2ae21ed38",
+      "apps/web/public/city-visual-v1/manifest.json": "d1f25e4328caf10ddf7e3e6f8e2734b7cfc63b0ac7a28b0eb410af3fc53cf9cc",
+      "apps/web/public/assets/game-actors-v1/manifest.json": "3733817ee56c32fac81efa3f20605c94526a157f98f2d09c4667f74a959c0a2e"
+    },
+    "topologyReplaySha256": "3bb309fdb84dc8534b30d39946e523f2a264e589e47b60b08abcc17ecd09791d"
+  },
+  "historicalFailures": [
+    "docs/evidence/junction-wide-rendered-20260909.json",
+    "docs/evidence/junction-cold-rendered-merge-budget-20260909.json",
+    "docs/evidence/junction-cold-rendered-history-20260909.json"
+  ],
+  "regressions": [
+    "apps/web/src/renderer/game/junctionTraffic.review.test.ts",
+    "apps/web/src/renderer/game/junctionTraffic.heading.review.test.ts",
+    "apps/web/src/renderer/game/junctionTraffic.capacity.review.test.ts",
+    "apps/web/src/renderer/game/laneTraffic.spacing.review.test.ts",
+    "apps/web/src/renderer/game/laneTraffic.visibility.review.test.ts",
+    "apps/web/src/renderer/game/laneTraffic.opposing.review.test.ts"
+  ],
+  "limits": "Sample gaps remain and no assertion covers an unsampled instant, every source history or every city location. All vehicles used spriteLOD here, so separate courtyard near-model evidence is required for roof-level close views and walking-pose geometry. Moving-actor counts demonstrate absence of a total freeze; legitimately stopped, completed or briefly visible trips are not required to move.",
+  "evidenceClassification": "derived_from_simulated_visual_synthesis",
+  "topologyReplay": {
+    "classification": "exact_captured_inventory_topology_replay",
+    "method": "Uses current frozen LaneTraffic source with each captured sync inventory and original deduplicated paths; reads private opposing topology diagnostics only. No reconstructed clock, source positions, or inferred reverse once legs are added. This is not a trajectory replay.",
+    "inventorySnapshots": 17,
+    "deduplicatedPaths": 54,
+    "maximums": {
+      "paths": 47,
+      "segments": 610,
+      "pairChecks": 648,
+      "mergeChecks": 708,
+      "contacts": 445,
+      "sections": 14,
+      "approaches": 50,
+      "exclusiveSections": 1,
+      "overflow": 0
+    },
+    "conservativeExclusivePolicy": "One actual source component activates conservative exclusive admission for contradictory direction-retracing variants. This is a deliberate documented presentation policy, not budget overflow; it is not claimed absent."
+  }
+}

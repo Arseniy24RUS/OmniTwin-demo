@@ -1,0 +1,29 @@
+{
+  "contract": "GameRoofMaterialEvidenceV2",
+  "date": "2026-09-09",
+  "classification": "targeted_material_verification_not_complete_art_acceptance",
+  "materialVersion": "metric-roof-filter-v2",
+  "materialSourceSha256": "9d5ae64eb9f1d100fe0d4926fc17c67c2c5a8d3162aa37667c4d0e8b7a13ecfd",
+  "catalogSha256": "bca4ff81f5a4c1a8c3517f0b1faeceddd6042cf20d811c70661993ecec72a819",
+  "camera": {"longitude":61.40850385,"latitude":55.2572062,"zoom":18.25,"pitch":55,"bearing":-35},
+  "targetCanonicalIds": ["openmaptiles_buildings:6939524390","openmaptiles_buildings:6939524400"],
+  "findings": [
+    "The remaining diagonal stamp was dominated by the repeated metalness mask: reducing albedo contrast, AO or normal scale alone did not remove it in the actual scene.",
+    "A diagnostic-only zero-metalness comparison removed the stamp; the production finish preserves subdued source metalness variation as painted weathered metal. Bitumen is explicitly dielectric.",
+    "Metric source UVs, pinned CC0 maps, shared texture identity and source geometry are unchanged. No texture, draw or independent clock was added.",
+    "Actual desktop and mobile production frames show quiet roof surfaces without the preceding diagonal pattern. Both settled pause checks drew zero frames over 2.2 seconds."
+  ],
+  "validation": {"focusedTests":21,"testsPassed":true,"typecheckPassed":true,"productionBrowserErrors":0,"desktopQuietSnapshots":4,"mobileQuietSnapshots":4},
+  "artifacts": [
+    {"filename":"met-after.png","role":"previous_material","sha256":"75ecfc54bdb01ad6dc40a9f092879473e91b6c47e2c6c915913a3c0a51f2e98d"},
+    {"filename":"met-roof-v2-painted.png","role":"desktop_after","sha256":"691d6b1ba652f554230a59d73fb2a60e978628fb61d6b7033176838afc09c01b"},
+    {"filename":"met-roof-v2-painted-mobile.png","role":"mobile_after","sha256":"30dd8421a494cdccd6c6e432fd549d451c0dcc282f0aacd7270c21191d6d7a2a"}
+  ],
+  "limitations": [
+    "This is an authored surface finish, not an observation of the actual roof material.",
+    "Screenshots were opened and visually compared; no claim of pixelwise perceptual equivalence or SimCity-level acceptance is made.",
+    "Diagnostic property ablations ran only in a separate test browser and were removed by reload before production captures.",
+    "The mobile resize exposed a separate detail-cache retry defect, fixed and verified in cache-viewport-resize-20260909.json.",
+    "Whole-city art, integrated motion and public release remain separate gates."
+  ]
+}

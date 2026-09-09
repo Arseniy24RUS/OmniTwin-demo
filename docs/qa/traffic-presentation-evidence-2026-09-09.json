@@ -1,0 +1,53 @@
+{
+  "contract": "LaneTrafficBrowserEvidenceSummaryV1",
+  "captureDate": "2026-09-09",
+  "classification": "functional_visual_evidence",
+  "performanceClaim": false,
+  "browser": "Independent Chromium context, isolated response instrumentation",
+  "sourceScope": "Fictional V2 actor presentation only; source IDs, routes and population unchanged",
+  "camera": {
+    "zoom": 18.2,
+    "bearing": -172.97699800600026,
+    "pitch": 46.49661799282392,
+    "longitude": 61.40335931261333,
+    "latitude": 55.166641128116765
+  },
+  "frames": 100,
+  "elapsedPresentationSeconds": 24.39209999992454,
+  "sameLanePairChecks": 8337,
+  "minimumCentreHeadwayMeters": 7.999999999999944,
+  "spacingOrCommonSpeedViolations": 0,
+  "pageErrors": 0,
+  "sourceReanchorsBefore": 0,
+  "sourceReanchorsAfter": 0,
+  "sourceRefreshesBefore": 5,
+  "sourceRefreshesAfter": 10,
+  "managedVehiclesBefore": 37,
+  "managedVehiclesAfter": 46,
+  "rendererStates": [
+    "rendering"
+  ],
+  "artifacts": [
+    {
+      "name": "traffic-end.png",
+      "sha256": "b8535a338246d35156a72db721af7d92f085d49c702303bc3abf8406073155f2"
+    },
+    {
+      "name": "page@4f597bdbaad35baaa6fb540d6961c1f0.webm",
+      "sha256": "d20f8ebfb6a7da4e706a2e19d08d3a847463f6833b33cd1c6ac97d636feeb2f6"
+    }
+  ],
+  "limitations": [
+    "Evidence covers the captured source sample and once corridors; other traversals are audited separately.",
+    "Recording and concurrent local work contaminate performance metrics.",
+    "Screenshots visually confirm vehicles; numeric headway is measured from retained presentation samples, not GPU pixel segmentation."
+  ],
+  "implementation": [
+    "apps/web/src/renderer/game/laneTraffic.ts",
+    "apps/web/src/renderer/game/actorColumnsBridge.ts"
+  ],
+  "focusedTests": {
+    "passed": 60,
+    "command": "node node_modules/vitest/vitest.mjs run apps/web/src/renderer/game/laneTraffic.test.ts apps/web/src/demo/actorColumnsBridge.test.ts apps/web/src/demo/actorFootprintClearance.test.ts apps/web/src/renderer/game/GameActors.test.ts --maxWorkers=1"
+  }
+}

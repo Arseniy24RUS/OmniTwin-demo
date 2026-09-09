@@ -1,0 +1,33 @@
+{
+  "contract": "OmniTwinPublicConfigurationBuildEvidenceV1",
+  "checkedAt": "2026-09-09T14:19:47.582Z",
+  "phase": "legacy_default_with_explicit_public_v2",
+  "snapshot": {
+    "files": 583,
+    "bytes": 46782933,
+    "sha256": "09d8956d1c53e6115b9bd6edcda43f93da31b7fa7c004f8081a3681cbb613df3",
+    "changedDuringCopy": []
+  },
+  "packageLockSha256": "7cc904a0833cceefe6cab6293eb185972fd7fcd26f9def9d226ff54e5987dce4",
+  "checks": {
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "activationTests": 17,
+    "publicFiles": 126,
+    "publicBytes": 44286860,
+    "recognizedEmbeddedKeys": false
+  },
+  "logs": [
+    {
+      "name": "clean-public-activation-build.log",
+      "bytes": 2263,
+      "sha256": "bd59fce8af3e96638328945f7e993f77e7c67c3518b38d4f4d12c8bf8c45efaf"
+    },
+    {
+      "name": "clean-public-activation-tests.log",
+      "bytes": 904,
+      "sha256": "6332f98fd5b1df4caab1664bac7a1ffbcdda17b4c1aecfc053a882e8a9c1d92c"
+    }
+  ],
+  "scope": "Exact-lock clean build after activation JSON; supplements full test evidence, does not assert Pages deployment."
+}

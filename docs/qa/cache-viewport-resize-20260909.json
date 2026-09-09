@@ -1,0 +1,15 @@
+{
+  "contract":"BuildingCacheViewportResizeEvidenceV1",
+  "date":"2026-09-09",
+  "classification":"actual_browser_regression",
+  "camera":{"longitude":61.40850385,"latitude":55.2572062,"zoom":18.25,"pitch":55,"bearing":-35},
+  "viewports":[[1600,1000],[390,844],[1600,1000]],
+  "cameraUrlParametersUnchanged":true,
+  "beforeFix":{"initialDetailedMeshes":6,"narrowDetailedMeshes":2,"returnedDetailedMeshes":2,"deniedAfterReturn":4,"committedBytesAfterReturn":2051424},
+  "afterFix":{"initialCanonicalMeshIds":14,"narrowCanonicalMeshIds":3,"returnedCanonicalMeshIds":14,"everyInitialMeshIdRestored":true,"detailedMeshesAfterReturn":6,"deniedAfterReturn":0,"stagingAfterReturn":0,"pendingAfterReturn":0,"committedBytesAfterReturn":11816928,"browserErrors":0},
+  "change":"The hysteretic cache camera anchor includes actual canvas dimensions, so a changed viewport can retry previously excluded detail while an unchanged viewport remains stable.",
+  "failingFirstTest":"gameLayerLifecycle.test.ts: retries released detail after a desktop/mobile viewport resize at the same camera",
+  "validation":{"focusedTests":36,"testsPassed":true,"typecheckPassed":true},
+  "artifact":{"filename":"met-resize-return-after.png","sha256":"8386c4f729cee2a05b2762a2af24de4a1f586132627078b18cd9ac9f6c208f2a"},
+  "limitations":["Canonical IDs are read from the committed render frontier; screenshots remain necessary to assess the actual pixels.","This targeted resize test does not replace the final full camera and fault sweep."]
+}

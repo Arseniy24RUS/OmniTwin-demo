@@ -1,0 +1,90 @@
+{
+  "contract": "OmniTwinVisualMaterialReviewV1",
+  "recordedAt": "2026-09-09T10:54:54.017Z",
+  "scope": "Runtime metal and bitumen material filtering",
+  "representation": "visual_synthesis",
+  "sourceGeometryUnchanged": true,
+  "sourceTextureBytesUnchanged": true,
+  "sourceMetricUvsUnchanged": true,
+  "extraTextures": 0,
+  "extraTextureSamples": 0,
+  "extraDrawPasses": 0,
+  "extraAnimationLoops": 0,
+  "helper": {
+    "path": "apps/web/src/renderer/game/gameRoofMaterial.ts",
+    "sha256": "c6e0ad644333c50ade7154b44b1e7fc471fdf2b43727e1dcaac36bb2fcf82c40"
+  },
+  "visualReview": {
+    "allBeforeAndAfterPNGsOpened": true,
+    "metalResult": "Strong coarse crosshatch suppressed; subdued residual fine surface variation remains. Roofs remain dark under current lighting.",
+    "bitumenResult": "Coherent asphalt cracks strongly reduced while roof fixtures, source holes and facade geometry remain present.",
+    "overallCityArtAccepted": false
+  },
+  "isolation": "Independent response-only diagnostic passes showed MET crosshatch persists with building receiveShadow disabled and normal mapping disabled, and in unlit diffuse; flat unlit removes it. This localized the pattern to sampled diffuse presentation rather than missing roof geometry or shadow acne. These diagnostic-only shader overrides were not shipped.",
+  "preview": "Own Chromium response override restored exactly the prior full-v3 top manifest SHA55f83e7f3286df594ca4ad1a4865779c067139ea53515e3281a0d03f8655e330 because root had moved public preview to the next partial catalog. Public preview was untouched.",
+  "catalogSha256": "fac040ca18c22b0a8eb7d6b7f761eb3972aecbd5b40a71e7189ecbb4f116b59f",
+  "limitations": [
+    "Static SwiftShader visual diagnostic under concurrent work; no FPS claim.",
+    "Runtime cache-admission improvements occurred between original and after frames; MET mobile has additional detail elsewhere, so geometry count is not identical.",
+    "This bounded roof fix does not satisfy the full SimCity2013 courtyard artistic target."
+  ],
+  "artifactBundleName": "full-v3-review",
+  "snapshots": [
+    {
+      "scene": "RU-CHE-SET-MET",
+      "mode": "desktop",
+      "before": {
+        "filename": "RU-CHE-SET-MET-desktop.png",
+        "sha256": "71a9d39a109d0c509297a679a5d14d2d31fb1321a169004dd69fbb4abf78bb50"
+      },
+      "after": {
+        "filename": "RU-CHE-SET-MET-desktop-roof-filter.png",
+        "sha256": "f753ff7318d2ac43d31ec075717c6f6d4d660db393271706f51488d852611d8b"
+      },
+      "errors": 0,
+      "triangles": 169834
+    },
+    {
+      "scene": "RU-CHE-SET-MET",
+      "mode": "mobile",
+      "before": {
+        "filename": "RU-CHE-SET-MET-mobile.png",
+        "sha256": "7f09daa9c7e1b70cb5204da3cdde3137cb878cb539784a451e19d2bf880c74c3"
+      },
+      "after": {
+        "filename": "RU-CHE-SET-MET-mobile-roof-filter.png",
+        "sha256": "5b424b10ed7494b422589f17151a8a0ef54f7bf5c054d2880ad925304ce1dfd3"
+      },
+      "errors": 0,
+      "triangles": 222507
+    },
+    {
+      "scene": "courtyard",
+      "mode": "desktop",
+      "before": {
+        "filename": "courtyard-desktop.png",
+        "sha256": "d7107885bb4cbd7fcd8e1287bbcdf6674f23b830b093c4888592e6048fafd7b8"
+      },
+      "after": {
+        "filename": "courtyard-desktop-roof-filter.png",
+        "sha256": "ac93f2421b1002143607bcef944b6541a8f6764bf306af1bcadd69889c711c70"
+      },
+      "errors": 0,
+      "triangles": 157425
+    },
+    {
+      "scene": "courtyard",
+      "mode": "mobile",
+      "before": {
+        "filename": "courtyard-mobile.png",
+        "sha256": "3bde998dda97fff837d674f20ba320f26e64a8d897713c1724e61a7e1ea9dfd5"
+      },
+      "after": {
+        "filename": "courtyard-mobile-roof-filter.png",
+        "sha256": "2fd1a697338f6241230454264957d8ed5bc9f9556d8a18d209e2379237d0744d"
+      },
+      "errors": 0,
+      "triangles": 90753
+    }
+  ]
+}

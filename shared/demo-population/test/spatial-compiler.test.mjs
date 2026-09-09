@@ -15,7 +15,7 @@ const rows = [
   ['study', 61.405, 55.1644, district, 'study', 200, 2, 6, 400, 'source', []],
   ['unknown', 61.405, 55.1644, district, 'unknown', 99999, 20, 60, 99999, 'unknown', []],
 ];
-const roads = [{ id: 'osm-road:2', coordinates: [[61.40, 55.1644], [61.41, 55.1644]], nodeIds: ['osm-node:1', 'osm-node:2'], oneway: true, walkable: true, drivable: false }, { id: 'osm-road:1', coordinates: [[61.40, 55.1644], [61.41, 55.1644]], nodeIds: ['osm-node:1', 'osm-node:2'], oneway: true, walkable: false, drivable: true }];
+const roads = [{ id: 'osm-road:2', className:'footway',coordinates: [[61.40, 55.1644], [61.41, 55.1644]], nodeIds: ['osm-node:1', 'osm-node:2'], oneway: true, walkable: true, drivable: false }, { id: 'osm-road:1', className:'residential',coordinates: [[61.40, 55.1644], [61.41, 55.1644]], nodeIds: ['osm-node:1', 'osm-node:2'], oneway: true, walkable: false, drivable: true }];
 
 test('nearest bindings are source-eligible, deterministic under order changes, and bounded', () => {
   const needed = new Uint8Array([1, 0, 0, 0]); const first = nearestRoadBindings(rows, roads, needed);
@@ -24,6 +24,12 @@ test('nearest bindings are source-eligible, deterministic under order changes, a
   assert.equal(roads[first.bindings[0]].id, [...roads].reverse()[reversed.bindings[0]].id);
   const far = nearestRoadBindings([[...rows[0].slice(0, 1), 62, 56, ...rows[0].slice(3)]], roads, new Uint8Array([1]));
   assert.deepEqual([...far.bindings], [SPATIAL_NONE, SPATIAL_NONE]);
+});
+
+test('upstream bindings use real footway geometry rather than closer walk-permitted carriageway',()=>{
+ const carriageway={...roads[1],id:'closer',walkable:true,oneway:false},footway={...roads[0],id:'footway',nodeIds:['foot-start','foot-end'],coordinates:roads[0].coordinates.map(p=>[p[0],p[1]+.0002])};
+ const result=nearestRoadBindings(rows,[carriageway,footway],new Uint8Array([1,0,0,0]));
+ assert.equal(result.bindings[0],1);assert.equal(result.bindings[1],0);
 });
 
 test('offline compiler preserves all role members and self-contained candidates reproducibly', async (t) => {

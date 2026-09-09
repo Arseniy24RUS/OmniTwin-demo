@@ -2,7 +2,9 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 import { ArrowRight, BarChart3, Building2, Car, ChevronDown, ChevronLeft, ChevronRight, CloudRain, Compass, Crosshair, Download, Layers, MapPin, Menu, Moon, Pause, Play, Search, SlidersHorizontal, Snowflake, Sparkles, Sun, Users, X } from 'lucide-react';
 import type { StaticDemoProvider } from './data/StaticDemoProvider';
 import { loadDemoProvider } from './data/loadDemoProvider';
-import type { DemoContextV1, DemoSnapshot, PublicFictionalPersonV1 } from './types';
+import { readCityActivation } from './data/cityAssetActivation';
+import { eligibleCityUpgrade, upgradeLegacyContext } from './legacyUpgrade';
+import type { DemoBuildingOccupancy, DemoContextV1, DemoSnapshot, PublicFictionalPersonV1 } from './types';
 import { decodeLocation, DEFAULT_CONTEXT, encodeLocation, LEGACY_DATASET_ID, ROUTES, type DemoRoute } from './navigation';
 import { ResidentChat } from './ResidentChat';
 import { FictionalPortrait } from './FictionalPortrait';
@@ -49,11 +51,11 @@ function Summary({provider,context,navigate,onContextChange}:{provider:StaticDem
 }
 function PersonDetails({person,provider,context,onMap}:{person:PublicFictionalPersonV1;provider:StaticDemoProvider;context:DemoContextV1;onMap:()=>void}){
  const presence=provider.getPresence(person.id,context.presentationMinutes,context.scenario,context.year);
- return <><div className="person-hero"><FictionalPortrait person={person}/><div><p className="caption">Вымышленный житель</p><h2>{person.name}</h2><p>{person.age} лет · {person.occupation}</p></div></div><div className="presence"><MapPin size={17}/><span>{presence?.activity||'Учтён в демонаборе'}</span></div><dl className="profile-fields"><div><dt>Территория</dt><dd>{person.territoryName}</dd></div><div><dt>Занятость</dt><dd>{EMPLOYMENT[person.employment]}</dd></div><div><dt>Домохозяйство</dt><dd>{person.householdSize === null ? '—' : `${person.householdSize} чел.`}</dd></div><div><dt>Срез</dt><dd>01.01.{context.year}</dd></div></dl><p className="biography">{person.biography}</p><div className="interest-tags">{person.interests.map(x=><span key={x}>{x}</span>)}</div><button className="map-person-button" onClick={onMap}><Crosshair size={17}/>Показать на карте</button><ResidentChat person={person} context={context} presence={presence}/></>;
+ return <><div className="person-hero"><FictionalPortrait person={person}/><div><p className="caption">Вымышленный житель</p><h2>{person.name}</h2><p>{person.age} лет · {person.occupation}</p></div></div><div className="presence"><MapPin size={17}/><span>{presence?.activity||'Учтён в демонаборе'}</span></div><dl className="profile-fields"><div><dt>Территория</dt><dd>{person.territoryName}</dd></div><div><dt>Занятость</dt><dd>{EMPLOYMENT[person.employment]}</dd></div><div><dt>Домохозяйство</dt><dd>{person.householdSize === null ? '—' : `${person.householdSize} чел.`}</dd></div><div><dt>Срез</dt><dd>01.01.{context.year}</dd></div></dl><p className="biography">{person.biography}</p><div className="interest-tags">{person.interests.map(x=><span key={x}>{x}</span>)}</div><button className="map-person-button" onClick={onMap}><Crosshair size={17}/>Показать на карте</button><ResidentChat person={person} context={context} presence={presence} localPreview={provider.movementPreviewOverlay?.chatCompatibility==='pending'}/></>;
 }
 function Inspector({selection,provider,context,onClose,onSelect,onMap}:{selection:Selection;provider:StaticDemoProvider;context:DemoContextV1;onClose:()=>void;onSelect:(s:Selection)=>void;onMap:(p:PublicFictionalPersonV1)=>void}){
- const [offset,setOffset]=useState(0);useEffect(()=>setOffset(0),[selection.id,context.scenario,context.year]);
  const presenceMinute=selection.kind==='person'?0:Math.floor(context.presentationMinutes);
+ const [offset,setOffset]=useState(0);useEffect(()=>setOffset(0),[selection.id,context.scenario,context.year,presenceMinute]);
  const prepare=useCallback(async (signal:AbortSignal)=>{
   if(selection.kind==='person')await provider.preparePerson(selection.id,context.scenario,context.year,signal);
   else if(selection.kind==='building')await provider.prepareBuilding(selection.id,presenceMinute,context.scenario,context.year,signal);
@@ -64,8 +66,46 @@ function Inspector({selection,provider,context,onClose,onSelect,onMap}:{selectio
  const person=prepared.ready&&selection.kind==='person'?provider.getPerson(selection.id,context.scenario,context.year):null;
  const occupancy=prepared.ready&&selection.kind==='building'?provider.getBuildingOccupancy(selection.id,context.presentationMinutes,context.scenario,context.year,offset,50):null;
  const vehicle=prepared.ready&&selection.kind==='vehicle'?provider.getVehicle(selection.id,context.presentationMinutes,context.scenario,context.year):null;
+ const buildingName=useMemo(()=>prepared.ready&&selection.kind==='building'
+  ?provider.getLayout().buildings.find(building=>building.id===selection.id||building.aliases?.includes(selection.id))?.name:undefined,
+ [provider,prepared.ready,selection.kind,selection.id]);
  return <section className="inspector" data-testid="selection-inspector"><div className="inspector-top"><span>{selection.kind==='person'?'Профиль жителя':selection.kind==='building'?'Жизнь здания':'Пассажиры автомобиля'}</span><button className="icon-button" onClick={onClose} aria-label="Закрыть профиль"><X size={19}/></button></div>
- {prepared.error?<p role="alert">Не удалось загрузить сведения: {prepared.error}</p>:!prepared.ready?<p role="status">Загружаем {selection.kind==='person'?'профиль жителя':selection.kind==='building'?'жителей здания':'пассажиров автомобиля'}…</p>:person?<PersonDetails person={person} provider={provider} context={context} onMap={()=>onMap(person)}/>:occupancy?<><div className="object-heading"><Building2 size={30}/><h2>{selection.label||'Здание'}</h2></div><p className="caption">Назначение жителей зданию: визуальный синтез</p><div className="occupancy-stat"><strong>{occupancy.presentNow}</strong><span>сейчас внутри</span></div><dl className="profile-fields"><div><dt>Назначено жителей</dt><dd>{occupancy.assignedResidents}</dd></div><div><dt>Работников</dt><dd>{occupancy.assignedWorkers}</dd></div></dl><h3>Находятся внутри</h3>{occupancy.items.map(p=><button className="roster-row" key={p.id} onClick={()=>onSelect({kind:'person',id:p.id})}><span>{p.name}<small>{p.age} лет · {p.occupation}</small></span><ChevronRight size={16}/></button>)}{!occupancy.items.length&&<p className="muted">В выбранный момент здесь нет назначенных демонстрационных жителей.</p>}<div className="pagination"><button disabled={offset===0} onClick={()=>setOffset(x=>Math.max(0,x-50))}>Назад</button><span>{occupancy.items.length?offset+1:0}–{offset+occupancy.items.length}</span><button disabled={occupancy.nextOffset===null} onClick={()=>setOffset(occupancy.nextOffset!)}>Далее</button></div></>:vehicle?<><div className="object-heading"><Car size={30}/><h2>{vehicle.label}</h2></div><p className="caption">Автомобиль и маршрут — визуальный синтез</p><div className="occupancy-stat"><strong>{vehicle.occupancy}/{vehicle.capacity}</strong><span>мест занято</span></div><h3>Пассажиры</h3>{vehicle.occupants.map(p=><button className="roster-row" key={p.id} onClick={()=>onSelect({kind:'person',id:p.id})}><span>{p.name}<small>{p.occupation}</small></span><ChevronRight size={16}/></button>)}</>:<p className="muted">Объект отсутствует в выбранном срезе или уже завершил поездку. Выберите другого жителя или вернитесь к сводке.</p>}</section>;
+ {prepared.error?<p role="alert">Не удалось загрузить сведения: {prepared.error}</p>:!prepared.ready?<p role="status">Загружаем {selection.kind==='person'?'профиль жителя':selection.kind==='building'?'жителей здания':'пассажиров автомобиля'}…</p>:person?<PersonDetails person={person} provider={provider} context={context} onMap={()=>onMap(person)}/>:occupancy?<BuildingDetails occupancy={occupancy} label={buildingName||selection.label} legacy={provider.manifest.datasetId===LEGACY_DATASET_ID} onOffset={setOffset} onSelect={onSelect}/>:vehicle?<><div className="object-heading"><Car size={30}/><h2>{vehicle.label}</h2></div><p className="caption">Автомобиль и маршрут — визуальный синтез</p><div className="occupancy-stat"><strong>{vehicle.occupancy}/{vehicle.capacity}</strong><span>мест занято</span></div><h3>Пассажиры</h3>{vehicle.occupants.map(p=><button className="roster-row" key={p.id} onClick={()=>onSelect({kind:'person',id:p.id})}><span>{p.name}<small>{p.occupation}</small></span><ChevronRight size={16}/></button>)}</>:<p className="muted">Объект отсутствует в выбранном срезе или уже завершил поездку. Выберите другого жителя или вернитесь к сводке.</p>}</section>;
+}
+function BuildingDetails({occupancy,label,legacy=false,onOffset,onSelect}:{occupancy:DemoBuildingOccupancy;label?:string;legacy?:boolean;onOffset:(offset:number)=>void;onSelect:(s:Selection)=>void}) {
+ const {items,offset,limit,total,nextOffset}=occupancy;
+ const headingRef=useRef<HTMLDivElement>(null);
+ const changePage=(next:number)=>{
+  onOffset(next);
+  const panel=headingRef.current?.closest<HTMLElement>('.detail-panel');
+  if(panel)panel.scrollTop=0;
+ };
+ if(occupancy.coverageStatus==='no_index')return <>
+  <div className="object-heading"><Building2 size={30}/><h2>{label||'Здание'}</h2></div>
+  <h3 style={{marginTop:24}}>Для этого контура пока нет индекса заселённости</h3>
+  <p className="muted">Это не означает, что здание пустует. В этой версии карты контур ещё не связан с проверенным индексом демонстрационных жителей.</p>
+  <p className="caption">Значения не подменяются нулём. Назначения жителей появятся после согласования исходной геометрии и идентификатора здания.</p>
+ </>;
+ return <>
+  <div ref={headingRef} className="object-heading"><Building2 size={30}/><h2>{label||'Здание'}</h2></div>
+  <p className="caption">Назначения и присутствие — визуальный синтез, не адресный реестр.</p>
+  <div className="occupancy-stat"><strong data-testid="building-present-now">{number.format(occupancy.presentNow)}</strong><span>{legacy?'персонажей старого демонабора сейчас внутри':'сейчас внутри'}</span></div>
+  <dl className="profile-fields">
+   <div><dt>Назначено жителей</dt><dd>{number.format(occupancy.assignedResidents)}</dd></div>
+   <div><dt>Работников</dt><dd>{number.format(occupancy.assignedWorkers)}</dd></div>
+   {occupancy.assignedStudents!==undefined&&<div><dt>Учащихся</dt><dd>{number.format(occupancy.assignedStudents)}</dd></div>}
+   {occupancy.visitorsNow!==undefined&&<div><dt>Посетителей сейчас</dt><dd>{number.format(occupancy.visitorsNow)}</dd></div>}
+  </dl>
+  <p className="caption">Назначенные жители и сотрудники могут находиться вне здания. Посетители включены в число находящихся внутри.</p>
+  <h3>Находятся внутри</h3>
+  {items.map(p=><button className="roster-row" data-person-id={p.id} key={p.id} onClick={()=>onSelect({kind:'person',id:p.id})}><span>{p.name}<small>{p.age} лет · {p.occupation}</small></span><ChevronRight size={16}/></button>)}
+  {!items.length&&<p className="muted">В выбранный момент здесь нет присутствующих демонстрационных жителей.</p>}
+  <div className="pagination">
+   <button aria-label="Предыдущая страница жителей здания" disabled={offset===0} onClick={()=>changePage(Math.max(0,offset-limit))}>Назад</button>
+   <span data-testid="building-roster-page">{items.length?number.format(offset+1):0}–{number.format(offset+items.length)} из {number.format(total)}</span>
+   <button aria-label="Следующая страница жителей здания" disabled={nextOffset===null} onClick={()=>nextOffset!==null&&changePage(nextOffset)}>Далее</button>
+  </div>
+ </>;
 }
 function Agents({provider,context,onContextChange,onSelect}:{provider:StaticDemoProvider;context:DemoContextV1;onContextChange:(c:Partial<DemoContextV1>)=>void;onSelect:(s:Selection)=>void}){
  const query=context.agentQuery??'';const offset=context.agentOffset??0;const setQuery=(value:string)=>onContextChange({agentQuery:value,agentOffset:0});const setOffset=(change:(n:number)=>number)=>onContextChange({agentOffset:change(offset)});
@@ -91,34 +131,61 @@ function ContextBar({provider,context,observed,onChange,onAbout}:{provider:Stati
 
 export default function App(){
  const initial=useRef(decodeLocation(window.location.hash));const [route,setRoute]=useState(initial.current.route);const [context,setContext]=useState(initial.current.context);const [selection,setSelection]=useState<Selection|null>(parseSelection(initial.current.selection));
+ const defaultGraphicsEligible=useRef(!new URLSearchParams(window.location.hash.split('?')[1]??'').has('graphics'));
  const navigationRevisionRef=useRef(0);const [navigationRevision,setNavigationRevision]=useState(0);const knownHash=useRef(window.location.hash);
  const [loadedProvider,setProvider]=useState<StaticDemoProvider|null>(null);const providerRef=useRef<StaticDemoProvider|null>(null);const [error,setError]=useState('');const [menu,setMenu]=useState(false);const [expanded,setExpanded]=useState(false);const [tour,setTour]=useState<number|null>(null);
  const detailPanelRef=useRef<HTMLElement>(null);
+ const providerGraphics=context.cityGraphicsBackend??'native_map';
+ const loadedProviderGraphics=useRef<string|null>(null);
  const collapsePanel=useCallback(()=>{setExpanded(false);if(detailPanelRef.current)detailPanelRef.current.scrollTop=0},[]);
- const provider=loadedProvider&&(!context.datasetId||loadedProvider.manifest.datasetId===context.datasetId)?loadedProvider:null;
+ const provider=loadedProvider&&loadedProviderGraphics.current===providerGraphics&&(!context.datasetId||loadedProvider.manifest.datasetId===context.datasetId)?loadedProvider:null;
+ const legacy=provider?.manifest.datasetId===LEGACY_DATASET_ID;
+ const [upgradeEligible,setUpgradeEligible]=useState(false);
+ useEffect(()=>{
+  setUpgradeEligible(false);
+  if(!legacy)return;
+  const abort=new AbortController();
+  // One bounded eligibility read per legacy entry, not on clock/camera rerenders.
+  // The reader validates immutable namespace and both manifest hashes.
+  void readCityActivation(import.meta.env.BASE_URL,abort.signal).then(activation=>{
+   if(!abort.signal.aborted)setUpgradeEligible(eligibleCityUpgrade(activation));
+  }).catch(()=>{if(!abort.signal.aborted)setUpgradeEligible(false)});
+  return()=>abort.abort();
+ },[legacy]);
  const referenceView=(route==='world'||route==='analytics')&&context.analyticsSource!=='fictional';
  useEffect(()=>{
   const requested=context.datasetId;const abort=new AbortController();setError('');
-  if(providerRef.current?.manifest.datasetId===requested){setProvider(providerRef.current);return()=>abort.abort();}
+  if(providerRef.current?.manifest.datasetId===requested&&loadedProviderGraphics.current===providerGraphics){setProvider(providerRef.current);return()=>abort.abort();}
   setProvider(null);
   loadDemoProvider(import.meta.env.BASE_URL,requested||undefined,abort.signal).then(p=>{
    if(abort.signal.aborted)return;
-   providerRef.current=p;setProvider(p);
-   setContext(c=>c.datasetId===requested?{...c,datasetId:p.manifest.datasetId,territoryId:p.territories.some(t=>t.id===c.territoryId)?c.territoryId:'RU-CHE-SET'}:c);
+   providerRef.current=p;loadedProviderGraphics.current=providerGraphics;setProvider(p);
+   setContext(c=>c.datasetId===requested?{...c,datasetId:p.manifest.datasetId,
+    ...(requested===''&&defaultGraphicsEligible.current&&p.manifest.datasetId==='omnitwin-fictional-city-v2'?{cityGraphicsBackend:'tiled_game' as const}:{}),
+    territoryId:p.territories.some(t=>t.id===c.territoryId)?c.territoryId:'RU-CHE-SET'}:c);
   }).catch(e=>{if(!abort.signal.aborted)setError(e instanceof Error?e.message:String(e))});
   return()=>abort.abort();
- },[context.datasetId]);
+ },[context.datasetId,providerGraphics]);
  useEffect(()=>{const restore=()=>{
   if(location.hash===knownHash.current)return;
   knownHash.current=location.hash;const state=decodeLocation(location.hash);
+  defaultGraphicsEligible.current=!new URLSearchParams(location.hash.split('?')[1]??'').has('graphics');
   // History restore is a new map command; callbacks from the preceding instance are stale.
   navigationRevisionRef.current+=1;setNavigationRevision(navigationRevisionRef.current);
   setRoute(state.route);setContext(state.context);setSelection(parseSelection(state.selection));
  };addEventListener('popstate',restore);addEventListener('hashchange',restore);return()=>{removeEventListener('popstate',restore);removeEventListener('hashchange',restore)}},[]);
  useEffect(()=>{const hash=encodeLocation(route,context,selection?`${selection.kind}:${selection.id}`:null);history.replaceState(null,'',hash);knownHash.current=hash;document.title=`OmniTwin · ${ROUTES[route]}`},[route,context,selection]);
- const update=useCallback((patch:Partial<DemoContextV1>)=>setContext(c=>({...c,...patch,...(['scenario','year','territoryId','cohort'].some(key=>key in patch)?{agentOffset:0}:{})})),[]);
+ const update=useCallback((patch:Partial<DemoContextV1>)=>setContext(c=>({...c,...patch,...('presentationMinutes' in patch?{presentationSeekRevision:(c.presentationSeekRevision??0)+1}:{}),...(['scenario','year','territoryId','cohort'].some(key=>key in patch)?{agentOffset:0}:{})})),[]);
  const updateCamera=useCallback((camera:DemoContextV1['camera'])=>{if(navigationRevisionRef.current===navigationRevision)update({camera})},[navigationRevision,update]);
  const navigate=useCallback((next:DemoRoute)=>{history.pushState(null,'',encodeLocation(next,context));setRoute(next);setSelection(null);setMenu(false);setExpanded(false)},[context]);
+ const openUpdatedCity=useCallback(()=>{
+  if(!legacy||!upgradeEligible)return;
+  const next=upgradeLegacyContext(context);const hash=encodeLocation('world',next);
+  // Keep the complete legacy URL as a Back entry, including its selection.
+  history.pushState(null,'',hash);knownHash.current=hash;
+  navigationRevisionRef.current+=1;setNavigationRevision(navigationRevisionRef.current);
+  setContext(next);setRoute('world');setSelection(null);setMenu(false);setExpanded(false);setTour(null);
+ },[legacy,upgradeEligible,context]);
  useEffect(()=>{if(route!=='world'||!context.playing)return;let last=performance.now();const timer=setInterval(()=>{const now=performance.now();const dt=Math.min(2,(now-last)/1000);last=now;if(document.visibilityState==='visible')setContext(c=>({...c,presentationMinutes:(c.presentationMinutes+dt*c.speed/60)%1440}))},1000);return()=>clearInterval(timer)},[route,context.playing,context.speed]);
  const select=useCallback((s:Selection|null)=>{setSelection(s);setExpanded(Boolean(s))},[]);
  const onMap=useCallback((p:PublicFictionalPersonV1)=>{const presence=provider?.getPresence(p.id,context.presentationMinutes,context.scenario,context.year);const pos=presence?.position;history.pushState(null,'',encodeLocation('world',context,`person:${p.id}`));setRoute('world');setSelection({kind:'person',id:p.id});collapsePanel();if(pos)update({camera:{...context.camera,longitude:pos[0],latitude:pos[1],zoom:17.4,pitch:55}})},[provider,context,update,collapsePanel]);
@@ -127,6 +194,10 @@ export default function App(){
  if(error)return <main className="loading-screen"><h1>Демонабор не загружен</h1><p>Карта и показатели не подменяются выдуманным ответом при ошибке загрузки.</p><code>{error}</code><button onClick={()=>location.reload()}>Повторить</button></main>;
  return <div className="demo-app"><header className="app-header"><a href="#/world" onClick={e=>{e.preventDefault();navigate('world')}} className="brand" aria-label="OmniTwin — живой мир"><img src={`${import.meta.env.BASE_URL}rudn-white.png`} alt="РУДН"/><span>OmniTwin<small>Челябинск</small></span></a><nav className={menu?'open':''} aria-label="Основная навигация">{Object.entries(ROUTES).map(([key,label])=><a key={key} href={encodeLocation(key as DemoRoute,context)} aria-current={route===key?'page':undefined} onClick={e=>{e.preventDefault();navigate(key as DemoRoute)}}>{label}</a>)}</nav><a className="author" href="https://sitkovskiy.ru/" target="_blank" rel="noreferrer">Автор: <span>Ситковский А.М.</span></a><button className="menu-toggle icon-button" aria-label="Открыть меню" onClick={()=>setMenu(m=>!m)}><Menu size={23}/></button></header>
  <ContextBar provider={provider} context={context} observed={referenceView} onChange={patch=>{update(patch);setSelection(null)}} onAbout={()=>navigate('about')}/>
+ {legacy&&<section data-testid="legacy-dataset-notice" aria-label="Старый демонстрационный набор" style={{flexShrink:0,display:'flex',flexWrap:'wrap',alignItems:'center',gap:'8px 18px',padding:'10px 24px',borderBottom:'1px solid var(--line)',background:'#18231f'}}>
+  <div style={{flex:'1 1 240px'}}><strong style={{fontSize:13}}>Старый демонабор · {number.format(provider!.manifest.initialPopulation)} вымышленных персонажей в начальном срезе</strong><p style={{fontSize:12,margin:'4px 0 0',color:'#c5cfbf'}}>Числа внутри зданий относятся только к этому набору — это не заселённость всего Челябинска.</p></div>
+  {upgradeEligible&&<button className="primary" onClick={openUpdatedCity}>Открыть обновлённый город<ArrowRight size={16}/></button>}
+ </section>}
  {!provider?<main className="loading-screen"><div className="loading-orbit"/><h2>Подготавливаем Челябинск</h2><p>Проверяем целостность демонстрационного набора…</p></main>:<main className={`app-main route-${route}`}>
  {route==='world'?<><div className="city-stage" data-testid="city-stage"><Suspense fallback={<div className="map-loading">Загружаем 3D-карту…</div>}><DemoCity key={`${provider.manifest.datasetId}:${navigationRevision}`} provider={provider} context={context} selectedId={selection?.id||null} onCameraChange={updateCamera} onSelect={s=>select(s as Selection|null)}/></Suspense><button className="tour-button" onClick={()=>stepTour(0)}><Play size={17}/>Начать экскурсию</button><div className="map-tools"><button aria-label="Центр Челябинска" onClick={()=>update({camera:{...DEFAULT_CONTEXT.camera}})}><Crosshair size={21}/></button><button aria-label="Переключить 2D и 3D" onClick={()=>update({camera:{...context.camera,pitch:context.camera.pitch?0:55}})}><Layers size={20}/><small>{context.camera.pitch?'3D':'2D'}</small></button><button aria-label="Открыть список жителей" onClick={()=>navigate('agents')}><Users size={21}/></button></div><div className="presentation-clock"><button className="play-button" data-testid="play-toggle" aria-label={context.playing?'Приостановить движение':'Запустить движение'} onClick={()=>update({playing:!context.playing})}>{context.playing?<Pause size={20}/>:<Play size={20}/>}</button><div className="clock-label"><strong>{String(Math.floor(context.presentationMinutes/60)).padStart(2,'0')}:{String(Math.floor(context.presentationMinutes%60)).padStart(2,'0')}</strong><span>Время визуализации</span></div><input type="range" aria-label="Время визуализации" min="0" max="1439" value={context.presentationMinutes} onChange={e=>update({presentationMinutes:Number(e.target.value)})}/><select aria-label="Скорость движения" value={context.speed} onChange={e=>update({speed:Number(e.target.value)})}>{[1,4,16].map(x=><option key={x} value={x}>{x}×</option>)}</select><label className="weather-control">{context.weather==='rain'?<CloudRain size={22}/>:context.weather==='snow'?<Snowflake size={22}/>:context.presentationMinutes>=1200||context.presentationMinutes<360?<Moon size={22}/>:<Sun size={22}/>}<select aria-label="Погода" value={context.weather} onChange={e=>update({weather:e.target.value as DemoContextV1['weather']})}><option value="clear">Ясно</option><option value="cloudy">Облачно</option><option value="rain">Дождь</option><option value="snow">Снег</option></select></label></div></div><aside ref={detailPanelRef} className={`detail-panel ${expanded?'expanded':''}`}><button className="sheet-handle" aria-label="Развернуть или свернуть сводку" onClick={()=>{if(expanded)collapsePanel();else setExpanded(true)}}><span/></button>{selection?<Inspector selection={selection} provider={provider} context={context} onClose={()=>select(null)} onSelect={select} onMap={onMap}/>:<Summary provider={provider} context={context} navigate={navigate} onContextChange={update}/>}</aside></>:
  <><div className="page-content"><Suspense fallback={<div className="loading-screen">Загружаем представление…</div>}>{route==='analytics'?<DemoAnalytics provider={provider} context={context} onContextChange={update} onSelectCohort={cohort=>{update({cohort});navigate('agents')}}/>:route==='scenarios'?<DemoScenarios provider={provider} context={context} onContextChange={update}/>:route==='agents'?<Agents provider={provider} context={context} onContextChange={update} onSelect={select}/>:<About provider={provider}/>}</Suspense></div>{selection&&<aside ref={detailPanelRef} className="detail-panel inspector-overlay"><Inspector selection={selection} provider={provider} context={context} onClose={()=>select(null)} onSelect={select} onMap={onMap}/></aside>}</>}

@@ -21,6 +21,13 @@ export interface AggregateRoadFlowDiagnostics {
   readonly outsideDistanceSegments: number;
   readonly withinDistanceSegments: number;
   readonly peakRetainedCandidates: number;
+  /** Allocation diagnostics describe source geometry coverage, not traffic density. */
+  readonly allocation?: 'nearest_radius' | 'viewport_grid';
+  readonly outsideViewportSegments?: number;
+  readonly viewportColumns?: number;
+  readonly viewportRows?: number;
+  readonly occupiedViewportCells?: number;
+  readonly selectedViewportCells?: number;
 }
 
 /** Each mark is schematic direction on a road, never a person, car or traffic count. */

@@ -1,0 +1,472 @@
+{
+  "contractVersion": 1,
+  "version": "game-actors-v1",
+  "representation": "visual_synthesis",
+  "coordinateSystem": "east-up-south",
+  "forward": "+z",
+  "dimensionPolicy": "uniform_person_height_authored_vehicle_width_height_length_visual_synthesis",
+  "binary": {
+    "url": "actors-79bebd3bae368ac1.bin",
+    "sha256": "79bebd3bae368ac1964c9e481cbe25cf72558169493413b977a31fef83c8dd4f",
+    "bytes": 2839776
+  },
+  "models": [
+    {
+      "name": "casual-man",
+      "kind": "person",
+      "vertexCount": 812,
+      "triangleCount": 1398,
+      "frameCount": 24,
+      "dimensions": {
+        "height": 1.8,
+        "width": 0.5911627709756172,
+        "length": 0.6370642948730143
+      },
+      "animation": {
+        "idle": {
+          "offset": 0,
+          "count": 8,
+          "duration": 1.6666666269302368,
+          "sourceClip": "Idle"
+        },
+        "walk": {
+          "offset": 8,
+          "count": 16,
+          "duration": 1.3333333730697632,
+          "sourceClip": "Walk"
+        }
+      },
+      "simplification": {
+        "targetTriangles": 1400,
+        "relativeError": 0.006171556655317545,
+        "poseSafeWeld": true
+      },
+      "positions": {
+        "byteOffset": 0,
+        "byteLength": 311808,
+        "count": 77952,
+        "type": "Float32Array"
+      },
+      "normals": {
+        "byteOffset": 311808,
+        "byteLength": 311808,
+        "count": 77952,
+        "type": "Float32Array"
+      },
+      "colors": {
+        "byteOffset": 623616,
+        "byteLength": 9744,
+        "count": 2436,
+        "type": "Float32Array"
+      },
+      "indices": {
+        "byteOffset": 633360,
+        "byteLength": 16776,
+        "count": 4194,
+        "type": "Uint32Array"
+      }
+    },
+    {
+      "name": "casual-woman",
+      "kind": "person",
+      "vertexCount": 822,
+      "triangleCount": 1400,
+      "frameCount": 24,
+      "dimensions": {
+        "height": 1.8,
+        "width": 0.521496689948296,
+        "length": 0.6162414618453587
+      },
+      "animation": {
+        "idle": {
+          "offset": 0,
+          "count": 8,
+          "duration": 2.0833332538604736,
+          "sourceClip": "Idle"
+        },
+        "walk": {
+          "offset": 8,
+          "count": 16,
+          "duration": 1.6666666269302368,
+          "sourceClip": "Walk"
+        }
+      },
+      "simplification": {
+        "targetTriangles": 1400,
+        "relativeError": 0.005068480037152767,
+        "poseSafeWeld": true
+      },
+      "positions": {
+        "byteOffset": 650136,
+        "byteLength": 315648,
+        "count": 78912,
+        "type": "Float32Array"
+      },
+      "normals": {
+        "byteOffset": 965784,
+        "byteLength": 315648,
+        "count": 78912,
+        "type": "Float32Array"
+      },
+      "colors": {
+        "byteOffset": 1281432,
+        "byteLength": 9864,
+        "count": 2466,
+        "type": "Float32Array"
+      },
+      "indices": {
+        "byteOffset": 1291296,
+        "byteLength": 16800,
+        "count": 4200,
+        "type": "Uint32Array"
+      }
+    },
+    {
+      "name": "suit-man",
+      "kind": "person",
+      "vertexCount": 842,
+      "triangleCount": 1398,
+      "frameCount": 24,
+      "dimensions": {
+        "height": 1.8,
+        "width": 0.5912741345996528,
+        "length": 0.6371088403389233
+      },
+      "animation": {
+        "idle": {
+          "offset": 0,
+          "count": 8,
+          "duration": 1.6666666269302368,
+          "sourceClip": "Idle"
+        },
+        "walk": {
+          "offset": 8,
+          "count": 16,
+          "duration": 1.3333333730697632,
+          "sourceClip": "Walk"
+        }
+      },
+      "simplification": {
+        "targetTriangles": 1400,
+        "relativeError": 0.005853666458278894,
+        "poseSafeWeld": true
+      },
+      "positions": {
+        "byteOffset": 1308096,
+        "byteLength": 323328,
+        "count": 80832,
+        "type": "Float32Array"
+      },
+      "normals": {
+        "byteOffset": 1631424,
+        "byteLength": 323328,
+        "count": 80832,
+        "type": "Float32Array"
+      },
+      "colors": {
+        "byteOffset": 1954752,
+        "byteLength": 10104,
+        "count": 2526,
+        "type": "Float32Array"
+      },
+      "indices": {
+        "byteOffset": 1964856,
+        "byteLength": 16776,
+        "count": 4194,
+        "type": "Uint32Array"
+      }
+    },
+    {
+      "name": "worker-woman",
+      "kind": "person",
+      "vertexCount": 910,
+      "triangleCount": 1398,
+      "frameCount": 24,
+      "dimensions": {
+        "height": 1.8,
+        "width": 0.5316949822741595,
+        "length": 0.6099270612531379
+      },
+      "animation": {
+        "idle": {
+          "offset": 0,
+          "count": 8,
+          "duration": 2.0833332538604736,
+          "sourceClip": "Idle"
+        },
+        "walk": {
+          "offset": 8,
+          "count": 16,
+          "duration": 1.6666666269302368,
+          "sourceClip": "Walk"
+        }
+      },
+      "simplification": {
+        "targetTriangles": 1400,
+        "relativeError": 0.004971928894519806,
+        "poseSafeWeld": true
+      },
+      "positions": {
+        "byteOffset": 1981632,
+        "byteLength": 349440,
+        "count": 87360,
+        "type": "Float32Array"
+      },
+      "normals": {
+        "byteOffset": 2331072,
+        "byteLength": 349440,
+        "count": 87360,
+        "type": "Float32Array"
+      },
+      "colors": {
+        "byteOffset": 2680512,
+        "byteLength": 10920,
+        "count": 2730,
+        "type": "Float32Array"
+      },
+      "indices": {
+        "byteOffset": 2691432,
+        "byteLength": 16776,
+        "count": 4194,
+        "type": "Uint32Array"
+      }
+    },
+    {
+      "name": "car-sedan",
+      "kind": "vehicle",
+      "vertexCount": 706,
+      "triangleCount": 1000,
+      "frameCount": 1,
+      "dimensions": {
+        "height": 1.6,
+        "width": 1.85,
+        "length": 4.5
+      },
+      "animation": {
+        "idle": {
+          "offset": 0,
+          "count": 1,
+          "duration": 1
+        },
+        "walk": {
+          "offset": 0,
+          "count": 1,
+          "duration": 1
+        }
+      },
+      "simplification": {
+        "targetTriangles": 1000,
+        "relativeError": 0.004875765647739172,
+        "poseSafeWeld": true
+      },
+      "positions": {
+        "byteOffset": 2708208,
+        "byteLength": 11296,
+        "count": 2824,
+        "type": "Float32Array"
+      },
+      "normals": {
+        "byteOffset": 2719504,
+        "byteLength": 11296,
+        "count": 2824,
+        "type": "Float32Array"
+      },
+      "colors": {
+        "byteOffset": 2730800,
+        "byteLength": 8472,
+        "count": 2118,
+        "type": "Float32Array"
+      },
+      "indices": {
+        "byteOffset": 2739272,
+        "byteLength": 12000,
+        "count": 3000,
+        "type": "Uint32Array"
+      }
+    },
+    {
+      "name": "car-suv",
+      "kind": "vehicle",
+      "vertexCount": 739,
+      "triangleCount": 1000,
+      "frameCount": 1,
+      "dimensions": {
+        "height": 1.8,
+        "width": 1.95,
+        "length": 4.5
+      },
+      "animation": {
+        "idle": {
+          "offset": 0,
+          "count": 1,
+          "duration": 1
+        },
+        "walk": {
+          "offset": 0,
+          "count": 1,
+          "duration": 1
+        }
+      },
+      "simplification": {
+        "targetTriangles": 1000,
+        "relativeError": 0.008024274371564388,
+        "poseSafeWeld": true
+      },
+      "positions": {
+        "byteOffset": 2751272,
+        "byteLength": 11824,
+        "count": 2956,
+        "type": "Float32Array"
+      },
+      "normals": {
+        "byteOffset": 2763096,
+        "byteLength": 11824,
+        "count": 2956,
+        "type": "Float32Array"
+      },
+      "colors": {
+        "byteOffset": 2774920,
+        "byteLength": 8868,
+        "count": 2217,
+        "type": "Float32Array"
+      },
+      "indices": {
+        "byteOffset": 2783788,
+        "byteLength": 12000,
+        "count": 3000,
+        "type": "Uint32Array"
+      }
+    },
+    {
+      "name": "car-van",
+      "kind": "vehicle",
+      "vertexCount": 727,
+      "triangleCount": 1000,
+      "frameCount": 1,
+      "dimensions": {
+        "height": 2,
+        "width": 2,
+        "length": 4.5
+      },
+      "animation": {
+        "idle": {
+          "offset": 0,
+          "count": 1,
+          "duration": 1
+        },
+        "walk": {
+          "offset": 0,
+          "count": 1,
+          "duration": 1
+        }
+      },
+      "simplification": {
+        "targetTriangles": 1000,
+        "relativeError": 0.005706271156668663,
+        "poseSafeWeld": true
+      },
+      "positions": {
+        "byteOffset": 2795788,
+        "byteLength": 11632,
+        "count": 2908,
+        "type": "Float32Array"
+      },
+      "normals": {
+        "byteOffset": 2807420,
+        "byteLength": 11632,
+        "count": 2908,
+        "type": "Float32Array"
+      },
+      "colors": {
+        "byteOffset": 2819052,
+        "byteLength": 8724,
+        "count": 2181,
+        "type": "Float32Array"
+      },
+      "indices": {
+        "byteOffset": 2827776,
+        "byteLength": 12000,
+        "count": 3000,
+        "type": "Uint32Array"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "name": "casual-man.gltf",
+      "url": "https://drive.google.com/uc?export=download&id=1Jn7kULNmrtqP8BUUL19h8MhbdOnwPFhv",
+      "sourcePage": "https://quaternius.com/packs/ultimatemodularcharacters.html",
+      "sha256": "55c654d09a2a5ff6e3bd6158d4a1b462f181cd6f1e12a0f5e9d959f9c3abc438",
+      "bytes": 3058092,
+      "license": "CC0-1.0"
+    },
+    {
+      "name": "casual-woman.gltf",
+      "url": "https://drive.google.com/uc?export=download&id=18b3WwlrwrFYWAM7BcnjWeIxKJyxAQiGh",
+      "sourcePage": "https://quaternius.com/packs/ultimatemodularwomen.html",
+      "sha256": "b0fe6e92219cd71808844a20a1a8b960fd1cf640a6546dc6362b5add6604e87c",
+      "bytes": 3131788,
+      "license": "CC0-1.0"
+    },
+    {
+      "name": "suit-man.gltf",
+      "url": "https://drive.google.com/uc?export=download&id=1NhXHnGU0zK9hBrT5FoZp8nTz_EmvTPg5",
+      "sourcePage": "https://quaternius.com/packs/ultimatemodularcharacters.html",
+      "sha256": "6c89fbb31b96c1a63ad94e3dee0942bd7b34bc789a5d39fd6a6a1738a9214fb3",
+      "bytes": 3315342,
+      "license": "CC0-1.0"
+    },
+    {
+      "name": "worker-woman.gltf",
+      "url": "https://drive.google.com/uc?export=download&id=1iwF_fqDErPH9uyol6NmS-MnzGgsZ5ejV",
+      "sourcePage": "https://quaternius.com/packs/ultimatemodularwomen.html",
+      "sha256": "e2bfc1039f429e870a0119e274c2dd45f6304f00c39f4570dfeb9ed4d97a063d",
+      "bytes": 3095030,
+      "license": "CC0-1.0"
+    },
+    {
+      "name": "kenney-car-kit.zip",
+      "url": "https://kenney.nl/media/pages/assets/car-kit/1a312ec241-1775131960/kenney_car-kit.zip",
+      "sourcePage": "https://kenney.nl/assets/car-kit",
+      "sha256": "fac7dacac5c7874348cf19729af3ef205f3d366493edaf0a827d93f4fdf3d0c4",
+      "bytes": 4814237,
+      "license": "CC0-1.0"
+    },
+    {
+      "name": "quaternius-men-license.txt",
+      "url": "https://drive.google.com/uc?export=download&id=1TTvylHa1CsiJuHFWWiv6PFGhLM-aAH5z",
+      "sourcePage": "https://quaternius.com/license.html",
+      "sha256": "e8dbf915a2b82229913e301a0787696611241bdefec4832bc084f54161db1efe",
+      "bytes": 372,
+      "license": "CC0-1.0"
+    },
+    {
+      "name": "quaternius-women-license.txt",
+      "url": "https://drive.google.com/uc?export=download&id=1lIFL16xEpoPbr0j_HUATgmcEnAmYoIK2",
+      "sourcePage": "https://quaternius.com/license.html",
+      "sha256": "e8dbf915a2b82229913e301a0787696611241bdefec4832bc084f54161db1efe",
+      "bytes": 372,
+      "license": "CC0-1.0"
+    }
+  ],
+  "licenses": [
+    {
+      "url": "quaternius-men-license.txt",
+      "sha256": "e8dbf915a2b82229913e301a0787696611241bdefec4832bc084f54161db1efe",
+      "bytes": 372,
+      "spdx": "CC0-1.0"
+    },
+    {
+      "url": "quaternius-women-license.txt",
+      "sha256": "e8dbf915a2b82229913e301a0787696611241bdefec4832bc084f54161db1efe",
+      "bytes": 372,
+      "spdx": "CC0-1.0"
+    },
+    {
+      "url": "kenney-license.txt",
+      "sha256": "c33b7f6453d134deae7b1b8493717d9ccfa754c25ab97f6de89b88f8fda19b00",
+      "bytes": 696,
+      "spdx": "CC0-1.0"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-09-09T09:44:08.705Z",
+  "checks": 9,
+  "available": 7,
+  "publicRequests": 11,
+  "decodedBytes": 2296042,
+  "exactLocalContexts": true,
+  "populationHash": "646bef9ee30c2f061f80b1ce26cd9d7ca2c7da170c6d55c086dea24d2d95bca1",
+  "spatialHash": "ec886d770baa1bbb83afab4973b857a6d50d9a1eac0135c1f90508a88557567d",
+  "cloudWrites": 0,
+  "inferenceCalls": 0
+}

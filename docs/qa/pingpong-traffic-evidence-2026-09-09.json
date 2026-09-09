@@ -1,0 +1,97 @@
+{
+  "contract": "PingPongTrafficBrowserEvidenceSummaryV1",
+  "captureDate": "2026-09-09",
+  "classification": "functional_visual_evidence",
+  "performanceClaim": false,
+  "browser": "Independent Chromium context; real play control; no runtime instrumentation",
+  "targetId": "demo2-v-0137107",
+  "sourceScope": "Fictional V2 presentation only; current source membership, IDs and routes unchanged",
+  "camera": {
+    "longitude": 61.40335931261333,
+    "latitude": 55.166641128116765,
+    "zoom": 19,
+    "pitch": 46.49661799282392,
+    "bearing": -172.97699800600026
+  },
+  "startPresentationMinutes": 732.1,
+  "recordedSamples": 75,
+  "targetSamples": 30,
+  "visibleTargetSamples": 30,
+  "elapsedTargetSeconds": 8.798999999999069,
+  "maximumStepMetersPerSecond": 7.000000000000386,
+  "sourceReanchors": [
+    0,
+    0
+  ],
+  "sourceRefreshes": [
+    2,
+    3
+  ],
+  "sourceSha256Before": "bb1a868dacfeb6e01e1832962213ad514581eedacb107eb5297a67d8108233cb",
+  "sourceSha256After": "bb1a868dacfeb6e01e1832962213ad514581eedacb107eb5297a67d8108233cb",
+  "checks": [
+    {
+      "name": "real source target sampled across turnaround",
+      "pass": true
+    },
+    {
+      "name": "target remains visible while in source inventory",
+      "pass": true
+    },
+    {
+      "name": "all current vehicle traversals regulated",
+      "pass": true
+    },
+    {
+      "name": "no position jump, including endpoint reversal and pause",
+      "pass": true
+    },
+    {
+      "name": "source refresh occurs without presentation reanchor",
+      "pass": true
+    },
+    {
+      "name": "traffic modules unchanged during run",
+      "pass": true
+    },
+    {
+      "name": "no page or harness errors",
+      "pass": true
+    }
+  ],
+  "pageOrHarnessErrors": 0,
+  "artifacts": [
+    {
+      "name": "page@c0cda752e99060189053c1cd6eae21ae.webm",
+      "bytes": 1762822,
+      "sha256": "5c67ec9495d4147e1aacafcf0561adb31ad8b36c5acfe5d20123ef09583fe5fe"
+    },
+    {
+      "name": "sample-5.png",
+      "bytes": 498832,
+      "sha256": "bac7e3ebb35a02e313f3bac9e710868bf2cbe26bfb6c788d9c235efb9155f5dc"
+    },
+    {
+      "name": "sample-70.png",
+      "bytes": 495741,
+      "sha256": "7c0cc7ebde2d84d497e82eee4783a835e8d96f3c49f3c193b6a3d4e76e84efb3"
+    },
+    {
+      "name": "traffic-turn.png",
+      "bytes": 497634,
+      "sha256": "1a7688f54b7594da6f6da45bfae77193e2eaf54ed8892351264ee3559839a3ec"
+    }
+  ],
+  "reproduce": "node tools/qa-city-traffic.mjs",
+  "focusedTests": {
+    "passed": 77,
+    "typecheck": "passed",
+    "command": "node node_modules/vitest/vitest.mjs run apps/web/src/renderer/game/laneTraffic.test.ts apps/web/src/demo/actorColumnsBridge.test.ts apps/web/src/demo/actorFootprintClearance.test.ts apps/web/src/renderer/game/GameActors.test.ts apps/web/src/renderer/game/BuildingTileCache.test.ts apps/web/src/renderer/game/buildingCacheAdmission.test.ts --maxWorkers=1"
+  },
+  "limitations": [
+    "The target is sampled only while its authoritative source inventory includes its ID.",
+    "This narrow test proves the actual ping-pong source turnaround; once-lane headway evidence is recorded separately.",
+    "Recording and concurrent local work contaminate performance measurements.",
+    "Numeric motion checks use retained presentation samples, not GPU pixel segmentation."
+  ]
+}

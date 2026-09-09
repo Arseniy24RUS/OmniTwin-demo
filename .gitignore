@@ -22,6 +22,9 @@ apps/web/public/demo/dataset.json
 apps/web/public/demo/chat-profiles.json
 apps/web/public/city-v2/
 apps/web/public/demo-v2/
+apps/web/public/city-visual-v1/
+# Local legacy rollback binary; the actor manifest pins a current hashed binary.
+apps/web/public/assets/game-actors-v1/actors.bin
 apps/web/src/renderer/**/*.test.ts
 apps/web/src/renderer/**/*.test.tsx
 !apps/web/src/renderer/actorPhysical.test.ts
@@ -33,4 +36,5 @@ apps/web/src/renderer/**/*.test.tsx
 !apps/web/src/renderer/deckAdapter.test.ts
 !apps/web/src/renderer/living/partition.test.ts
 !apps/web/src/renderer/runtime/performanceGovernor.test.ts
+!apps/web/src/renderer/game/**/*.test.ts
 packages/contracts/src/**/*.test.ts

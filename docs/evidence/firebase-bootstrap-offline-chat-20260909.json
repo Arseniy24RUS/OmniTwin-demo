@@ -1,0 +1,111 @@
+{
+  "contract": "OmniTwinFirebaseBootstrapOfflineChatEvidenceV1",
+  "createdAt": "2026-09-09T13:40:20Z",
+  "classification": "offline_source_review_and_mocked_verification",
+  "status": "prepared_not_executed_live",
+  "productionSourceChanges": 0,
+  "configurationWrites": 0,
+  "networkRequests": 0,
+  "authenticationCalls": 0,
+  "deploymentAttempts": 0,
+  "inferenceCalls": 0,
+  "activationSha256": "35319bb7b4068e6b7e8c281f6eb45ec70ca2be80c83c516460160f226938cbf9",
+  "helpers": [
+    { "file": "run-reviewed-firebase-deploy.cjs", "bytes": 2139, "sha256": "fc434fc38aa9c9ed9b32016833a0d03194fe18ae27ff341d8f0dff325c0cf83a" },
+    { "file": "firebase-no-debug-preload.cjs", "bytes": 947, "sha256": "d2ead0fe509715c73489e6635c65bddcf7e58b7fe57b8e34d4955257c0ef5390" },
+    { "file": "firebase-deploy-bootstrap.cjs", "bytes": 2704, "sha256": "6faa15e536b7b900ba15fefbfe67e661c2c8dfecf348da605c5ff22f558867f9" },
+    { "file": "firebase-deploy-output.cjs", "bytes": 2398, "sha256": "ca98212d13b1024712728520999d26868da3c2d8e4649118f0d6354b5e62f041" },
+    { "file": "firebase-deploy-output.test.cjs", "bytes": 2545, "sha256": "b67bb7bf93cc93494830eddc1dbf8e3a1ca779a55e5b576b7d3c39a4300bd715" },
+    { "file": "verify-live-chat.mjs", "bytes": 6658, "sha256": "122c02c69f8381c4e8c92939e790c61704e391285d0b571137c55420313985bd" },
+    { "file": "live-chat-assertions.mjs", "bytes": 4966, "sha256": "680913fdc9d70941dbf76fef4e0f6347b89edd46b58e60c4b44ae72a5aa27197" },
+    { "file": "live-chat-assertions.test.mjs", "bytes": 5844, "sha256": "0647d542032a53549c4d63c18001d3898b3510f24b6ae37e40716e16417f640a" },
+    { "file": "review-chat-stage.mjs", "bytes": 3508, "sha256": "ee4a6ff0d69789c2c66d21b6b2da35a97dd91da38c4765064f31aa645f6ac72e" },
+    { "file": "offline-chat-deployment-review.json", "bytes": 2689, "sha256": "619f6cb864d5de43ee1d1f99e999d2f93d7763880e4aca9d96ab9a91c2c7b283" }
+  ],
+  "bootstrap": {
+    "cliVersion": "15.29.0",
+    "reviewedCliFilesHashPinned": 12,
+    "command": ["deploy", "--only", "functions:demo-chat", "--project", "omnitwin-demo", "--non-interactive"],
+    "workingDirectory": "deploy/firebase",
+    "workingDirectoryPolicy": "Exact designated project deployment directory; other directories rejected",
+    "defaultMode": "No-argument source-hash verification; does not import the CLI or authenticate",
+    "actualExecutionDesign": "Separate hidden process runs the official cached CLI entry with a logging-only preload; normal CLI account selection, permission checks, API clients and deployment behavior remain in place",
+    "finding": {
+      "source": "firebase-tools/lib/bin/cli.js",
+      "detail": "Normal CLI calls useFileLogger unconditionally, even without --debug; debug file deletion depends on normal exit",
+      "secondarySource": "firebase-tools/lib/apiv2.js:331",
+      "secondaryDetail": "Fetch-error debug serialization includes fetchOptions.body. OAuth refresh requests set skipLog for normal logging, but this exceptional path does not consult skipLog"
+    },
+    "mitigations": [
+      "Disable file logger setup and debug methods before official CLI entry import",
+      "Reject debug, credential, discovery and secret-value environment overrides by key presence without printing values",
+      "Capture child stdout and stderr, including fatal and inherited predeploy output, without storing raw output",
+      "Emit only fixed lifecycle/error classifications, at most 32 unique records, with raw line buffering capped at 4096 characters",
+      "Preserve CLI exit code and require separate live configuration readback; CLI completion alone is not release acceptance"
+    ],
+    "secretReview": "Existing normal noninteractive ensureSecret path reads secret/version metadata; missing or disabled secrets fail. Secret-value access is a separate helper not called by that reviewed branch. This source review is not a live API trace.",
+    "mockTests": { "initialPass": 0, "initialFail": 3, "finalPass": 4, "finalFail": 0 }
+  },
+  "chatSmoke": {
+    "maximumChatPosts": 2,
+    "maximumInferenceAttempts": 2,
+    "liveReplays": 0,
+    "retryPolicy": "Stop on first failed formatting, profile, context, model, transport or receipt-persistence check; no paid retry",
+    "cases": [
+      {
+        "datasetId": "omnitwin-public-fictional-chelyabinsk-v1",
+        "personId": "demo-p-5a338d7e4ce540",
+        "expectedProfileSha256": "9735184c61b03aed46a169afe1c82b64cfaabc6fdb34393947d4c6542f58875c"
+      },
+      {
+        "datasetId": "omnitwin-fictional-city-v2",
+        "personId": "demo2-p-0000000",
+        "expectedProfileSha256": "c3aa7a29f2e19ee43cc93b8bb40e1b08a5be33c0ed3321faf5dffae70f305ff4"
+      }
+    ],
+    "context": { "scenario": "baseline", "year": 2026, "presentationMinutes": 600, "time": "10:00" },
+    "verification": [
+      "HTTP 200, source llm, matching request ID and approved-origin CORS",
+      "Bounded JSON response: exact canonical name and occupation from pinned offline resolver, plus requested scenario/year/time",
+      "Exact approved model allowlist when model is returned; an absent model is explicitly recorded unverified",
+      "Expected profile facts are never sent in the user prompt",
+      "No raw replies or session tokens are persisted; receipt contains check booleans and public profile fingerprints only",
+      "Exclusive attempt receipt is written before a paid request; an existing receipt forbids automatic replay",
+      "Fresh deployment readback required, including rejection of future-dated timestamps"
+    ],
+    "evidenceLimit": "Response facts are bounded behavioral evidence, not a cryptographic API identity attestation. Source pins, resolver parity and deployment readback provide the separate binding evidence.",
+    "mockTests": { "initialPass": 1, "initialFail": 3, "finalPass": 10, "finalFail": 0 },
+    "offlinePreparationPassed": true,
+    "liveCompatibilityVerified": false
+  },
+  "stagedSource": {
+    "filesCompared": 19,
+    "bytesCompared": 17767815,
+    "matchesCurrentBuildPayloadAndReviewedStageEvidence": true,
+    "fileInventorySha256": "e4e1edfc3e4ab465698bbbebb6647a6ad4f3bc826d1bf470988b2e94efa4c051",
+    "legacyProfileSha256": "99c7599b6c8290f588626a2b82f466f7f201ac211e900f412c1de0ecd45c23f7",
+    "populationManifestSha256": "646bef9ee30c2f061f80b1ce26cd9d7ca2c7da170c6d55c086dea24d2d95bca1",
+    "spatialManifestSha256": "ec886d770baa1bbb83afab4973b857a6d50d9a1eac0135c1f90508a88557567d",
+    "frontendProfileModuleSha256": "c84627d1b8f706aa080b464706c46e471ed1d934fc90a82a8bf090e32dc48f09",
+    "comparisonLimit": "Local staged-source equality does not prove equality to the deployed revision or its effective runtime configuration"
+  },
+  "backendOfflineTests": {
+    "passed": 28,
+    "failed": 0,
+    "files": [
+      "server/chat/test/handler.test.mjs",
+      "server/chat/test/quota.test.mjs",
+      "server/chat/test/openrouter.test.mjs",
+      "server/chat/test/population-resolver.test.mjs",
+      "deploy/firebase/tests/city-activation.test.mjs"
+    ],
+    "deduplicationEvidence": "Existing handler and quota tests verify duplicate-request handling; no live duplicate requests are made"
+  },
+  "remainingReleaseGates": [
+    "Immutable asset publication and public byte-integrity audit",
+    "Fresh normal function metadata before deployment and exact after-deployment comparison of effective limits, identity and secret version references",
+    "Approved activation labels and revision with all traffic on latest revision",
+    "At most two normal live compatibility requests after deployment",
+    "Public browser validation after explicit runtime configuration activation"
+  ]
+}

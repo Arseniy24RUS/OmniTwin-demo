@@ -9,7 +9,7 @@ const LEGACY_DATASET = 'omnitwin-public-fictional-chelyabinsk-v1';
 const sha = (value: unknown): value is string => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
 
 /** Only this demo's immutable public asset namespace is eligible for activation. */
-export function parseCityActivation(value: unknown): { defaultDatasetId?: string; cityAssets?: CityAssetActivation } {
+export function parseCityActivation(value: unknown): { defaultDatasetId?: string; cityAssets?: CityAssetActivation; movementOverlay?:CityMovementActivation } {
   if (!value || typeof value !== 'object') throw new Error('Invalid deployment configuration');
   const config = value as Record<string, unknown>;
   if (config.defaultDatasetId !== undefined && ![CITY_DATASET, LEGACY_DATASET].includes(String(config.defaultDatasetId))) throw new Error('Unknown activated dataset');
@@ -23,7 +23,8 @@ export function parseCityActivation(value: unknown): { defaultDatasetId?: string
     cityAssets = { baseUrl: url.href, populationManifestSha256: assets.populationManifestSha256, spatialManifestSha256: assets.spatialManifestSha256 };
   }
   if (config.defaultDatasetId === CITY_DATASET && !cityAssets) throw new Error('City activation requires its immutable asset pack');
-  return { defaultDatasetId: config.defaultDatasetId as string | undefined, cityAssets };
+  const movementOverlay=config.movementOverlay===undefined?undefined:parseMovementActivation(config.movementOverlay,cityAssets);
+  return { defaultDatasetId: config.defaultDatasetId as string | undefined, cityAssets, ...(movementOverlay?{movementOverlay}:{}) };
 }
 
 export async function readCityActivation(applicationBaseUrl: string, signal?: AbortSignal) {
@@ -32,3 +33,4 @@ export async function readCityActivation(applicationBaseUrl: string, signal?: Ab
   if (!response.ok) throw new Error(`Deployment configuration HTTP ${response.status}`);
   return parseCityActivation(await response.json());
 }
+import {parseMovementActivation,type CityMovementActivation} from './movementAssetActivation';

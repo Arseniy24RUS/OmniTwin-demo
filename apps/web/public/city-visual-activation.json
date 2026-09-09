@@ -1,0 +1,11 @@
+{
+  "contract": "CityVisualActivationV1",
+  "version": 1,
+  "populationDatasetId": "omnitwin-fictional-city-v2",
+  "sourceDatasetVersion": "138afac3f0d74f256838eda3b7afd24259f640fac0dcd4a60ff49140a18f66a4",
+  "manifest": {
+    "url": "https://storage.googleapis.com/omnitwin-demo-city-assets/packs/96716050fe80bd534b3f81bb80e27e651b486b4f12b6b9270ac9487127149c3a/city-visual-v1/manifest.json",
+    "bytes": 167143,
+    "sha256": "d1f25e4328caf10ddf7e3e6f8e2734b7cfc63b0ac7a28b0eb410af3fc53cf9cc"
+  }
+}

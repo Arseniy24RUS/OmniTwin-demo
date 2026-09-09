@@ -1,0 +1,172 @@
+{
+  "contract": "JunctionTrafficBrowserEvidenceSummaryV1",
+  "captureDate": "2026-09-09",
+  "classification": "functional_visual_evidence",
+  "performanceClaim": false,
+  "command": "node tools/qa-city-junctions.mjs --duration 34",
+  "startup": "paused_until_ready",
+  "browser": "chrome",
+  "camera": {
+    "longitude": 61.40335931261333,
+    "latitude": 55.166641128116765,
+    "zoom": 18.2,
+    "pitch": 46.49661799282392,
+    "bearing": -172.97699800600026
+  },
+  "sourceScope": "Fictional V2 presentation only; source IDs/routes/passengers/population unchanged",
+  "sourceFiles": [
+    "junctionTraffic.ts",
+    "laneTraffic.ts",
+    "actorColumnsBridge.ts",
+    "actorFootprintClearance.ts",
+    "TiledGameScene.tsx"
+  ],
+  "sourceSha256Before": "91d455ee738cdca9c89b7f100b5e1031f9509533a3d556b74540e2bee4f81e46",
+  "sourceSha256After": "91d455ee738cdca9c89b7f100b5e1031f9509533a3d556b74540e2bee4f81e46",
+  "samples": 148,
+  "presentationTimes": [
+    42464.02370000009,
+    42497.79910000006
+  ],
+  "elapsedPresentationSeconds": 33.77539999996952,
+  "pairChecks": 283946,
+  "minimumCentreDistancesMeters": {
+    "carCar": 7.9988786464978014,
+    "carPed": 2.3501812758099416
+  },
+  "closeCentreViolations": 0,
+  "sourceTangentBodyOverlaps": 0,
+  "phaseKinds": [
+    "vehicle",
+    "clearance",
+    "pedestrian"
+  ],
+  "maximumRoadsideProps": 15,
+  "sourceRefreshes": [
+    2,
+    9
+  ],
+  "sourceReanchors": [
+    0,
+    0
+  ],
+  "managedVehicles": [
+    34,
+    45
+  ],
+  "managedPedestrians": [
+    45,
+    43
+  ],
+  "maximumRetainedPaths": 17,
+  "maximumMergeIntervalComparisons": 2112,
+  "maximumSegmentPairChecks": 3406,
+  "checks": [
+    {
+      "name": "source metadata unchanged during run",
+      "pass": true
+    },
+    {
+      "name": "sampled a full visual phase cycle",
+      "pass": true
+    },
+    {
+      "name": "actual source cars and pedestrians controlled",
+      "pass": true
+    },
+    {
+      "name": "all sampled source traversals are regulated",
+      "pass": true
+    },
+    {
+      "name": "renderer remains active through signal phase changes",
+      "pass": true
+    },
+    {
+      "name": "source refresh preserves retained presentation",
+      "pass": true
+    },
+    {
+      "name": "signals have verified roadside placements",
+      "pass": true
+    },
+    {
+      "name": "queues wait at conflict barriers",
+      "pass": true
+    },
+    {
+      "name": "no bounded-controller overflow",
+      "pass": true
+    },
+    {
+      "name": "no close-centre collision diagnostic",
+      "pass": true
+    },
+    {
+      "name": "no source-tangent body envelope overlap",
+      "pass": true
+    },
+    {
+      "name": "no page or harness errors",
+      "pass": true
+    }
+  ],
+  "regressionFixtures": [
+    {
+      "name": "cityJunctionWidePaths.json",
+      "bytes": 67455,
+      "sha256": "bf02fab4e1c983b34be8bffd8e29f617868c05c1b76b59247df8448e02e48fc4"
+    },
+    {
+      "name": "cityJunctionColdWidePaths.json",
+      "bytes": 135586,
+      "sha256": "d5f5f6470c8f4b9a9eb53d98c2c743e6d4b56d5800d5d2885115f69150dea904"
+    },
+    {
+      "name": "cityJunctionColdMergePaths.json",
+      "bytes": 128871,
+      "sha256": "9df08a114a3180e1dee98cab2cbb67be86700fd764a9dd81950a6df35f80f34a"
+    }
+  ],
+  "regressionTests": {
+    "files": 10,
+    "passed": 84,
+    "typecheck": "pass",
+    "failFirstCases": [
+      "126 retained paths exceeded unmerged-contact count",
+      "121 retained paths exhausted repeated-merge work",
+      "opposite forward-only bridge edges lacked single-direction authority",
+      "unknown geometry alias disabled verified bridge reservation"
+    ]
+  },
+  "artifacts": [
+    {
+      "name": "junction-end.png",
+      "bytes": 554772,
+      "sha256": "3090a7c6b5dbcd556b4dc37c5f65bdd435b192b070974d109e678173cb93302a"
+    },
+    {
+      "name": "junction-start.png",
+      "bytes": 559258,
+      "sha256": "69dbeeebf51a89ce24de8b87e37a0d011bbc167166d24c735d1f9ba2133fa8e5"
+    },
+    {
+      "name": "page@3913d69ad6db50f41c0c9617b7f40b4c.webm",
+      "bytes": 2855227,
+      "sha256": "250b93837d9bf255a402c83a8ad62e25af3e659724dc013e7ad10161c88685bb"
+    },
+    {
+      "name": "results.json",
+      "bytes": 20162582,
+      "sha256": "1930fdfd57c6d4a9159f35c9174df19cf1810d5a8481458d2693597e28f4e700"
+    }
+  ],
+  "limitations": [
+    "Presentation probe is bounded to 64 cars and 64 pedestrians per sample.",
+    "Body checks use source tangent headings and presentation samples, not interpolated renderer matrices.",
+    "Concurrent local work and video recording preclude a performance claim."
+  ],
+  "independentRenderedBodyGate": "Superseded by latestEvidence: independent all-rendered-actor cold-view body/queue/phase checks passed for the updated controller, including explicit exclusive-section admission. The hashes and 64-actor samples in this file remain historical.",
+  "status": "historical_diagnostic_superseded",
+  "latestEvidence": "../evidence/junction-cold-rendered-opposing-pass-20260909.json"
+}

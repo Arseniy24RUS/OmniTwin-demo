@@ -1,0 +1,242 @@
+{
+  "date": "2026-09-09",
+  "classification": "local_offscreen_hardware_performance_diagnostic",
+  "method": "Separate fresh temporary headless contexts; no video, no shared user profile, no OS/GPU settings changes. Count existing MapLibre render-event telemetry, not RAF. Wait for ready assets and an idle paused window before hardware measurement. Bounded CDP main-thread CPU sampling at1000us.",
+  "viewport": [
+    1280,
+    800
+  ],
+  "mapDrawingBuffer": [
+    944,
+    672
+  ],
+  "camera": {
+    "longitude": 61.40324326242887,
+    "latitude": 55.166511972647186,
+    "zoom": 18.5,
+    "pitch": 46.49661799282392,
+    "bearing": -172.97699800600026
+  },
+  "initialMinutes": 750.27,
+  "speed": 1,
+  "visualCatalog": {
+    "sha256": "a4e91b5d9276539020c7b429ea5bd4e6d00755237e909e79f7f34b4fa82eeae3",
+    "compiledCells": 4,
+    "status": "partial_preview"
+  },
+  "hardware": {
+    "launch": {
+      "channel": "chrome",
+      "headless": true,
+      "explicitGpuOverrides": []
+    },
+    "browserVersion": "152.0.7977.83",
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.16.1656)",
+    "sourceFingerprintsBefore": {
+      "apps/web/src/renderer/game/TiledGameScene.tsx": "bc67633b1534eb7e7ecf5cc4addaabacd0451a46c64dae5d2e69746a54e36ac1",
+      "apps/web/src/renderer/game/TiledGameLayer.ts": "eabbfc2f0d7ac9cb01f25d11ff19e5be98e6f4f04f84d496ea34eafaf4498dde",
+      "apps/web/src/renderer/game/GameActors.ts": "10eaf47e2d35b3b465eb1e31cf695d006252ebcc19ed050535dc0e41fa6f2807",
+      "apps/web/src/renderer/game/actorColumnsBridge.ts": "4db746ce9b6f57c59281776a7e08f5b43f3a2351073aa54863d75edd35e213d2",
+      "apps/web/src/renderer/game/laneTraffic.ts": "baf51689f2cb9199cf4b36692f7b21676fbc50be1e48d4c7295415aad8c3b7f3",
+      "apps/web/public/city-visual-v1/manifest.json": "e66392a4179beaff5550456532ba41646ac249d204f977ad6dc6bcdaf95ffa51"
+    },
+    "changedFilesDuringCapture": [],
+    "errors": [],
+    "measurements": [
+      {
+        "name": "paused-settled",
+        "elapsedMs": 4015.7999999523163,
+        "mapRenderFrames": 0,
+        "mapRenderEventsPerSecond": 0,
+        "intervalDistributionLast300": null,
+        "customLayerFrames": 0,
+        "customDrawCalls": 70,
+        "customTriangles": 128460,
+        "people": 11,
+        "vehicles": 16,
+        "scriptSeconds": 0.000005000000000254801,
+        "taskSeconds": 0.0027500000000006963,
+        "threadSeconds": 0.0030319999999997016
+      },
+      {
+        "name": "playing-clean",
+        "elapsedMs": 10014.899999976158,
+        "mapRenderFrames": 1082,
+        "mapRenderEventsPerSecond": 108.03902185768963,
+        "intervalDistributionLast300": {
+          "count": 300,
+          "min": 4,
+          "p50": 8.399999976158142,
+          "p95": 23.899999976158142,
+          "p99": 25.5,
+          "max": 25.799999952316284
+        },
+        "customLayerFrames": 1077,
+        "customDrawCalls": 70,
+        "customTriangles": 135476,
+        "people": 11,
+        "vehicles": 23,
+        "scriptSeconds": 3.47959,
+        "taskSeconds": 3.8804299999999996,
+        "threadSeconds": 3.355544
+      },
+      {
+        "name": "playing-profiled",
+        "elapsedMs": 10011.399999976158,
+        "mapRenderFrames": 1090,
+        "mapRenderEventsPerSecond": 108.87588149535488,
+        "intervalDistributionLast300": {
+          "count": 300,
+          "min": 4,
+          "p50": 8.300000071525574,
+          "p95": 23.800000071525574,
+          "p99": 25.799999952316284,
+          "max": 30.399999976158142
+        },
+        "customLayerFrames": 1090,
+        "customDrawCalls": 70,
+        "customTriangles": 133870,
+        "people": 12,
+        "vehicles": 20,
+        "scriptSeconds": 3.5876579999999993,
+        "taskSeconds": 3.9892520000000005,
+        "threadSeconds": 3.5065909999999985
+      },
+      {
+        "name": "paused-after-play",
+        "elapsedMs": 3007.5,
+        "mapRenderFrames": 0,
+        "mapRenderEventsPerSecond": 0,
+        "intervalDistributionLast300": null,
+        "customLayerFrames": 0,
+        "customDrawCalls": 70,
+        "customTriangles": 133870,
+        "people": 12,
+        "vehicles": 20,
+        "scriptSeconds": 0.000003999999998782755,
+        "taskSeconds": 0.002508000000000621,
+        "threadSeconds": 0.002674999999999983
+      }
+    ],
+    "profileSeconds": 10.49861
+  },
+  "software": {
+    "launch": {
+      "headless": true,
+      "explicitGpuOverrides": [],
+      "actualExecutableKind": "bundled_chrome_headless_shell",
+      "actualBackendFlags": [
+        "--use-gl=angle",
+        "--use-angle=swiftshader-webgl"
+      ]
+    },
+    "browserVersion": "151.0.7922.34",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver-5.0.0)",
+    "sourceFingerprintsBefore": {
+      "apps/web/src/renderer/game/TiledGameScene.tsx": "bc67633b1534eb7e7ecf5cc4addaabacd0451a46c64dae5d2e69746a54e36ac1",
+      "apps/web/src/renderer/game/TiledGameLayer.ts": "eabbfc2f0d7ac9cb01f25d11ff19e5be98e6f4f04f84d496ea34eafaf4498dde",
+      "apps/web/src/renderer/game/GameActors.ts": "10eaf47e2d35b3b465eb1e31cf695d006252ebcc19ed050535dc0e41fa6f2807",
+      "apps/web/src/renderer/game/actorColumnsBridge.ts": "4db746ce9b6f57c59281776a7e08f5b43f3a2351073aa54863d75edd35e213d2",
+      "apps/web/src/renderer/game/laneTraffic.ts": "baf51689f2cb9199cf4b36692f7b21676fbc50be1e48d4c7295415aad8c3b7f3",
+      "apps/web/public/city-visual-v1/manifest.json": "e66392a4179beaff5550456532ba41646ac249d204f977ad6dc6bcdaf95ffa51"
+    },
+    "changedFilesDuringCapture": [
+      "apps/web/src/renderer/game/TiledGameScene.tsx",
+      "apps/web/src/renderer/game/TiledGameLayer.ts"
+    ],
+    "errors": [],
+    "measurements": [
+      {
+        "name": "paused-settled",
+        "elapsedMs": 4013.5999999046326,
+        "mapRenderFrames": 7,
+        "mapRenderEventsPerSecond": 1.7440701614925074,
+        "intervalDistributionLast300": null,
+        "customLayerFrames": 7,
+        "customDrawCalls": 79,
+        "customTriangles": 149292,
+        "people": 11,
+        "vehicles": 16,
+        "scriptSeconds": 0.10495900000000002,
+        "taskSeconds": 1.4049219999999991,
+        "threadSeconds": 0.38807400000000003
+      },
+      {
+        "name": "playing-clean",
+        "elapsedMs": 10037.300000071526,
+        "mapRenderFrames": 76,
+        "mapRenderEventsPerSecond": 7.571757345048811,
+        "intervalDistributionLast300": {
+          "count": 94,
+          "min": 112.5,
+          "p50": 129.5,
+          "p95": 152.70000004768372,
+          "p99": 201.59999990463257,
+          "max": 201.59999990463257
+        },
+        "customLayerFrames": 77,
+        "customDrawCalls": 79,
+        "customTriangles": 156308,
+        "people": 11,
+        "vehicles": 23,
+        "scriptSeconds": 0.43574400000000013,
+        "taskSeconds": 10.141053999999999,
+        "threadSeconds": 0.4881310000000001
+      },
+      {
+        "name": "playing-profiled",
+        "elapsedMs": 10193.900000095367,
+        "mapRenderFrames": 77,
+        "mapRenderEventsPerSecond": 7.55353691906725,
+        "intervalDistributionLast300": {
+          "count": 173,
+          "min": 112.5,
+          "p50": 130.10000002384186,
+          "p95": 152.70000004768372,
+          "p99": 201.59999990463257,
+          "max": 571.7000000476837
+        },
+        "customLayerFrames": 77,
+        "customDrawCalls": 79,
+        "customTriangles": 154702,
+        "people": 12,
+        "vehicles": 20,
+        "scriptSeconds": 0.4414670000000003,
+        "taskSeconds": 10.132947999999995,
+        "threadSeconds": 0.5566869999999993
+      },
+      {
+        "name": "paused-after-play",
+        "elapsedMs": 3001.899999976158,
+        "mapRenderFrames": 0,
+        "mapRenderEventsPerSecond": 0,
+        "intervalDistributionLast300": null,
+        "customLayerFrames": 0,
+        "customDrawCalls": 79,
+        "customTriangles": 152298,
+        "people": 11,
+        "vehicles": 19,
+        "scriptSeconds": 0.000004000000000115023,
+        "taskSeconds": 0.001974000000004139,
+        "threadSeconds": 0.0020569999999997535
+      }
+    ],
+    "profileSeconds": 10.759165
+  },
+  "hardwareCpu": {
+    "idlePercent": 57.67752111946248,
+    "getParameterSelfSeconds": 0.683832,
+    "getParameterParent": "TiledGameLayer.render shared framebuffer and depth-range checks",
+    "threeRenderInclusiveSeconds": 1.130149,
+    "threeSetProgramInclusiveSeconds": 0.637944,
+    "actorSyncInclusiveSeconds": 0.131358,
+    "actorBridgeLaneWindowInclusiveSeconds": 0.115976
+  },
+  "limits": [
+    "Offscreen map-render throughput is not displayed monitor FPS, a whole-city minimum or final graphics acceptance.",
+    "Only the hardware capture had identical source fingerprints from start to finish. Software capture had source drift and a different admitted geometry set, so no precise A/B speedup is claimed.",
+    "Software first paused window contained late resource-driven frames; its final paused window was idle.",
+    "CPU sampling does not isolate exact fragment-shader GPU time; software/native rendering waits are inferred from renderer identity, low JS time and native program samples.",
+    "Inclusive CPU stacks overlap and must not be summed."
+  ]
+}

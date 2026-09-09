@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-09",
+  "status": "failed_normal_view_route_variant_overflow",
+  "classification": "read_only_diagnostic_source_corridor_topology",
+  "camera": {
+    "name": "wide",
+    "lon": 61.36655003525502,
+    "lat": 55.15701676371921,
+    "zoom": 16.284,
+    "pitch": 35.00168684811705,
+    "bearing": 95.88051943032724,
+    "minutes": 925
+  },
+  "method": "Fresh installed Chrome headless context; paused at requested925min; isolated served-module diagnostic copies record the rejected cluster and inputs without changing constraints. No user browser interaction. This is one source snapshot, not a frozen-source release run.",
+  "sourceInputs": 618,
+  "diagnostics": {
+    "paths": 102,
+    "segments": 586,
+    "gridEntries": 986,
+    "pairChecks": 5758,
+    "junctions": 15,
+    "overflow": 1,
+    "omittedProps": 56,
+    "assumedAtGradePaths": 1,
+    "pathPoints": 1314,
+    "propClearanceChecks": 12182,
+    "freshAdmissionPasses": 0,
+    "retainedSeconds": 120
+  },
+  "rejectedCluster": {
+    "pathVariants": 39,
+    "maxApproaches": 32,
+    "vehiclePaths": 17,
+    "pedestrianPaths": 22,
+    "sourceConflictProjections": 367,
+    "projectedConflictBoundsMeters": [
+      -1918.5733421771558,
+      653.5676287255518,
+      -1577.5767718535128,
+      1334.095759224026
+    ],
+    "maximumConflictProjectionDistanceFromAnchorMeters": 681.8374880374075,
+    "reportedDisplayRadiusMeters": 1923.9235936754,
+    "displayRadiusCaveat": "The1923.9m display bound is inflated by repeated unions; it is not the measured physical conflict extent. Actual projected refs span341x681m."
+  },
+  "effect": {
+    "remainingJunctions": 15,
+    "remainingApproaches": 94,
+    "allRemainingApproachesRed": true,
+    "overflowFreezesAllCurrentTraffic": true,
+    "freezeEvidence": "junctionTraffic.constrain overflow branch preserves current arclength for all actors and rejects fresh admission."
+  },
+  "regressionTest": "apps/web/src/renderer/game/junctionTraffic.capacity.review.test.ts",
+  "regressionTestResult": "Fail-first:33 overlapping route intervals plus a longitudinal pedestrian corridor cause overflow1 at one physical approach; expected0.",
+  "limits": "Actual source routes and time are preserved. The rejection was reproduced in a separate context whose membership differs from the running user view. No claim that simply increasing the cap fixes control topology.",
+  "rawInputSha256": "b58fb962a46f102ec95dd783541ca75a54912b5ceaddd6555526f4d7ca07e4b5",
+  "errors": []
+}

@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { resolve, relative, dirname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateManifest } from '../../../server/chat/src/config.mjs';
+import { cityActivationPayload, assertDeploymentProject } from './city-activation.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const repository = resolve(root, '../..');
@@ -10,7 +11,7 @@ const output = resolve(root, 'functions');
 const digest = (bytes) => createHash('sha256').update(bytes).digest('hex');
 export const PORTABLE_MODULES = Object.freeze(['config.mjs', 'handler.mjs', 'quota.mjs', 'sessions.mjs', 'openrouter.mjs', 'firestore.mjs', 'firebase-http.mjs', 'population-resolver.mjs']);
 const TEMPLATE_MODULES = ['index.mjs', 'runtime.mjs', 'policy.mjs'];
-const PAYLOAD_NAMES = new Set([...PORTABLE_MODULES.map((name) => `src/${name}`), ...TEMPLATE_MODULES, 'data/chat-profiles.json', 'data/fictionalProfile.mjs', 'data/demo-population/index.mjs', 'data/demo-population/spatial.mjs', 'approved-profile.mjs', 'package.json', 'package-lock.json']);
+const PAYLOAD_NAMES = new Set([...PORTABLE_MODULES.map((name) => `src/${name}`), ...TEMPLATE_MODULES, 'data/chat-profiles.json', 'data/fictionalProfile.mjs', 'data/demo-population/index.mjs', 'data/demo-population/spatial.mjs', 'approved-profile.mjs', 'approved-city-assets.mjs', 'package.json', 'package-lock.json']);
 
 /** No symlink traversal, including through a parent directory inside the root. */
 async function regularFile(path, base = repository) {
@@ -31,8 +32,10 @@ export function validateStageEntries(entries, allowed) {
   for (const entry of entries) if (!allowed.has(entry)) throw new Error(`Unexpected staged entry: ${entry}`);
 }
 
-export async function buildPayload() {
+export async function buildPayload({ cityActivation } = {}) {
   const files = new Map();
+  const city = cityActivationPayload(cityActivation ?? JSON.parse(await regularFile(resolve(root, 'city-activation.json'))));
+  files.set('approved-city-assets.mjs', Buffer.from(city.module));
   const add = async (path, name) => files.set(name, await regularFile(path));
   for (const name of PORTABLE_MODULES) await add(resolve(repository, 'server/chat/src', name), `src/${name}`);
   for (const name of TEMPLATE_MODULES) await add(resolve(root, 'template', name), name);
@@ -59,6 +62,7 @@ export async function buildPayload() {
   const evidence = {
     artifact: 'functions', representation: 'fictional_demo', datasetId: approved.datasetId,
     profiles: approved.profiles.size, profileSha256,
+    cityActivation: { sha256: city.sha256, mode: city.mode, projectId: city.activation.projectId, pins: city.env, labels: city.labels },
     profileModuleSha256: digest(files.get('data/fictionalProfile.mjs')),
     files: Object.fromEntries([...files].sort(([a], [b]) => a.localeCompare(b)).map(([path, bytes]) => [path, { sha256: digest(bytes), bytes: bytes.length }])),
     dependencies, nodeRuntime: '22', deployed: false, liveInferenceVerified: false,
@@ -110,6 +114,13 @@ export async function stage({ files, evidence }) {
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  try { console.log(JSON.stringify(await stage(await buildPayload()), null, 2)); }
+  try {
+    const args = process.argv.slice(2);
+    if (args.length && (args.length !== 1 || args[0] !== '--firebase-predeploy')) throw new Error('Invalid staging arguments.');
+    // Firebase CLI supplies the selected project to predeploy hooks. Offline
+    // staging remains credential/environment independent; deployment does not.
+    if (args.length) assertDeploymentProject(process.env.GCLOUD_PROJECT);
+    console.log(JSON.stringify(await stage(await buildPayload()), null, 2));
+  }
   catch { console.error('Firebase staging failed. Inspect local source and the explicit file allowlist; no deployment was attempted.'); process.exitCode = 1; }
 }

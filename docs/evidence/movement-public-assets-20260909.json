@@ -1,0 +1,155 @@
+{
+  "contract": "OmniTwinPublicGraphicsAuditV1",
+  "kind": "movement",
+  "releaseId": "a825cb2f215a04483ff7ba4932dde38c34763260177aa6da5ab9920263a4a019",
+  "objectCount": 481,
+  "totalStoredBytes": 33854989,
+  "sampleCount": 7,
+  "totalPublicSampleBytes": 881368,
+  "samples": [
+    {
+      "path": "manifest-625391b37ea50add.json",
+      "role": "root",
+      "bytes": 109055,
+      "sha256": "625391b37ea50add3c40c4ad715124e8fcf395cbd5610f55bc7f5a68b74a7245"
+    },
+    {
+      "path": "bindings-a6b24c0b78d56cad.json",
+      "role": "bindings_canonical",
+      "bytes": 367443,
+      "sha256": "a6b24c0b78d56cad770e3c2c35488bf8409464aad26b3216a16ed42c5213e4e9"
+    },
+    {
+      "path": "bindings-a6b24c0b78d56cad.json.gz",
+      "role": "bindings_opaque_gzip",
+      "bytes": 52322,
+      "sha256": "7d4d51fd6e99c3e77c768918aca627206c3216749f1a33b7b8de153c19a3336e"
+    },
+    {
+      "path": "cells/16/43940/20674/context-f3398e19fd993857.json",
+      "role": "context_canonical",
+      "bytes": 24358,
+      "sha256": "f3398e19fd9938571d9503e551fb3dca99a4c7d4d3e00329e7f4feb0e2db5cfc"
+    },
+    {
+      "path": "cells/16/43940/20674/context-f3398e19fd993857.json.gz",
+      "role": "context_opaque_gzip",
+      "bytes": 3781,
+      "sha256": "88d038df2950e52d1db06d9c03dd916aeafa90818aed46cd0dac0df7de793d79"
+    },
+    {
+      "path": "cells/16/43940/20674/pages/0000-67f7f52e78d2affc.json",
+      "role": "page_canonical",
+      "bytes": 270218,
+      "sha256": "67f7f52e78d2affc75e13504ab1eb95030d32e5879a7d34f5cae13dc465624f0"
+    },
+    {
+      "path": "cells/16/43940/20674/pages/0000-67f7f52e78d2affc.json.gz",
+      "role": "page_opaque_gzip",
+      "bytes": 54191,
+      "sha256": "784837834887e67ed0967e71a93233c3c87908a092f52716b6aecd9b7ee87628"
+    }
+  ],
+  "bounds": {
+    "objects": 40000,
+    "pages": 512,
+    "pageRows": 100,
+    "pageBytes": 524288,
+    "samples": 64,
+    "sampleBytes": 100663296,
+    "totalSampleBytes": 536870912,
+    "requestMs": 30000,
+    "totalMs": 1800000
+  },
+  "cloudWrites": 0,
+  "configWrites": 0,
+  "publicVerified": true,
+  "mode": "read_only_public_verification",
+  "checkedAt": "2026-09-09T14:07:18.305Z",
+  "inventory": {
+    "objects": 481,
+    "pages": 5,
+    "inventorySha256": "da061865537bd7f7f82d725fa165dfc996b9607b25a4f43ac39088715ddd9988",
+    "exactMetadata": true,
+    "storedBytes": 33854989
+  },
+  "publicSamples": [
+    {
+      "path": "manifest-625391b37ea50add.json",
+      "role": "root",
+      "bytes": 109055,
+      "sha256": "625391b37ea50add3c40c4ad715124e8fcf395cbd5610f55bc7f5a68b74a7245",
+      "contentType": "application/json; charset=utf-8",
+      "contentEncoding": null,
+      "corsOrigin": "https://arseniy24rus.github.io",
+      "cacheControl": "public, max-age=31536000, immutable, no-transform",
+      "anonymous": true
+    },
+    {
+      "path": "bindings-a6b24c0b78d56cad.json",
+      "role": "bindings_canonical",
+      "bytes": 367443,
+      "sha256": "a6b24c0b78d56cad770e3c2c35488bf8409464aad26b3216a16ed42c5213e4e9",
+      "contentType": "application/json; charset=utf-8",
+      "contentEncoding": "gzip",
+      "corsOrigin": "https://arseniy24rus.github.io",
+      "cacheControl": "public, max-age=31536000, immutable, no-transform",
+      "anonymous": true
+    },
+    {
+      "path": "bindings-a6b24c0b78d56cad.json.gz",
+      "role": "bindings_opaque_gzip",
+      "bytes": 52322,
+      "sha256": "7d4d51fd6e99c3e77c768918aca627206c3216749f1a33b7b8de153c19a3336e",
+      "contentType": "application/gzip",
+      "contentEncoding": null,
+      "corsOrigin": "https://arseniy24rus.github.io",
+      "cacheControl": "public, max-age=31536000, immutable, no-transform",
+      "anonymous": true
+    },
+    {
+      "path": "cells/16/43940/20674/context-f3398e19fd993857.json",
+      "role": "context_canonical",
+      "bytes": 24358,
+      "sha256": "f3398e19fd9938571d9503e551fb3dca99a4c7d4d3e00329e7f4feb0e2db5cfc",
+      "contentType": "application/json; charset=utf-8",
+      "contentEncoding": "gzip",
+      "corsOrigin": "https://arseniy24rus.github.io",
+      "cacheControl": "public, max-age=31536000, immutable, no-transform",
+      "anonymous": true
+    },
+    {
+      "path": "cells/16/43940/20674/context-f3398e19fd993857.json.gz",
+      "role": "context_opaque_gzip",
+      "bytes": 3781,
+      "sha256": "88d038df2950e52d1db06d9c03dd916aeafa90818aed46cd0dac0df7de793d79",
+      "contentType": "application/gzip",
+      "contentEncoding": null,
+      "corsOrigin": "https://arseniy24rus.github.io",
+      "cacheControl": "public, max-age=31536000, immutable, no-transform",
+      "anonymous": true
+    },
+    {
+      "path": "cells/16/43940/20674/pages/0000-67f7f52e78d2affc.json",
+      "role": "page_canonical",
+      "bytes": 270218,
+      "sha256": "67f7f52e78d2affc75e13504ab1eb95030d32e5879a7d34f5cae13dc465624f0",
+      "contentType": "application/json; charset=utf-8",
+      "contentEncoding": "gzip",
+      "corsOrigin": "https://arseniy24rus.github.io",
+      "cacheControl": "public, max-age=31536000, immutable, no-transform",
+      "anonymous": true
+    },
+    {
+      "path": "cells/16/43940/20674/pages/0000-67f7f52e78d2affc.json.gz",
+      "role": "page_opaque_gzip",
+      "bytes": 54191,
+      "sha256": "784837834887e67ed0967e71a93233c3c87908a092f52716b6aecd9b7ee87628",
+      "contentType": "application/gzip",
+      "contentEncoding": null,
+      "corsOrigin": "https://arseniy24rus.github.io",
+      "cacheControl": "public, max-age=31536000, immutable, no-transform",
+      "anonymous": true
+    }
+  ]
+}

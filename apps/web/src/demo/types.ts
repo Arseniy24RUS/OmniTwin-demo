@@ -6,6 +6,8 @@ export type DemoEmployment = 'child' | 'student' | 'employed' | 'retired' | 'not
 export type DemoWeather = 'clear' | 'cloudy' | 'rain' | 'snow';
 export interface DemoCohort { ageBand?: DemoAgeBand; sex?: DemoSex; employment?: DemoEmployment }
 export interface DemoContextV1 {
+  /** Independent presentation backend. The experimental pack is opt-in until visual acceptance. */
+  cityGraphicsBackend?: 'native_map' | 'tiled_game';
   datasetId: string;
   /** Public city observations and fictional scenario states have separate dates. */
   analyticsSource?: 'observed' | 'fictional';
@@ -19,6 +21,8 @@ export interface DemoContextV1 {
   cohort: DemoCohort | null;
   /** Minutes since midnight, independent from demographic year. */
   presentationMinutes: number;
+  /** Runtime-only explicit time command, not serialized into share URLs. */
+  presentationSeekRevision?: number;
   weather: DemoWeather;
   playing: boolean;
   speed: number;
@@ -115,7 +119,12 @@ export interface DemoViewportQuery extends DemoCohort {
 export interface DemoPage<T> { items: T[]; total: number; offset: number; limit: number; nextOffset: number | null }
 export interface DemoLayout {
   buildings: Array<{ id: string; center: [number, number]; use?: 'residential' | 'work' | 'study' | 'mixed' | 'unknown'; name?: string | null; index?: number; aliases?: string[]; districtId?: string | null; areaM2?: number; levels?: number | null; heightM?: number }>;
-  roads: Array<{ id: string; coordinates: Array<[number, number]>; oneway?: boolean; walkable?: boolean; drivable?: boolean }>;
+  roads: Array<{ id: string; coordinates: Array<[number, number]>; oneway?: boolean; walkable?: boolean; drivable?: boolean;
+    /** Exact source-road ownership of a connected presentation corridor. */
+    sourceRoadIds?: readonly string[];
+    segments?: readonly { roadId?: string; fromNodeId: string; toNodeId: string | null;
+      startVertex?: number; endVertex?: number; direction?: 'forward' | 'reverse' }[];
+  }>;
 }
 export type DemoPresenceState = 'home' | 'work' | 'study' | 'shopping' | 'leisure' | 'outdoor' | 'vehicle' | 'unplaced';
 export interface DemoPresence {
@@ -147,6 +156,8 @@ export interface DemoVehicle {
 }
 export interface DemoBuildingOccupancy extends DemoPage<PublicFictionalPersonV1> {
   buildingId: string;
+  /** V2 distinguishes a verified empty roster from an absent source-backed index. */
+  coverageStatus?: 'covered' | 'no_index';
   assignedResidents: number;
   assignedWorkers: number;
   assignedStudents?: number;

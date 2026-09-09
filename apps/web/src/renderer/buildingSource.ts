@@ -5,6 +5,7 @@ import type {
   NormalizedBuildingV1,
   RendererBuildingSelection,
 } from './types';
+import { VERIFIED_CITY_BUILDING_PROVIDER_ID } from './verifiedCityBuildingTypes';
 
 type StyleExpression = readonly unknown[];
 
@@ -32,19 +33,49 @@ export function buildingStyleSourceId(descriptor: MapSourceDescriptorV1): string
   return descriptor.id === 'openmaptiles_buildings' ? 'openmaptiles' : 'omnitwin-buildings';
 }
 
+export function buildingHighlightFilter(featureId: string, verifiedSource: boolean): StyleExpression {
+  // Extrusion filters see the raw vector-tile ID, before FeatureIndex applies
+  // promoteId for native picking. Full compiled strings are not numeric MVT IDs.
+  return verifiedSource ? ['==', ['get', 'canonical_id'], featureId]
+    : ['==', ['to-string', ['coalesce', ['id'], ['get', 'id']]], featureId];
+}
+
+function isSelectableSourceFeature(descriptor: MapSourceDescriptorV1 | null, feature: RendererBuildingFeature): boolean {
+  return Boolean(descriptor && descriptor.role === 'buildings'
+    && feature.source === buildingStyleSourceId(descriptor) && feature.layer?.id
+    && (BUILDING_PICK_LAYER_IDS as readonly string[]).includes(feature.layer.id));
+}
+
+/** A rejected foreground identity must not select a different building behind it. */
+export function resolveRendererBuildingPick(
+  descriptor: MapSourceDescriptorV1 | null,
+  features: readonly RendererBuildingFeature[],
+  verifiedCanonicalIds?: ReadonlySet<string>,
+): RendererBuildingSelection | null {
+  const foreground = features.find(feature => isSelectableSourceFeature(descriptor, feature));
+  return foreground ? resolveRendererBuildingSelection(descriptor, foreground, verifiedCanonicalIds) : null;
+}
+
 /** Resolves only exact source IDs and rejects features left behind by another provider/style. */
 export function resolveRendererBuildingSelection(
   descriptor: MapSourceDescriptorV1 | null,
   feature: RendererBuildingFeature,
+  verifiedCanonicalIds?: ReadonlySet<string>,
 ): RendererBuildingSelection | null {
-  if (!descriptor || descriptor.role !== 'buildings'
-    || feature.source !== buildingStyleSourceId(descriptor)
-    || !feature.layer?.id
-    || !(BUILDING_PICK_LAYER_IDS as readonly string[]).includes(feature.layer.id)) return null;
+  if (!descriptor || !feature.layer?.id || !isSelectableSourceFeature(descriptor, feature)) return null;
   const rawId = feature.id ?? feature.properties?.id;
   if (typeof rawId !== 'string' && typeof rawId !== 'number') return null;
   const featureId = String(rawId).trim();
   if (!featureId) return null;
+  if (descriptor.id === VERIFIED_CITY_BUILDING_PROVIDER_ID) {
+    if (feature.properties?.canonical_id !== featureId || !verifiedCanonicalIds?.has(featureId)) return null;
+    return Object.freeze({ canonicalId: featureId, providerId: descriptor.id, datasetVersion: descriptor.datasetVersion,
+      featureId, layerId: feature.layer.id, sourceLayer: null });
+  }
+  // Planetiler marks merged OpenFreeMap features with a trailing zero. One
+  // group may contain many unrelated buildings, even if its representative ID
+  // happens to match an indexed OSM way. Never interpret it as one resident roster.
+  if (descriptor.id === 'openmaptiles_buildings' && /^\d*0$/u.test(featureId)) return null;
   return Object.freeze({
     canonicalId: `${descriptor.id}:${featureId}`,
     providerId: descriptor.id,

@@ -1,0 +1,63 @@
+{
+  "date": "2026-09-09",
+  "classification": "visual_synthesis",
+  "scope": "Vehicle body orientation only; source coordinates, routes, canonical IDs, lane queues and source population remain unchanged.",
+  "implementation": {
+    "clock": "Existing scalar simulation clock; no additional RAF or per-frame attribute upload",
+    "interpolation": "Shortest-angle cubic easing retained by canonical actor ID; unchanged targets do not restart; explicit seek/context epoch resets",
+    "peakDegreesPerSimulationSecond": 120,
+    "minimumDurationSeconds": 0.16,
+    "ninetyDegreeDurationSeconds": 1.125,
+    "halfTurnDurationSeconds": 2.25,
+    "renderAndPicking": "Body, sprite, contact shadow and CPU picking use the same orientation function",
+    "files": [
+      {"path": "apps/web/src/renderer/game/gameActorHeading.ts", "sha256": "5c8578fc50e6cd95d019a163b321d92564656eea71cffb5f7bcf9b053cbc3690"},
+      {"path": "apps/web/src/renderer/game/GameActors.ts", "sha256": "10eaf47e2d35b3b465eb1e31cf695d006252ebcc19ed050535dc0e41fa6f2807"}
+    ]
+  },
+  "regression": {
+    "failFirst": "At a source 90-degree corner the previous renderer immediately returned pi/2 instead of retaining the preceding pi heading at transition start.",
+    "tests": 66,
+    "testFiles": ["gameActorHeading.test.ts", "GameActors.test.ts", "actorColumnsBridge.test.ts", "laneTraffic.test.ts", "gameLayerLifecycle.test.ts"],
+    "result": "PASS",
+    "typecheck": "PASS",
+    "covered": ["corner continuity", "shortest-angle wrap", "endpoint reversal", "angular-rate bound", "unchanged target retention", "canonical membership reorder", "pause", "explicit small seek", "backward seek", "current body picking", "unchanged route positions", "stationary samples and scalar time do not upload heading buffers"]
+  },
+  "browser": {
+    "method": "Separate Chromium, actual local source vehicles; read actual instanced GPU heading attributes and production interpolation through the existing development motion probe. No actor or route injection.",
+    "renderer": "ANGLE Vulkan SwiftShader Subzero",
+    "title": "OmniTwin · Живой мир",
+    "viewport": [1400, 900],
+    "camera": {"longitude": 61.40324326242887, "latitude": 55.166511972647186, "zoom": 18, "pitch": 46.49661799282392, "bearing": -172.97699800600026},
+    "simulationSeconds": [45027.49030000007, 45102.38710000004],
+    "snapshots": 277,
+    "canonicalVehicles": 137,
+    "continuousSameIdPairs": 14692,
+    "sourceCorners": 364,
+    "distinctTransitions": 320,
+    "transitionsAbove170Degrees": 11,
+    "peakObservedDegreesPerSimulationSecond": 119.98855024370441,
+    "angularRateViolations": 0,
+    "consoleErrors": 0,
+    "errorOverlay": false,
+    "maximumObservationGapSeconds": 1.21484375,
+    "midTurnPause": {
+      "canonicalId": "demo2-v-0903471",
+      "shaderTimeSeconds": 45032.15289999998,
+      "headingRadians": 1.1808412150547598,
+      "targetHeadingRadians": 0.016860205680131912,
+      "localPosition": [559.3133544921875, 0.12999999523162842, -178.36322021484375],
+      "wallObservationSeconds": 1.6,
+      "timePositionHeadingUnchanged": true,
+      "additionalRenderedFrames": 0
+    },
+    "seek": {"action": "Paused time-slider ArrowRight", "observedHeadingDurationsAfterSeconds": [0, 0]},
+    "speed16": {"simulationElapsedSeconds": 52.68960000038351, "wallElapsedSeconds": 3.410600000023842}
+  },
+  "limits": [
+    "Orientation verification preceded coordinated junction rollout; final integrated traffic requires its own QA.",
+    "SwiftShader video under concurrent local work rendered approximately four frames per second; this is not a hardware frame-rate or final graphics acceptance claim.",
+    "A source ping-pong endpoint reverses body orientation around its original center; no physical U-turn corridor is invented.",
+    "The body may temporarily lag a sharply changing source tangent while the bounded turn completes."
+  ]
+}

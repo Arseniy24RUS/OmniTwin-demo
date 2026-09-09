@@ -1,0 +1,89 @@
+{
+  "contract": "PublicCityCameraRegressionEvidenceV1",
+  "fixture": "publicCityCameraMatrices.json",
+  "fixtureSha256": "97d2ee624ecde16a3a758c84daafaaf7e377983402c63f7aac8623633706bcb4",
+  "provenance": "Eight actual public MapLibre 6.4.1 custom render inputs, isolated Chromium viewport 1280x800, dpr 1; no private transform fields.",
+  "diagnosis": "MapLibre public P uses Float32 while P*V uses Float64. Rounded perspective depth terms introduce an apparent projective row away from the fixed city origin.",
+  "correction": "Validate the public perspective shape and near/far/fov agreement; restore its public full-precision coefficients, recenter before deprojection, retain strict rigid-view admission.",
+  "freshBrowserValidation": {
+    "poses": 8,
+    "rendering": 8,
+    "cameraErrors": 0
+  },
+  "tests": {
+    "cameraAndProjectionAndPicking": 27,
+    "passed": 27
+  },
+  "thresholds": {
+    "ndc": 1e-7,
+    "depth": 1e-7,
+    "rayMeters": 0.001,
+    "metricBasis": 0.000001
+  },
+  "rows": [
+    {
+      "name": "center",
+      "priorAffineWResidual": 0.0000018789803122309934,
+      "maxNdcResidual": 1.2973289111554402e-11,
+      "maxDepthResidual": 1.2973289109652342e-11,
+      "maxRayMissMeters": 5.569494857771083e-13,
+      "maxMetricBasisResidual": 1.8379517019440073e-8
+    },
+    {
+      "name": "KUR",
+      "priorAffineWResidual": -0.00002901205816507879,
+      "maxNdcResidual": 2.493805381332034e-11,
+      "maxDepthResidual": 2.493805162373519e-11,
+      "maxRayMissMeters": 5.722370821897408e-12,
+      "maxMetricBasisResidual": 1.8379200161788845e-8
+    },
+    {
+      "name": "KAL",
+      "priorAffineWResidual": -0.000002637934174543055,
+      "maxNdcResidual": 2.3285818101692293e-11,
+      "maxDepthResidual": 2.3285817718488033e-11,
+      "maxRayMissMeters": 5.178759911038997e-12,
+      "maxMetricBasisResidual": 1.8379627486631023e-8
+    },
+    {
+      "name": "CEN",
+      "priorAffineWResidual": -0.000018227808412318858,
+      "maxNdcResidual": 9.787171726581331e-12,
+      "maxDepthResidual": 9.787171073583067e-12,
+      "maxRayMissMeters": 3.2797224177447006e-12,
+      "maxMetricBasisResidual": 1.8379413768698782e-8
+    },
+    {
+      "name": "MET",
+      "priorAffineWResidual": -0.0000149090404176766,
+      "maxNdcResidual": 2.581113149505634e-11,
+      "maxDepthResidual": 2.5811131010300414e-11,
+      "maxRayMissMeters": 2.6459802471313115e-11,
+      "maxMetricBasisResidual": 1.8379200161788845e-8
+    },
+    {
+      "name": "SOV",
+      "priorAffineWResidual": 0.000008521172914388586,
+      "maxNdcResidual": 1.8439139520975973e-11,
+      "maxDepthResidual": 1.8439139104486912e-11,
+      "maxRayMissMeters": 7.666542096967895e-12,
+      "maxMetricBasisResidual": 1.8379200161788845e-8
+    },
+    {
+      "name": "TRA",
+      "priorAffineWResidual": 0.00004527349001515191,
+      "maxNdcResidual": 2.1002534747237565e-11,
+      "maxDepthResidual": 2.1002533046043936e-11,
+      "maxRayMissMeters": 4.063509357925689e-12,
+      "maxMetricBasisResidual": 1.8379569310944532e-8
+    },
+    {
+      "name": "LEN",
+      "priorAffineWResidual": 0.00003822989738333504,
+      "maxNdcResidual": 1.7858826840458126e-11,
+      "maxDepthResidual": 1.7858825529515343e-11,
+      "maxRayMissMeters": 8.473721872488563e-12,
+      "maxMetricBasisResidual": 1.8379355704034595e-8
+    }
+  ]
+}

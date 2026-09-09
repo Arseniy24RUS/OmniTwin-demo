@@ -8,7 +8,8 @@ import {promisify} from 'node:util';
 import {fileURLToPath} from 'node:url';
 import {resolve} from 'node:path';
 import {buildPayload, stage, PORTABLE_MODULES, validateStageEntries, existingEntries} from '../scripts/stage.mjs';
-import {FUNCTION_OPTIONS, ALLOWED_ORIGIN} from '../template/policy.mjs';
+import {FUNCTION_OPTIONS, ALLOWED_ORIGIN, assertRuntimeProject} from '../template/policy.mjs';
+import { createCityActivation, cityActivationPayload } from '../scripts/city-activation.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const exec = promisify(execFile);
@@ -18,6 +19,12 @@ const payload = buildPayload();
 test('function options explicitly bound scaling and avoid default full CPU', () => {
   assert.equal(ALLOWED_ORIGIN, 'https://arseniy24rus.github.io');
   assert.deepEqual(FUNCTION_OPTIONS, {region: 'europe-west1', minInstances: 0, maxInstances: 2, concurrency: 1, timeoutSeconds: 30, memory: '256MiB', cpu: 'gcf_gen1', serviceAccount: 'omnitwin-chat-runtime@omnitwin-demo.iam.gserviceaccount.com', cors: false, invoker: 'public'});
+});
+
+test('runtime project accepts documented Firebase project JSON without requiring GCLOUD_PROJECT', () => {
+  assertRuntimeProject({ FIREBASE_CONFIG: JSON.stringify({ projectId: 'omnitwin-demo', storageBucket: 'omnitwin-demo.firebasestorage.app' }) }, 'omnitwin-demo');
+  assertRuntimeProject({ GCLOUD_PROJECT: 'omnitwin-demo' }, 'omnitwin-demo');
+  for (const env of [{}, { FIREBASE_CONFIG: '/credential/path.json' }, { FIREBASE_CONFIG: '{malformed' }, { FIREBASE_CONFIG: '{"projectId":"other-project"}' }, { GCLOUD_PROJECT: 'other-project', FIREBASE_CONFIG: '{"projectId":"omnitwin-demo"}' }]) assert.throws(() => assertRuntimeProject(env, 'omnitwin-demo'), /runtime project/);
 });
 
 test('package contains only allowlisted portable modules and approved immutable profile data', async () => {
@@ -37,6 +44,28 @@ test('package contains only allowlisted portable modules and approved immutable 
   assert.equal(manifest.scripts, undefined);
   assert.equal(files.get('package-lock.json').toString().includes('ydb-sdk'), false);
   assert.equal(evidence.deployed, false); assert.equal(evidence.liveInferenceVerified, false);
+  assert.equal(hash(files.get('approved-city-assets.mjs')), evidence.files['approved-city-assets.mjs'].sha256);
+  assert.equal(files.get('index.mjs').toString().includes('...CITY_ACTIVATION_ENV'), true);
+  assert.equal(/process\.env\.V2_/.test(files.get('index.mjs').toString()), false);
+});
+
+test('staging carries the entire reviewed V2 tuple and rejects partial activation before writing', async () => {
+  const cityActivation = createCityActivation({ projectId: 'omnitwin-demo', packBaseUrl: `https://storage.googleapis.com/omnitwin-demo-city-assets/packs/${'a'.repeat(64)}/`, populationManifestSha256: 'b'.repeat(64), spatialManifestSha256: 'c'.repeat(64) });
+  const expected = cityActivationPayload(cityActivation);
+  const active = await buildPayload({ cityActivation });
+  assert.equal(active.files.get('approved-city-assets.mjs').toString(), expected.module);
+  assert.deepEqual(active.evidence.cityActivation.pins, cityActivation.v2);
+  assert.equal(active.evidence.cityActivation.sha256, expected.sha256);
+  assert.equal(active.evidence.cityActivation.mode, 'v2');
+  assert.equal(active.evidence.profileSha256, (await payload).evidence.profileSha256, 'legacy bytes remain in either mode');
+  await assert.rejects(buildPayload({ cityActivation: { ...cityActivation, v2: { V2_POPULATION_MANIFEST_URL: cityActivation.v2.V2_POPULATION_MANIFEST_URL } } }), /Incomplete/);
+});
+
+test('Firebase predeploy stops before staging when its selected project is absent or foreign', async () => {
+  for (const project of [undefined, 'another-project']) {
+    const env = project ? { GCLOUD_PROJECT: project } : {};
+    await assert.rejects(exec(process.execPath, ['scripts/stage.mjs', '--firebase-predeploy'], { cwd: root, env, timeout: 10_000 }), error => error.code === 1 && /Firebase staging failed/.test(error.stderr) && error.stdout === '');
+  }
 });
 
 test('stage validation rejects extra files rather than copying or deleting them', async () => {
@@ -72,7 +101,7 @@ test('Firestore rules deny all client access and TTL deletes only expiresAt reco
   const deployment = JSON.parse(await readFile(resolve(root, 'firebase.json'), 'utf8'));
   assert.equal(deployment.functions[0].source, 'functions');
   assert.equal(deployment.functions[0].runtime, 'nodejs22');
-  assert.deepEqual(deployment.functions[0].predeploy, ['npm --prefix "$PROJECT_DIR" run stage']);
+  assert.deepEqual(deployment.functions[0].predeploy, ['npm --prefix "$PROJECT_DIR" run stage -- --firebase-predeploy']);
 });
 
 test('staged real Firebase export imports without credentials, initialization or network calls', async () => {
@@ -95,6 +124,9 @@ test('staged real Firebase export imports without credentials, initialization or
     assert.equal(entry.chatApi.__endpoint.serviceAccountEmail,'omnitwin-chat-runtime@omnitwin-demo.iam.gserviceaccount.com');
     assert.deepEqual(entry.chatApi.__endpoint.httpsTrigger.invoker,['public']);
     assert.deepEqual(entry.chatApi.__endpoint.region,['europe-west1']);
+    const city=await import('./functions/approved-city-assets.mjs');
+    assert.deepEqual(entry.chatApi.__endpoint.labels,city.CITY_DEPLOYMENT_LABELS);
+    assert.equal(city.CITY_DEPLOYMENT_LABELS['omnitwin-city-pin-a']+city.CITY_DEPLOYMENT_LABELS['omnitwin-city-pin-b'],city.CITY_ACTIVATION_SHA256);
     assert.deepEqual(entry.chatApi.__endpoint.secretEnvironmentVariables.map(s=>s.key).sort(),['OPENROUTER_API_KEY','SESSION_SIGNING_SECRET']);
     const {getApps}=await import('firebase-admin/app');
     assert.equal(getApps().length,0);

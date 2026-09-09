@@ -1,0 +1,30 @@
+{
+  "releaseId": "a825cb2f215a04483ff7ba4932dde38c34763260177aa6da5ab9920263a4a019",
+  "prefix": "packs/a825cb2f215a04483ff7ba4932dde38c34763260177aa6da5ab9920263a4a019/movement-overlay-v2/",
+  "bucket": "omnitwin-demo-city-assets",
+  "projectId": "omnitwin-demo",
+  "uploaded": 481,
+  "skipped": 0,
+  "totalStoredBytes": 33854989,
+  "manifestUrls": {
+    "manifest-625391b37ea50add.json": "https://storage.googleapis.com/omnitwin-demo-city-assets/packs/a825cb2f215a04483ff7ba4932dde38c34763260177aa6da5ab9920263a4a019/movement-overlay-v2/manifest-625391b37ea50add.json"
+  },
+  "publicReady": false,
+  "activation": {
+    "contract": "CityMovementActivationV1",
+    "version": 1,
+    "datasetId": "omnitwin-fictional-city-v2",
+    "presentation": "bounded_source_overlay",
+    "chatCompatibility": "pending",
+    "baseHashes": {
+      "spatial": "ec886d770baa1bbb83afab4973b857a6d50d9a1eac0135c1f90508a88557567d",
+      "population": "646bef9ee30c2f061f80b1ce26cd9d7ca2c7da170c6d55c086dea24d2d95bca1",
+      "geography": "e8e1627801eb79ac353e9a1bf37419519980ad48d071d9c1f9b67318c2f3f62a"
+    },
+    "manifest": {
+      "url": "https://storage.googleapis.com/omnitwin-demo-city-assets/packs/a825cb2f215a04483ff7ba4932dde38c34763260177aa6da5ab9920263a4a019/movement-overlay-v2/manifest-625391b37ea50add.json",
+      "bytes": 109055,
+      "sha256": "625391b37ea50add3c40c4ad715124e8fcf395cbd5610f55bc7f5a68b74a7245"
+    }
+  }
+}

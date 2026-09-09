@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-09",
+  "classification": "deterministic_transport_and_public_cache_regression",
+  "status": "passed_bounded_stall_recovery",
+  "cause": "Two GLB bodies that never complete occupy both staging reservations after a camera change. The tile library cancels unused QUEUED requests, but retains LOADING requests; normal geometry LRU eviction intentionally does not interrupt protected staging.",
+  "before": {
+    "failedTests": 3,
+    "twoStalledChildren": "No errors after 25 seconds; both reservations remained occupied.",
+    "missingHeaders": "No rejection or transport abort after 25 seconds.",
+    "openBody": "No rejection or stream cancellation after 25 seconds."
+  },
+  "policy": {
+    "idleByteTimeoutMilliseconds": 25000,
+    "timerStartsBeforeHeaders": true,
+    "resetOnlyOnNonemptyBytes": true,
+    "totalDeadline": null,
+    "automaticRetries": 0,
+    "errorName": "CityAssetStallError",
+    "explicitCancellationPreserved": true,
+    "cameraChangeAloneDoesNotCancel": true,
+    "scope": "Both catalog and legacy verified geometry/image asset transports. Catalog manifest preparation is outside this watchdog."
+  },
+  "after": {
+    "targetedTests": 35,
+    "typecheck": "passed",
+    "twoStalledChildren": "Existing load-error handling rejects each asset and removes it through the public cache callback; pending and staging counts become zero, the 100-byte committed test parent remains, and a new neighborhood can reserve a slot.",
+    "retryBound": "Failed resources remain denied in the current camera epoch; the transport does not start a retry loop.",
+    "slowProgress": "Three chunks arriving 20 seconds apart complete successfully after 60 seconds total.",
+    "cleanup": "Timers clear after verification, corruption, cancellation and timeout. Empty chunks do not extend the timer. A non-settling cancellation promise cannot hold the failed request open."
+  },
+  "tests": [
+    "apps/web/src/renderer/game/verifiedAssetResponse.test.ts",
+    "apps/web/src/renderer/game/catalogAssetPolicy.test.ts",
+    "apps/web/src/renderer/game/buildingCacheAdmission.test.ts",
+    "apps/web/src/renderer/game/BuildingTileCache.test.ts",
+    "apps/web/src/demo/tiledGameLayer.test.ts"
+  ],
+  "limits": "Uses fake-time streams and the real cache/admission classes with the existing load-error removal path. It does not claim a browser network-throttling result, whole-city graphics acceptance, or a new geometry ownership policy."
+}

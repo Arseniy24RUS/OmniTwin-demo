@@ -129,8 +129,19 @@ describe('provider city presence frame', () => {
     const rows = Array.from({ length: 3100 }, (_, i) => ({ person: profile(`person:${i}`), presence: i < 1250 ? presence(`person:${i}`)
       : { ...presence(`person:${i}`, 'vehicle'), vehicleId: `vehicle:${i}` } }));
     const frame = buildCityPresenceFrame(provider(rows), context, { maxPeople: 9000, maxVehicles: 9000 });
-    expect(frame.peopleCount).toBe(1200); expect(frame.vehicleCount).toBe(1800);
-    expect(frame.entities).toHaveLength(3000);
+    expect(frame.peopleCount).toBe(1200); expect(frame.vehicleCount).toBe(1);
+    expect(frame.entities).toHaveLength(1201);
+    expect(frame.vehicleDeclutter).toMatchObject({ candidateCount: 1850, retainedCount: 1, suppressedOverlap: 1849 });
+  });
+  it('preserves a selected passenger household car and full provider rosters while hiding overlapping glyphs', () => {
+    const rows = ['driver', 'passenger', 'other'].map(id => ({ person: profile(id), presence: { ...presence(id, 'vehicle'), vehicleId: id === 'other' ? 'vehicle:other' : 'vehicle:family' } }));
+    const source = provider(rows); const before = JSON.stringify(rows);
+    const frame = buildCityPresenceFrame(source, context, { selectedId: 'passenger' });
+    expect(frame.entities.map(item => item.id)).toEqual(['vehicle:family']);
+    expect(frame.entities[0]).toMatchObject({ longitude: 61.4015, latitude: 55.161 });
+    expect(frame.vehicleDeclutter).toMatchObject({ candidateCount: 2, retainedCount: 1, suppressedOverlap: 1 });
+    expect(source.getVisibleCandidates('baseline', 2026)).toHaveLength(3);
+    expect(JSON.stringify(rows)).toBe(before);
   });
   it('follows the supplied route mode instead of inventing a loop for merely equal endpoints', () => {
     const closedCoordinates = [{ ...roads[0]!, coordinates: [[61.4, 55.16], [61.402, 55.16], [61.402, 55.161], [61.4, 55.16]] as [number, number][] }];
