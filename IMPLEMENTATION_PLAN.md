@@ -8,6 +8,8 @@ Reported camera: 61.40544729905824, 55.14238680897694; zoom 16.42008662505606, p
 2. Increase only the bounded intersection capacity, retain graph-compaction cadence and all safety/work limits; validate actual camera diagnostics and visible movement before release.
 3. Run signal/lane/worker regressions and production build. Publish the scoped correction and verify the exact public camera, including actual positive actor opacity and screenshot rather than source counters alone. Preserve unrelated staged chat changes and all data/config pins.
 
+Completed: regression failed before the fix and passed afterwards; 885 frontend and 189 Node tests passed. Pages deployed `ce07a0d` (run 34455572779). Exact public camera: 386 conflict nodes without overflow, 480 positive actor opacities, 347 moving rows, visible cars in reviewed screenshot; stable pause produced zero frames over 2.2 seconds. Details and limitations: `docs/qa/empty-public-traffic-20260910.md`.
+
 ## Courtyard graphics overhaul — owner approved 2026-09-09
 
 ### Current release instruction — 2026-09-09
