@@ -30,7 +30,7 @@ export interface JunctionSignal {
   approaches: JunctionSignalApproach[];
 }
 export const JUNCTION_LIMITS = Object.freeze({ maxPaths: 2048, maxPathPoints: 65536, maxSegments: 8192,
-  maxGridEntries: 65536, maxPairChecks: 250000, maxJunctions: 256, maxApproaches: 32 });
+  maxGridEntries: 65536, maxPairChecks: 250000, maxJunctions: 1024, maxApproaches: 32 });
 type Limits = { -readonly [K in keyof typeof JUNCTION_LIMITS]: number };
 interface Path extends JunctionPath { distances: number[]; length: number; seen: number; corridorKey:string; reversed:boolean }
 interface Ref { path: Path; index: number }
@@ -280,7 +280,9 @@ export class JunctionTraffic {
       }
       return clusters;
     };
-    const compactBatchSize=this.limits.maxJunctions*2;
+    // Keep merging at the original cadence even when a city viewport retains
+    // more junctions; capacity must not multiply transient crossing work.
+    const compactBatchSize=Math.min(this.limits.maxJunctions,256)*2;
     let compactAt=compactBatchSize,compactSerial=0;
     for (const entries of grid.values()) {
       if (overflow) break;

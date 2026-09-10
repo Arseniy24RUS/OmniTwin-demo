@@ -7,6 +7,31 @@ const paths: JunctionPath[] = [
 ];
 
 describe('junction sampling work bounds', () => {
+  it('admits traffic across a city viewport exceeding the former quarter-sized junction budget', () => {
+    const traffic = new JunctionTraffic();
+    const city = Array.from({ length: 400 }, (_, i) => {
+      const x = (i % 20) * 120, y = Math.floor(i / 20) * 120;
+      return [
+        { key: `east-${i}`, kind: 'vehicle', atGrade: true, points: [[x - 40, y], [x + 40, y]] },
+        { key: `south-${i}`, kind: 'vehicle', atGrade: true, points: [[x, y - 40], [x, y + 40]] },
+      ] as JunctionPath[];
+    }).flat();
+    traffic.sync(city, 1);
+    expect(traffic.readSignals().diagnostics.overflow).toBe(0);
+    expect(traffic.readSignals().junctions).toHaveLength(400);
+    const cars: JunctionActor[] = city.map(path => ({ id: path.key, pathKey: path.key,
+      distance: 32, desired: 34, fresh: true, entered: true }));
+    const caps = traffic.constrain(cars, 1);
+    for (let i = 0; i < 400; i++) {
+      expect(caps.get(`east-${i}`)).toEqual({ distance: 34, visible: true });
+      expect(caps.get(`south-${i}`)!.distance).toBeLessThanOrEqual(33);
+    }
+    const bounded = new JunctionTraffic({ maxJunctions: 1 });
+    bounded.sync(city.slice(0, 4), 1);
+    expect(bounded.readSignals().diagnostics.overflowReasons).toContain('junctions');
+    expect(bounded.constrain(cars.slice(0, 4), 1).get('east-0'))
+      .toEqual({ distance: 32, visible: false });
+  });
   it('does not sort actors whose current and desired stations cannot reach a local conflict', () => {
     const traffic = new JunctionTraffic();
     traffic.sync([paths[0]!, ...Array.from({ length: 24 }, (_, index): JunctionPath => ({

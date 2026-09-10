@@ -1,5 +1,13 @@
 # OmniTwin Demo — implementation contract
 
+## Empty public city regression — 2026-09-10
+
+Reported camera: 61.40544729905824, 55.14238680897694; zoom 16.42008662505606, pitch 54.49329763506109, bearing -57.59246846758845, minute 1102.35719. Public worker loads 872 actors but returns zero positive opacities: the 256-junction cap triggers global conservative admission rejection (223 paths, 3687 segments, 99551 pair checks). Asset requests succeed.
+
+1. Add a failing city-scale intersection/admission regression with more than 256 independent crossings.
+2. Increase only the bounded intersection capacity, retain graph-compaction cadence and all safety/work limits; validate actual camera diagnostics and visible movement before release.
+3. Run signal/lane/worker regressions and production build. Publish the scoped correction and verify the exact public camera, including actual positive actor opacity and screenshot rather than source counters alone. Preserve unrelated staged chat changes and all data/config pins.
+
 ## Courtyard graphics overhaul — owner approved 2026-09-09
 
 ### Current release instruction — 2026-09-09
